@@ -1,16 +1,17 @@
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import styled from '@emotion/styled';
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import styled from "@emotion/styled";
+import ReactDOM from 'react-dom';
 
 export default function BasicModal(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  return (
-    <div>
+  return ReactDOM.createPortal(
+    <>
       <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
@@ -20,7 +21,8 @@ export default function BasicModal(props) {
       >
         <StyledBox>{props.children}</StyledBox>
       </Modal>
-    </div>
+    </>,
+    document.getElementById("modal-root")
   );
 }
 
@@ -37,4 +39,4 @@ const StyledBox = styled(Box)`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-`
+`;
