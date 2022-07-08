@@ -13,6 +13,10 @@ function ImagePicker() {
       const name = URL.createObjectURL(filesRef.current.files[0])
       setIcon(name)
    }
+   const deleteFileHandler = () => {
+      filesRef.current.value = ''
+      setIcon('')
+   }
    return (
       <ImageContainer primary={icon}>
          <InputLabel htmlFor="file" primary={icon} />
@@ -22,11 +26,30 @@ function ImagePicker() {
             ref={filesRef}
             onChange={iconHandleChange}
          />
+         <DeleteFile onClick={deleteFileHandler}>удалить</DeleteFile>
       </ImageContainer>
    )
 }
 
 export default ImagePicker
+
+const DeleteFile = styled.button`
+   border: none;
+   position: absolute;
+   background-color: rgba(0, 0, 0, 0);
+   bottom: 30px;
+   font-family: 'Open Sans';
+   font-weight: 400;
+   font-size: 18px;
+   color: #fff;
+   z-index: 10;
+   display: none;
+   cursor: pointer;
+   &:hover {
+      text-decoration: underline;
+      color: #f34901;
+   }
+`
 
 const InputLabel = styled.label`
    /* border: 1px solid red; */
@@ -45,6 +68,7 @@ const InputLabel = styled.label`
          height: 1.2rem;
          background-image: none;
          position: relative;
+         margin-top: 213px;
          display: none;
          &:after {
             content: 'Заменить';
@@ -89,7 +113,13 @@ const ImageContainer = styled.div`
             background-color: rgba(0, 0, 0, 0.5);
             /* cursor: pointer; */
          }
+         &:hover {
+            align-items: flex-start;
+         }
          &:hover > label {
+            display: block;
+         }
+         &:hover > button {
             display: block;
          }
       `}
