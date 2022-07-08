@@ -26,12 +26,15 @@ const FormLabelStyle = styled(FormControlLabel)`
   .MuiFormControlLabel-label {
     color: black;
     font-size: 16px;
+   
   }
 `;
 const ChesckboxStyle = styled(MuiCheckbox)`
   .MuiSvgIcon-root {
     width: 26px;
     height: 26px;
+   
+    
   }
 
   &.Mui-checked {
