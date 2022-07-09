@@ -6,7 +6,7 @@ function App(props) {
   return (
     <div className="App">
       <Search/>
-      <InputName onChange={(e) => props.onChange(e.target.value)} value={props.value}/>
+      <InputName placeholder="Введите имя" onChange={(e) => props.onChange(e.target.value)} value={props.value}/>
       <Input onChange={(e) => props.onChange(e.target.value)} value={props.value}/>
     </div>
   );

@@ -262,7 +262,6 @@ const Inputcss = styled.input`
     height: 40px;
     /* padding: 8px, 18px, 8px, 18px; */
     border: 1px solid #C4C4C4;
-
     &::placeholder {
         padding: 18px;
         width: 306px;
@@ -287,7 +286,6 @@ const Inputcss = styled.input`
         
     }
    
-
    
     &:active::-webkit-input-placeholder {
     color: transparent;
@@ -308,6 +306,4 @@ const ButtonIconsSerach = styled.button`
         outline: none;
         color:#F34901;
     }
-
 `
-

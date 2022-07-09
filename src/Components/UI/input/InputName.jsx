@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components';
 
-function InputName() {
+function InputName(props) {
   return (
     <div>
-            <InputName1 type='text' placeholder="Напишите ваше имя"/>
+            <InputName1 type='text' placeholder={props.placeholder}/>
     </div>
   )
 }
