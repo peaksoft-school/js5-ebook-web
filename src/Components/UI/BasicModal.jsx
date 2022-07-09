@@ -1,10 +1,9 @@
-import ReactDOM from 'react-dom'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import styled from '@emotion/styled'
 
 export default function BasicModal({ children, ...props }) {
-   return ReactDOM.createPortal(
+   return (
       <Modal
          open={props.open}
          onClose={props.onClose}
@@ -12,8 +11,7 @@ export default function BasicModal({ children, ...props }) {
          aria-describedby="modal-modal-description"
       >
          <StyledBox {...props}>{children}</StyledBox>
-      </Modal>,
-      document.getElementById('modal-root')
+      </Modal>
    )
 }
 
@@ -23,6 +21,7 @@ const StyledBox = styled(Box)((props) => ({
    left: '50%',
    width: props.width,
    height: props.height,
+   padding: '20px',
    transform: 'translate(-50%, -50%)',
    backgroundColor: ' #ffff',
    color: '#000',
