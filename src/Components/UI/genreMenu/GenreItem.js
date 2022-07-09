@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
-function GenreItem({ name, quantity }) {
+function GenreItem({ name, quantity, id }) {
    const clickHandler = (e) => {
       e.preventDefault()
    }
    return (
       <ItemBook>
-         <ItemLink href="/" onClick={clickHandler}>
+         <ItemLink to={`/${id}`} onClick={() => clickHandler(id)}>
             {name} <ItemQuantity>{quantity}</ItemQuantity>
          </ItemLink>
       </ItemBook>
@@ -33,6 +33,7 @@ const ItemLink = styled.a`
    padding: 10px 20px;
    padding-left: 0;
    padding-right: 0;
+   cursor: pointer;
    position: relative;
    &:hover {
       color: #ff4c00;
@@ -51,7 +52,6 @@ const ItemLink = styled.a`
 `
 
 const ItemBook = styled.li`
-   /* border: 1px solid red; */
    list-style: none;
    width: 327px;
 `

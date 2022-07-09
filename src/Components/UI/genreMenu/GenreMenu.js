@@ -1,116 +1,18 @@
 import styled from 'styled-components'
 import GenreItem from './GenreItem'
 
-const arr = [
-   {
-      name: 'Образование',
-      quantity: 1244,
-   },
-   {
-      name: 'Художественная литература',
-      quantity: 3453,
-   },
-   {
-      name: 'Книги для детей',
-      quantity: 3453,
-   },
-   {
-      name: 'Наука и техника',
-      quantity: 3453,
-   },
-   {
-      name: 'Общество',
-      quantity: 435,
-   },
-   {
-      name: 'Деловая литература',
-      quantity: 435,
-   },
-   {
-      name: 'Красота. Здоровье. Спорт',
-      quantity: 435,
-   },
-   {
-      name: 'Увлечения',
-      quantity: 435,
-   },
-   {
-      name: 'Психология',
-      quantity: 435,
-   },
-   {
-      name: 'Образование',
-      quantity: 1244,
-   },
-   {
-      name: 'Художественная литература',
-      quantity: 3453,
-   },
-   {
-      name: 'Книги для детей',
-      quantity: 3453,
-   },
-   {
-      name: 'Наука и техника',
-      quantity: 3453,
-   },
-   {
-      name: 'Общество',
-      quantity: 435,
-   },
-   {
-      name: 'Деловая литература',
-      quantity: 435,
-   },
-   {
-      name: 'Красота. Здоровье. Спорт',
-      quantity: 435,
-   },
-   {
-      name: 'Увлечения',
-      quantity: 435,
-   },
-   {
-      name: 'Психология',
-      quantity: 435,
-   },
-]
-
-function GenreMenu() {
+function GenreMenu({ data }) {
    return (
       <MenuContainer>
          <MenuUl>
-            {arr.map((elem) => {
+            {data.map((elem) => {
                const id = Math.random().toString()
                return (
                   <GenreItem
                      key={id}
                      name={elem.name}
                      quantity={elem.quantity}
-                  />
-               )
-            })}
-         </MenuUl>
-         <MenuUl>
-            {arr.map((elem) => {
-               const id = Math.random().toString()
-               return (
-                  <GenreItem
-                     key={id}
-                     name={elem.name}
-                     quantity={elem.quantity}
-                  />
-               )
-            })}
-         </MenuUl>
-         <MenuUl>
-            {arr.map((elem) => {
-               const id = Math.random().toString()
-               return (
-                  <GenreItem
-                     key={id}
-                     name={elem.name}
-                     quantity={elem.quantity}
+                     id={id}
                   />
                )
             })}
@@ -122,25 +24,16 @@ function GenreMenu() {
 export default GenreMenu
 
 const MenuUl = styled.ul`
-   /* border: 1px solid red; */
    margin: 0;
    padding: 0;
-   width: 327px;
-   margin-right: 90px;
-   &:last-child {
-      margin-right: 0;
-   }
-`
-
-const MenuContainer = styled.div`
-   /* border: 1px solid red; */
-   /* width: 922px; */
-   padding: 30px 30px;
-   background-color: #f8f8f8;
+   padding-right: 30px;
+   height: 436px;
+   max-width: 1070px;
    display: flex;
-   max-height: 436px;
-   max-width: 1200px;
+   flex-direction: row;
+   flex-wrap: wrap;
    overflow-y: auto;
+   justify-content: space-between;
    scroll-snap-type: x proximity;
    ::-webkit-scrollbar {
       width: 5px;
@@ -159,4 +52,13 @@ const MenuContainer = styled.div`
    ::-webkit-scrollbar-thumb:hover {
       background: #555;
    }
+   &:last-child {
+      margin-right: 0;
+   }
+`
+
+const MenuContainer = styled.div`
+   padding: 30px 30px;
+   background-color: #f8f8f8;
+   position: absolute;
 `
