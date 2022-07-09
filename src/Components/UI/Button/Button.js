@@ -1,19 +1,19 @@
 import MuiButton from '@mui/material/Button'
 import { styled } from '@mui/material'
- 
+
 const ButtonComponent = ({ children, ...props }) => {
    return <ButtonStyle {...props}>{children}</ButtonStyle>
 }
- 
+
 export default ButtonComponent
- 
+
 const ButtonStyle = styled(MuiButton)`
    box-shadow: none;
    border-radius: 0px;
    font-weight: 600;
    font-family: open sans-serif;
    font-style: normal;
- 
+
    &.MuiButton-backgroundblack {
       padding: 10px, 24px, 10px, 24px;
       background: #1c1c1c;
