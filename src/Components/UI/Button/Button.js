@@ -2,11 +2,9 @@ import styled from '@emotion/styled'
 
 export default function Button({ children, ...props }) {
    return (
-      <div open={props.open}>
-         <ButtonStyle disableRipple {...props}>
-            {children}
-         </ButtonStyle>
-      </div>
+      <ButtonStyle disableRipple {...props}>
+         {children}
+      </ButtonStyle>
    )
 }
 
