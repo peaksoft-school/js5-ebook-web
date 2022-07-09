@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import Icon from '../../../assets/icons/Vector.svg'
 
-function ImagePicker() {
+function ImagePicker({ sendFile, sendDelete }) {
    const [icon, setIcon] = useState()
    const filesRef = useRef()
 
@@ -12,10 +12,12 @@ function ImagePicker() {
       }
       const name = URL.createObjectURL(filesRef.current.files[0])
       setIcon(name)
+      sendFile(name)
    }
    const deleteFileHandler = () => {
       filesRef.current.value = ''
       setIcon('')
+      sendDelete()
    }
    return (
       <ImageContainer primary={icon}>
@@ -77,7 +79,7 @@ const InputLabel = styled.label`
             font-weight: 400;
             font-size: 18px;
             color: #fff;
-            left: -10px;
+            left: -2px;
          }
          &:hover:after {
             text-decoration: underline;
