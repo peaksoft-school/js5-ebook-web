@@ -6,7 +6,7 @@ import { styled } from '@mui/material'
 const CheckBox = (props) => {
    return (
       <FormGroup>
-         <FormLabelStyle control={<ChesckboxStyle />} label={props} />
+         <FormLabelStyle control={<ChesckboxStyle />} label={props.genre} />
       </FormGroup>
    )
 }
