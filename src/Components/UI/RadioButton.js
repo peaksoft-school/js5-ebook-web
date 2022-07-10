@@ -1,15 +1,25 @@
+import styled from 'styled-components'
+// import classes from './Radio.module.css'
+
+
 function RadioButton(props) {
    return (
-      <label>
-         <input
-            type="radio"
-            value="male"
-            name="contact"
-            checked={props.gender === 'male'}
-            onClick={() => props.getname(props.name)}
-         />
-         {props.name}
-      </label>
+      <div >
+        <form action="">
+            <label>
+                <input type="radio" id="html" name="radio" />
+                <span>{props.name}</span>
+            </label>     
+        </form>
+    </div>
    )
 }
 export default RadioButton
+
+// // const Input = styled.input`
+// //   background-color: red;
+// //   color: black;
+// //   border: 1px solid red;
+
+
+// `

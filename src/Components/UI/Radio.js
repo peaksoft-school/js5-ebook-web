@@ -35,4 +35,6 @@ const Div = styled('form')`
    display: flex;
    justify-content: space-between;
    width: 400px;
+   accent-color: #F34901;
+   
 `
