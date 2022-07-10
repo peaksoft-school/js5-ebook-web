@@ -6,7 +6,7 @@ function GenreItem({ name, quantity, id }) {
    }
    return (
       <ItemBook>
-         <ItemLink to={`/${id}`} onClick={() => clickHandler(id)}>
+         <ItemLink to={`/${id}`} onClick={clickHandler}>
             {name} <ItemQuantity>{quantity}</ItemQuantity>
          </ItemLink>
       </ItemBook>
@@ -21,13 +21,11 @@ const ItemQuantity = styled.span`
 `
 
 const ItemLink = styled.a`
-   /* border: 1px solid red; */
    font-family: 'Open Sans';
    font-size: 1rem;
    color: #222222;
    font-weight: 400;
    text-decoration: none;
-   width: 327px;
    display: flex;
    justify-content: space-between;
    padding: 10px 20px;
@@ -54,4 +52,8 @@ const ItemLink = styled.a`
 const ItemBook = styled.li`
    list-style: none;
    width: 327px;
+   margin-right: 40px;
+   &:nth-child(3n) {
+      margin-right: 0;
+   }
 `

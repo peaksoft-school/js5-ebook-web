@@ -27,13 +27,15 @@ const MenuUl = styled.ul`
    margin: 0;
    padding: 0;
    padding-right: 30px;
-   height: 436px;
+   max-height: 436px;
    max-width: 1070px;
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
+   justify-content: flex-start;
+   align-items: flex-start;
+   align-content: flex-start;
    overflow-y: auto;
-   justify-content: space-between;
    scroll-snap-type: x proximity;
    ::-webkit-scrollbar {
       width: 5px;
