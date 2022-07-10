@@ -1,10 +1,9 @@
-import React from 'react'
-import { styled } from '@mui/material'
+import styled from 'styled-components'
 import RadioButton from './RadioButton'
 
 const arr = ['Бумажная', 'Аудиокнига', 'Электронная книга']
 
-const Radio = (props) => {
+const Radio = () => {
    const [gender, setGender] = React.useState('male')
    function getname(a) {
       console.log(a)
@@ -31,10 +30,9 @@ const Radio = (props) => {
 }
 export default Radio
 
-const Div = styled('form')`
+const Div = styled.div`
    display: flex;
    justify-content: space-between;
    width: 400px;
-   accent-color: #F34901;
-   
+   accent-color: #f34901;
 `
