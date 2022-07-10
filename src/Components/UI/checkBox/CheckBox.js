@@ -3,10 +3,18 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import MuiCheckbox from '@mui/material/Checkbox'
 import { styled } from '@mui/material'
 
-const CheckBox = (props) => {
+const CheckBox = ({ ...props }) => {
    return (
       <FormGroup>
-         <FormLabelStyle control={<ChesckboxStyle />} label={props.genre} />
+         <FormLabelStyle
+            control={
+               <ChesckboxStyle
+                  onChange={props.onChange}
+                  checked={props.checked}
+               />
+            }
+            label={props.genre}
+         />
       </FormGroup>
    )
 }
