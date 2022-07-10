@@ -1,10 +1,17 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import Icon from '../../../assets/icons/Vector.svg'
 
-function ImagePicker({ sendFile, sendDelete }) {
+function ImagePicker({ onChange, onDelete, file }) {
    const [icon, setIcon] = useState()
    const filesRef = useRef()
+
+   useEffect(() => {
+      if (file) {
+         const name = URL.createObjectURL(file)
+         setIcon(name)
+      }
+   }, [file])
 
    const iconHandleChange = () => {
       if (!filesRef.current.files[0]) {
@@ -12,13 +19,15 @@ function ImagePicker({ sendFile, sendDelete }) {
       }
       const name = URL.createObjectURL(filesRef.current.files[0])
       setIcon(name)
-      sendFile(name)
+      onChange(filesRef.current.files[0])
    }
+
    const deleteFileHandler = () => {
       filesRef.current.value = ''
       setIcon('')
-      sendDelete()
+      onDelete()
    }
+
    return (
       <ImageContainer primary={icon}>
          <InputLabel htmlFor="file" primary={icon} />
@@ -27,6 +36,7 @@ function ImagePicker({ sendFile, sendDelete }) {
             id="file"
             ref={filesRef}
             onChange={iconHandleChange}
+            accept="image/jpeg,image/png,image/gif"
          />
          <DeleteFile onClick={deleteFileHandler}>удалить</DeleteFile>
       </ImageContainer>
@@ -79,7 +89,9 @@ const InputLabel = styled.label`
             font-weight: 400;
             font-size: 18px;
             color: #fff;
-            left: -2px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
          }
          &:hover:after {
             text-decoration: underline;
