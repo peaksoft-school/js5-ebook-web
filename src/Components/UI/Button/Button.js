@@ -22,9 +22,11 @@ const ButtonStyle = styled('button')((props) => ({
    alignItems: 'center',
    border: 'none',
    '&:hover': {
-      background: props.hover ? '#FE6F33' : '#484848',
+      background: '#484848',
+      ...props.hover,
    },
    '&:active': {
-      background: props.hover ? '#E54400' : ' #F34901',
+      background: ' #F34901',
+      ...props.active,
    },
 }))
