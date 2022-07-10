@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
-function GenreItem({ name, quantity, id }) {
-   const clickHandler = (e) => {
-      e.preventDefault()
+function GenreItem({ name, quantity, id, onSelect }) {
+   const clickHandler = () => {
+      onSelect(id)
    }
    return (
       <ItemBook>
-         <ItemLink to={`/${id}`} onClick={clickHandler}>
+         <ItemLink onClick={clickHandler}>
             {name} <ItemQuantity>{quantity}</ItemQuantity>
          </ItemLink>
       </ItemBook>
@@ -20,7 +20,7 @@ const ItemQuantity = styled.span`
    color: #a5a5a5;
 `
 
-const ItemLink = styled.a`
+const ItemLink = styled.div`
    font-family: 'Open Sans';
    font-size: 1rem;
    color: #222222;

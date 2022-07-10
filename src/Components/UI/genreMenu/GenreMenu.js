@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 import GenreItem from './GenreItem'
 
-function GenreMenu({ data }) {
+function GenreMenu({ data, onSelect }) {
    return (
       <MenuContainer>
          <MenuUl>
             {data.map((elem) => {
-               const id = Math.random().toString()
                return (
                   <GenreItem
-                     key={id}
+                     key={elem.id}
                      name={elem.name}
                      quantity={elem.quantity}
-                     id={id}
+                     id={elem.id}
+                     onSelect={onSelect}
                   />
                )
             })}
