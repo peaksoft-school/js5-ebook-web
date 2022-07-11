@@ -13,7 +13,7 @@ const CheckBox = ({ ...props }) => {
                   checked={props.checked}
                />
             }
-            label={props.genre}
+            label={props.label}
          />
       </FormGroup>
    )
