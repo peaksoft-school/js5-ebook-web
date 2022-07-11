@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import Icon from '../../../assets/icons/Vector.svg'
 
-function ImagePicker({ onChange, onDelete, file }) {
+function ImagePicker({ onChange, onDelete, file, id }) {
    const [icon, setIcon] = useState()
    const filesRef = useRef()
 
@@ -30,10 +30,10 @@ function ImagePicker({ onChange, onDelete, file }) {
 
    return (
       <ImageContainer primary={icon}>
-         <InputLabel htmlFor="file" primary={icon} />
+         <InputLabel htmlFor={id} primary={icon} />
          <InputFile
             type="file"
-            id="file"
+            id={id}
             ref={filesRef}
             onChange={iconHandleChange}
             accept="image/jpeg,image/png,image/gif"
