@@ -4,28 +4,32 @@ import { useState } from 'react'
 import Vector from '../../../assets/upaudioicons/Vector.png'
 import VectorOk from '../../../assets/upaudioicons/VectorOk.png'
 
-const FileUploadButton = ({ value, children, ...props }) => {
+const FileUploadButton = ({
+   onChange,
+   type,
+   value,
+   accept,
+   children,
+   ...props
+}) => {
    const [fileState, setFileState] = useState('default')
-   const [file, setFile] = useState([])
+   const [pdfFile, setPdfFile] = useState([])
+   const [audioFile, setAudioFile] = useState([])
 
-   const changeHand = (e) => {
+   const saveFilesHandler = (e) => {
       const files = e.target.files[0]
+      onChange(files)
+
       if (files.type === 'application/pdf') {
          setFileState('loading')
-         setFile((prev) => [...prev, files])
+         setPdfFile(files)
       }
       if (files.type === 'audio/mpeg') {
          setFileState('loading')
-         setFile((prev) => [...prev, files])
+         setAudioFile(files)
       }
-
-      /* (res.ok) */
-
-      if (file) {
+      if (pdfFile || audioFile) {
          setFileState('success')
-         setTimeout(() => {
-            setFileState('default')
-         }, 3000)
       }
    }
 
@@ -38,7 +42,12 @@ const FileUploadButton = ({ value, children, ...props }) => {
             <DefaultContainer {...props}>
                <ImgVector src={Vector} />
                {children}
-               <input {...props} onChange={changeHand} />
+               <input
+                  accept={accept}
+                  value={value}
+                  type={type}
+                  onChange={saveFilesHandler}
+               />
             </DefaultContainer>
          </ContainerDiv>
       )
@@ -48,11 +57,10 @@ const FileUploadButton = ({ value, children, ...props }) => {
       fileButton = (
          <ContainerDiv>
             <span>{children}</span>
-            <LoadedCont>
+            <LoadedContainer>
                <CircularProgress style={{ color: 'grey' }} size="1.4rem" />
-
                {children}
-            </LoadedCont>
+            </LoadedContainer>
          </ContainerDiv>
       )
    }
@@ -93,7 +101,7 @@ const DefaultContainer = styled('label')((props) => ({
    },
 }))
 
-const LoadedCont = styled('label')((props) => ({
+const LoadedContainer = styled('label')((props) => ({
    display: 'flex',
    alignItems: 'center',
    width: props.width || '100%',
@@ -146,8 +154,10 @@ const ContainerDiv = styled('div')`
    & span {
       color: #222222;
       font-size: 16px;
+      font-style: normal;
       font-family: 'Open Sans';
       font-weight: 400;
       line-height: 20.8px;
+      line-height: 130%;
    }
 `
