@@ -1,8 +1,11 @@
-
+import Test from "./test"
 
 function App() {
+   
    return (
-      <div className="App"></div>
+      <div className="App">
+         <Test />
+      </div>
    )
 }
 
