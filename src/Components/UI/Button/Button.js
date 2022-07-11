@@ -1,7 +1,7 @@
 import MuiButton from '@mui/material/Button'
 import { styled } from '@mui/material'
 
-const ButtonComp = ({ variant, children, onClick, ...props }) => {
+const Button = ({ variant, children, onClick, ...props }) => {
    return (
       <ButtonStyle variant={variant} onClick={onClick} {...props}>
          {children}
@@ -9,7 +9,7 @@ const ButtonComp = ({ variant, children, onClick, ...props }) => {
    )
 }
 
-export default ButtonComp
+export default Button
 
 const ButtonStyle = styled(MuiButton)`
    text-transform: capitalize;
