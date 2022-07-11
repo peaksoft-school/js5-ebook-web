@@ -1,25 +1,50 @@
 import styled from '@emotion/styled'
 import { CircularProgress } from '@mui/material'
+import { useState } from 'react'
 import Vector from '../../../assets/upaudioicons/Vector.png'
 import VectorOk from '../../../assets/upaudioicons/VectorOk.png'
 
-const UploadAudioFile = ({ children, ...props }) => {
+const FileUploadButton = ({ value, children, ...props }) => {
+   const [fileState, setFileState] = useState('default')
+   const [file, setFile] = useState([])
+
+   const changeHand = (e) => {
+      const files = e.target.files[0]
+      if (files.type === 'application/pdf') {
+         setFileState('loading')
+         setFile((prev) => [...prev, files])
+      }
+      if (files.type === 'audio/mpeg') {
+         setFileState('loading')
+         setFile((prev) => [...prev, files])
+      }
+
+      /* (res.ok) */
+
+      if (file) {
+         setFileState('success')
+         setTimeout(() => {
+            setFileState('default')
+         }, 3000)
+      }
+   }
+
    let fileButton
 
-   if (props.state === 'default' || props.audioState === 'default') {
+   if (fileState === 'default') {
       fileButton = (
          <ContainerDiv>
             <span>{children}</span>
             <DefaultContainer {...props}>
                <ImgVector src={Vector} />
                {children}
-               <input {...props} />
+               <input {...props} onChange={changeHand} />
             </DefaultContainer>
          </ContainerDiv>
       )
    }
 
-   if (props.state === 'loading' || props.audioState === 'default') {
+   if (fileState === 'loading') {
       fileButton = (
          <ContainerDiv>
             <span>{children}</span>
@@ -31,7 +56,7 @@ const UploadAudioFile = ({ children, ...props }) => {
          </ContainerDiv>
       )
    }
-   if (props.state === 'success' || props.audioState === 'default') {
+   if (fileState === 'success') {
       fileButton = (
          <ContainerDiv>
             <span>{children}</span>
@@ -46,7 +71,7 @@ const UploadAudioFile = ({ children, ...props }) => {
    return <div>{fileButton}</div>
 }
 
-export default UploadAudioFile
+export default FileUploadButton
 
 const DefaultContainer = styled('label')((props) => ({
    display: 'flex',
