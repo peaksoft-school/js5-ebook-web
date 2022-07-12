@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import Vector from '../../../assets/icons/Vector.png'
 
-function Input({ ...props }) {
+function Input({ placeholder }) {
    const [password, setPassword] = useState(false)
 
    const toggleBtn = () => {
@@ -13,7 +13,7 @@ function Input({ ...props }) {
       <div>
          <StyledInput
             type={password ? 'text' : 'password'}
-            placeholder={props.placeholder}
+            placeholder={placeholder}
          />
          <Div>
             <ButtonIcons onClick={toggleBtn}>

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-function Inputs({ ...props }) {
+function Inputs({ type, placeholder }) {
    return (
       <div>
-         <InputsStyled type={props.type} placeholder={props.placeholder} />
+         <InputsStyled type={type} placeholder={placeholder} />
       </div>
    )
 }
