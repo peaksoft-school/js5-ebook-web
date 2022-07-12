@@ -50,7 +50,7 @@ const DrowerItem = styled.li`
    cursor: pointer;
    padding-left: 74px;
    position: relative;
-   transition: 0.2s;
+   transition: ease-in 0.2s;
    &:after {
       content: '';
       position: absolute;
