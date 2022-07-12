@@ -1,11 +1,9 @@
-import RadioButton from "./Components/UI/RadioButton"
-import Test from "./test"
+import Test from './test'
 
 function App() {
-   
    return (
       <div className="App">
-         <RadioButton />
+         <Test />
       </div>
    )
 }
