@@ -1,9 +1,8 @@
-import { Switch, Route } from 'react-router'
+import { Switch, Route, Redirect } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
-import Admin from './containers/Admin/Admin'
+import Admin from './layouts/Admin/Admin'
 import Client from './containers/Client/Client'
 import Vendor from './containers/Vendor/Vendor'
-import SideDrower from './containers/Admin/sideDrower/SideDrower'
 
 function App() {
    return (
@@ -11,7 +10,7 @@ function App() {
          <BrowserRouter>
             <Switch>
                <Route path="/" exact>
-                  <SideDrower />
+                  <Redirect to="/Admin" />
                </Route>
                <Route path="/Admin">
                   <Admin />

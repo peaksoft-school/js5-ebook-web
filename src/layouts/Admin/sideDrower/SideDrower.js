@@ -15,8 +15,8 @@ export default SideDrower
 
 const SideDrowerContainer = styled.div`
    /* border: 1px solid red; */
-   width: 250px;
    height: 100vh;
+   width: 250px;
    position: fixed;
    top: 0;
    left: 0;
