@@ -3,8 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import Admin from './containers/Admin/Admin'
 import Client from './containers/Client/Client'
 import Vendor from './containers/Vendor/Vendor'
-import Logotype from './layouts/Logotyp'
-import SideDrower from './layouts/sideDrower/SideDrower'
+import SideDrower from './containers/Admin/sideDrower/SideDrower'
 
 function App() {
    return (
@@ -12,7 +11,6 @@ function App() {
          <BrowserRouter>
             <Switch>
                <Route path="/" exact>
-                  <Logotype />
                   <SideDrower />
                </Route>
                <Route path="/Admin">

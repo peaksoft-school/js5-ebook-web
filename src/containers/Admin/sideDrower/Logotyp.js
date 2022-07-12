@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import eBook from '../assets/icons/eBooK.png'
+import eBook from '../../../assets/icons/eBooK.png'
 
 function Logotype() {
    return <LogoImage />
@@ -12,6 +12,7 @@ const LogoImage = styled.div`
    height: 85px;
    background-color: #222222;
    position: relative;
+   margin-bottom: 59px;
    &:after {
       content: '';
       position: absolute;
