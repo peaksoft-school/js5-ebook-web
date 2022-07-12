@@ -12,7 +12,7 @@ function Input({ ...props }) {
    return (
       <div>
          <StyledInput
-            type={password ? 'password' : 'text'}
+            type={password ? 'text' : 'password'}
             placeholder={props.placeholder}
          />
          <Div>

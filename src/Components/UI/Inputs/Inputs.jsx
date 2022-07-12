@@ -3,7 +3,7 @@ import styled from 'styled-components'
 function Inputs({ ...props }) {
    return (
       <div>
-         <InputsStyled type="text" placeholder={props.placeholder} />
+         <InputsStyled type={props.type} placeholder={props.placeholder} />
       </div>
    )
 }

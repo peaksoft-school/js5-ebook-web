@@ -241,7 +241,7 @@ function Search({ ...props }) {
    return (
       <>
          <InputSerach
-            type="text"
+            type={props.type}
             placeholder={props.placeholder}
             onChange={(e) => setQuery(e.target.value)}
          />
@@ -314,9 +314,10 @@ const ImgSerachIcons = styled.img`
    width: 20.31px;
    height: 20.31px;
    &:active {
-      background: transparent;
       border: none;
       outline: none;
-      filter: url({SerachIcon});
+      filter: invert(0%) sepia(98%) saturate(500%) brightness(98%)
+         contrast(102%);
+      background: white;
    }
 `
