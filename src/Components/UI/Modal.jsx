@@ -1,17 +1,26 @@
 import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
+import MuiModal from '@mui/material/Modal'
 import styled from '@emotion/styled'
 
-export default function BasicModal({ children, ...props }) {
+export default function Modal({
+   children,
+   open,
+   onClose,
+   variant,
+   width,
+   height,
+}) {
    return (
-      <Modal
-         open={props.open}
-         onClose={props.onClose}
+      <MuiModal
+         open={open}
+         onClose={onClose}
          aria-labelledby="modal-modal-title"
          aria-describedby="modal-modal-description"
       >
-         <StyledBox {...props}>{children}</StyledBox>
-      </Modal>
+         <StyledBox variant={variant} width={width} height={height}>
+            {children}
+         </StyledBox>
+      </MuiModal>
    )
 }
 
@@ -21,7 +30,7 @@ const StyledBox = styled(Box)((props) => ({
    left: '50%',
    width: props.width,
    height: props.height,
-   padding: '20px',
+   padding: `${props.variant === 'normal' ? '40px 30px' : '20px'}`,
    transform: 'translate(-50%, -50%)',
    backgroundColor: ' #ffff',
    color: '#000',
