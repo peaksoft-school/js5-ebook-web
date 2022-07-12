@@ -229,7 +229,7 @@ const User = [
       },
    },
 ]
-function Search({ ...props }) {
+function Search({ type, placeholder }) {
    const [query, setQuery] = useState('')
 
    const search = (data) => {
@@ -241,8 +241,8 @@ function Search({ ...props }) {
    return (
       <>
          <InputSerach
-            type={props.type}
-            placeholder={props.placeholder}
+            type={type}
+            placeholder={placeholder}
             onChange={(e) => setQuery(e.target.value)}
          />
          <Div>
