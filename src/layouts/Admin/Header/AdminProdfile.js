@@ -1,41 +1,38 @@
 import styled from 'styled-components'
+import IconButton from '../../IconButton'
 import adminIcon from '../../../assets/icons/header/Vector.png'
+import message from '../../../assets/icons/header/message.png'
+import heart from '../../../assets/icons/header/heart.png'
+import Jenre from '../../Jenre'
 
-function AdminProfile({ name }) {
+function AdminProfile() {
+   const func = () => {
+      alert('Hello world')
+   }
    return (
       <ProfileContainer>
-         <ImageIcon />
-         <ProfileName>{name}</ProfileName>
+         <Jenre text="Жанры" onClick={func} />
+         <IconButton icon={message} />
+         <IconButton icon={heart} />
+         <IconButton
+            icon={adminIcon}
+            backgroundColor="#E5E5E5"
+            borderRadius="50%"
+            label="Администратор"
+            onClick={func}
+         />
+         <IconButton text="Корзинка" />
+         {/* <ProfileName>{name}</ProfileName> */}
       </ProfileContainer>
    )
 }
 
 export default AdminProfile
 
-const ProfileName = styled.h2`
-   margin: 0;
-   padding: 0;
-   font-family: 'Open Sans';
-   font-weight: 600;
-   font-size: 1rem;
-   cursor: pointer;
-`
-
-const ImageIcon = styled.div`
-   width: 34px;
-   height: 34px;
-   border-radius: 50%;
-   background-color: #e5e5e5;
-   margin-right: 10px;
-   background-image: url(${adminIcon});
-   background-repeat: no-repeat;
-   background-position: 50% 45%;
-`
-
 const ProfileContainer = styled.div`
    /* border: 1px solid red; */
-   width: 207px;
-   margin-left: 20px;
+   /* width: 207px; */
+   /* margin-left: 20px; */
    padding: 15px 0;
    display: flex;
    align-items: center;

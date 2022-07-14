@@ -12,7 +12,7 @@ const LogoImage = styled.div`
    height: 85px;
    background-color: #222222;
    position: relative;
-   margin-bottom: 59px;
+   /* margin-bottom: 59px; */
    &:after {
       content: '';
       position: absolute;

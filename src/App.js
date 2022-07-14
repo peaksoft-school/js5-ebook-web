@@ -1,7 +1,7 @@
 import { Switch, Route, Redirect } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
 import Admin from './layouts/Admin/Admin'
-import Client from './containers/Client/Client'
+import Client from './layouts/Client/Client'
 import Vendor from './containers/Vendor/Vendor'
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
          <BrowserRouter>
             <Switch>
                <Route path="/" exact>
-                  <Redirect to="/Admin" />
+                  <Redirect to="/Client" />
                </Route>
                <Route path="/Admin">
                   <Admin />

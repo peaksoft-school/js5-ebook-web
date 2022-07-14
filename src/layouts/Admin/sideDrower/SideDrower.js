@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import Logotype from './Logotyp'
+import Logotype from './Logotype'
 import SideDrowerMenu from './SideDrowerMenu'
 
 function SideDrower() {

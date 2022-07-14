@@ -1,9 +1,11 @@
 import styled from 'styled-components'
+import Logotype from '../sideDrower/Logotype'
 import AdminProfile from './AdminProdfile'
 
 function Header() {
    return (
       <HeaderContainer>
+         <Logotype />
          <FormSearch>
             <input type="search" />
          </FormSearch>
@@ -15,7 +17,6 @@ function Header() {
 export default Header
 
 const FormSearch = styled.form`
-   /* border: 1px solid red; */
    & > input {
       width: 100%;
       height: 34px;
@@ -25,13 +26,11 @@ const FormSearch = styled.form`
 `
 
 const HeaderContainer = styled.div`
-   /* border: 1px solid #000; */
-   padding-left: 20px;
-   padding-top: 35px;
-   padding-bottom: 50px;
-   padding-right: 66px;
+   border: 1px solid #000;
    display: flex;
    flex-flow: row nowrap;
-   align-items: flex-start;
-   align-content: flex-start;
+   align-items: center;
+   & > div {
+      flex: 0 0 auto;
+   }
 `
