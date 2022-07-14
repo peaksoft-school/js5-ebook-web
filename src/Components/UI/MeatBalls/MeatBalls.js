@@ -2,7 +2,7 @@ import { useState } from "react";
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBalls.jpg'
 import styled from "styled-components";
 
-const MeadBall = (props) => {
+const MeadBall = ({options}) => {
 
   const [state, setState] = useState(false);
 
@@ -25,13 +25,13 @@ const MeadBall = (props) => {
         <DivMeatBalls>
           
           {
-            props.data.map((option) => {
+            options.map((option) => {
               return <OptionMeadBalls 
                 key={option.id} 
                 onClick={()=> clickCloseHandler(option)} 
                 >
                 <div>{option.icon}</div>
-                <Div >{option.text}</Div>
+                <Div >{option.title}</Div>
               </OptionMeadBalls>
             })
           }
