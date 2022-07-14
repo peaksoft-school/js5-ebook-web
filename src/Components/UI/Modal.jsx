@@ -30,7 +30,7 @@ const StyledBox = styled(Box)((props) => ({
    left: '50%',
    width: props.width,
    height: props.height,
-   padding: `${props.variant === 'normal' ? '40px 30px' : '20px'}`,
+   padding: `${props.variant === 'mini' ? '20px' : '40px 30px'}`,
    transform: 'translate(-50%, -50%)',
    backgroundColor: ' #ffff',
    color: '#000',
