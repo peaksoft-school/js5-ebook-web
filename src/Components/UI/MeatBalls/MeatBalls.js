@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MeadBalls from "../../../assets/images/MeatBalls.jpg"
+import MeadBalls from '../../../assets/icons/MeatBalls/MeatBalls.jpg'
 import styled from "styled-components";
 
 const MeadBall = (props) => {
@@ -9,7 +9,7 @@ const MeadBall = (props) => {
   const clickHandler = () => {
     setState((prevstate) => !prevstate);
   };
-
+ 
   const clickCloseHandler = (option) => {
     setState(false)
     option.onClick(option)
@@ -22,17 +22,19 @@ const MeadBall = (props) => {
         src={MeadBalls}
       />
       {state && (
-        
         <DivMeatBalls>
           
-          {props.arrays.map((option) =>
-          <> 
-              <OptionMeadBalls key={option.id} onClick={()=> clickCloseHandler(option)} ><div>{option.icon}</div><Div >{option.text}</Div></OptionMeadBalls>
-              <Hr/>
-              
-          </>
-          )}
-          <header/>
+          {
+            props.data.map((option) => {
+              return <OptionMeadBalls 
+                key={option.id} 
+                onClick={()=> clickCloseHandler(option)} 
+                >
+                <div>{option.icon}</div>
+                <Div >{option.text}</Div>
+              </OptionMeadBalls>
+            })
+          }
         </DivMeatBalls>
       )}
     </DivBlock>
@@ -58,11 +60,6 @@ const DivMeatBalls = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  & header{
-    height: 4px;
-    background-color: white;
-    margin-top: -10px;
-  }
 `;
 
 const OptionMeadBalls = styled.span`
@@ -75,11 +72,6 @@ const OptionMeadBalls = styled.span`
   font-size: 16px;
   color: #5d5d5d;
 `;
-
-const Hr = styled.hr`
-width: 133px;
-border-bottom: 1px solid black;
-`
 
 const Div = styled.div`
 width: 70%
