@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Logotype from '../sideDrower/Logotype'
+import Logotype from '../../Logotype'
 import AdminProfile from './AdminProdfile'
 
 function Header() {

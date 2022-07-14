@@ -39,11 +39,11 @@ const ButtonStyle = styled(MuiButton)`
          props.variant === 'default' ? ' #484848' : '#fe6f33'};
       color: #ffffff;
    }
-   &:active {
+   /* &:active {
       background: ${(props) =>
-         props.variant === 'default' ? '#f34901' : '#f34901'};
+      props.variant === 'default' ? '#f34901' : '#f34901'};
       color: #ffffff;
-   }
+   } */
 
    background: ${(props) => (props.variant === 'universal' ? 'white' : '')};
    background: ${(props) => (props.background ? props.background : '')};

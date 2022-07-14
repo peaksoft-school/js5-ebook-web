@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import eBook from '../../../assets/icons/eBooK.png'
+import eBook from '../assets/icons/eBooK.png'
 
 function Logotype() {
    return <LogoImage />

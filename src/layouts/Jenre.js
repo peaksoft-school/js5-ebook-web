@@ -1,15 +1,22 @@
 import styled from 'styled-components'
 
-function Jenre({ onClick, text }) {
+function Jenre({ onClick, text, children }) {
    return (
-      <Label>
-         <JenreButton onClick={onClick} />
-         <LabelSpan>{text}</LabelSpan>
-      </Label>
+      <Div>
+         <Label>
+            <JenreButton onClick={onClick} />
+            <LabelSpan>{text}</LabelSpan>
+         </Label>
+         {children}
+      </Div>
    )
 }
 
 export default Jenre
+
+const Div = styled.div`
+   position: relative;
+`
 
 const LabelSpan = styled.span`
    margin-left: 10px;

@@ -63,4 +63,7 @@ const MenuContainer = styled.div`
    padding: 30px 30px;
    background-color: #f8f8f8;
    position: absolute;
+   position: absolute;
+   z-index: 10;
+   transition: ease-in-out 1.2s;
 `
