@@ -7,32 +7,33 @@ import {
 } from '@mui/material'
 import { withRouter } from 'react-router-dom'
 
-const Breadcrumbs = ({ history, location: { pathname } }) => {
+const Breadcrumbs = ({ history, location: { pathname }, translate }) => {
    const pathnames = pathname.split('/').filter((x) => x)
-
+   const updatedPathnames = pathnames.map((path) => translate[path] || path)
    if (pathnames.length === 1) {
-      // eslint-disable-next-line react/destructuring-assignment
-      return
+      return null
    }
+
+   const renderPaths = () => {
+      return updatedPathnames.map((name, index) => {
+         const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`
+         const isLast = index === pathnames.length - 1
+         const toUpperCase = name[0].toUpperCase() + name.slice(1)
+         return isLast ? (
+            <Typography key={toUpperCase}>{toUpperCase}</Typography>
+         ) : (
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
+            <Link key={toUpperCase} onClick={() => history.push(routeTo)}>
+               {toUpperCase}
+            </Link>
+         )
+      })
+   }
+
    // eslint-disable-next-line consistent-return
    return (
       <BreadCrumbsStyle aria-label="breadcrumb">
-         {pathnames.map((name, index) => {
-            const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`
-            const isLast = index === pathnames.length - 1
-            const toUpperCase = name[0].toUpperCase() + name.slice(1)
-            return isLast ? (
-               <Typography key={toUpperCase}>{toUpperCase}</Typography>
-            ) : (
-               // eslint-disable-next-line jsx-a11y/anchor-is-valid
-               <LinkStyle
-                  key={toUpperCase}
-                  onClick={() => history.push(routeTo)}
-               >
-                  {toUpperCase}
-               </LinkStyle>
-            )
-         })}
+         {renderPaths()}
       </BreadCrumbsStyle>
    )
 }
@@ -40,28 +41,23 @@ const Breadcrumbs = ({ history, location: { pathname } }) => {
 export default withRouter(Breadcrumbs)
 
 const BreadCrumbsStyle = styled(MUIBreadcrumbs)`
-   .css-xhjb1c-MuiTypography-root-MuiLink-root {
+   .MuiTypography-root {
       margin: 0;
       color: #1976d2;
       -webkit-text-decoration: none;
       text-decoration: none;
-
-      color: gray;
-   }
-   .css-ahj2mt-MuiTypography-root {
-      margin: 0;
-      font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      color: black;
+      font-family: 'Open Sans';
       font-weight: 400;
-      font-size: 1rem;
-      line-height: 1.5;
-      letter-spacing: 0.00938em;
-      color: black;
+      font-size: 14px;
+      line-height: 16.8px;
    }
-`
-const LinkStyle = styled(Link)`
-   color: black;
-   :focus {
-      color: black;
-      text-decoration: none;
+   .MuiLink-root {
+      margin: 0;
+      font-family: 'Open Sans';
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16.8px;
+      color: gray;
    }
 `
