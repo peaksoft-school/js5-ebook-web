@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import Vector from '../../../assets/icons/Vector.png'
 
-function Input({ placeholder }) {
+function Input({ placeholder, props }) {
    const [password, setPassword] = useState(false)
 
    const toggleBtn = () => {
@@ -14,6 +14,7 @@ function Input({ placeholder }) {
          <StyledInput
             type={password ? 'text' : 'password'}
             placeholder={placeholder}
+            {...props}
          />
          <Div>
             <ButtonIcons onClick={toggleBtn}>
@@ -34,10 +35,10 @@ const Div = styled.div`
 `
 
 const StyledInput = styled.input`
-   width: 514px;
-   height: 38px;
-   padding-left: 18px;
+   width: ${(props) => props.width || '34.5%'};
+   height: 39px;
    border: 1px solid #c4c4c4;
+   padding-left: 18px;
    margin-top: 19px;
    &:hover {
       border: 1px solid blue;

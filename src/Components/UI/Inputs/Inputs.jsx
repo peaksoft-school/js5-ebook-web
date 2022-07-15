@@ -1,20 +1,26 @@
 import styled from 'styled-components'
+import React from 'react'
 
-function Inputs({ type, placeholder }) {
+const Inputs = React.forwardRef((props, ref, type, placeholder) => {
    return (
       <div>
-         <InputsStyled type={type} placeholder={placeholder} />
+         <InputsStyled
+            ref={ref}
+            {...props}
+            type={type}
+            placeholder={placeholder}
+         />
       </div>
    )
-}
+})
 
 export default Inputs
 
 const InputsStyled = styled.input`
-   width: 514px;
+   width: ${(props) => props.width || '34.5%'};
    height: 38px;
-   padding-left: 18px;
    border: 1px solid #c4c4c4;
+   padding-left: 18px;
    margin-top: 19px;
 
    &:hover {
@@ -24,5 +30,14 @@ const InputsStyled = styled.input`
    :focus {
       outline: none;
       border: 1px solid red;
+   }
+   &::placeholder {
+      width: 70px;
+      height: 19px;
+      font-family: 'Inter';
+      font-weight: 400;
+      font-size: 16px;
+      /* color: #c4c4c4; */
+      padding-left: 15px;
    }
 `
