@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import React from 'react'
 
-const Inputs = React.forwardRef((props, ref, type, placeholder) => {
+const Inputs = React.forwardRef((props, ref) => {
    return (
       <div>
          <InputsStyled
             ref={ref}
             {...props}
-            type={type}
-            placeholder={placeholder}
+            type={props.type}
+            placeholder={props.placeholder}
          />
       </div>
    )
