@@ -38,7 +38,11 @@ function SearchBar({ placeholder, data, type }) {
          {filteredData.length !== 0 && (
             <div>
                {filteredData.slice(0, 15).map((value) => {
-                  return <p> {value.title} </p>
+                  return (
+                     <p>
+                        {value.title} {value.author}
+                     </p>
+                  )
                })}
             </div>
          )}
