@@ -21,8 +21,6 @@ const ButtonStyle = styled(MuiButton)`
    font-style: normal;
    color: #ffffff;
    line-height: 120%;
-   gap: 10px;
-   margin-top: 12px;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -39,11 +37,6 @@ const ButtonStyle = styled(MuiButton)`
          props.variant === 'default' ? ' #484848' : '#fe6f33'};
       color: #ffffff;
    }
-   /* &:active {
-      background: ${(props) =>
-      props.variant === 'default' ? '#f34901' : '#f34901'};
-      color: #ffffff;
-   } */
 
    background: ${(props) => (props.variant === 'universal' ? 'white' : '')};
    background: ${(props) => (props.background ? props.background : '')};
@@ -51,4 +44,5 @@ const ButtonStyle = styled(MuiButton)`
    color: ${(props) => (props.color ? props.color : '')};
    border: ${(props) => (props.border ? props.border : '')};
    border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '')};
+   margin-right: ${(props) => (props.marginRight ? props.marginright : '0px')};
 `

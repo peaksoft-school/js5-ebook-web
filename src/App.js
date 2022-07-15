@@ -1,8 +1,8 @@
 import { Switch, Route, Redirect } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
-import Admin from './layouts/Admin/Admin'
-import Client from './layouts/Client/Client'
-import Vendor from './containers/Vendor/Vendor'
+import Admin from './layouts/Admin'
+import Client from './layouts/Client'
+import Vendor from './layouts/Vendor'
 
 function App() {
    return (

@@ -51,7 +51,7 @@ const CommunicationIcon = styled.button`
    font-size: 1rem;
    font-weight: 400;
    line-height: 18px;
-   transition: ease-in 0.2;
+   transition: ease-in 0.2s;
    &:active {
       transform: scale(1.1);
    }

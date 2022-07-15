@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import application from '../../../assets/icons/sideDrower/State=Application, Fill-color=Default.png'
-import applicationOrange from '../../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.png'
+import application from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.png'
+import applicationOrange from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.png'
 
-import books from '../../../assets/icons/sideDrower/State=Books, Fill-color=Default.png'
-import booksOrange from '../../../assets/icons/sideDrower/State=Books, Fill-color=Fill-orange.png'
+import books from '../../assets/icons/sideDrower/State=Books, Fill-color=Default.png'
+import booksOrange from '../../assets/icons/sideDrower/State=Books, Fill-color=Fill-orange.png'
 
-import user from '../../../assets/icons/sideDrower/State=User, Fill-color=Default.png'
-import userOrange from '../../../assets/icons/sideDrower/State=User, Fill-color=Fill-orange.png'
+import user from '../../assets/icons/sideDrower/State=User, Fill-color=Default.png'
+import userOrange from '../../assets/icons/sideDrower/State=User, Fill-color=Fill-orange.png'
 
-import vendor from '../../../assets/icons/sideDrower/State=Vendor, Fill-color=Default.png'
-import vendorOrange from '../../../assets/icons/sideDrower/State=Vendor, Fill-color=Fill-orange.png'
+import vendor from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Default.png'
+import vendorOrange from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Fill-orange.png'
 
 const arr = ['Заявки', 'Продавцы', 'Пользователи', 'Книги']
 
@@ -21,7 +21,7 @@ function SideDrowerMenu({ onClick, data }) {
       if (data) {
          setItems(data)
       }
-   }, data)
+   }, [data])
    return (
       <SideDrowerMenuContainer>
          <DrowerList>
@@ -62,7 +62,6 @@ const DrowerItem = styled.li`
       background-position: -1% -4%;
       background-size: auto;
       background-repeat: no-repeat;
-      /* border: 1px solid #000; */
    }
    &:nth-child(2)::after {
       background-image: url(${vendor});
@@ -92,13 +91,12 @@ const DrowerItem = styled.li`
 `
 
 const DrowerList = styled.ul`
-   /* border: 1px solid red; */
    margin: 0;
    padding: 0;
    list-style: none;
 `
 
 const SideDrowerMenuContainer = styled.div`
-   /* border: 1px solid red; */
    width: 100%;
+   margin-top: 74px;
 `

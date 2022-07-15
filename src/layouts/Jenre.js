@@ -39,7 +39,7 @@ const JenreButton = styled.button`
    border: none;
    border-top: 2px solid #222222;
    border-bottom: 2px solid #222222;
-   position: relative;
+   /* position: relative; */
    cursor: pointer;
    &::after {
       content: '';
