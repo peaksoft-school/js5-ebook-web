@@ -28,10 +28,10 @@ function Input({ placeholder, props }) {
 export default Input
 
 const Div = styled.div`
-   width: 510px;
+   width: 35%;
    display: flex;
    justify-content: flex-end;
-   margin-top: -3.4rem;
+   margin-top: -3.5rem;
 `
 
 const StyledInput = styled.input`
