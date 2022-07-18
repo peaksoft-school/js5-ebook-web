@@ -18,6 +18,7 @@ function IconButton({
             borderRadius={borderRadius}
             text={text}
          >
+            {icon}
             {text}
          </CommunicationIcon>
          {label}
@@ -55,11 +56,11 @@ const CommunicationIcon = styled.button`
    &:active {
       transform: scale(1.1);
    }
-   ${(props) =>
+   /* ${(props) =>
       props.icon &&
       css`
          background-image: url(${props.icon});
-      `}
+      `} */
    ${(props) =>
       props.text &&
       css`

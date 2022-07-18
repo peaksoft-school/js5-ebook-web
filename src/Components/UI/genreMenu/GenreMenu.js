@@ -31,7 +31,7 @@ const MenuUl = styled.ul`
    display: flex;
    flex-flow: row wrap;
    justify-content: flex-start;
-   width: 1140px;
+   width: 1150px;
    overflow-y: auto;
    scroll-snap-type: x proximity;
    ::-webkit-scrollbar {
@@ -61,8 +61,8 @@ const MenuContainer = styled.div`
    background-color: #f8f8f8;
    position: absolute;
    box-sizing: border-box;
-   top: 50px;
-   left: -518px;
+   top: 36px;
+   left: 0px;
    /* right: 100px; */
    z-index: 10;
    transition: ease-in-out 1.2s;

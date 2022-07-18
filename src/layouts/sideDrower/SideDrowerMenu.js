@@ -1,19 +1,48 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import application from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.png'
-import applicationOrange from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.png'
+import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
+import { ReactComponent as ApplicationOrange } from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.svg'
 
-import books from '../../assets/icons/sideDrower/State=Books, Fill-color=Default.png'
-import booksOrange from '../../assets/icons/sideDrower/State=Books, Fill-color=Fill-orange.png'
+import { ReactComponent as Books } from '../../assets/icons/sideDrower/State=Books, Fill-color=Default.svg'
+import { ReactComponent as BooksOrange } from '../../assets/icons/sideDrower/State=Books, Fill-color=Fill-orange.svg'
 
-import user from '../../assets/icons/sideDrower/State=User, Fill-color=Default.png'
-import userOrange from '../../assets/icons/sideDrower/State=User, Fill-color=Fill-orange.png'
+import { ReactComponent as User } from '../../assets/icons/sideDrower/State=User, Fill-color=Default.svg'
+import { ReactComponent as UserOrange } from '../../assets/icons/sideDrower/State=User, Fill-color=Fill-orange.svg'
 
-import vendor from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Default.png'
-import vendorOrange from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Fill-orange.png'
+import { ReactComponent as Vendor } from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Default.svg'
+import { ReactComponent as VendorOrange } from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Fill-orange.svg'
 
-const arr = ['Заявки', 'Продавцы', 'Пользователи', 'Книги']
+const arr = [
+   {
+      name: 'Заявки',
+      icon: {
+         0: <Application />,
+         1: <ApplicationOrange />,
+      },
+   },
+   {
+      name: 'Продавцы',
+      icon: {
+         0: <Vendor />,
+         1: <VendorOrange />,
+      },
+   },
+   {
+      name: 'Пользователи',
+      icon: {
+         0: <User />,
+         1: <UserOrange />,
+      },
+   },
+   {
+      name: 'Книги',
+      icon: {
+         0: <Books />,
+         1: <BooksOrange />,
+      },
+   },
+]
 
 function SideDrowerMenu({ onClick, data }) {
    const [items, setItems] = useState(arr)
@@ -27,9 +56,12 @@ function SideDrowerMenu({ onClick, data }) {
          <DrowerList>
             {items.map((elem) => {
                return (
-                  <DrowerItem key={elem} onClick={onClick}>
-                     {elem}
-                  </DrowerItem>
+                  <DrowerItem
+                     key={elem.name}
+                     onClick={onClick}
+                     name={elem.name}
+                     icon={elem.icon}
+                  />
                )
             })}
          </DrowerList>
@@ -38,55 +70,46 @@ function SideDrowerMenu({ onClick, data }) {
 }
 export default SideDrowerMenu
 
-const DrowerItem = styled.li`
+function DrowerItem({ name, icon }) {
+   const [bool, setBool] = useState(false)
+   const onHoverItem = () => {
+      setBool(true)
+   }
+
+   const offHoverItem = () => {
+      setBool(false)
+   }
+   return (
+      <DrowerItemBlock onMouseOver={onHoverItem} onMouseOut={offHoverItem}>
+         <span>{name}</span>
+         <span>{bool ? icon[1] : icon[0]}</span>
+      </DrowerItemBlock>
+   )
+}
+
+const DrowerItemBlock = styled.li`
    /* border: 1px solid #000; */
    font-family: 'Open Sans';
    font-size: 1rem;
-   font-weight: 600;
+   font-weight: 400;
    color: #fff;
    text-align: left;
    line-height: 21.79px;
    padding: 20px 41px;
    cursor: pointer;
-   padding-left: 74px;
-   position: relative;
    transition: ease-in 0.2s;
-   &:after {
-      content: '';
-      position: absolute;
-      top: 20px;
-      left: 43px;
-      width: 18.67px;
-      height: 18.67px;
-      background-image: url(${application});
-      background-position: -1% -4%;
-      background-size: auto;
-      background-repeat: no-repeat;
-   }
-   &:nth-child(2)::after {
-      background-image: url(${vendor});
-   }
-   &:nth-child(3)::after {
-      background-image: url(${user});
-   }
-   &:nth-child(4)::after {
-      background-image: url(${books});
+   display: flex;
+   align-items: center;
+   & > span:nth-child(2) {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+      order: -1;
    }
    &:hover {
       background-color: #fff;
       color: #f34901;
-      &:nth-child(1):after {
-         background-image: url(${applicationOrange});
-      }
-      &:nth-child(2)::after {
-         background-image: url(${vendorOrange});
-      }
-      &:nth-child(3)::after {
-         background-image: url(${userOrange});
-      }
-      &:nth-child(4)::after {
-         background-image: url(${booksOrange});
-      }
    }
 `
 

@@ -1,6 +1,6 @@
 import AppContainer from './AppContainer'
 import Header from './Header'
-import admin from '../assets/icons/header/admin.png'
+import { ReactComponent as AdminIcon } from '../assets/icons/header/admin.svg'
 import IconButton from './IconButton'
 import SideDrower from './sideDrower/SideDrower'
 
@@ -11,7 +11,15 @@ function Admin() {
             <Header
                admin
                headerTop={
-                  <IconButton icon={admin} label="Администратор"></IconButton>
+                  <>
+                     <input
+                        style={{ width: '100%', marginRight: '20px' }}
+                     ></input>
+                     <IconButton
+                        icon={<AdminIcon />}
+                        label="Администратор"
+                     ></IconButton>
+                  </>
                }
             />
          }

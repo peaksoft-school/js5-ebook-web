@@ -4,9 +4,23 @@ function GenreItem({ name, quantity, id, onSelect }) {
    const clickHandler = () => {
       onSelect(id)
    }
+
+   const arr = name.split('')
+   let newArr = []
+   let text = ''
+   if (name.length > 30) {
+      for (let i = 0; i < 30; i++) {
+         newArr.push(arr[i])
+         text = newArr.join('')
+         text = text + '...'
+      }
+   } else {
+      text = arr
+   }
    return (
       <ItemBook onClick={clickHandler}>
-         {name} <ItemQuantity>{quantity}</ItemQuantity>
+         {text}
+         <ItemQuantity>{quantity}</ItemQuantity>
       </ItemBook>
    )
 }

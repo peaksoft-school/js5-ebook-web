@@ -3,14 +3,20 @@ import styled, { css } from 'styled-components'
 
 function Container({ header, main, footer, sidebar, primary }) {
    return (
-      <AppContainer primary={primary}>
-         <Item>
-            <Header>{header}</Header>
-            <Main>{main}</Main>
-            <Footer>{footer}</Footer>
-         </Item>
-         {sidebar && <Item>{sidebar}</Item>}
-      </AppContainer>
+      <>
+         <AppContainer primary={primary}>
+            <Item>
+               <Header>{header}</Header>
+               <Main>{main}</Main>
+            </Item>
+            {sidebar && <Item>{sidebar}</Item>}
+         </AppContainer>
+         {footer && (
+            <Footer>
+               <AppContainer primary>{footer}</AppContainer>
+            </Footer>
+         )}
+      </>
    )
 }
 
@@ -22,13 +28,16 @@ const Header = styled.div`
    flex-grow: 0;
    flex-shrink: 0;
 `
-const Footer = styled(Header)``
+const Footer = styled(Header)`
+   background: #1c1c1c;
+   position: relative;
+`
 
 const Main = styled(Header)`
    /* padding-top: 10px; */
    /* padding-bottom: 10px; */
    flex-basis: auto;
-   height: auto;
+   min-height: 100vh;
    flex-grow: 1;
    justify-content: flex-start;
    flex-flow: column nowrap;
@@ -54,7 +63,6 @@ const Item = styled.div`
 const AppContainer = styled.div`
    /* border: 1px solid #000; */
    padding: 0 20px;
-   min-height: 100vh;
    display: flex;
    flex-flow: row nowrap;
    justify-content: flex-start;

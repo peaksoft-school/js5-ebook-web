@@ -3,7 +3,9 @@ import styled from 'styled-components'
 function Header({ headerTop, headerBottom, admin }) {
    return (
       <HeaderContainer admin={admin}>
-         <HeaderTop>{headerTop}</HeaderTop>
+         <HeaderTop>
+            {headerTop}
+         </HeaderTop>
          <HeaderBottom>{headerBottom}</HeaderBottom>
       </HeaderContainer>
    )
@@ -34,5 +36,5 @@ const HeaderContainer = styled.div`
    /* border: 1px solid #000; */
    display: flex;
    flex-flow: column nowrap;
-   padding: ${(props) => (props.admin ? '30px 20px' : 'none')};
+   padding: ${(props) => (props.admin ? '30px 0px' : 'none')};
 `
