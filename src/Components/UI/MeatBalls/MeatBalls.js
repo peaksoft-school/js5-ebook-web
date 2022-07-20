@@ -2,7 +2,7 @@ import { useState } from 'react'
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBalls.jpg'
 import styled from 'styled-components'
 
-const MeadBall = ({ options }) => {
+const Meatballs = ({ options }) => {
    const [state, setState] = useState(false)
 
    const clickHandler = () => {
@@ -36,7 +36,7 @@ const MeadBall = ({ options }) => {
    )
 }
 
-export default MeadBall
+export default Meatballs
 
 const DivBlock = styled.div`
    display: flex;

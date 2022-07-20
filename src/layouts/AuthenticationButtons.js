@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Button from '../Components/UI/Button/Button'
 
-function CominButtons() {
+function AuthenticationButtons() {
    return (
       <CominButtonsContainer>
          <Button variant="default" marginright="20px">
@@ -14,13 +14,11 @@ function CominButtons() {
    )
 }
 
-export default CominButtons
+export default AuthenticationButtons
 
 const CominButtonsContainer = styled.div`
-   /* border: 1px solid red; */
    display: flex;
    flex-flow: row nowrap;
    justify-content: space-between;
    align-items: center;
-   /* height: 100px; */
 `

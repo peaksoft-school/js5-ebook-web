@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
 
-const arr = [
+const itemBook = [
    {
       name: 'Электронные книги',
       id: 1,
@@ -16,15 +15,7 @@ const arr = [
    },
 ]
 
-function Navbar({ onClick, data }) {
-   const [itemBook, setItemBook] = useState(arr)
-
-   useEffect(() => {
-      if (data) {
-         setItemBook(data)
-      }
-   }, [data])
-
+function Navbar({ onClick }) {
    const items = itemBook.map((elem) => {
       return <NavbarItem key={elem.id} onClick={onClick}>{elem.name}</NavbarItem>
    })

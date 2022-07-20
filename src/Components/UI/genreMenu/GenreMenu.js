@@ -63,7 +63,6 @@ const MenuContainer = styled.div`
    box-sizing: border-box;
    top: 36px;
    left: 0px;
-   /* right: 100px; */
    z-index: 10;
    transition: ease-in-out 1.2s;
    width: auto;

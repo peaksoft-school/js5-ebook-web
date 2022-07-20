@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import CardItems from './CardItems'
 import Logotype from './Logotype'
 
 const arr = [
@@ -28,30 +29,52 @@ const arr = [
    },
 ]
 
-function Footer() {
+function Footer({ vendor }) {
    return (
       <FooterBlock>
-         <Logotype backgroundColor="#1C1C1C" flexGrow="1" justifyContent="flex-start" alignItems="flex-start" />
-         <FooterList>
-            {arr.map((elem) => {
-               return (
-                  <FooterItem key={elem.id}>
-                     <FooterItemLink>{elem.name}</FooterItemLink>
+         <CardItems flexGrow={1} flexShrink={0} flexDirection="column">
+            <Logotype
+               backgroundColor="#1C1C1C"
+               flexGrow="1"
+               justifyContent="flex-start"
+               alignItems="flex-start"
+            />
+            {vendor && (
+               <FooterList>
+                  <FooterItem>
+                     <FooterItemLink>
+                        Политика конфиденсиональности
+                     </FooterItemLink>
                   </FooterItem>
-               )
-            })}
-         </FooterList>
-         <Address>
-            <AddressItem>
-               <AddressLink>Свяжитесь с нами</AddressLink>
-            </AddressItem>
-            <AddressItem>
-               <AddressLink>+ 996 707 123 456</AddressLink>
-            </AddressItem>
-            <AddressItem>
-               <AddressLink>Г. Бишкек уд.Исанова 45</AddressLink>
-            </AddressItem>
-         </Address>
+               </FooterList>
+            )}
+         </CardItems>
+         {!vendor && (
+            <CardItems flexGrow={4} flexShrink={1}>
+               <FooterList>
+                  {arr.map((elem) => {
+                     return (
+                        <FooterItem key={elem.id}>
+                           <FooterItemLink>{elem.name}</FooterItemLink>
+                        </FooterItem>
+                     )
+                  })}
+               </FooterList>
+            </CardItems>
+         )}
+         <CardItems flexGrow={0} flexShrink={0}>
+            <Address>
+               <AddressItem>
+                  <AddressLink>Свяжитесь с нами</AddressLink>
+               </AddressItem>
+               <AddressItem>
+                  <AddressLink>+ 996 707 123 456</AddressLink>
+               </AddressItem>
+               <AddressItem>
+                  <AddressLink>Г. Бишкек уд.Исанова 45</AddressLink>
+               </AddressItem>
+            </Address>
+         </CardItems>
       </FooterBlock>
    )
 }
@@ -81,6 +104,8 @@ const FooterItemLink = styled.span`
    cursor: pointer;
    position: relative;
    padding: 10px 20px;
+   padding-left: 0;
+   padding-right: 0;
    display: inline-block;
    transition: ease-in 0.2s;
    &:hover {
@@ -118,5 +143,6 @@ const FooterBlock = styled.div`
    color: #fff;
    display: flex;
    flex-flow: row nowrap;
+   justify-content: space-between;
    width: 100%;
 `

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
@@ -13,7 +13,7 @@ import { ReactComponent as UserOrange } from '../../assets/icons/sideDrower/Stat
 import { ReactComponent as Vendor } from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Default.svg'
 import { ReactComponent as VendorOrange } from '../../assets/icons/sideDrower/State=Vendor, Fill-color=Fill-orange.svg'
 
-const arr = [
+const items = [
    {
       name: 'Заявки',
       icon: {
@@ -44,13 +44,7 @@ const arr = [
    },
 ]
 
-function SideDrowerMenu({ onClick, data }) {
-   const [items, setItems] = useState(arr)
-   useEffect(() => {
-      if (data) {
-         setItems(data)
-      }
-   }, [data])
+function SideDrawerMenu({ onClick }) {
    return (
       <SideDrowerMenuContainer>
          <DrowerList>
@@ -68,7 +62,7 @@ function SideDrowerMenu({ onClick, data }) {
       </SideDrowerMenuContainer>
    )
 }
-export default SideDrowerMenu
+export default SideDrawerMenu
 
 function DrowerItem({ name, icon }) {
    const [bool, setBool] = useState(false)

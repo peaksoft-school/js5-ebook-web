@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import Logotype from '../Logotype'
-import SideDrowerMenu from './SideDrowerMenu'
+import SideDrowerMenu from './SideDrawerMenu'
 
-function SideDrower() {
+function SideDrawer() {
    return (
       <SideDrowerContainer>
          <Logotype />
@@ -11,7 +11,7 @@ function SideDrower() {
    )
 }
 
-export default SideDrower
+export default SideDrawer
 
 const SideDrowerContainer = styled.div`
    /* border: 1px solid red; */
