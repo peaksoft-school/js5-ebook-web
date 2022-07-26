@@ -1,78 +1,84 @@
-import { useState } from "react";
+import { useState } from 'react'
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBalls.jpg'
-import styled from "styled-components";
+import styled from 'styled-components'
 
-const MeadBall = ({options}) => {
+const Meatballs = ({ options }) => {
+   const [state, setState] = useState(false)
 
-  const [state, setState] = useState(false);
+   const clickHandler = () => {
+      setState((prevstate) => !prevstate)
+   }
 
-  const clickHandler = () => {
-    setState((prevstate) => !prevstate);
-  };
- 
-  const clickCloseHandler = (option) => {
-    setState(false)
-    option.onClick(option)
-  }
+   const clickCloseHandler = (option) => {
+      setState(false)
+      option.onClick(option)
+   }
 
-  return (
-    <DivBlock>
-      <Img
-        onClick={clickHandler}
-        src={MeadBalls}
-      />
-      {state && (
-        <DivMeatBalls>
-          
-          {
-            options.map((option) => {
-              return <OptionMeadBalls 
-                key={option.id} 
-                onClick={()=> clickCloseHandler(option)} 
-                >
-                <div>{option.icon}</div>
-                <Div >{option.title}</Div>
-              </OptionMeadBalls>
-            })
-          }
-        </DivMeatBalls>
-      )}
-    </DivBlock>
-  );
-};
+   return (
+      <DivBlock>
+         <Img onClick={clickHandler} src={MeadBalls} />
+         {state && (
+            <DivMeatBalls>
+               {options.map((option) => {
+                  return (
+                     <OptionMeadBalls
+                        key={option.id}
+                        onClick={() => clickCloseHandler(option)}
+                     >
+                        <Div>{option.icon}</Div>
+                        {option.title}
+                     </OptionMeadBalls>
+                  )
+               })}
+            </DivMeatBalls>
+         )}
+      </DivBlock>
+   )
+}
 
-export default MeadBall;
+export default Meatballs
 
 const DivBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+   display: flex;
+   flex-direction: column;
+   position: relative;
+   z-index: 10;
+`
 
 const Img = styled.img`
-width: 3.75px;
-height: 16px;
-`;
+   width: 3.75px;
+   height: 16px;
+`
 
 const DivMeatBalls = styled.div`
-  width: 180px;
-  height: 117px;
-  border: 1px solid #c4c4c4;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   border: 1px solid #c4c4c4;
+   position: absolute;
+   top: 100%;
+   left: 0;
+   background-color: white;
+   padding: 30px;
+`
 
 const OptionMeadBalls = styled.span`
-  height: 27px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  color: #5d5d5d;
-`;
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+   font-family: "Open Sans";
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 18.2px;
+   color: #5d5d5d;
+   cursor: pointer;
+   padding: 10px 0px;
+   &:first-child {
+      border-bottom: 1px solid #c4c4c4;
+      margin-bottom: 5px;
+   }
+`
 
 const Div = styled.div`
-width: 70%
+   margin-right: 10px;
 `
