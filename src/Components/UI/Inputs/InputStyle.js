@@ -27,12 +27,6 @@ export const Input = styled.input`
       color: #969696;
    }
 `
-
-export const InputBlock = styled.div`
-   margin: 0 auto;
-   width: 500px;
-   padding: 40px 0;
-`
 export const BtnIcon = styled('button')`
    border: none;
    background-color: rgba(0, 0, 0, 0);

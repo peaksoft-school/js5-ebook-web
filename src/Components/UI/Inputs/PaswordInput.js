@@ -1,4 +1,4 @@
-import { InputContainer, Input, InputBlock, BtnIcon } from './InputStyle'
+import { InputContainer, Input, BtnIcon } from './InputStyle'
 import React, { useState } from 'react'
 import { ReactComponent as ClosedGreyEyes } from '../../../assets/icons/inputs/closedGreyEyes.svg'
 import { ReactComponent as GreyEyes } from '../../../assets/icons/inputs/greyEyes.svg'
@@ -18,33 +18,31 @@ const PasswordInput = React.forwardRef(
          setIsFocus(!isFocus)
       }
       return (
-         <InputBlock>
-            <InputContainer focus={isFocus}>
-               <Input
-                  type={isIcon ? 'text' : 'password'}
-                  value={value}
-                  onChange={onChange}
-                  ref={ref}
-                  onFocus={isFocusHandleChange}
-                  onBlur={isFocusHandleChange}
-                  placeholder={placeholder}
-                  paddingRight="0"
-               />
-               <BtnIcon onClick={isIconHandleClick}>
-                  {isFocus ? (
-                     isIcon ? (
-                        <Eyes />
-                     ) : (
-                        <ClosedEyes />
-                     )
-                  ) : isIcon ? (
-                     <GreyEyes />
+         <InputContainer focus={isFocus}>
+            <Input
+               type={isIcon ? 'text' : 'password'}
+               value={value}
+               onChange={onChange}
+               ref={ref}
+               onFocus={isFocusHandleChange}
+               onBlur={isFocusHandleChange}
+               placeholder={placeholder}
+               paddingRight="0"
+            />
+            <BtnIcon onClick={isIconHandleClick}>
+               {isFocus ? (
+                  isIcon ? (
+                     <Eyes />
                   ) : (
-                     <ClosedGreyEyes />
-                  )}
-               </BtnIcon>
-            </InputContainer>
-         </InputBlock>
+                     <ClosedEyes />
+                  )
+               ) : isIcon ? (
+                  <GreyEyes />
+               ) : (
+                  <ClosedGreyEyes />
+               )}
+            </BtnIcon>
+         </InputContainer>
       )
    }
 )
