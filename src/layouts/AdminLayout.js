@@ -15,7 +15,7 @@ function AdminLayout() {
                headerTop={
                   <>
                      <CardItems flexGrow="1" padding="0 15px 0 0">
-                        <SearchInput />
+                        <SearchInput backgroundColor="#fff" />
                      </CardItems>
                      <CardItems flexShrink="0" flexGrow="0">
                         <IconButton
