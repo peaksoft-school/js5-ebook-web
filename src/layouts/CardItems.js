@@ -7,6 +7,7 @@ function CardItems({
    children,
    flexWrap,
    flexDirection,
+   marginRight,
 }) {
    return (
       <CardItemsBlock
@@ -15,6 +16,7 @@ function CardItems({
          flexBasis={flexBasis}
          flexWrap={flexWrap}
          flexDirection={flexDirection}
+         marginRight={marginRight}
       >
          {children}
       </CardItemsBlock>
@@ -31,4 +33,5 @@ const CardItemsBlock = styled.div`
    display: flex;
    flex-direction: ${(props) => props.flexDirection || 'row'};
    flex-wrap: ${(props) => props.flexWrap || 'wrap'};
+   margin-right: ${(props) => props.marginRight || '0'};
 `

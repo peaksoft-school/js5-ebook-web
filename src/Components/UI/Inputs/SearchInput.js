@@ -17,6 +17,7 @@ const SearchInput = React.forwardRef(
             <InputContainer
                borderColor={isFocus ? '#F34901' : ''}
                focus={isFocus}
+               backgroundColor="#fff"
             >
                <Input
                   type="search"

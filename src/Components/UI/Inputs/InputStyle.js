@@ -5,8 +5,10 @@ export const InputContainer = styled.div`
    border-color: ${(props) => props.borderColor || '#c4c4c4'};
    display: flex;
    align-items: center;
-   background-color: ${(props) => (props.focus ? '#fff' : '#f8f8f8')};
+   background-color: ${(props) =>
+      props.focus ? '#fff' : props.backgroundColor || '#f8f8f8'};
    transition: ease-in 0.2s;
+   width: 100%;
 `
 
 export const Input = styled.input`
