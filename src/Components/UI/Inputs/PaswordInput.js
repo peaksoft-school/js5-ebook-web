@@ -6,11 +6,12 @@ import { ReactComponent as Eyes } from '../../../assets/icons/inputs/eyes.svg'
 import { ReactComponent as ClosedEyes } from '../../../assets/icons/inputs/closedEyes.svg'
 
 const PasswordInput = React.forwardRef(
-   ({ value, onChange, placeholder }, ref) => {
+   ({ value, onChange, placeholder, id }, ref) => {
       const [isFocus, setIsFocus] = useState(false)
       const [isIcon, setIsIcon] = useState(false)
 
-      const isIconHandleClick = () => {
+      const isIconHandleClick = (e) => {
+         e.preventDefault()
          setIsIcon(!isIcon)
       }
 
@@ -28,6 +29,7 @@ const PasswordInput = React.forwardRef(
                onBlur={isFocusHandleChange}
                placeholder={placeholder}
                paddingRight="0"
+               id={id}
             />
             <BtnIcon onClick={isIconHandleClick}>
                {isFocus ? (

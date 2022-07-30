@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const InputContainer = styled.div`
    border: 1px solid;
@@ -9,6 +9,11 @@ export const InputContainer = styled.div`
       props.focus ? '#fff' : props.backgroundColor || '#f8f8f8'};
    transition: ease-in 0.2s;
    width: 100%;
+   ${(props) =>
+      props.error &&
+      css`
+         border: 1px solid red;
+      `}
 `
 
 export const Input = styled.input`
@@ -28,6 +33,11 @@ export const Input = styled.input`
    &::placeholder {
       color: #969696;
    }
+   ${(props) =>
+      props.error &&
+      css`
+         color: red;
+      `}
 `
 export const BtnIcon = styled('button')`
    border: none;
