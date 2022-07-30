@@ -1,10 +1,10 @@
 // import MeatBalls from '../admin-applications/AdminApplications'
-import { ReactComponent as Book } from '../../assets/images/book.svg'
 
-import ApplicationItems from './ApplicationItems'
+
+import ApplicationCard from '../Components/admin-applications/ApplicationCard'
 import { styled } from '@mui/material'
-import { useState } from 'react'
-import Button from '../UI/Button/Button'
+import {  useState } from 'react'
+import Button from '../Components/UI/Button/Button'
 
 const array = [
    {
@@ -12,141 +12,156 @@ const array = [
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '2',
       name: 'ДЕТСКАЯ ЛИТЕРАТУРА',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '3',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '4',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '5',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '6',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '7',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img: 'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '8',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '9',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '10',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '11',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '12',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '13',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '14',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img: 'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '15',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
    {
       id: '16',
       name: 'ИСТОРИЯ КНИГИ',
       date: '20 февраль 2021',
       price: '230c',
-      img: <Book />,
+      img:  'https://www.moscowbooks.ru/image/book/539/w259/i539650.jpg?cu=20180101000000',
    },
 ]
 const seeMore = 8
 
 const AdminApplications = () => {
    const [books, setBooks] = useState(seeMore)
+   const [booksArray, setBooksArray] = useState(array)
+
+  
+   const [noSeeArr, setNoSeeArr] = useState(booksArray)
+
    const moreBooks = () => {
       setBooks(books + seeMore)
    }
- 
+
+   const minusView = (id) => {
+      setNoSeeArr((prev) => {
+         return prev.filter((elem) => elem.id !== id)
+      })
+   }
+
    return (
       <Application>
+         <TotalApplication>
             <Total>Всего:{array.length}</Total>
-            {/* <p>Непросмотренные:</p> */}
+            <Total>
+               Непросмотренные: <MinusView>{noSeeArr.length}</MinusView>
+            </Total>
+         </TotalApplication>
          <Books>
-            {array.slice(0, books).map((el) => (
-               <ApplicationItems
+            {booksArray.slice(0, books).map((el) => (
+               <ApplicationCard
                   key={el.id}
                   id={el.id}
                   img={el.img}
                   date={el.date}
+                  total={el.total}
                   name={el.name}
                   price={el.price}
-                  altogether={el.altogether}
-                  total={el.total}
+                  minusView={minusView}
                />
             ))}
             {books < array.length && (
-               <SeeMore  onClick={moreBooks}>Смотреть больше</SeeMore>
+               <SeeMore onClick={moreBooks}>Смотреть больше</SeeMore>
             )}
          </Books>
       </Application>
@@ -154,10 +169,15 @@ const AdminApplications = () => {
 }
 
 export default AdminApplications
-const Application=styled("div")`
-display: flex;
-flex-direction: column;
-
+const Application = styled('div')`
+   display: flex;
+   flex-direction: column;
+`
+const TotalApplication = styled('div')`
+   display: flex;
+`
+const MinusView = styled('span')`
+   color: #ff4c00;
 `
 const Books = styled('div')`
    padding: 20px;
@@ -170,7 +190,7 @@ const Total = styled('p')`
    font-size: 16px;
    font-family: 'Open Sans';
    font-weight: 400;
-   color: #b5b5b5; 
+   color: #b5b5b5;
    margin-left: 20px;
    margin-bottom: -20px;
 `
@@ -187,4 +207,3 @@ const SeeMore = styled(Button)`
    margin-top: 80px;
    color: gray;
 `
-

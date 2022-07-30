@@ -11,6 +11,7 @@ export default function MeatBalls({ options, func }) {
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget)
    }
+
    const handleClose = () => {
       setAnchorEl(null)
    }
@@ -35,7 +36,7 @@ export default function MeatBalls({ options, func }) {
             }}
          >
             {options.map((el) => (
-               <MenuItemStyles key={el.id} onClick={() => el.clickItem(func)}>
+               <MenuItemStyles key={el.id} onClick={() => el.onClick(handleClose)}>
                   {el.icon}
                   {el.title}
                </MenuItemStyles>

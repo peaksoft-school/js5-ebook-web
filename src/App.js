@@ -1,6 +1,6 @@
 
 import './App.css'
-import AdminApplications from './Components/admin-applications/AdminApplications'
+import AdminApplications from './containers/AdminApplications'
 
 
 function App() {

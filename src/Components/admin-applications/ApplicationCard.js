@@ -7,60 +7,73 @@ import Modal from '../UI/Modal'
 import { ModalReject } from './ModalReject'
 import AcceptRequest from './AcceptRequest'
 
-const arr = [
-   {
-      id: 1,
-      title: 'Принять',
-      icon: <CheckMark />,
-      clickItem: (func) => {
-         func()
+const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
+   const arr = [
+      {
+         id: 1,
+         title: 'Принять',
+         icon: <CheckMark />,
+         onClick: acceptHandler,
       },
-   },
-   {
-      id: 2,
-      title: 'Отклонить',
-      icon: <Reject />,
-      clickItem: (func) => {
-         // post
-         func()
+      {
+         id: 2,
+         title: 'Отклонить',
+         icon: <Reject />,
+         onClick: reject,
       },
-   },
-]
-const ApplicationItems = ({ id, img, date, name, price }) => {
-   const [state, setState] = useState(false)
+   ]
 
-
-
-   const func = () => {
-      setState(!state)
+   const [rejectAplication, setRejectAplication] = useState(false)
+   const [isModal, setIsModal] = useState(false)
+   const [toAccept, setToAccept] = useState(false)
+   function acceptHandler(closeMeatBall) {
+      setToAccept(!toAccept)
+      closeMeatBall()
+      minusView(id)
    }
-  
+
+   function closeAcceptHandler() {
+      setToAccept(!toAccept)
+   }
+
+   function reject(closeMeatBall) {
+      setRejectAplication(!rejectAplication)
+      setIsModal(!isModal)
+      closeMeatBall()
+      minusView(id)
+   }
+
+   function onCloseModal() {
+      setIsModal(!isModal)
+   }
+
    return (
-      <BookItems primary={!state}>
+      <BookItems primary={!rejectAplication}>
          <MeatBall>
-            <MeatBalls options={arr} func={func}  />
+            <MeatBalls options={arr} />
          </MeatBall>
          <Modal
-            open={state}
+            open={isModal}
             variant="mini"
             width="523px"
             height="247px"
-            onClose={func}
+            onClose={onCloseModal}
          >
             <ModalReject />
          </Modal>
          <Modal
-            open={state}
+            open={toAccept}
             variant="mini"
-            width= "460px"
-            height= "155px"
-            onClose={func}
+            width="460px"
+            height="155px"
+            onClose={closeAcceptHandler}
          >
-            <AcceptRequest name={name}/>
+            <AcceptRequest name={name} />
          </Modal>
          <Div>
-            <Book>{img}</Book>
+            <Book src={img} alt="photo" />
             <NameBook>{name}</NameBook>
+
             <PriceDate>
                <Date>{date}</Date>
                <Price>{price}</Price>
@@ -70,7 +83,8 @@ const ApplicationItems = ({ id, img, date, name, price }) => {
    )
 }
 
-export default ApplicationItems
+export default ApplicationCard
+
 const BookItems = styled('div')`
    width: 268px;
    height: 408px;
@@ -91,7 +105,7 @@ const MeatBall = styled('div')`
    width: 238px;
    cursor: pointer;
 `
-const Book = styled('div')`
+const Book = styled('img')`
    width: 197px;
    height: 297px;
 `
