@@ -22,6 +22,10 @@ function Container({ header, main, footer, sidebar, primary }) {
 
 export default Container
 
+export const Wrapper = styled('div')`
+   background-color: #f8f8f8;
+`
+
 const Header = styled.div`
    /* border: 1px solid red; */
    min-height: 100px;

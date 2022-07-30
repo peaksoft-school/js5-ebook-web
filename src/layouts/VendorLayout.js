@@ -1,4 +1,4 @@
-import AppContainer from './AppContainer'
+import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
 import Logotype from './Logotype'
@@ -8,34 +8,39 @@ import { ReactComponent as NotificatonIcon } from '../assets/icons/header/notifi
 import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.svg'
 import CardItems from './CardItems'
 import Footer from './Footer'
+import SearchInput from '../Components/UI/Inputs/SearchInput'
 
 function Vendor() {
    return (
-      <AppContainer
-         header={
-            <Header
-               headerTop={
-                  <>
-                     <CardItems flexShrink={0} flexGrow={0}>
-                        <Logotype />
-                     </CardItems>
-                     <CardItems flexGrow={1}></CardItems>
-                     <CardItems flexGrow={0}>
-                        <IconButton icon={<MessageIcon />} />
-                        <IconButton icon={<NotificatonIcon />} />
-                        <IconButton
-                           icon={<VendorIcon />}
-                           backgroundColor="#DBDBDB"
-                           borderRadius="50%"
-                           label={<Treugolnik />}
-                        />
-                     </CardItems>
-                  </>
-               }
-            />
-         }
-         footer={<Footer vendor />}
-      ></AppContainer>
+      <Wrapper>
+         <AppContainer
+            header={
+               <Header
+                  headerTop={
+                     <>
+                        <CardItems flexShrink={0} flexGrow={0}>
+                           <Logotype />
+                        </CardItems>
+                        <CardItems flexGrow={1} padding="0 20px">
+                           <SearchInput />
+                        </CardItems>
+                        <CardItems flexGrow={0} flexShrink={0}>
+                           <IconButton icon={<MessageIcon />} />
+                           <IconButton icon={<NotificatonIcon />} />
+                           <IconButton
+                              icon={<VendorIcon />}
+                              backgroundColor="#DBDBDB"
+                              borderRadius="50%"
+                              label={<Treugolnik />}
+                           />
+                        </CardItems>
+                     </>
+                  }
+               />
+            }
+            footer={<Footer vendor />}
+         ></AppContainer>
+      </Wrapper>
    )
 }
 

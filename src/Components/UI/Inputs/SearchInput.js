@@ -5,7 +5,10 @@ import { ReactComponent as GreySearchIcon } from '../../../assets/icons/inputs/g
 import styled from 'styled-components'
 
 const SearchInput = React.forwardRef(
-   ({ value, placeholder, onChange, books, ItemOnClick }, ref) => {
+   (
+      { value, placeholder, onChange, books, ItemOnClick, backgroundColor },
+      ref
+   ) => {
       const [isFocus, setIsFocus] = useState(false)
 
       const IsFocusHandleChange = () => {
@@ -17,6 +20,7 @@ const SearchInput = React.forwardRef(
             <InputContainer
                borderColor={isFocus ? '#F34901' : ''}
                focus={isFocus}
+               backgroundColor={backgroundColor}
             >
                <Input
                   type="search"
