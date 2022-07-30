@@ -9,6 +9,7 @@ export default function Modal({
    variant,
    width,
    height,
+   justifyContent,
 }) {
    return (
       <MuiModal
@@ -17,7 +18,7 @@ export default function Modal({
          aria-labelledby="modal-modal-title"
          aria-describedby="modal-modal-description"
       >
-         <StyledBox variant={variant} width={width} height={height}>
+         <StyledBox variant={variant} width={width} height={height} justifyContent={justifyContent}>
             {children}
          </StyledBox>
       </MuiModal>
@@ -35,7 +36,7 @@ const StyledBox = styled(Box)((props) => ({
    backgroundColor: ' #ffff',
    color: '#000',
    display: 'flex',
-   justifyContent: 'center',
+   justifyContent: `${props.justifyContent || 'center'}`,
    flexDirection: 'column',
    alignItems: 'center',
 }))
