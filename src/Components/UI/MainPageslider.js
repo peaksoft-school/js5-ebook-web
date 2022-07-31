@@ -1,20 +1,14 @@
 import { useState } from 'react'
 import Slider from 'react-slick'
-
-import Book from '../../assets/Book.jpg'
-import BookSecond from '../../assets/BookSecond.jpg'
-import BookThree from '../../assets/BookThree.jpg'
-
-import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
 import { styled } from '@mui/material'
+import Vector from '../../assets/Vector.jpg'
+import Vector2 from '../../assets/Vector2.png'
 
-const images = [BookThree, BookSecond, Book, Book]
-
-function SliderMainPage() {
+function MainPageSlider({img}) {
    const NextArrow = ({ onClick }) => {
       return (
          <div className="arrow next" onClick={onClick}>
-            <FaArrowRight />
+            <img src={Vector}/>
          </div>
       )
    }
@@ -22,7 +16,7 @@ function SliderMainPage() {
    const PrevArrow = ({ onClick }) => {
       return (
          <div className="arrow prev" onClick={onClick}>
-            <FaArrowLeft />
+            <img src={Vector2}/>
          </div>
       )
    }
@@ -45,7 +39,7 @@ function SliderMainPage() {
    return (
       <Container className="slider">
          <Slider {...settings}>
-            {images.map((img, idx) => (
+            {img.map((img, idx) => (
                <div className={idx === imageIndex ? 'activeSlide' : 'slide'}>
                   <Image src={img} alt={img} />
                </div>
@@ -55,7 +49,7 @@ function SliderMainPage() {
    )
 }
 
-export default SliderMainPage
+export default MainPageSlider
 
 const Container = styled('div')`
    width: 632px;
@@ -92,13 +86,13 @@ const Container = styled('div')`
    }
 
    .next {
-      right: 0%;
+      right: -20%;
       top: 50%;
       color: red;
    }
 
    .prev {
-      left: 0%;
+      left: -16%;
       top: 50%;
       color: red;
    }
