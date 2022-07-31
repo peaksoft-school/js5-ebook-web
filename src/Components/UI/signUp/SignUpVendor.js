@@ -107,7 +107,13 @@ function SignUpVendor() {
          phone === '' ||
          email === '' ||
          password === '' ||
-         lastPassword === ''
+         lastPassword === '' ||
+         isValidLastPassword ||
+         isValidPassword ||
+         isValidPhone ||
+         isValidEmail ||
+         isValidLastName ||
+         isValidName
       ) {
          onBlurLastPassword()
          onBlurPassword()
@@ -127,7 +133,7 @@ function SignUpVendor() {
       let result = null
       try {
          result = await Fetch(
-            'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/public/vendor/register',
+            'https://jsonplaceholder.typicode.com/posts',
             'POST',
             user
          )
