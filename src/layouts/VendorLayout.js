@@ -10,10 +10,12 @@ import CardItems from './CardItems'
 import Footer from './Footer'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 
-function Vendor() {
+function Vendor(props) {
    return (
       <Wrapper>
          <AppContainer
+            primary
+            main={props.children}
             header={
                <Header
                   headerTop={

@@ -13,6 +13,7 @@ export const InputContainer = styled.div`
       props.error &&
       css`
          border: 1px solid red;
+         background-color: #fff5f5;
       `}
 `
 
@@ -33,11 +34,7 @@ export const Input = styled.input`
    &::placeholder {
       color: #969696;
    }
-   ${(props) =>
-      props.error &&
-      css`
-         color: red;
-      `}
+   
 `
 export const BtnIcon = styled('button')`
    border: none;

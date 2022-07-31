@@ -12,6 +12,7 @@ const InputText = React.forwardRef(
          pattern,
          error,
          onBlur,
+         onFocus,
          ...props
       },
       ref
@@ -20,10 +21,16 @@ const InputText = React.forwardRef(
 
       const onFocusHandleChange = () => {
          setIsFocus(true)
+         if (onFocus) {
+            onFocus()
+         }
       }
+
       const onBlurHandleChange = () => {
          setIsFocus(false)
-         onBlur()
+         if (onBlur) {
+            onBlur()
+         }
       }
 
       return (

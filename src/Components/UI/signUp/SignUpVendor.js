@@ -1,22 +1,25 @@
-import styled from '@emotion/styled'
-import Button from '../Button/Button'
 import InputText from '../Inputs/InputText'
 import PasswordInput from '../Inputs/PaswordInput'
 import Validation from './Validation'
 import InputMask from 'react-input-mask'
-import { useState } from 'react'
+import * as Sign from './SignStyles'
+import Fetch from '../../../hooks/Fetch'
 
-function InputMaskPhone({ value, onChange }) {
+function InputMaskPhone(props) {
    return (
-      // eslint-disable-next-line no-octal-escape
-      <InputMask mask="+\9\9\6 999 99 99 99">
+      <InputMask
+         // eslint-disable-next-line no-octal-escape
+         mask="+\9\9\6 999 99 99 99"
+         value={props.value}
+         onChange={props.onChange}
+         onBlur={props.onBlur}
+         error={props.error}
+      >
          {(inputProps) => (
             <InputText
                {...inputProps}
                type="tel"
                placeholder="+996 557 60 22 24"
-               value={value}
-               onChange={onChange}
             />
          )}
       </InputMask>
@@ -24,7 +27,6 @@ function InputMaskPhone({ value, onChange }) {
 }
 
 function SignUpVendor() {
-   
    const {
       value: name,
       InputChange: InputName,
@@ -49,35 +51,107 @@ function SignUpVendor() {
       return false
    })
 
+   const {
+      value: email,
+      InputChange: emailChange,
+      isValidValue: isValidEmail,
+      onBlurHandler: onBlurEmail,
+   } = Validation((email) => {
+      if (email.length <= 5 || !email.includes('@')) {
+         return true
+      }
+      return false
+   })
+
+   const {
+      value: phone,
+      InputChange: phoneChangeHandler,
+      isValidValue: isValidPhone,
+      onBlurHandler: onBlurPhone,
+   } = Validation((phone) => {
+      if (phone.length <= 5 || phone.includes('_')) {
+         return true
+      }
+      return false
+   })
+
+   const {
+      value: password,
+      InputChange: passwordChangeHandler,
+      isValidValue: isValidPassword,
+      onBlurHandler: onBlurPassword,
+   } = Validation((passwordValue) => {
+      if (passwordValue.length <= 5) {
+         return true
+      }
+      return false
+   })
+
+   const {
+      value: lastPassword,
+      InputChange: lastPasswordChangeHandler,
+      isValidValue: isValidLastPassword,
+      onBlurHandler: onBlurLastPassword,
+   } = Validation((passwordValue) => {
+      if (passwordValue.length <= 5) {
+         return true
+      }
+      return false
+   })
+
+   const onSubmitUser = async (e) => {
+      e.preventDefault()
+      if (
+         name === '' ||
+         lastName === '' ||
+         phone === '' ||
+         email === '' ||
+         password === '' ||
+         lastPassword === ''
+      ) {
+         onBlurLastPassword()
+         onBlurPassword()
+         onBlurPhone()
+         onBlurEmail()
+         onBlurLastName()
+         onBlurName()
+         return
+      }
+      const user = {
+         firstName: name,
+         lastName: lastName,
+         email: email,
+         phoneNumber: phone,
+         password: password,
+      }
+      let result = null
+      try {
+         result = await Fetch(
+            'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/public/vendor/register',
+            'POST',
+            user
+         )
+         console.log(result)
+      } catch (error) {
+         console.log('Eto oshibka' + error)
+      }
+   }
+
+   // otvet: {
+   //    id: 4
+   //    jwt: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY1OTI3Nzc4NiwiaWF0IjoxNjU5Mjc0MTg2LCJ1c2VybmFtZSI6InpoeXJnYWxiZWsua2FtYWxvdkBnbWFpbC5jb20ifQ.L7dKGUaP2NqkvIEEpfUO1KnRadxofowSa93bhPVwLk0'
+   //    role: 'VENDOR'
+   // }
+
    return (
-      <SignUpBlock>
-         <Button
-            variant="universal"
-            color="#969696"
-            backgroundhover="none"
-            colorhover="#292929"
-            coloractive="#292929"
-            width="40%"
-            fontSize="20px"
-            fontWeight="400"
-         >
-            Войти
-         </Button>
-         <Button
-            variant="universal"
-            backgroundhover="none"
-            colorhover="#292929"
-            color="#292929"
-            width="40%"
-            fontSize="20px"
-         >
-            Регистрация
-         </Button>
-         <Form>
-            <InputLabel htmlFor="name">
-               <LabelSpan>
-                  Ваше имя<Sup>*</Sup>
-               </LabelSpan>
+      <Sign.SignBlock>
+         <Sign.ButtonIn>Войти</Sign.ButtonIn>
+         <Sign.ButtonUp>Регистрация</Sign.ButtonUp>
+         <Sign.Form onSubmit={onSubmitUser}>
+            <Sign.InputLabel htmlFor="name">
+               <Sign.LabelSpan>
+                  Ваше имя<Sign.Sup>*</Sign.Sup>
+               </Sign.LabelSpan>
                <InputText
                   placeholder="Напишите ваше имя"
                   id="name"
@@ -86,11 +160,11 @@ function SignUpVendor() {
                   error={isValidName}
                   onBlur={onBlurName}
                />
-            </InputLabel>
-            <InputLabel htmlFor="lastName">
-               <LabelSpan>
-                  Ваша фамилия<Sup>*</Sup>
-               </LabelSpan>
+            </Sign.InputLabel>
+            <Sign.InputLabel htmlFor="lastName">
+               <Sign.LabelSpan>
+                  Ваша фамилия<Sign.Sup>*</Sign.Sup>
+               </Sign.LabelSpan>
                <InputText
                   id="lastName"
                   placeholder="Напишите вашу фамилию"
@@ -99,107 +173,62 @@ function SignUpVendor() {
                   error={isValidLastName}
                   onBlur={onBlurLastName}
                />
-            </InputLabel>
-            <InputLabel htmlFor="phoneNumber">
-               <LabelSpan>
-                  Номер вашего телефона<Sup>*</Sup>
-               </LabelSpan>
-            </InputLabel>
-            <InputLabel htmlFor="email">
-               <LabelSpan>
-                  E-mail<Sup>*</Sup>
-               </LabelSpan>
+            </Sign.InputLabel>
+            <Sign.InputLabel htmlFor="phoneNumber">
+               <Sign.LabelSpan>
+                  Номер вашего телефона<Sign.Sup>*</Sign.Sup>
+               </Sign.LabelSpan>
+               <InputMaskPhone
+                  value={phone}
+                  onChange={phoneChangeHandler}
+                  onBlur={onBlurPhone}
+                  error={isValidPhone}
+               />
+            </Sign.InputLabel>
+            <Sign.InputLabel htmlFor="email">
+               <Sign.LabelSpan>
+                  E-mail<Sign.Sup>*</Sign.Sup>
+               </Sign.LabelSpan>
                <InputText
                   id="email"
                   type="email"
                   placeholder="Напишите ваш email"
+                  value={email}
+                  onChange={emailChange}
+                  error={isValidEmail}
+                  onBlur={onBlurEmail}
                />
-            </InputLabel>
-            <InputLabel htmlFor="password">
-               <LabelSpan>
-                  Пароль<Sup>*</Sup>
-               </LabelSpan>
-               <PasswordInput id="password" placeholder="Напишите ваш пароль" />
-            </InputLabel>
-            <InputLabel htmlFor="lastPassword">
-               <LabelSpan>
-                  Подтвердите пароль <Sup>*</Sup>
-               </LabelSpan>
+            </Sign.InputLabel>
+            <Sign.InputLabel htmlFor="password">
+               <Sign.LabelSpan>
+                  Пароль<Sign.Sup>*</Sign.Sup>
+               </Sign.LabelSpan>
+               <PasswordInput
+                  id="password"
+                  placeholder="Напишите ваш пароль"
+                  value={password}
+                  onChange={passwordChangeHandler}
+                  error={isValidPassword}
+                  onBlur={onBlurPassword}
+               />
+            </Sign.InputLabel>
+            <Sign.InputLabel htmlFor="lastPassword">
+               <Sign.LabelSpan>
+                  Подтвердите пароль <Sign.Sup>*</Sign.Sup>
+               </Sign.LabelSpan>
                <PasswordInput
                   id="lastPassword"
                   placeholder="Подтвердите пароль"
+                  value={lastPassword}
+                  onChange={lastPasswordChangeHandler}
+                  error={isValidLastPassword}
+                  onBlur={onBlurLastPassword}
                />
-            </InputLabel>
-            <Button
-               margintop="30px"  
-               variant="universal"
-               background="#000"
-               backgroundhover="#000"
-               padding="10px 20px"
-            >
-               Создать аккаунт
-            </Button>
-            <Button
-               margintop="30px"  
-               variant="universal"
-               background="#000"
-               backgroundhover="#000"
-               padding="10px 20px"
-            >
-               Создать аккаунт
-            </Button>
-            <Button
-               margintop="30px"  
-               variant="universal"
-               background="#000"
-               backgroundhover="#000"
-               padding="10px 20px"
-            >
-               Создать аккаунт
-            </Button>
-            <Button
-               margintop="30px"  
-               variant="universal"
-               background="#000"
-               backgroundhover="#000"
-               padding="10px 20px"
-            >
-               Создать аккаунт
-            </Button>
-         </Form>
-      </SignUpBlock>
+            </Sign.InputLabel>
+            <Sign.ButtonSubmit type="submit">Создать аккаунт</Sign.ButtonSubmit>
+         </Sign.Form>
+      </Sign.SignBlock>
    )
 }
 
 export default SignUpVendor
-
-const Sup = styled('span')`
-   color: red;
-   font-size: 1rem;
-`
-
-const InputLabel = styled('label')`
-   font-family: 'Open Sans';
-   font-weight: 400;
-   font-size: 14px;
-   display: flex;
-   flex-direction: column;
-   cursor: pointer;
-`
-const LabelSpan = styled('span')`
-   padding: 12px 0;
-`
-
-const Form = styled('form')`
-   width: 100%;
-   padding-top: 10px;
-`
-
-const SignUpBlock = styled('div')`
-   position: relative;
-   width: 100%;
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-   justify-content: center;
-`
