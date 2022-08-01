@@ -1,14 +1,11 @@
 import './App.css'
+import Test from './test'
 
 function App() {
-<<<<<<< HEAD
    return (
       <div className="App">
+         <Test />
       </div>
    )
-=======
-   return <div className="App"></div>
->>>>>>> bfd68ca9271574d637807d97114f43e11720b336
 }
-
 export default App
