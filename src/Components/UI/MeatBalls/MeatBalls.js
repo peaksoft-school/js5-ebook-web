@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem'
 
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBall.svg'
 import { styled } from '@mui/material'
-export default function MeatBalls({ options, func }) {
+export default function MeatBalls({ options }) {
    const [anchorEl, setAnchorEl] = useState(null)
    const open = Boolean(anchorEl)
    const handleClick = (event) => {
@@ -37,6 +37,7 @@ export default function MeatBalls({ options, func }) {
          >
             {options.map((el) => (
                <MenuItemStyles key={el.id} onClick={() => el.onClick(handleClose)}>
+                   
                   {el.icon}
                   {el.title}
                </MenuItemStyles>

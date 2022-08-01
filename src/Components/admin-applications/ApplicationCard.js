@@ -8,7 +8,7 @@ import { ModalReject } from './ModalReject'
 import AcceptRequest from './AcceptRequest'
 
 const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
-   const arr = [
+   const menuMeatBall = [
       {
          id: 1,
          title: 'Принять',
@@ -50,7 +50,7 @@ const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
    return (
       <BookItems primary={!rejectAplication}>
          <MeatBall>
-            <MeatBalls options={arr} />
+            <MeatBalls options={menuMeatBall} />
          </MeatBall>
          <Modal
             open={isModal}
@@ -86,39 +86,42 @@ const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
 export default ApplicationCard
 
 const BookItems = styled('div')`
-   width: 268px;
-   height: 408px;
+   width: 225px;
+   height: 380px;
    border: ${(props) => (props.primary ? '0.5px solid #ff4c00' : '')};
    background: ${(props) =>
       props.primary ? 'rgba(255, 76, 0, 0.08)' : '#ededed'};
    display: flex;
    flex-direction: column;
-   align-items: center;
+   align-items: flex-end;
    justify-content: space-evenly;
    font-family: 'Open Sans';
-   padding-top: 20px;
    margin-top: 20px;
+   padding-top: 20px;
+  
 `
 const MeatBall = styled('div')`
    display: flex;
-   justify-content: flex-end;
-   width: 238px;
+   justify-content: center;
+   width: 60px;
    cursor: pointer;
 `
 const Book = styled('img')`
-   width: 197px;
-   height: 297px;
+   width: 170px;
+   height: 260px;
+
 `
 const NameBook = styled('p')`
    font-size: 14px;
    font-weight: 600;
 `
 const PriceDate = styled('p')`
-   width: 197px;
+   width: 169px;
    display: flex;
    justify-content: space-between;
    align-items: center;
    margin-top: -20px;
+  
 `
 const Date = styled('p')`
    font-size: 14px;
@@ -134,4 +137,7 @@ const Div = styled('div')`
    display: flex;
    flex-direction: column;
    align-items: flex-start;
+   width: 197px;
+   
+   
 `

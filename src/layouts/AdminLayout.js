@@ -5,9 +5,14 @@ import IconButton from './IconButton'
 import SideDrawer from './sideDrawer/SideDrawer'
 import CardItems from './CardItems'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
+import AdminApplications from '../containers/AdminApplications'
+
+
 
 function AdminLayout() {
    return (
+
+     
       <AppContainer
          header={
             <Header
@@ -22,13 +27,20 @@ function AdminLayout() {
                            icon={<AdminIcon />}
                            label="Администратор"
                         ></IconButton>
+                        
                      </CardItems>
+                    
                   </>
+                  
                }
+               
             />
          }
          sidebar={<SideDrawer></SideDrawer>}
+         main={<AdminApplications/>}
       />
+      
+      
    )
 }
 

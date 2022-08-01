@@ -7,7 +7,7 @@ export const ModalReject = () => {
    const reasonChangeHandler = (e) => {
       setReasonReject(e.target.value)
    }
-   console.log(reasonReject)
+ 
 
    async function sendReason() {
       if (reasonReject.trim().length !== 0) {
