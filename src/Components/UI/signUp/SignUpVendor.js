@@ -1,19 +1,21 @@
+import { useDispatch, useSelector } from 'react-redux/es/exports'
+import { useEffect } from 'react'
+import InputMask from 'react-input-mask'
 import InputText from '../Inputs/InputText'
 import PasswordInput from '../Inputs/PaswordInput'
 import Validation from './Validation'
-import InputMask from 'react-input-mask'
 import * as Sign from './SignStyles'
-import Fetch from '../../../hooks/Fetch'
+import { func } from '../../../store/slices/uiSlices'
 
-function InputMaskPhone(props) {
+function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
       <InputMask
-         // eslint-disable-next-line no-octal-escape
+         // eslint-disable-next-line no-octal-escape, no-nonoctal-decimal-escape
          mask="+\9\9\6 999 99 99 99"
-         value={props.value}
-         onChange={props.onChange}
-         onBlur={props.onBlur}
-         error={props.error}
+         value={value}
+         onChange={onChange}
+         onBlur={onBlur}
+         error={error}
       >
          {(inputProps) => (
             <InputText
@@ -27,6 +29,13 @@ function InputMaskPhone(props) {
 }
 
 function SignUpVendor() {
+   const dispatch = useDispatch()
+   const vendor = useSelector((store) => store.vendor.vendor)
+   useEffect(() => {
+      if (vendor) {
+         localStorage.setItem('token', vendor.jwt)
+      }
+   }, [vendor])
    const {
       value: name,
       InputChange: InputName,
@@ -115,6 +124,7 @@ function SignUpVendor() {
          isValidLastName ||
          isValidName
       ) {
+         console.log(isValidPhone)
          onBlurLastPassword()
          onBlurPassword()
          onBlurPhone()
@@ -123,31 +133,16 @@ function SignUpVendor() {
          onBlurName()
          return
       }
+      // console.log('Hello world')
       const user = {
          firstName: name,
-         lastName: lastName,
-         email: email,
+         lastName,
+         email,
          phoneNumber: phone,
-         password: password,
+         password,
       }
-      let result = null
-      try {
-         result = await Fetch(
-            'https://jsonplaceholder.typicode.com/posts',
-            'POST',
-            user
-         )
-         console.log(result)
-      } catch (error) {
-         console.log('Eto oshibka' + error)
-      }
+      dispatch(func(user))
    }
-
-   // otvet: {
-   //    id: 4
-   //    jwt: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY1OTI3Nzc4NiwiaWF0IjoxNjU5Mjc0MTg2LCJ1c2VybmFtZSI6InpoeXJnYWxiZWsua2FtYWxvdkBnbWFpbC5jb20ifQ.L7dKGUaP2NqkvIEEpfUO1KnRadxofowSa93bhPVwLk0'
-   //    role: 'VENDOR'
-   // }
 
    return (
       <Sign.SignBlock>
