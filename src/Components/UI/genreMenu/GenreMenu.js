@@ -27,14 +27,11 @@ const MenuUl = styled.ul`
    margin: 0;
    padding: 0;
    padding-right: 30px;
-   max-height: 436px;
-   max-width: 1070px;
+   max-height: 445px;
    display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
+   flex-flow: row wrap;
    justify-content: flex-start;
-   align-items: flex-start;
-   align-content: flex-start;
+   width: 1150px;
    overflow-y: auto;
    scroll-snap-type: x proximity;
    ::-webkit-scrollbar {
@@ -60,7 +57,14 @@ const MenuUl = styled.ul`
 `
 
 const MenuContainer = styled.div`
-   padding: 30px 30px;
+   padding: 25px 35px;
    background-color: #f8f8f8;
    position: absolute;
+   box-sizing: border-box;
+   top: 36px;
+   left: 0px;
+   z-index: 10;
+   transition: ease-in-out 1.2s;
+   width: auto;
+   display: inline-block;
 `

@@ -8,11 +8,11 @@ import BookFragment from './BookFragment'
 import likeIcon from '../../assets/icons/like.svg'
 import { books } from './books'
 import { useParams } from 'react-router-dom'
+import AudioListener from '../UI/AudioListener'
 
 export const InnerPage = () => {
    const params = useParams()
    const selectedItem = books.find((item) => item.id === params.bookId)
-   console.log(selectedItem);
 
    const [open, setOpen] = useState(false)
    const handleOpen = () => setOpen(true)
@@ -28,7 +28,10 @@ export const InnerPage = () => {
                   (12)
                </p>
                <StyledBookName>{selectedItem.name}</StyledBookName>
+               <div>
                <StyledPrice>{selectedItem.price}</StyledPrice>
+               {/* <AudioListener url=""/> */}
+               </div>
                <StyledInfo>
                   <div>
                      <StyledInfoTitle>Автор</StyledInfoTitle>
@@ -42,7 +45,9 @@ export const InnerPage = () => {
                      <StyledInfoText>{selectedItem.author}</StyledInfoText>
                      <StyledInfoText>{selectedItem.genre}</StyledInfoText>
                      <StyledInfoText>{selectedItem.language}</StyledInfoText>
-                     <StyledInfoText>{selectedItem.publishingHouse}</StyledInfoText>
+                     <StyledInfoText>
+                        {selectedItem.publishingHouse}
+                     </StyledInfoText>
                      <StyledInfoText>{selectedItem.year}</StyledInfoText>
                      <StyledInfoText>{selectedItem.volume}</StyledInfoText>
                   </div>
@@ -53,6 +58,8 @@ export const InnerPage = () => {
                      variant="universal"
                      color="#f34901"
                      border="1px solid"
+                     background="none"
+                     width="224px"
                   >
                      Удалить
                   </Button>
@@ -62,10 +69,18 @@ export const InnerPage = () => {
                      variant="mini"
                      width="460px"
                      height="172px"
+                     justifyContent="space-around"
                   >
-                     <span>Вы уверены, что хотите удалить</span>
-                     <span> “{selectedItem.name}” ?</span>
-                     <StyledBtnCont>
+                     <div>
+                        <StyledInfoText>
+                           Вы уверены, что хотите удалить
+                        </StyledInfoText>
+                        <StyledInfoTitle>
+                           {' '}
+                           “{selectedItem.name}” ?
+                        </StyledInfoTitle>
+                     </div>
+                     <StyledModalBtnCont>
                         <Button
                            variant="default"
                            background="white"
@@ -75,28 +90,40 @@ export const InnerPage = () => {
                            Отменить
                         </Button>
                         <Button variant="default">Удалить</Button>
-                     </StyledBtnCont>
+                     </StyledModalBtnCont>
                   </Modal>
-                  <Button>
-                     <StyledLink to="/edit">Редактировать</StyledLink>
+                  <Button width="224px">
+                     <StyledLink to="/addBook">Редактировать</StyledLink>
                   </Button>
                </StyledBtnCont>
             </div>
          </StyledMain>
-         <StyledNavBar>
+         <nav>
             <StyledUl>
                <li>
-                  <StyledNavLink activeClassName="selected" to="/about">
+                  <StyledNavLink
+                     activeClassName="selected"
+                     to={`/book-detail/${selectedItem.id}/about`}
+                  >
                      О книге
                   </StyledNavLink>
                </li>
                <li>
-                  <StyledNavLink activeClassName="selected" to="/fragment">
+                  <StyledNavLink
+                     activeClassName="selected"
+                     to={`/book-detail/${selectedItem.id}/fragment`}
+                  >
                      Читать фрагмент
                   </StyledNavLink>
                </li>
             </StyledUl>
-         </StyledNavBar>
+            <Route path="/book-detail/:bookId/about">
+               <About />
+            </Route>
+            <Route path="/book-detail/:bookId/fragment">
+               <BookFragment />
+            </Route>
+         </nav>
       </>
    )
 }
@@ -168,13 +195,26 @@ const StyledInfo = styled.div`
    display: flex;
    justify-content: space-between;
    width: 401px;
-   /* height: 160px; */
+   margin-bottom: 76px;
 `
 const StyledBtnCont = styled.div`
    display: flex;
    justify-content: space-between;
+   width: 468px;
+`
+const StyledModalBtnCont = styled.div`
+   display: flex;
+   justify-content: space-between;
+   width: 278px;
+   height: 42px;
 `
 const StyledPrice = styled.p`
+   width: 40px;
+   height: 19px;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 600;
+   font-size: 16px;
+   line-height: 120%;
    color: #f34901;
 `
-const StyledNavBar = styled.nav``

@@ -10,6 +10,7 @@ export const books = [
       volume: '360 стр',
       author: "Роулинг Джоан Кэтлин",
       image: "https://book24.ua/upload/iblock/c7d/c7de50c50c62414e395c819335196c8b.jpg" ,
+      image2: 'https://anylang.net/sites/default/files/styles/responsive_grid/public/covers/harry-potter-and-chamber-secrets.jpg?itok=DSKElf4l',
       description: "Just set it up, turn it on, and brew. There you have it! Rich-tasting coffee expertly brewed for you without the fuss. Grab-A-Cup Auto Pause is a lifesaver when you need a cup before the brew cycle is finished. It stops brewing so you can pour a rich-tasting cup and then finishes the brewing cycle after you place the carafe back in position. We put our best brewing forward with this easy-to-use, Simple Brew coffee maker. Experience the taste with the Mr. Coffee brand."
     },
     {
