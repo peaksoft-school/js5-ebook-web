@@ -19,13 +19,14 @@ const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
          id: 2,
          title: 'Отклонить',
          icon: <Reject />,
-         onClick: reject,
+         onClick: rejectModal,
       },
    ]
 
    const [rejectAplication, setRejectAplication] = useState(false)
    const [isModal, setIsModal] = useState(false)
    const [toAccept, setToAccept] = useState(false)
+
    function acceptHandler(closeMeatBall) {
       setToAccept(!toAccept)
       closeMeatBall()
@@ -36,14 +37,14 @@ const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
       setToAccept(!toAccept)
    }
 
-   function reject(closeMeatBall) {
+   function rejectModal(closeMeatBall) {
       setRejectAplication(!rejectAplication)
       setIsModal(!isModal)
       closeMeatBall()
       minusView(id)
    }
 
-   function onCloseModal() {
+   function onCloseRejectModal() {
       setIsModal(!isModal)
    }
 
@@ -57,7 +58,7 @@ const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
             variant="mini"
             width="523px"
             height="247px"
-            onClose={onCloseModal}
+            onClose={onCloseRejectModal}
          >
             <ModalReject />
          </Modal>
