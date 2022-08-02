@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import Button from '../Button/Button'
 
-export const ButtonSubmit = (props) => {
+export const ButtonSubmit = ({ children, type }) => {
    return (
       <Button
          margintop="40px"
@@ -9,14 +9,14 @@ export const ButtonSubmit = (props) => {
          background="#000"
          backgroundhover="#000"
          padding="10px 20px"
-         type={props.type}
+         type={type}
       >
-         {props.children}
+         {children}
       </Button>
    )
 }
 
-export const ButtonUp = (props) => {
+export const ButtonUp = ({ children }) => {
    return (
       <Button
          variant="universal"
@@ -26,12 +26,12 @@ export const ButtonUp = (props) => {
          width="40%"
          fontSize="20px"
       >
-         {props.children}
+         {children}
       </Button>
    )
 }
 
-export const ButtonIn = (props) => {
+export const ButtonIn = ({ children }) => {
    return (
       <Button
          variant="universal"
@@ -43,7 +43,7 @@ export const ButtonIn = (props) => {
          fontSize="20px"
          fontWeight="400"
       >
-         {props.children}
+         {children}
       </Button>
    )
 }

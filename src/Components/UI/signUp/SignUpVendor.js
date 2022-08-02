@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux/es/exports'
-import { useEffect } from 'react'
 import InputMask from 'react-input-mask'
+import { useEffect, useState } from 'react'
 import InputText from '../Inputs/InputText'
 import PasswordInput from '../Inputs/PaswordInput'
 import Validation from './Validation'
 import * as Sign from './SignStyles'
-import { func } from '../../../store/slices/uiSlices'
+import { SignUpRequest, SignActions } from '../../../store/slices/SignSlices'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
@@ -29,11 +29,14 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
 }
 
 function SignUpVendor() {
+   const [errorValue, setErrorValue] = useState('')
+   const [isValidError, setIsValidError] = useState(false)
    const dispatch = useDispatch()
    const vendor = useSelector((store) => store.vendor.vendor)
    useEffect(() => {
-      if (vendor) {
-         localStorage.setItem('token', vendor.jwt)
+      const token = localStorage.getItem('vendor')
+      if (token) {
+         dispatch(SignActions.updateСountries(token))
       }
    }, [vendor])
    const {
@@ -110,6 +113,13 @@ function SignUpVendor() {
 
    const onSubmitUser = async (e) => {
       e.preventDefault()
+      if (lastPassword !== password) {
+         setErrorValue('Пароли не совпадают')
+         setIsValidError(true)
+      } else {
+         setErrorValue('')
+         setIsValidError(false)
+      }
       if (
          name === '' ||
          lastName === '' ||
@@ -124,7 +134,7 @@ function SignUpVendor() {
          isValidLastName ||
          isValidName
       ) {
-         console.log(isValidPhone)
+         // console.log(isValidPhone)
          onBlurLastPassword()
          onBlurPassword()
          onBlurPhone()
@@ -141,7 +151,7 @@ function SignUpVendor() {
          phoneNumber: phone,
          password,
       }
-      dispatch(func(user))
+      dispatch(SignUpRequest(user))
    }
 
    return (
@@ -226,6 +236,7 @@ function SignUpVendor() {
                   onBlur={onBlurLastPassword}
                />
             </Sign.InputLabel>
+            <span>{isValidError && errorValue}</span>
             <Sign.ButtonSubmit type="submit">Создать аккаунт</Sign.ButtonSubmit>
          </Sign.Form>
       </Sign.SignBlock>

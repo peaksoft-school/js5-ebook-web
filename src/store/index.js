@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import UiSlices from './slices/uiSlices'
+// eslint-disable-next-line import/no-named-as-default
+import SignSlices from './slices/SignSlices'
 
 const store = configureStore({
    reducer: {
-      vendor: UiSlices.reducer,
+      vendor: SignSlices.reducer,
       client: '',
       admin: '',
    },
