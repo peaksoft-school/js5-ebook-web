@@ -1,35 +1,41 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ReactComponent as IconMessage } from '../../../assets/icons/Chat.svg'
 import Button from '../Button/Button'
 
-function Message() {
-   const [state, setState] = useState('')
+function Message({ spanValues, onClick, saveText }) {
+   const [textValue, setTextValue] = useState('')
 
-   const saveData = (e) => {
-      if (e.target.tagName === 'SPAN') {
-         setState((prev) => {
-            return `${prev} ${e.target.innerHTML}`
-         })
-      }
+   const textValueHandle = (id) => {
+      const filterSpanValues = spanValues.filter((element) => element.id === id)
+      const saveTextValue = filterSpanValues.map((element) => {
+         return element.text
+      })
+      setTextValue((prevState) => `${prevState} ${saveTextValue}`)
    }
 
    const onTextareaChangeHandler = (e) => {
-      setState(e.target.value)
+      setTextValue(e.target.value)
    }
+
+   useEffect(() => {
+      saveText(textValue)
+   }, [textValue])
+
    return (
-      <div>
+      <form>
          <TextareaBlock>
             <TextareaStyled
                placeholder="Сообщение..."
-               value={state}
+               value={textValue}
                onChange={onTextareaChangeHandler}
             />
-            <SpanBlock onClick={saveData}>
-               <Span>Здравствуйте</Span>
-               <Span>Хочу купить!</Span>
-               <Span>Я заинтересован</Span>
-               <Span>Торг возможен?</Span>
+            <SpanBlock>
+               {spanValues.map((text) => (
+                  <Span key={text.id} onClick={() => textValueHandle(text.id)}>
+                     {text.text}
+                  </Span>
+               ))}
             </SpanBlock>
          </TextareaBlock>
          <div>
@@ -40,11 +46,12 @@ function Message() {
                padding="20px 24px"
                fontSize="14px"
                fontFamily="Open Sans"
+               onClick={onClick}
             >
                Отправить <IconMessage />
             </Button>
          </div>
-      </div>
+      </form>
    )
 }
 
