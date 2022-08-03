@@ -21,8 +21,6 @@ const ButtonStyle = styled(MuiButton)`
    font-style: normal;
    color: #ffffff;
    line-height: 120%;
-   gap: 10px;
-   margin-top: 12px;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -49,4 +47,5 @@ const ButtonStyle = styled(MuiButton)`
    padding: ${(props) => props.padding || '10px 24px'};
    font-size: ${(props) => props.fontSize || '16px'};
    font-family: ${(props) => props.fontFamily || ''};
+   margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
 `
