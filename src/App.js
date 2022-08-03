@@ -1,14 +1,30 @@
 import './App.css'
-
+import { InnerPage } from './Components/UI/UserInnerPage/InnerPage'
+import { Route,  Redirect } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
+import {BooksPage} from './Components/UI/UserInnerPage/BooksPage'
+import Message from './Components/UI/Message/Message'
 function App() {
-<<<<<<< HEAD
+
    return (
       <div className="App">
-      </div>
+      {/* <BrowserRouter> */}
+            {/* <VendorLayout>
+               {/* <Route path="/">
+                  <Redirect to="home" />
+               </Route>
+               <Route exact path="/home">
+                  <BooksPage />
+               </Route> */}
+               {/* <Route path="/book-detail/:bookId">
+                  <InnerPage />
+               </Route> */}
+            {/* </VendorLayout> */}
+         {/* </BrowserRouter>  */}
+         <Message />
+               </div>
    )
-=======
-   return <div className="App"></div>
->>>>>>> bfd68ca9271574d637807d97114f43e11720b336
+
 }
 
 export default App
