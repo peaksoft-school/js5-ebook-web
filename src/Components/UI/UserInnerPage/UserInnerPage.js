@@ -1,14 +1,13 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
+import { Link, NavLink, Route, useParams } from 'react-router-dom'
 import Button from '../Button/Button'
 import Modal from '../Modal'
-import { Link, NavLink, Route } from 'react-router-dom'
 import About from './About'
 import BookFragment from './BookFragment'
 // import likeIcon from '../../assets/icons/like.svg'
 import { books } from './books'
-import { useParams } from 'react-router-dom'
-import Message from '../Message/Message'
+import { Message } from '../Message/Message'
 
 export const InnerPage = () => {
    const params = useParams()
@@ -58,7 +57,7 @@ export const InnerPage = () => {
                      background="none"
                      width="224px"
                   >
-                  B избранное
+                     B избранное
                   </Button>
                   <Modal
                      open={open}
@@ -94,7 +93,7 @@ export const InnerPage = () => {
                   </Button>
                </StyledBtnCont>
                <Divmessage>
-               <Message />
+                  <Message />
                </Divmessage>
             </div>
          </StyledMain>
@@ -221,5 +220,5 @@ const StyledPrice = styled.p`
 const StyledNavBar = styled.nav``
 
 const Divmessage = styled.div`
-padding-top: 20px;
+   padding-top: 20px;
 `

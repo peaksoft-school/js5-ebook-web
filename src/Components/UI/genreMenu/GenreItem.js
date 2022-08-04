@@ -1,14 +1,26 @@
 import styled from 'styled-components'
 
+function getText(text){
+   let arr = text.split('');
+   let newArr = [];
+   if(arr.length > 30){
+      for(let i=0;i<30;i++){
+         newArr.push(arr[i]);
+      }
+      return newArr.join('') + '...';
+   }
+   return text;
+}
+
 function GenreItem({ name, quantity, id, onSelect }) {
    const clickHandler = () => {
       onSelect(id)
    }
+   const text = getText(name);
    return (
-      <ItemBook>
-         <ItemLink onClick={clickHandler}>
-            {name} <ItemQuantity>{quantity}</ItemQuantity>
-         </ItemLink>
+      <ItemBook onClick={clickHandler}>
+         {text}
+         <ItemQuantity>{quantity}</ItemQuantity>
       </ItemBook>
    )
 }
@@ -20,7 +32,14 @@ const ItemQuantity = styled.span`
    color: #a5a5a5;
 `
 
-const ItemLink = styled.div`
+const ItemBook = styled.li`
+   list-style: none;
+   width: 327px;
+   margin-right: 60px;
+   flex-basis: auto;
+   flex-grow: 0;
+   flex-shrink: 0;
+   flex-basis: auto;
    font-family: 'Open Sans';
    font-size: 1rem;
    color: #222222;
@@ -28,32 +47,28 @@ const ItemLink = styled.div`
    text-decoration: none;
    display: flex;
    justify-content: space-between;
-   padding: 10px 20px;
-   padding-left: 0;
-   padding-right: 0;
+   padding: 10px 0px;
    cursor: pointer;
    position: relative;
+   transition: ease-in 0.2s;
+   &:after {
+      content: '';
+      position: absolute;
+      top: 90%;
+      left: 50%;
+      width: 0;
+      transform: translateX(-50%);
+      height: 2px;
+      background-color: #ff4c00;
+      transition: ease-in 0.2s;
+   }
+   &:nth-child(3n) {
+      margin-right: 0;
+   }
    &:hover {
       color: #ff4c00;
    }
-   &:after {
-   }
-   &:hover > :after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 1px;
-      bottom: 7px;
-      background-color: #ff4c00;
-   }
-`
-
-const ItemBook = styled.li`
-   list-style: none;
-   width: 327px;
-   margin-right: 40px;
-   &:nth-child(3n) {
-      margin-right: 0;
+   &:hover:after {
+      width: 100%;
    }
 `

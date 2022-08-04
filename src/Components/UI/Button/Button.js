@@ -21,8 +21,6 @@ const ButtonStyle = styled(MuiButton)`
    font-style: normal;
    color: #ffffff;
    line-height: 120%;
-   gap: 10px;
-   margin-top: 12px;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -35,13 +33,7 @@ const ButtonStyle = styled(MuiButton)`
    font-size: ${(props) => (props.variant === 'default' ? '16px' : '14px')};
 
    &:hover {
-      background: ${(props) =>
-         props.variant === 'default' ? ' #484848' : '#fe6f33'};
-      color: #ffffff;
-   }
-   &:active {
-      background: ${(props) =>
-         props.variant === 'default' ? '#f34901' : '#f34901'};
+      background: ${(props) => props.backgroundHover || '#fe6f33'};
       color: #ffffff;
    }
 
@@ -51,4 +43,9 @@ const ButtonStyle = styled(MuiButton)`
    color: ${(props) => (props.color ? props.color : '')};
    border: ${(props) => (props.border ? props.border : '')};
    border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '')};
+   width: ${(props) => props.width || '100%'};
+   padding: ${(props) => props.padding || '10px 24px'};
+   font-size: ${(props) => props.fontSize || '16px'};
+   font-family: ${(props) => props.fontFamily || ''};
+   margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
 `
