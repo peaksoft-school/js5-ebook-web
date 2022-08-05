@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux/es/exports'
 import InputMask from 'react-input-mask'
-import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
+import { useState, useEffect } from 'react'
 import InputText from '../Inputs/InputText'
 import PasswordInput from '../Inputs/PaswordInput'
 import Validation from './Validation'
 import * as Sign from './SignStyles'
-import { SignUpRequest, SignActions } from '../../../store/slices/SignSlices'
+import { SignUpVendorRequest } from '../../../store/slices/SignSlices'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
@@ -31,14 +32,15 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
+   const token = useSelector((store) => store.vendor.token)
    const dispatch = useDispatch()
-   const vendor = useSelector((store) => store.vendor.vendor)
+   const navigate = useNavigate()
    useEffect(() => {
-      const token = localStorage.getItem('vendor')
-      if (token) {
-         dispatch(SignActions.updateСountries(token))
+      if (token.role === 'VENDOR') {
+         navigate('/vendor', { replace: true })
       }
-   }, [vendor])
+   }, [token])
+
    const {
       value: name,
       InputChange: InputName,
@@ -116,10 +118,11 @@ function SignUpVendor() {
       if (lastPassword !== password) {
          setErrorValue('Пароли не совпадают')
          setIsValidError(true)
-      } else {
-         setErrorValue('')
-         setIsValidError(false)
+         return
       }
+      setErrorValue('')
+      setIsValidError(false)
+
       if (
          name === '' ||
          lastName === '' ||
@@ -151,95 +154,93 @@ function SignUpVendor() {
          phoneNumber: phone,
          password,
       }
-      dispatch(SignUpRequest(user))
+      dispatch(SignUpVendorRequest(user))
    }
 
    return (
-      <Sign.SignBlock>
-         <Sign.ButtonIn>Войти</Sign.ButtonIn>
-         <Sign.ButtonUp>Регистрация</Sign.ButtonUp>
-         <Sign.Form onSubmit={onSubmitUser}>
-            <Sign.InputLabel htmlFor="name">
-               <Sign.LabelSpan>
-                  Ваше имя<Sign.Sup>*</Sign.Sup>
-               </Sign.LabelSpan>
-               <InputText
-                  placeholder="Напишите ваше имя"
-                  id="name"
-                  value={name}
-                  onChange={InputName}
-                  error={isValidName}
-                  onBlur={onBlurName}
-               />
-            </Sign.InputLabel>
-            <Sign.InputLabel htmlFor="lastName">
-               <Sign.LabelSpan>
-                  Ваша фамилия<Sign.Sup>*</Sign.Sup>
-               </Sign.LabelSpan>
-               <InputText
-                  id="lastName"
-                  placeholder="Напишите вашу фамилию"
-                  value={lastName}
-                  onChange={InputLastName}
-                  error={isValidLastName}
-                  onBlur={onBlurLastName}
-               />
-            </Sign.InputLabel>
-            <Sign.InputLabel htmlFor="phoneNumber">
-               <Sign.LabelSpan>
-                  Номер вашего телефона<Sign.Sup>*</Sign.Sup>
-               </Sign.LabelSpan>
-               <InputMaskPhone
-                  value={phone}
-                  onChange={phoneChangeHandler}
-                  onBlur={onBlurPhone}
-                  error={isValidPhone}
-               />
-            </Sign.InputLabel>
-            <Sign.InputLabel htmlFor="email">
-               <Sign.LabelSpan>
-                  E-mail<Sign.Sup>*</Sign.Sup>
-               </Sign.LabelSpan>
-               <InputText
-                  id="email"
-                  type="email"
-                  placeholder="Напишите ваш email"
-                  value={email}
-                  onChange={emailChange}
-                  error={isValidEmail}
-                  onBlur={onBlurEmail}
-               />
-            </Sign.InputLabel>
-            <Sign.InputLabel htmlFor="password">
-               <Sign.LabelSpan>
-                  Пароль<Sign.Sup>*</Sign.Sup>
-               </Sign.LabelSpan>
-               <PasswordInput
-                  id="password"
-                  placeholder="Напишите ваш пароль"
-                  value={password}
-                  onChange={passwordChangeHandler}
-                  error={isValidPassword}
-                  onBlur={onBlurPassword}
-               />
-            </Sign.InputLabel>
-            <Sign.InputLabel htmlFor="lastPassword">
-               <Sign.LabelSpan>
-                  Подтвердите пароль <Sign.Sup>*</Sign.Sup>
-               </Sign.LabelSpan>
-               <PasswordInput
-                  id="lastPassword"
-                  placeholder="Подтвердите пароль"
-                  value={lastPassword}
-                  onChange={lastPasswordChangeHandler}
-                  error={isValidLastPassword}
-                  onBlur={onBlurLastPassword}
-               />
-            </Sign.InputLabel>
-            <span>{isValidError && errorValue}</span>
-            <Sign.ButtonSubmit type="submit">Создать аккаунт</Sign.ButtonSubmit>
-         </Sign.Form>
-      </Sign.SignBlock>
+      <Sign.Form onSubmit={onSubmitUser}>
+         <Sign.InputLabel htmlFor="name">
+            <Sign.LabelSpan>
+               Ваше имя<Sign.Sup>*</Sign.Sup>
+            </Sign.LabelSpan>
+            <InputText
+               placeholder="Напишите ваше имя"
+               id="name"
+               value={name}
+               onChange={InputName}
+               error={isValidName}
+               onBlur={onBlurName}
+            />
+         </Sign.InputLabel>
+         <Sign.InputLabel htmlFor="lastName">
+            <Sign.LabelSpan>
+               Ваша фамилия<Sign.Sup>*</Sign.Sup>
+            </Sign.LabelSpan>
+            <InputText
+               id="lastName"
+               placeholder="Напишите вашу фамилию"
+               value={lastName}
+               onChange={InputLastName}
+               error={isValidLastName}
+               onBlur={onBlurLastName}
+            />
+         </Sign.InputLabel>
+         <Sign.InputLabel htmlFor="phoneNumber">
+            <Sign.LabelSpan>
+               Номер вашего телефона<Sign.Sup>*</Sign.Sup>
+            </Sign.LabelSpan>
+            <InputMaskPhone
+               value={phone}
+               onChange={phoneChangeHandler}
+               onBlur={onBlurPhone}
+               error={isValidPhone}
+            />
+         </Sign.InputLabel>
+         <Sign.InputLabel htmlFor="email">
+            <Sign.LabelSpan>
+               E-mail<Sign.Sup>*</Sign.Sup>
+            </Sign.LabelSpan>
+            <InputText
+               id="email"
+               type="email"
+               placeholder="Напишите ваш email"
+               value={email}
+               onChange={emailChange}
+               error={isValidEmail}
+               onBlur={onBlurEmail}
+            />
+         </Sign.InputLabel>
+         <Sign.InputLabel htmlFor="password">
+            <Sign.LabelSpan>
+               Пароль<Sign.Sup>*</Sign.Sup>
+            </Sign.LabelSpan>
+            <PasswordInput
+               id="password"
+               placeholder="Напишите ваш пароль"
+               value={password}
+               onChange={passwordChangeHandler}
+               error={isValidPassword}
+               onBlur={onBlurPassword}
+            />
+         </Sign.InputLabel>
+         <Sign.InputLabel htmlFor="lastPassword">
+            <Sign.LabelSpan>
+               Подтвердите пароль <Sign.Sup>*</Sign.Sup>
+            </Sign.LabelSpan>
+            <PasswordInput
+               id="lastPassword"
+               placeholder="Подтвердите пароль"
+               value={lastPassword}
+               onChange={lastPasswordChangeHandler}
+               error={isValidLastPassword}
+               onBlur={onBlurLastPassword}
+            />
+         </Sign.InputLabel>
+         <Sign.SpanError>{isValidError && errorValue}</Sign.SpanError>
+         <Sign.ButtonSubmit type="submit" margintop="15px">
+            Создать аккаунт
+         </Sign.ButtonSubmit>
+      </Sign.Form>
    )
 }
 

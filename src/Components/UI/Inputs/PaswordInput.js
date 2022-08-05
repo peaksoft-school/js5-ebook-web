@@ -1,5 +1,6 @@
-import { InputContainer, Input, BtnIcon } from './InputStyle'
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
+import { InputContainer, Input, BtnIcon } from './InputStyle'
 import { ReactComponent as ClosedGreyEyes } from '../../../assets/icons/inputs/closedGreyEyes.svg'
 import { ReactComponent as GreyEyes } from '../../../assets/icons/inputs/greyEyes.svg'
 import { ReactComponent as Eyes } from '../../../assets/icons/inputs/eyes.svg'

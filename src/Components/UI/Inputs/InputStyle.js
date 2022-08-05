@@ -34,7 +34,6 @@ export const Input = styled.input`
    &::placeholder {
       color: #969696;
    }
-   
 `
 export const BtnIcon = styled('button')`
    border: none;

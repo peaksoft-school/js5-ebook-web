@@ -1,50 +1,49 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import AppFetch from '../../hooks/AppFetch'
+import appFetch from '../../hooks/appFetch'
 
 const initialState = {
-   vendor: '',
-   client: '',
-   admin: '',
+   token: '',
    status: null,
+   error: null,
 }
-// http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/public/vendor/register
 
-export const SignUpRequest = createAsyncThunk(
-   'uiSlices/SignUpPost',
-   async (user) => {
-      let result = null
-      try {
-         result = await AppFetch(
-            'https://jsonplaceholder.typicode.com/posts',
-            'POST',
-            user
-         )
-         localStorage.setItem('vendor', result)
-         return result
-      } catch (error) {
-         throw new Error('ffe')
-      }
+export const SignUpVendorRequest = createAsyncThunk(
+   'SignSlices/SignUpVendorRequest',
+   async (vendor) => {
+      const result = await appFetch(
+         '/api/public/vendor/register',
+         'POST',
+         vendor
+      )
+      localStorage.setItem('token', JSON.stringify(result))
+      return result
    }
 )
 
 const SignSlices = createSlice({
-   name: 'uiSlices',
+   name: 'SignSlices',
    initialState,
    reducers: {
       updateСountries: (state, action) => {
-         state.vendor = action.payload
+         state.token = action.payload
       },
    },
    extraReducers: {
-      [SignUpRequest.pending]: (state) => {
+      [SignUpVendorRequest.pending]: (state) => {
          state.status = 'pending'
       },
-      [SignUpRequest.fulfilled]: (state, action) => {
-         state.vendor = action.payload
+      [SignUpVendorRequest.fulfilled]: (state, action) => {
+         state.token = {
+            id: action.payload.id,
+            jwt: action.payload.jwt,
+            role: action.payload.role,
+            firstName: action.payload.firstName,
+         }
          state.status = 'fulfilled'
       },
-      [SignUpRequest.rejected]: (state) => {
+      [SignUpVendorRequest.rejected]: (state, action) => {
          state.status = 'rejected'
+         state.error = action.error
       },
    },
 })

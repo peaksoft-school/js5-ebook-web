@@ -17,7 +17,11 @@ const itemBook = [
 
 function Navbar({ onClick }) {
    const items = itemBook.map((elem) => {
-      return <NavbarItem key={elem.id} onClick={onClick}>{elem.name}</NavbarItem>
+      return (
+         <NavbarItem key={elem.id} onClick={onClick}>
+            {elem.name}
+         </NavbarItem>
+      )
    })
    return <NavbarList>{items}</NavbarList>
 }
@@ -31,6 +35,8 @@ const NavbarList = styled.ul`
    display: flex;
    justify-content: flex-start;
    align-items: center;
+   flex-grow: 1;
+   /* border: 1px solid red; */
 `
 
 const NavbarItem = styled.li`
