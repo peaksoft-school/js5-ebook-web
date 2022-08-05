@@ -37,6 +37,8 @@ const ButtonStyle = styled(MuiButton)`
    }
    &:active {
       color: ${(props) => props.coloractive};
+      background: ${(props) => props.backgroundHover || '#fe6f33'};
+      color: #ffffff;
    }
 
    background: ${(props) => (props.variant === 'universal' ? 'white' : '')};
@@ -45,6 +47,10 @@ const ButtonStyle = styled(MuiButton)`
    color: ${(props) => (props.color ? props.color : '')};
    border: ${(props) => (props.border ? props.border : '')};
    border-radius: ${(props) => (props.borderradius ? props.borderradius : '')};
+   width: ${(props) => props.width || '100%'};
+   padding: ${(props) => props.padding || '10px 24px'};
+   font-size: ${(props) => props.fontSize || '16px'};
+   font-family: ${(props) => props.fontFamily || 'Open Sans'};
    margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
    margin-top: ${(props) => props.margintop || '0px'};
    width: ${(props) => props.width || '100%'};
