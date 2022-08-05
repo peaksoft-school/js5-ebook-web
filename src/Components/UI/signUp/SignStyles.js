@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
 import Button from '../Button/Button'
 
-export const ButtonSubmit = ({ children, type }) => {
+export const ButtonSubmit = ({ children, type, margintop }) => {
    return (
       <Button
-         margintop="40px"
+         margintop={margintop || '40px'}
          variant="universal"
          background="#000"
          backgroundhover="#000"
@@ -16,7 +16,7 @@ export const ButtonSubmit = ({ children, type }) => {
    )
 }
 
-export const ButtonUp = ({ children }) => {
+export const ButtonUp = ({ children, ...props }) => {
    return (
       <Button
          variant="universal"
@@ -25,23 +25,25 @@ export const ButtonUp = ({ children }) => {
          color="#292929"
          width="40%"
          fontSize="20px"
+         {...props}
       >
          {children}
       </Button>
    )
 }
 
-export const ButtonIn = ({ children }) => {
+export const ButtonIn = ({ children, activeBtn, ...props }) => {
    return (
       <Button
          variant="universal"
-         color="#969696"
+         color={activeBtn ? '#292929' : '#969696'}
          backgroundhover="none"
-         colorhover="#292929"
-         coloractive="#292929"
+         colorhover={activeBtn ? '#292929' : '#969696'}
+         coloractive={activeBtn ? '#292929' : '#969696'}
          width="40%"
          fontSize="20px"
          fontWeight="400"
+         {...props}
       >
          {children}
       </Button>
@@ -77,4 +79,12 @@ export const SignBlock = styled('div')`
    flex-direction: row;
    flex-wrap: wrap;
    justify-content: center;
+`
+export const SpanError = styled('span')`
+   width: 100%;
+   display: flex;
+   margin-top: 20px;
+   justify-content: center;
+   font-size: 1rem;
+   color: red;
 `

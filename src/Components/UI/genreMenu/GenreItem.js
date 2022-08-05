@@ -1,22 +1,22 @@
 import styled from 'styled-components'
 
-function getText(text){
-   let arr = text.split('');
-   let newArr = [];
-   if(arr.length > 30){
-      for(let i=0;i<30;i++){
-         newArr.push(arr[i]);
+function getText(text) {
+   const arr = text.split('')
+   const newArr = []
+   if (arr.length > 30) {
+      for (let i = 0; i < 30; i + 1) {
+         newArr.push(arr[i])
       }
-      return newArr.join('') + '...';
+      return `${newArr.join('')}...`
    }
-   return text;
+   return text
 }
 
 function GenreItem({ name, quantity, id, onSelect }) {
    const clickHandler = () => {
       onSelect(id)
    }
-   const text = getText(name);
+   const text = getText(name)
    return (
       <ItemBook onClick={clickHandler}>
          {text}

@@ -1,4 +1,6 @@
-function AppFetch(url, method, body) {
+import { URL } from '../utils/constants/datas'
+
+function appFetch(url, method, body) {
    const requestOptions = {
       method: method || 'GET',
       headers: {
@@ -9,12 +11,12 @@ function AppFetch(url, method, body) {
       requestOptions.body = JSON.stringify(body)
    }
    const promise = new Promise((resolve, reject) => {
-      fetch(url, requestOptions)
+      fetch(URL + url, requestOptions)
          .then((response) => {
-            if (response.ok) {
-               return response.json()
+            if (!response.ok) {
+               throw new Error(response.message)
             }
-            throw new Error(response.message)
+            return response.json()
          })
          .then((data) => {
             resolve(data)
@@ -26,4 +28,4 @@ function AppFetch(url, method, body) {
    return promise
 }
 
-export default AppFetch
+export default appFetch
