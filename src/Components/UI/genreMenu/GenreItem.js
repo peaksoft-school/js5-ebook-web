@@ -16,10 +16,9 @@ function GenreItem({ name, quantity, id, onSelect }) {
    const clickHandler = () => {
       onSelect(id)
    }
-   const text = getText(name)
    return (
       <ItemBook onClick={clickHandler}>
-         {text}
+         {getText(name)}
          <ItemQuantity>{quantity}</ItemQuantity>
       </ItemBook>
    )

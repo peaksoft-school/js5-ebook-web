@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import appFetch from '../../hooks/AppFetch'
+import { EBOOK_AUTH_INFO } from '../../utils/constants/constants'
+import saveToLocaleStorage from '../../hooks/saveToLocaleStorage'
 
 const initialState = {
-   token: '',
+   [EBOOK_AUTH_INFO]: '',
    status: null,
    error: null,
 }
 
-export const SignUpVendorRequest = createAsyncThunk(
+export const signUpVendor = createAsyncThunk(
    'SignSlices/SignUpVendorRequest',
    async (vendor) => {
       const result = await appFetch(
@@ -15,39 +17,34 @@ export const SignUpVendorRequest = createAsyncThunk(
          'POST',
          vendor
       )
-      localStorage.setItem('token', JSON.stringify(result))
+      saveToLocaleStorage(result)
       return result
    }
 )
 
-const SignSlices = createSlice({
+const authSlices = createSlice({
    name: 'SignSlices',
    initialState,
    reducers: {
       updateСountries: (state, action) => {
-         state.token = action.payload
+         state[EBOOK_AUTH_INFO] = action.payload
       },
    },
    extraReducers: {
-      [SignUpVendorRequest.pending]: (state) => {
+      [signUpVendor.pending]: (state) => {
          state.status = 'pending'
       },
-      [SignUpVendorRequest.fulfilled]: (state, action) => {
-         state.token = {
-            id: action.payload.id,
-            jwt: action.payload.jwt,
-            role: action.payload.role,
-            firstName: action.payload.firstName,
-         }
+      [signUpVendor.fulfilled]: (state, action) => {
+         state[EBOOK_AUTH_INFO] = action.payload
          state.status = 'fulfilled'
       },
-      [SignUpVendorRequest.rejected]: (state, action) => {
+      [signUpVendor.rejected]: (state, action) => {
          state.status = 'rejected'
          state.error = action.error
       },
    },
 })
 
-export const SignActions = SignSlices.actions
+export const authSlicesActions = authSlices.actions
 
-export default SignSlices
+export default authSlices

@@ -1,4 +1,4 @@
-import { URL } from '../utils/constants/datas'
+import { URL } from '../utils/constants/constants'
 
 function appFetch(url, method, body) {
    const requestOptions = {

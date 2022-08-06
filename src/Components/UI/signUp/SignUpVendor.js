@@ -6,7 +6,8 @@ import InputText from '../Inputs/InputText'
 import PasswordInput from '../Inputs/PaswordInput'
 import Validation from './Validation'
 import * as Sign from './SignStyles'
-import { SignUpVendorRequest } from '../../../store/slices/SignSlices'
+import { signUpVendor } from '../../../store/slices/authSlices'
+import { EBOOK_AUTH_INFO } from '../../../utils/constants/constants'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
@@ -32,18 +33,18 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
-   const token = useSelector((store) => store.vendor.token)
+   const AUTH_INFO = useSelector((store) => store.vendor[EBOOK_AUTH_INFO])
    const dispatch = useDispatch()
    const navigate = useNavigate()
    useEffect(() => {
-      if (token.role === 'VENDOR') {
+      if (AUTH_INFO.role === 'VENDOR') {
          navigate('/vendor', { replace: true })
       }
-   }, [token])
+   }, [AUTH_INFO])
 
    const {
       value: name,
-      InputChange: InputName,
+      InputChange: onChangeInputName,
       isValidValue: isValidName,
       onBlurHandler: onBlurName,
    } = Validation((valueName) => {
@@ -55,7 +56,7 @@ function SignUpVendor() {
 
    const {
       value: lastName,
-      InputChange: InputLastName,
+      InputChange: onChangeLastName,
       isValidValue: isValidLastName,
       onBlurHandler: onBlurLastName,
    } = Validation((valueName) => {
@@ -67,9 +68,9 @@ function SignUpVendor() {
 
    const {
       value: email,
-      InputChange: emailChange,
-      isValidValue: isValidEmail,
-      onBlurHandler: onBlurEmail,
+      InputChange: onChangeEmail,
+      isValidValue: isValidemail,
+      onBlurHandler: onBluremail,
    } = Validation((email) => {
       if (email.length <= 5 || !email.includes('@')) {
          return true
@@ -79,7 +80,7 @@ function SignUpVendor() {
 
    const {
       value: phone,
-      InputChange: phoneChangeHandler,
+      InputChange: onChangeInputPhone,
       isValidValue: isValidPhone,
       onBlurHandler: onBlurPhone,
    } = Validation((phone) => {
@@ -91,7 +92,7 @@ function SignUpVendor() {
 
    const {
       value: password,
-      InputChange: passwordChangeHandler,
+      InputChange: onChangePassword,
       isValidValue: isValidPassword,
       onBlurHandler: onBlurPassword,
    } = Validation((passwordValue) => {
@@ -103,7 +104,7 @@ function SignUpVendor() {
 
    const {
       value: lastPassword,
-      InputChange: lastPasswordChangeHandler,
+      InputChange: onChangeLastPassword,
       isValidValue: isValidLastPassword,
       onBlurHandler: onBlurLastPassword,
    } = Validation((passwordValue) => {
@@ -133,20 +134,18 @@ function SignUpVendor() {
          isValidLastPassword ||
          isValidPassword ||
          isValidPhone ||
-         isValidEmail ||
+         isValidemail ||
          isValidLastName ||
          isValidName
       ) {
-         // console.log(isValidPhone)
          onBlurLastPassword()
          onBlurPassword()
          onBlurPhone()
-         onBlurEmail()
+         onBluremail()
          onBlurLastName()
          onBlurName()
          return
       }
-      // console.log('Hello world')
       const user = {
          firstName: name,
          lastName,
@@ -154,7 +153,7 @@ function SignUpVendor() {
          phoneNumber: phone,
          password,
       }
-      dispatch(SignUpVendorRequest(user))
+      dispatch(signUpVendor(user))
    }
 
    return (
@@ -167,7 +166,7 @@ function SignUpVendor() {
                placeholder="Напишите ваше имя"
                id="name"
                value={name}
-               onChange={InputName}
+               onChange={onChangeInputName}
                error={isValidName}
                onBlur={onBlurName}
             />
@@ -180,7 +179,7 @@ function SignUpVendor() {
                id="lastName"
                placeholder="Напишите вашу фамилию"
                value={lastName}
-               onChange={InputLastName}
+               onChange={onChangeLastName}
                error={isValidLastName}
                onBlur={onBlurLastName}
             />
@@ -191,7 +190,7 @@ function SignUpVendor() {
             </Sign.LabelSpan>
             <InputMaskPhone
                value={phone}
-               onChange={phoneChangeHandler}
+               onChange={onChangeInputPhone}
                onBlur={onBlurPhone}
                error={isValidPhone}
             />
@@ -205,9 +204,9 @@ function SignUpVendor() {
                type="email"
                placeholder="Напишите ваш email"
                value={email}
-               onChange={emailChange}
-               error={isValidEmail}
-               onBlur={onBlurEmail}
+               onChange={onChangeEmail}
+               error={isValidemail}
+               onBlur={onBluremail}
             />
          </Sign.InputLabel>
          <Sign.InputLabel htmlFor="password">
@@ -218,7 +217,7 @@ function SignUpVendor() {
                id="password"
                placeholder="Напишите ваш пароль"
                value={password}
-               onChange={passwordChangeHandler}
+               onChange={onChangePassword}
                error={isValidPassword}
                onBlur={onBlurPassword}
             />
@@ -231,7 +230,7 @@ function SignUpVendor() {
                id="lastPassword"
                placeholder="Подтвердите пароль"
                value={lastPassword}
-               onChange={lastPasswordChangeHandler}
+               onChange={onChangeLastPassword}
                error={isValidLastPassword}
                onBlur={onBlurLastPassword}
             />
