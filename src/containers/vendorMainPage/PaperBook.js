@@ -6,6 +6,7 @@ import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
 import bookAction from '../../store/slices/addBookSlice'
+// import Message from '../../Components/UI/Message/Message'
 
 export const inputValuesForState = {
    bookname: '',
@@ -28,6 +29,7 @@ const PaperBookComponent = ({ images, onClick }) => {
    const [inputValues, setinputValues] = useState(paperInputValues)
    console.log(inputValues)
    const dispatch = useDispatch()
+   // const [message, setMessage] = useState(null)
 
    const handleChange = (e) => {
       const { name, value } = e.target
@@ -59,6 +61,7 @@ const PaperBookComponent = ({ images, onClick }) => {
                typeBook: 'electronicbook',
             })
          )
+         // setMessage(true)
          console.log(1111)
       } else {
          console.log(333)
@@ -77,9 +80,18 @@ const PaperBookComponent = ({ images, onClick }) => {
          discount: '',
       })
    }
+   // const handleClose = () => {
+   //    setMessage(false)
+   // }
 
    return (
       <>
+         {/* <Message
+            open={message}
+            text="hsdsh shdcjh"
+            severity=""
+            handleClose={handleClose}
+         /> */}
          <InputWrapper onSubmit={clickHandle}>
             <InputDiv>
                <LabelStyle htmlFor="bookname">

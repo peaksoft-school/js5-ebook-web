@@ -18,6 +18,7 @@ function CardItems({
          flexWrap={flexWrap}
          flexDirection={flexDirection}
          padding={padding}
+         marginRight={marginRight}
       >
          {children}
       </CardItemsBlock>

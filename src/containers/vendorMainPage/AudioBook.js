@@ -24,7 +24,6 @@ const audioBookInputValues = {
    duration: '',
    minute: '',
    second: '',
-   size: '',
    price: '',
    discount: '',
 }
@@ -49,18 +48,37 @@ const AudioBook = ({ images, onClick }) => {
       const { name, value } = e.target
       setInputValues({ ...inputValues, [name]: value })
    }
+
+   const validateValues =
+      inputValues.bookname.length >= 1 &&
+      inputValues.author.length >= 1 &&
+      inputValues.genre.length >= 1 &&
+      inputValues.aboutbook.length >= 1 &&
+      inputValues.duration.length >= 1 &&
+      inputValues.minute.length >= 1 &&
+      inputValues.second.length >= 1 &&
+      inputValues.price.length >= 1 &&
+      inputValues.data.length >= 1
+
+   const validateImages = images.mainImg.length >= 1
    const clickHandle = () => {
       onClick()
-      dispatch(
-         bookAction.addBook({
-            ...inputValues,
-            audioValues,
-            images,
-            typeBook: 'audiobook',
-         })
-      )
+      if (validateValues && validateImages) {
+         dispatch(
+            bookAction.addBook({
+               ...inputValues,
+               images,
+               audioValues,
+               typeBook: 'audiobook',
+            })
+         )
+         // setMessage(true)
+         console.log(1111)
+      } else {
+         console.log(333)
+      }
 
-      setAudioValues({
+      setInputValues({
          bookname: '',
          author: '',
          genre: '',

@@ -33,8 +33,7 @@ const ButtonStyle = styled(MuiButton)`
    font-size: ${(props) => (props.variant === 'default' ? '16px' : '14px')};
 
    &:hover {
-      background: ${(props) =>
-         props.variant === 'default' ? ' #484848' : '#fe6f33'};
+      background: ${(props) => props.backgroundHover || '#fe6f33'};
       color: #ffffff;
    }
 
@@ -44,6 +43,10 @@ const ButtonStyle = styled(MuiButton)`
    color: ${(props) => (props.color ? props.color : '')};
    border: ${(props) => (props.border ? props.border : '')};
    border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '')};
+   width: ${(props) => props.width || '100%'};
+   padding: ${(props) => props.padding || '10px 24px'};
+   font-size: ${(props) => props.fontSize || '16px'};
+   font-family: ${(props) => props.fontFamily || ''};
    margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
    margin-top: ${(props) => (props.marginTop ? props.marginTop : '0px')};
 `
