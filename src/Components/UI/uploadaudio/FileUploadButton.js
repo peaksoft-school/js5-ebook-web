@@ -10,6 +10,8 @@ const FileUploadButton = ({
    value,
    accept,
    children,
+   title,
+   name,
    ...props
 }) => {
    const [fileState, setFileState] = useState('default')
@@ -18,7 +20,7 @@ const FileUploadButton = ({
 
    const saveFilesHandler = (e) => {
       const files = e.target.files[0]
-      onChange(files)
+      onChange(files, e)
 
       if (files.type === 'application/pdf') {
          setFileState('loading')
@@ -38,14 +40,14 @@ const FileUploadButton = ({
    if (fileState === 'default') {
       fileButton = (
          <ContainerDiv>
-            <span>{children}</span>
             <DefaultContainer {...props}>
                <ImgVector src={Vector} />
                {children}
                <input
                   accept={accept}
                   value={value}
-                  type={type}
+                  name={name}
+                  type="file"
                   onChange={saveFilesHandler}
                />
             </DefaultContainer>
@@ -56,7 +58,6 @@ const FileUploadButton = ({
    if (fileState === 'loading') {
       fileButton = (
          <ContainerDiv>
-            <span>{children}</span>
             <LoadedContainer>
                <CircularProgress style={{ color: 'grey' }} size="1.4rem" />
                {children}
@@ -67,7 +68,6 @@ const FileUploadButton = ({
    if (fileState === 'success') {
       fileButton = (
          <ContainerDiv>
-            <span>{children}</span>
             <SuccessContainer {...props}>
                <ImgVectorOk src={VectorOk} />
                {children}
@@ -85,14 +85,15 @@ const DefaultContainer = styled('label')((props) => ({
    display: 'flex',
    alignItems: 'center',
    width: props.width || '100%',
-   background: props.background || 'white',
+   background: props.background || 'rgba(0, 0, 0, 0)',
    color: props.color || '#969696',
    justifyContent: 'space-evenly',
    fontStyle: 'normal',
-   padding: '10px 26px 10px 26px',
+   padding: '10px 44px 10px 44px',
    fontFamily: 'Open Snas',
    fontWeight: '600',
    lineHeight: '16.8px',
+   fontSize: '14px',
    marginTop: '10px',
    cursor: 'pointer',
    border: '1px solid #969696',
@@ -107,10 +108,11 @@ const LoadedContainer = styled('label')((props) => ({
    width: props.width || '100%',
    background: props.width || '#E5E5E5',
    justifyContent: 'space-evenly',
-   padding: '0px 26px 0px 26px',
+   padding: '10px 40px 10px 40px',
    color: props.color || '#C4C4C4',
    fontFamily: 'Open Snas',
    fontWeight: '600',
+   fontSize: '14px',
    marginTop: '10px',
    height: '37px',
    '& input': {
@@ -126,7 +128,7 @@ const SuccessContainer = styled('label')((props) => ({
    backgroundColor: props.backgroundColor || 'green',
    color: props.color || '#F8F8F8',
    justifyContent: 'space-evenly',
-   padding: '10px 30px 10px 30px',
+   padding: '10px 40px 10px 40px',
    fontFamily: 'Open Snas',
    fontStyle: 'normal',
    fontWeight: '600',
@@ -142,22 +144,14 @@ const ImgVector = styled('img')(() => ({
    width: '15px',
    height: '15.83px',
    marginTop: '2px',
+   marginRight: '18px',
 }))
 
 const ImgVectorOk = styled('img')`
    color: white;
+   margin-right: 18px;
 `
 
 const ContainerDiv = styled('div')`
-   margin-top: 35px;
    display: inline-block;
-   & span {
-      color: #222222;
-      font-size: 16px;
-      font-style: normal;
-      font-family: 'Open Sans';
-      font-weight: 400;
-      line-height: 20.8px;
-      line-height: 130%;
-   }
 `

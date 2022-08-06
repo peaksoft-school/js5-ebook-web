@@ -45,4 +45,5 @@ const ButtonStyle = styled(MuiButton)`
    border: ${(props) => (props.border ? props.border : '')};
    border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '')};
    margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
+   margin-top: ${(props) => (props.marginTop ? props.marginTop : '0px')};
 `

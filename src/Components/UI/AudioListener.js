@@ -69,7 +69,7 @@ function AudioListener({ url }) {
       <WaveformContianer>
          <PlayingDiv>
             {playMusic ? (
-               <img src={AudioPlay} onClick={audioPauseHanle} />
+               <img src={AudioPlay} alt={AudioPlay} onClick={audioPauseHanle} />
             ) : (
                <img src={AudioPause} onClick={audioPlayHandle} />
             )}
