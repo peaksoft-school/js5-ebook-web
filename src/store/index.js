@@ -4,9 +4,7 @@ import authSlices from './slices/authSlices'
 
 const store = configureStore({
    reducer: {
-      vendor: authSlices.reducer,
-      client: '',
-      admin: '',
+      authReducers: authSlices.reducer,
    },
 })
 

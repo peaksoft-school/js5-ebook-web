@@ -1,41 +1,45 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import appFetch from '../../hooks/AppFetch'
 import { EBOOK_AUTH_INFO } from '../../utils/constants/constants'
-import saveToLocaleStorage from '../../hooks/saveToLocaleStorage'
+import { getFromLocaleStorage, saveToLocaleStorage } from '../../hooks/locale'
+
+function reloadGetLocale() {
+   const user = getFromLocaleStorage('user')
+   if (user) {
+      return user
+   }
+   return false
+}
 
 const initialState = {
-   [EBOOK_AUTH_INFO]: '',
+   user: reloadGetLocale() || '',
    status: null,
    error: null,
 }
 
 export const signUpVendor = createAsyncThunk(
    'SignSlices/SignUpVendorRequest',
-   async (vendor) => {
-      const result = await appFetch(
-         '/api/public/vendor/register',
-         'POST',
-         vendor
-      )
-      saveToLocaleStorage(result)
-      return result
+   async (data) => {
+      const result = await appFetch('/api/public/vendor/register', 'POST', data)
+      const vendor = {
+         id: result.id,
+         [EBOOK_AUTH_INFO]: result.jwt,
+         role: result.role,
+      }
+      saveToLocaleStorage('user', vendor)
+      return vendor
    }
 )
 
 const authSlices = createSlice({
    name: 'SignSlices',
    initialState,
-   reducers: {
-      updateСountries: (state, action) => {
-         state[EBOOK_AUTH_INFO] = action.payload
-      },
-   },
    extraReducers: {
       [signUpVendor.pending]: (state) => {
          state.status = 'pending'
       },
       [signUpVendor.fulfilled]: (state, action) => {
-         state[EBOOK_AUTH_INFO] = action.payload
+         state.user = action.payload
          state.status = 'fulfilled'
       },
       [signUpVendor.rejected]: (state, action) => {

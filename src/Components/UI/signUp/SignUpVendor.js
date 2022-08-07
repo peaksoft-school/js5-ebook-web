@@ -7,7 +7,7 @@ import PasswordInput from '../Inputs/PaswordInput'
 import Validation from './Validation'
 import * as Sign from './SignStyles'
 import { signUpVendor } from '../../../store/slices/authSlices'
-import { EBOOK_AUTH_INFO } from '../../../utils/constants/constants'
+import { APP_ROLES } from '../../../utils/constants/constants'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
@@ -33,18 +33,18 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
-   const AUTH_INFO = useSelector((store) => store.vendor[EBOOK_AUTH_INFO])
+   const user = useSelector((store) => store.authReducers.user)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    useEffect(() => {
-      if (AUTH_INFO.role === 'VENDOR') {
+      if (user.role === APP_ROLES.VENDOR) {
          navigate('/vendor', { replace: true })
       }
-   }, [AUTH_INFO])
+   }, [user])
 
    const {
       value: name,
-      InputChange: onChangeInputName,
+      inputChange: onChangeInputName,
       isValidValue: isValidName,
       onBlurHandler: onBlurName,
    } = Validation((valueName) => {
@@ -56,7 +56,7 @@ function SignUpVendor() {
 
    const {
       value: lastName,
-      InputChange: onChangeLastName,
+      inputChange: onChangeLastName,
       isValidValue: isValidLastName,
       onBlurHandler: onBlurLastName,
    } = Validation((valueName) => {
@@ -68,7 +68,7 @@ function SignUpVendor() {
 
    const {
       value: email,
-      InputChange: onChangeEmail,
+      inputChange: onChangeEmail,
       isValidValue: isValidemail,
       onBlurHandler: onBluremail,
    } = Validation((email) => {
@@ -80,7 +80,7 @@ function SignUpVendor() {
 
    const {
       value: phone,
-      InputChange: onChangeInputPhone,
+      inputChange: onChangeInputPhone,
       isValidValue: isValidPhone,
       onBlurHandler: onBlurPhone,
    } = Validation((phone) => {
@@ -92,7 +92,7 @@ function SignUpVendor() {
 
    const {
       value: password,
-      InputChange: onChangePassword,
+      inputChange: onChangePassword,
       isValidValue: isValidPassword,
       onBlurHandler: onBlurPassword,
    } = Validation((passwordValue) => {
@@ -104,7 +104,7 @@ function SignUpVendor() {
 
    const {
       value: lastPassword,
-      InputChange: onChangeLastPassword,
+      inputChange: onChangeLastPassword,
       isValidValue: isValidLastPassword,
       onBlurHandler: onBlurLastPassword,
    } = Validation((passwordValue) => {

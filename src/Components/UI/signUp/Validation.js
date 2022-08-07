@@ -19,12 +19,12 @@ function Validation(funcValid) {
       setIsBlur(true)
    }
 
-   const InputChange = (e) => {
+   const inputChange = (e) => {
       setValue(e.target.value)
    }
 
    return {
-      InputChange,
+      inputChange,
       value,
       isValidValue,
       onBlurHandler,
