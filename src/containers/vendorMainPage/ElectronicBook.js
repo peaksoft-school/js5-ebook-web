@@ -21,6 +21,7 @@ import {
 const ElectronicBookComponent = ({ images, onClick }) => {
    const [pdfValue, setPdfFile] = useState()
    const [inputValues, setinputValues] = useState(inputValuesForState)
+   // const [showSnackbar, setShowSnackbar] = useState(false)
    const dispatch = useDispatch()
 
    const saveAudioValue = (pdf) => {
@@ -31,16 +32,31 @@ const ElectronicBookComponent = ({ images, onClick }) => {
       const valueEvent = e.target
       setinputValues({ ...inputValues, [valueEvent.name]: valueEvent.value })
    }
+
+   const validateValues =
+      inputValues.bookname.length >= 1 &&
+      inputValues.author.length >= 1 &&
+      inputValues.genre.length >= 1 &&
+      inputValues.publish.length >= 1 &&
+      inputValues.aboutbook.length >= 1 &&
+      inputValues.fragment.length >= 1 &&
+      inputValues.size.length >= 1 &&
+      inputValues.price.length >= 1 &&
+      inputValues.discount.length >= 1
+
+   const validateImages = images.mainImg.length >= 1
    const clickHandle = () => {
       onClick()
-      dispatch(
-         bookAction.addBook({
-            ...inputValues,
-            pdfValue,
-            images,
-            typeBook: 'electronicbook',
-         })
-      )
+      if (validateValues && validateImages) {
+         dispatch(
+            bookAction.addBook({
+               ...inputValues,
+               images,
+               typeBook: 'electronicbook',
+            })
+         )
+         // setShowSnackbar(true)
+      }
 
       setinputValues({
          bookname: '',
@@ -58,7 +74,8 @@ const ElectronicBookComponent = ({ images, onClick }) => {
    }
 
    return (
-      <div>
+      <>
+         {/* {showSnackbar && <Snackbar/>} */}
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="bookname">
@@ -196,9 +213,11 @@ const ElectronicBookComponent = ({ images, onClick }) => {
             </Wrapper>
          </InputWrapper>
          <ButtonDiv>
-            <Button onClick={clickHandle}>Отправить</Button>
+            <Button width="160px" onClick={clickHandle}>
+               Отправить
+            </Button>
          </ButtonDiv>
-      </div>
+      </>
    )
 }
 export default ElectronicBookComponent

@@ -6,7 +6,6 @@ import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
 import bookAction from '../../store/slices/addBookSlice'
-// import Message from '../../Components/UI/Message/Message'
 
 export const inputValuesForState = {
    bookname: '',
@@ -27,15 +26,13 @@ const paperInputValues = {
 
 const PaperBookComponent = ({ images, onClick }) => {
    const [inputValues, setinputValues] = useState(paperInputValues)
-   console.log(inputValues)
    const dispatch = useDispatch()
-   // const [message, setMessage] = useState(null)
+   // const [showSnackbar, setShowSnackbar] = useState(false)
 
    const handleChange = (e) => {
       const { name, value } = e.target
       setinputValues({ ...inputValues, [name]: value })
    }
-   console.log(images)
 
    const validateValues =
       inputValues.bookname.length >= 1 &&
@@ -46,7 +43,6 @@ const PaperBookComponent = ({ images, onClick }) => {
       inputValues.fragment.length >= 1 &&
       inputValues.size.length >= 1 &&
       inputValues.price.length >= 1 &&
-      inputValues.data.length >= 1 &&
       inputValues.discount.length >= 1
 
    const validateImages = images.mainImg.length >= 1
@@ -58,13 +54,10 @@ const PaperBookComponent = ({ images, onClick }) => {
             bookAction.addBook({
                ...inputValues,
                images,
-               typeBook: 'electronicbook',
+               typeBook: 'paperbook',
             })
          )
-         // setMessage(true)
-         console.log(1111)
-      } else {
-         console.log(333)
+         // setShowSnackbar(true)
       }
       setinputValues({
          bookname: '',
@@ -80,18 +73,10 @@ const PaperBookComponent = ({ images, onClick }) => {
          discount: '',
       })
    }
-   // const handleClose = () => {
-   //    setMessage(false)
-   // }
 
    return (
       <>
-         {/* <Message
-            open={message}
-            text="hsdsh shdcjh"
-            severity=""
-            handleClose={handleClose}
-         /> */}
+         {/* {showSnackbar && <Snackbar/>} */}
          <InputWrapper onSubmit={clickHandle}>
             <InputDiv>
                <LabelStyle htmlFor="bookname">
@@ -226,7 +211,9 @@ const PaperBookComponent = ({ images, onClick }) => {
             </div>
          </InputWrapper>
          <ButtonDiv>
-            <Button onClick={clickHandle}>Отправить</Button>
+            <Button width="160px" onClick={clickHandle}>
+               Отправить
+            </Button>
          </ButtonDiv>
       </>
    )

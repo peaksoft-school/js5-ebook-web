@@ -1,20 +1,28 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react'
-import Slider from 'react-slick'
 import { styled } from '@mui/material'
+import AboutSlide from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+
 import Vector from '../../assets/Vector.jpg'
 import Vector2 from '../../assets/Vector2.png'
 
 function MainPageSlider({ images }) {
+   // eslint-disable-next-line react/no-unstable-nested-components
    const NextArrow = ({ onClick }) => {
       return (
+         // eslint-disable-next-line jsx-a11y/no-static-element-interactions
          <div className="arrow next" onClick={onClick}>
             <img src={Vector} alt="book Vector" />
          </div>
       )
    }
 
+   // eslint-disable-next-line react/no-unstable-nested-components
    const PrevArrow = ({ onClick }) => {
       return (
+         // eslint-disable-next-line jsx-a11y/no-static-element-interactions
          <div className="arrow prev" onClick={onClick}>
             <img src={Vector2} alt="book Vector2  " />
          </div>
@@ -24,9 +32,12 @@ function MainPageSlider({ images }) {
    const [imageIndex, setImageIndex] = useState(0)
 
    const settings = {
+      dots: false,
       infinite: true,
-      lazyLoad: true,
-      speed: 300,
+      lazyLoad: false,
+      speed: 900,
+      autoplay: true,
+      autoplaySpeed: 5000,
       slidesToShow: 3,
       tabindex: -1,
       centerMode: true,
@@ -38,13 +49,13 @@ function MainPageSlider({ images }) {
 
    return (
       <Container className="slider">
-         <Slider {...settings}>
+         <AboutSlide {...settings}>
             {images.map((img, idx) => (
                <div className={idx === imageIndex ? 'activeSlide' : 'slide'}>
                   <Image src={img} alt={img} />
                </div>
             ))}
-         </Slider>
+         </AboutSlide>
       </Container>
    )
 }
@@ -52,22 +63,21 @@ function MainPageSlider({ images }) {
 export default MainPageSlider
 
 const Container = styled('div')`
-   width: 632px;
+   width: 532px;
    margin: 10rem auto;
 
    .slide {
-      transform: scale(0.6);
-      transition: transform 600ms;
-      opacity: 0.5;
-      z-index: -10;
-      margin-left: -10px;
+      transform: scale(0.5);
+      transition: transform 900ms;
+      margin-left: -14px;
    }
 
    .activeSlide {
       transform: scale(1);
-      z-index: 1;
-      opacity: 1;
-      margin-left: -16px;
+      transition: transform 900ms;
+      margin-left: -38px;
+      position: relative;
+      z-index: 10;
    }
 
    .arrow {
@@ -100,6 +110,6 @@ const Container = styled('div')`
 
 const Image = styled('img')`
    width: 292px;
-   height: 468pxpx;
+   height: 468px;
    margin: 0 auto;
 `

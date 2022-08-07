@@ -36,6 +36,7 @@ const allAudioRecordingValues = {
 const AudioBook = ({ images, onClick }) => {
    const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
    const [inputValues, setInputValues] = useState(audioBookInputValues)
+   // const [showSnackbar, setShowSnackbar] = useState(false)
 
    const dispatch = useDispatch()
 
@@ -57,13 +58,13 @@ const AudioBook = ({ images, onClick }) => {
       inputValues.duration.length >= 1 &&
       inputValues.minute.length >= 1 &&
       inputValues.second.length >= 1 &&
-      inputValues.price.length >= 1 &&
-      inputValues.data.length >= 1
+      inputValues.price.length >= 1
 
    const validateImages = images.mainImg.length >= 1
+   const validateAudio = audioValues.audioFragment.length >= 1
    const clickHandle = () => {
       onClick()
-      if (validateValues && validateImages) {
+      if (validateValues && validateImages && validateAudio) {
          dispatch(
             bookAction.addBook({
                ...inputValues,
@@ -72,10 +73,7 @@ const AudioBook = ({ images, onClick }) => {
                typeBook: 'audiobook',
             })
          )
-         // setMessage(true)
-         console.log(1111)
-      } else {
-         console.log(333)
+         // setShowSnackbar(true)
       }
 
       setInputValues({
@@ -94,7 +92,8 @@ const AudioBook = ({ images, onClick }) => {
    }
 
    return (
-      <div>
+      <>
+         {/* {showSnackbar && <Snackbar/>} */}
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="bookname">
@@ -259,9 +258,11 @@ const AudioBook = ({ images, onClick }) => {
             </SelectWrapper>
          </InputWrapper>
          <ButtonDiv>
-            <Button onClick={clickHandle}>Отправить</Button>
+            <Button width="160px" onClick={clickHandle}>
+               Отправить
+            </Button>
          </ButtonDiv>
-      </div>
+      </>
    )
 }
 export default AudioBook

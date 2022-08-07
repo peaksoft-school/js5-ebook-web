@@ -1,5 +1,4 @@
 import { styled } from '@mui/material'
-import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import ImagePicker from '../../Components/UI/imagePicker/imagePicker'
 import RadioButton from '../../Components/UI/RadioButton'
@@ -14,8 +13,6 @@ const allImages = {
 }
 
 const AddAbook = () => {
-   const isvalid = useSelector((state) => state.addbook.bookContainer)
-   console.log(isvalid)
    const [images, setImages] = useState(allImages)
    const [radio, setRadio] = useState('Бумажная')
    const [deleteImagePicker, setDeleteImagePicker] = useState(false)
@@ -31,7 +28,6 @@ const AddAbook = () => {
 
    const deleteImages = () => {
       setDeleteImagePicker(true)
-      console.log(1)
    }
    useEffect(() => {
       setDeleteImagePicker(false)
