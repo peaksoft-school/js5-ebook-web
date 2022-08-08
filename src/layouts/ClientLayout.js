@@ -8,47 +8,38 @@ import Jenre from './Jenre'
 import Navbar from './Navbar'
 import CominButtons from './AuthenticationButtons'
 import Footer from './Footer'
-import { useState } from 'react'
-import GenreMenu from '../Components/UI/genreMenu/GenreMenu'
 import CardItems from './CardItems'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 
-const arr = [
-   {
-      name: 'Литература',
-      id: Math.random(),
-      quantity: 1234,
-   },
-   {
-      name: 'Художественная литература ауауfjrgrgjrjgri',
-      id: Math.random(),
-      quantity: 1234,
-   },
-   {
-      name: 'Книги для детей',
-      id: Math.random(),
-      quantity: 1234,
-   },
-   {
-      name: 'Наука и техника',
-      id: Math.random(),
-      quantity: 1234,
-   },
-   {
-      name: 'Общество',
-      id: Math.random(),
-      quantity: 1234,
-   },
-]
+// const arr = [
+//    {
+//       name: 'Литература',
+//       id: Math.random(),
+//       quantity: 1234,
+//    },
+//    {
+//       name: 'Художественная литература ауауfjrgrgjrjgri',
+//       id: Math.random(),
+//       quantity: 1234,
+//    },
+//    {
+//       name: 'Книги для детей',
+//       id: Math.random(),
+//       quantity: 1234,
+//    },
+//    {
+//       name: 'Наука и техника',
+//       id: Math.random(),
+//       quantity: 1234,
+//    },
+//    {
+//       name: 'Общество',
+//       id: Math.random(),
+//       quantity: 1234,
+//    },
+// ]
 
 function ClientLayout() {
-   const [isShowMenu, setIsShowMenu] = useState(false)
-   const showMenu = () => {
-      setIsShowMenu(!isShowMenu)
-   }
-   const func = () => {
-      console.log('Hello world')
-   }
    return (
       <Wrapper>
          <AppContainer
@@ -72,11 +63,7 @@ function ClientLayout() {
                   }
                   headerBottom={
                      <>
-                        <Jenre text="Жанры" onClick={showMenu}>
-                           {isShowMenu && (
-                              <GenreMenu data={arr} onSelect={func} />
-                           )}
-                        </Jenre>
+                        <Jenre text="Жанры" />
                         <Navbar />
                         <CominButtons />
                      </>
@@ -84,7 +71,7 @@ function ClientLayout() {
                />
             }
             footer={<Footer />}
-         ></AppContainer>
+         />
       </Wrapper>
    )
 }

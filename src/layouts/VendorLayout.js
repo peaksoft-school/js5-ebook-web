@@ -7,13 +7,15 @@ import { ReactComponent as MessageIcon } from '../assets/icons/header/message.sv
 import { ReactComponent as NotificatonIcon } from '../assets/icons/header/notification.svg'
 import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.svg'
 import CardItems from './CardItems'
-import Footer from './Footer'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
+import Footer from './Footer'
 
-function Vendor() {
+function Vendor({ children }) {
    return (
       <Wrapper>
          <AppContainer
+            primary
+            main={children}
             header={
                <Header
                   headerTop={
