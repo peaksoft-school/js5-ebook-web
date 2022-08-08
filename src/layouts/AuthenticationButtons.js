@@ -7,7 +7,12 @@ function AuthenticationButtons() {
          <Button variant="default" marginright="20px">
             Войти
          </Button>
-         <Button variant="default" background="#fff" color="#1C1C1C" border="1px solid #1C1C1C">
+         <Button
+            variant="default"
+            background="#fff"
+            color="#1C1C1C"
+            border="1px solid #1C1C1C"
+         >
             Регистрация
          </Button>
       </CominButtonsContainer>

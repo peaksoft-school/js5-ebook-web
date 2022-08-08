@@ -38,4 +38,5 @@ const StyledBox = styled(Box)((props) => ({
    justifyContent: 'center',
    flexDirection: 'column',
    alignItems: 'center',
+   outline: 'none',
 }))

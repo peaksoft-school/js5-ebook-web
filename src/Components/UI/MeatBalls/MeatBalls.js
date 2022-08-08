@@ -1,72 +1,87 @@
 import { useState } from 'react'
-import Button from '@mui/material/Button'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
+
+import styled from 'styled-components'
 
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBall.svg'
-import { styled } from '@mui/material'
-export default function MeatBalls({ options }) {
-   const [anchorEl, setAnchorEl] = useState(null)
-   const open = Boolean(anchorEl)
-   const handleClick = (event) => {
-      setAnchorEl(event.currentTarget)
+
+const MeatBalls = ({ options }) => {
+   const [state, setState] = useState(false)
+
+   const clickHandler = () => {
+      setState((prevstate) => !prevstate)
    }
 
-   const handleClose = () => {
-      setAnchorEl(null)
+   const clickCloseHandler = (option) => {
+      setState(false)
+      option.onClick(option)
    }
+
    return (
-      <Div>
-         <Button
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-         >
-            <img src={MeadBalls} alt="balls" />
-         </Button>
-         <MenuStyle
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-               'aria-labelledby': 'basic-button',
-            }}
-         >
-            {options.map((el) => (
-               <MenuItemStyles key={el.id} onClick={() => el.onClick(handleClose)}>
-                   
-                  {el.icon}
-                  {el.title}
-               </MenuItemStyles>
-            ))}
-         </MenuStyle>
-      </Div>
+      <DivBlock>
+         <Img onClick={clickHandler} src={MeadBalls} />
+         {state && (
+            <DivMeatBalls>
+               {options.map((option) => {
+                  return (
+                     <OptionMeadBalls
+                        key={option.id}
+                        onClick={() => clickCloseHandler(option)}
+                     >
+                        <Div>{option.icon}</Div>
+                        {option.title}
+                     </OptionMeadBalls>
+                  )
+               })}
+            </DivMeatBalls>
+         )}
+      </DivBlock>
    )
 }
 
-const MenuItemStyles = styled(MenuItem)`
+export default MeatBalls
+
+const DivBlock = styled.div`
    display: flex;
-   justify-content: space-around;
-   border-bottom: 1px solid gray;
-   height: 45px;
-   width: 150px;
-   margin-left: 10px;
+   flex-direction: column;
+   position: relative;
+   z-index: 10;
 `
 
-const Div = styled('div')`
-   margin-right: -28px;
+const Img = styled.img`
+   width: 3.75px;
+   height: 16px;
+   margin-left: 30px;
+   margin-top: 11px;
 `
-const MenuStyle = styled(Menu)`
-   .MuiMenu-paper {
-      margin-left: -140px;
-      margin-top: -5px;
-      border-radius: 0px;
-      width: 173px;
-      height: 96px;
-      box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.1);
-      overflow-y: hidden;
+
+const DivMeatBalls = styled.div`
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   position: absolute;
+   top: 100%;
+   right: 0;
+   background-color: white;
+   padding: 30px;
+`
+
+const OptionMeadBalls = styled.span`
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+   font-family: 'Open Sans';
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 18.2px;
+   color: #5d5d5d;
+   cursor: pointer;
+   padding: 10px 0px;
+   &:first-child {
+      border-bottom: 1px solid #c4c4c4;
+      margin-bottom: 5px;
    }
+`
+
+const Div = styled.div`
+   margin-right: 10px;
 `

@@ -26,7 +26,8 @@ const ButtonStyle = styled(MuiButton)`
    align-items: center;
    border-radius: 0px;
 
-   background: ${(props) => props.variant === 'default' ? '#1c1c1c' : '#f34901'};
+   background: ${(props) =>
+      props.variant === 'default' ? '#1c1c1c' : '#f34901'};
    padding: ${(props) => (props.variant === 'default' ? '10px 24px ' : ' ')};
    height: ${(props) => (props.variant === 'default' ? '42px' : ' 33px')};
    font-size: ${(props) => (props.variant === 'default' ? '16px' : '14px')};
@@ -44,4 +45,8 @@ const ButtonStyle = styled(MuiButton)`
    border: ${(props) => (props.border ? props.border : '')};
    border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '')};
    margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
+
+   width: ${(props) => props.width || ''};
+   height: ${(props) => props.height || ''};
+   padding: ${(props) => props.padding || ''};
 `

@@ -1,29 +1,16 @@
 import { styled } from '@mui/material'
 import { useState } from 'react'
 import Button from '../UI/Button/Button'
-export const ModalReject = () => {
+
+export const RejectRequest = () => {
    const [reasonReject, setReasonReject] = useState('')
 
    const reasonChangeHandler = (e) => {
       setReasonReject(e.target.value)
    }
- 
 
    async function sendReason() {
-      if (reasonReject.trim().length !== 0) {
-         const response = await fetch(
-            'https://aauth-89a27-default-rtdb.firebaseio.com/reason.json',
-            {
-               method: 'POST',
-               body: JSON.stringify(reasonReject),
-               headers: {
-                  'Content-Type': 'applications/json',
-               },
-            }
-         )
-         const data = await response.json()
-         console.log(data)
-      }
+      // POST
    }
    return (
       <RejectModal>
@@ -34,7 +21,7 @@ export const ModalReject = () => {
             value={reasonReject}
          />
          <DivButton>
-            <Button variant="default" onClick={sendReason}>
+            <Button variant="default" onClick={() => sendReason()}>
                Отправить
             </Button>
          </DivButton>
@@ -60,8 +47,7 @@ const Input = styled('textarea')`
    width: 483px;
    height: 108px;
    border: 1px solid #c4c4c4;
-   padding-top: 8px;
-   padding-left: 13px;
+   padding: 8px 13px;
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 400;

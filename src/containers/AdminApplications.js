@@ -1,62 +1,59 @@
-// import MeatBalls from '../admin-applications/AdminApplications'
-
-import ApplicationCard from '../Components/admin-applications/ApplicationCard'
+import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
 import { useState } from 'react'
 import Button from '../Components/UI/Button/Button'
-
-
-const seeMore = 8
+import ApplicationCard from '../Components/admin-applications/ApplicationCard'
+import { books } from './books'
 
 const AdminApplications = () => {
-   const [books, setBooks] = useState(seeMore)
-   // const [booksArray, setBooksArray] = useState(array)
+   const navigate = useNavigate()
+   const [allRequest, setAllLimits] = useState(0)
 
-   const [noSeeArr, setNoSeeArr] = useState(array)
+   const [noSeeArr, setNoSeeArr] = useState(0)
 
-   const moreBooks = () => {
-      setBooks(books + seeMore)
+   const [requestBooks, setRequestBooks] = useState(books)
+
+   const getRequsetBooks = () => {
+      // GET
+      setRequestBooks()
    }
 
-   const minusView = (id) => {
-      setNoSeeArr((prev) => {
-         return prev.filter((elem) => elem.id !== id)
-      })
+   const deatailRequest = (id) => {
+      navigate(`/requests/${id}`)
    }
-
    return (
       <Application>
          <TotalApplication>
-            <Total>Всего:{array.length}</Total>
+            <Total>Всего:{allRequest}</Total>
             <Total>
-               Непросмотренные: <MinusView>{noSeeArr.length}</MinusView>
+               Непросмотренные: <MinusView>{noSeeArr}</MinusView>
             </Total>
          </TotalApplication>
          <Books>
-            {array.slice(0, books).map((el) => (
+            {requestBooks.map((el) => (
                <ApplicationCard
                   key={el.id}
                   id={el.id}
-                  img={el.img}
+                  img={el.image}
                   date={el.date}
                   total={el.total}
                   name={el.name}
                   price={el.price}
-                  minusView={minusView}
+                  onClick={() => deatailRequest(el.id)}
                />
             ))}
-            {books < array.length && (
-               <SeeMore onClick={moreBooks}>Смотреть больше</SeeMore>
-            )}
+            <SeeMore onClick={getRequsetBooks}>Смотреть больше</SeeMore>
          </Books>
       </Application>
    )
 }
 
 export default AdminApplications
+
 const Application = styled('div')`
    display: flex;
    flex-direction: column;
+   padding-bottom: 50px;
 `
 const TotalApplication = styled('div')`
    display: flex;
@@ -71,7 +68,6 @@ const Books = styled('div')`
    justify-content: space-between;
    width: 954px;
    flex-wrap: wrap;
-
 `
 const Total = styled('p')`
    font-size: 16px;
@@ -91,6 +87,7 @@ const SeeMore = styled(Button)`
    font-style: normal;
    font-weight: 400;
    font-size: 14px;
-   margin-top: 80px;
+   margin-top: 50px;
+   /* margin-bottom: 50px; */
    color: gray;
 `
