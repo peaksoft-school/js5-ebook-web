@@ -10,10 +10,12 @@ import CardItems from './CardItems'
 import Footer from './Footer'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 
-function Vendor() {
+function Vendor({ children }) {
    return (
       <Wrapper>
          <AppContainer
+            primary
+            main={children}
             header={
                <Header
                   headerTop={
@@ -39,7 +41,7 @@ function Vendor() {
                />
             }
             footer={<Footer vendor />}
-         ></AppContainer>
+         />
       </Wrapper>
    )
 }

@@ -1,7 +1,7 @@
 import Menu from '@mui/material/Menu'
+import styled from '@emotion/styled'
 import MenuItem from '@mui/material/MenuItem'
 import meatballsIcon from '../../../assets/icons/MeatBalls/meatballsIcon.svg'
-import styled from '@emotion/styled'
 
 const NotificationMenu = ({
    anchorEl,
@@ -18,7 +18,7 @@ const NotificationMenu = ({
          onClose={handleClose}
       >
          <StyledTitle>
-            Ваши уведомления <img src={meatballsIcon} />
+            Ваши уведомления <img src={meatballsIcon} alt="" />
          </StyledTitle>
 
          {menuItems.map((item) => (
