@@ -46,16 +46,16 @@ const LayoutBreadcrumbs = styled(Breadcrumbs)`
    & .css-1wuw8dw-MuiBreadcrumbs-separator {
       margin-left: 6px;
       margin-right: 6px;
-      font-family: 'Inter';
+      font-family: 'Open Sans';
       font-style: normal;
-      font-weight: 800;
+      font-weight: 400;
       color: #c4c4c4;
       margin-top: 0;
       margin-bottom: 0;
    }
 `
 const Title = styled(Typography)`
-   font-family: 'Inter';
+   font-family: 'Open Sans';
    font-style: normal;
    font-weight: 400;
    font-size: ${(props) => props.fontSize || '14px'};
@@ -64,7 +64,7 @@ const Title = styled(Typography)`
    color: ${(props) => props.color || '#363636'};
 `
 const LinkStyle = styled(Link)`
-   font-family: 'Inter';
+   font-family: 'Open Sans';
    font-style: normal;
    font-weight: 400;
    font-size: ${(props) => props.fontSize || '14px'};

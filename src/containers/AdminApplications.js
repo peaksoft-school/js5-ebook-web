@@ -19,7 +19,7 @@ const AdminApplications = () => {
    }
 
    const deatailRequest = (id) => {
-      navigate(`/requests/${id}`)
+      navigate(`/request/${id}`)
    }
    return (
       <Application>

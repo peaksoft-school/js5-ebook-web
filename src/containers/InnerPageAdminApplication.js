@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useState } from 'react'
-import { useLocation, useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Button from '../Components/UI/Button/Button'
 import Modal from '../Components/UI/Modal'
 import { books } from './books'
@@ -9,15 +9,14 @@ import AcceptRequest from '../Components/admin-applications/AcceptRequest'
 import { TabInnerPage } from './TabInnerPage'
 import About from './About'
 import BookFragment from './BookFragment'
-import { ReactComponent as Book } from '../assets/images/book.svg'
+// import { ReactComponent as Book } from '../assets/images/book.svg'
 
 import Breadcrumbs from '../Components/UI/breadCrumbs/Breadcrumbs'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
-   // const navigate = useNavigate()
-   console.log(id)
    const selectedItem = books.find((item) => item.id === id)
+   console.log(id)
 
    const [rejectAplication, setRejectAplication] = useState(false)
    const [isModal, setIsModal] = useState(false)
@@ -38,27 +37,20 @@ export const InnerPageAdminApplication = () => {
       setIsModal(!isModal)
    }
    const pathTranslate = {
-      requests: 'Заявки',
-      name: 'hhh',
+      request: 'Заявки',
+      // name: 'hhh',
       [id]: selectedItem.name,
    }
 
    return (
       <>
-         <Breadcrumbs
-            // firstpath="Главная"
-            translate={pathTranslate}
-            // location={useLocation()}
-         />
+         <Breadcrumbs translate={pathTranslate} />
          <StyledMain>
             <StyledBookImageCont>
                <StyledBookImage src={selectedItem.image} />
                <StyledBookImage2>
                   {selectedItem.image2 && (
                      <img src={selectedItem.image2} alt="book" />
-                  )}
-                  {selectedItem.image3 && (
-                     <img src={selectedItem.image3} alt="book" />
                   )}
                </StyledBookImage2>
             </StyledBookImageCont>
@@ -131,7 +123,9 @@ export const InnerPageAdminApplication = () => {
             </div>
             <TabInnerPage about={<About />} bookFragment={<BookFragment />} />
             <FragmentDiv>
-               <Book />
+               {selectedItem.image3 && (
+                  <img src={selectedItem.image3} alt="book" />
+               )}
             </FragmentDiv>
          </StyledMain>
       </>
@@ -181,9 +175,10 @@ const StyledBookImage = styled.img`
 `
 const StyledMain = styled.div`
    display: flex;
-   justify-content: space-evenly;
+   justify-content: space-between;
    width: 1121px;
    flex-wrap: wrap;
+   padding-top: 72px;
 `
 const StyledInfo = styled.div`
    display: flex;
