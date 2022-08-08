@@ -7,7 +7,7 @@ import ClientLayout from '../layouts/ClientLayout'
 import { APP_ROLES } from '../utils/constants/constants'
 
 function AppRoutes() {
-   const user = useSelector((store) => store.authReducers.user)
+   const user = useSelector((store) => store.auth.user)
    const navigate = useNavigate()
    useEffect(() => {
       if (user) {

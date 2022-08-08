@@ -4,15 +4,15 @@ import { EBOOK_AUTH_INFO } from '../../utils/constants/constants'
 import { getFromLocaleStorage, saveToLocaleStorage } from '../../hooks/locale'
 
 function reloadGetLocale() {
-   const user = getFromLocaleStorage('user')
+   const user = getFromLocaleStorage(EBOOK_AUTH_INFO)
    if (user) {
       return user
    }
-   return false
+   return null
 }
 
 const initialState = {
-   user: reloadGetLocale() || '',
+   user: reloadGetLocale(),
    status: null,
    error: null,
 }
@@ -23,10 +23,10 @@ export const signUpVendor = createAsyncThunk(
       const result = await appFetch('/api/public/vendor/register', 'POST', data)
       const vendor = {
          id: result.id,
-         [EBOOK_AUTH_INFO]: result.jwt,
+         token: result.jwt,
          role: result.role,
       }
-      saveToLocaleStorage('user', vendor)
+      saveToLocaleStorage(EBOOK_AUTH_INFO, vendor)
       return vendor
    }
 )

@@ -33,12 +33,14 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
-   const user = useSelector((store) => store.authReducers.user)
+   const user = useSelector((store) => store.auth.user)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    useEffect(() => {
-      if (user.role === APP_ROLES.VENDOR) {
-         navigate('/vendor', { replace: true })
+      if (user) {
+         if (user.role === APP_ROLES.VENDOR) {
+            navigate('/vendor', { replace: true })
+         }
       }
    }, [user])
 
