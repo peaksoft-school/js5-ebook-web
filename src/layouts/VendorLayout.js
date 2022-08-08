@@ -39,7 +39,7 @@ function Vendor() {
                />
             }
             footer={<Footer vendor />}
-         ></AppContainer>
+         />
       </Wrapper>
    )
 }

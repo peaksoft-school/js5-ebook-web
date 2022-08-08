@@ -3,9 +3,7 @@ import styled from 'styled-components'
 function Header({ headerTop, headerBottom, admin }) {
    return (
       <HeaderContainer admin={admin}>
-         <HeaderTop>
-            {headerTop}
-         </HeaderTop>
+         <HeaderTop>{headerTop}</HeaderTop>
          <HeaderBottom>{headerBottom}</HeaderBottom>
       </HeaderContainer>
    )
