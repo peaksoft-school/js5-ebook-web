@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { styled } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import FileUploadButton from '../../Components/UI/uploadaudio/FileUploadButton'
 import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
@@ -13,7 +13,7 @@ import {
    InputWrapper,
    LabelStyle,
    SelectStyle,
-} from './PaperBook'
+} from './PaperBookForm'
 
 const audioBookInputValues = {
    bookname: '',
@@ -29,42 +29,47 @@ const audioBookInputValues = {
 }
 
 const allAudioRecordingValues = {
-   audioFragment: '',
-   audioRecording: '',
+   fragment: '',
+   mainRecording: '',
 }
 
-const AudioBook = ({ images, onClick }) => {
+const AudioBookForm = ({ images }) => {
    const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
    const [inputValues, setInputValues] = useState(audioBookInputValues)
+   const data = useSelector((state) => state)
+   console.log(data)
    // const [showSnackbar, setShowSnackbar] = useState(false)
 
    const dispatch = useDispatch()
 
-   const saveAudioValue = (audio, e) => {
+   const changeAudioValue = (audio, e) => {
       const { name } = e.target
       setAudioValues({ ...audioValues, [name]: URL.createObjectURL(audio) })
    }
 
-   const handleChange = (e) => {
+   const handleChangeInput = (e) => {
       const { name, value } = e.target
       setInputValues({ ...inputValues, [name]: value })
    }
 
-   const validateValues =
-      inputValues.bookname.length >= 1 &&
-      inputValues.author.length >= 1 &&
-      inputValues.genre.length >= 1 &&
-      inputValues.aboutbook.length >= 1 &&
-      inputValues.duration.length >= 1 &&
-      inputValues.minute.length >= 1 &&
-      inputValues.second.length >= 1 &&
-      inputValues.price.length >= 1
+   const isFormValid = () => {
+      const isInputsAreValid =
+         inputValues.bookname.length >= 1 &&
+         inputValues.author.length >= 1 &&
+         inputValues.genre.length >= 1 &&
+         inputValues.aboutbook.length >= 1 &&
+         inputValues.duration.length >= 1 &&
+         inputValues.minute.length >= 1 &&
+         inputValues.second.length >= 1 &&
+         inputValues.price.length >= 1
 
-   const validateImages = images.mainImg.length >= 1
-   const validateAudio = audioValues.audioFragment.length >= 1
+      const validateImages = images.mainImg.length >= 1
+      // const validateAudio = audioValues.fragment.length >= 1
+
+      return isInputsAreValid && validateImages
+   }
    const clickHandle = () => {
-      onClick()
-      if (validateValues && validateImages && validateAudio) {
+      if (isFormValid()) {
          dispatch(
             bookAction.addBook({
                ...inputValues,
@@ -74,21 +79,22 @@ const AudioBook = ({ images, onClick }) => {
             })
          )
          // setShowSnackbar(true)
-      }
+         dispatch(bookAction.deleteImage())
 
-      setInputValues({
-         bookname: '',
-         author: '',
-         genre: '',
-         aboutbook: '',
-         data: '',
-         duration: '',
-         minute: '',
-         second: '',
-         size: '',
-         price: '',
-         discount: '',
-      })
+         setInputValues({
+            bookname: '',
+            author: '',
+            genre: '',
+            aboutbook: '',
+            data: '',
+            duration: '',
+            minute: '',
+            second: '',
+            size: '',
+            price: '',
+            discount: '',
+         })
+      }
    }
 
    return (
@@ -100,11 +106,11 @@ const AudioBook = ({ images, onClick }) => {
                   Название книги <strong>*</strong>
                </LabelStyle>
                <InputText
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   id="bookname"
                   name="bookname"
                   placeholder="Напишите полное название книги"
-                  value={inputValues.namebook}
+                  value={inputValues.bookname}
                />
                <LabelStyle htmlFor="author">
                   ФИО автора <strong>*</strong>
@@ -112,7 +118,7 @@ const AudioBook = ({ images, onClick }) => {
                <InputText
                   id="author"
                   value={inputValues.author}
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   name="author"
                   placeholder="Напишите ФИО автора"
                />
@@ -123,12 +129,12 @@ const AudioBook = ({ images, onClick }) => {
                   id="genre"
                   value={inputValues.genre}
                   name="genre"
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   placeholder="Литература, роман, стихи..."
                />
                <Textarea
                   title="О книге"
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   placeholder="Напишите о книге"
                   value={inputValues.aboutbook}
                   name="aboutbook"
@@ -141,7 +147,7 @@ const AudioBook = ({ images, onClick }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectStyle onChange={handleChange} name="language">
+                     <SelectStyle onChange={handleChangeInput} name="language">
                         <option>Русский</option>
                         <option>Кыргызский</option>
                         <option>Английский</option>
@@ -154,7 +160,7 @@ const AudioBook = ({ images, onClick }) => {
                      <InputText
                         id="data"
                         name="data"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         textAlign="end"
                         placeholder="гг"
                         value={inputValues.data}
@@ -171,7 +177,7 @@ const AudioBook = ({ images, onClick }) => {
                      <InputText
                         id="duration"
                         name="duration"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         textAlign="end"
                         placeholder="ч"
                         value={inputValues.duration}
@@ -179,7 +185,7 @@ const AudioBook = ({ images, onClick }) => {
                   </InnerSelectDIv>
                   <TimeInputs>
                      <InputText
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         textAlign="end"
                         placeholder="мин"
                         name="minute"
@@ -188,7 +194,7 @@ const AudioBook = ({ images, onClick }) => {
                   </TimeInputs>
                   <TimeInputs>
                      <InputText
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         textAlign="end"
                         name="second"
                         placeholder="сек"
@@ -209,7 +215,7 @@ const AudioBook = ({ images, onClick }) => {
                         textAlign="end"
                         placeholder="сом"
                         name="price"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.price}
                      />
                   </PriceDiv>
@@ -219,7 +225,7 @@ const AudioBook = ({ images, onClick }) => {
                      </LabelStyle>
                      <InputText
                         id="discount"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         textAlign="end"
                         name="discount"
                         placeholder="%"
@@ -233,7 +239,7 @@ const AudioBook = ({ images, onClick }) => {
                         Загрузите фрагмент аудиозаписи <strong>*</strong>
                      </LabelStyle>
                      <FileUploadButton
-                        onChange={saveAudioValue}
+                        onChange={changeAudioValue}
                         title="Загрузите фрагмент аудиозаписи"
                         name="audioFragment"
                         accept="audio/mpeg"
@@ -246,7 +252,7 @@ const AudioBook = ({ images, onClick }) => {
                         Загрузите аудиозаписи <strong>*</strong>
                      </LabelStyle>
                      <FileUploadButton
-                        onChange={saveAudioValue}
+                        onChange={changeAudioValue}
                         title="Загрузите аудиозапись "
                         name="audioRecording"
                         accept="audio/mpeg"
@@ -265,7 +271,7 @@ const AudioBook = ({ images, onClick }) => {
       </>
    )
 }
-export default AudioBook
+export default AudioBookForm
 
 const SelectWrapper = styled('div')`
    width: 398px;

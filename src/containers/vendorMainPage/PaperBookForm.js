@@ -8,15 +8,15 @@ import InputText from '../../Components/UI/Inputs/InputText'
 import bookAction from '../../store/slices/addBookSlice'
 
 export const inputValuesForState = {
-   bookname: '',
+   name: '',
    author: '',
    genre: '',
-   publish: '',
-   aboutbook: '',
+   publishingHouse: '',
+   description: '',
    fragment: '',
-   size: '',
+   pageSize: '',
    price: '',
-   data: '',
+   yearOfIssue: '',
    discount: '',
 }
 const paperInputValues = {
@@ -24,70 +24,110 @@ const paperInputValues = {
    amount: '',
 }
 
-const PaperBookComponent = ({ images, onClick }) => {
-   const [inputValues, setinputValues] = useState(paperInputValues)
+const PaperBookForm = ({ images }) => {
+   const [inputValues, setInputValues] = useState(paperInputValues)
    const dispatch = useDispatch()
-   // const [showSnackbar, setShowSnackbar] = useState(false)
+   const [showSnackbar, setShowSnackbar] = useState(null)
 
-   const handleChange = (e) => {
+   const handleChangeInput = (e) => {
       const { name, value } = e.target
-      setinputValues({ ...inputValues, [name]: value })
+      setInputValues({ ...inputValues, [name]: value })
+   }
+   const isFormValid = () => {
+      const validateValues =
+         inputValues.name.length >= 1 &&
+         inputValues.author.length >= 1 &&
+         inputValues.genre.length >= 1 &&
+         inputValues.publishingHouse.length >= 1 &&
+         inputValues.aboutbook.length >= 1 &&
+         inputValues.fragment.length >= 1 &&
+         inputValues.size.length >= 1 &&
+         inputValues.price.length >= 1 &&
+         inputValues.discount.length >= 1
+
+      const validateImages = images.mainImg.length >= 1
+      return validateValues && validateImages
    }
 
-   const validateValues =
-      inputValues.bookname.length >= 1 &&
-      inputValues.author.length >= 1 &&
-      inputValues.genre.length >= 1 &&
-      inputValues.publish.length >= 1 &&
-      inputValues.aboutbook.length >= 1 &&
-      inputValues.fragment.length >= 1 &&
-      inputValues.size.length >= 1 &&
-      inputValues.price.length >= 1 &&
-      inputValues.discount.length >= 1
+   const postToBack = {
+      mainImage: 'string',
+      secondImage: 'string',
+      thirdImage: 'string',
+      name: 'sadyr63',
+      genreId: 203,
+      price: 10,
+      author: 'er',
+      description: 'lolk',
+      language: 'KYRGYZ',
+      yearOfIssue: 40,
+      discount: 0,
+      bestseller: true,
+      fragment: 'string',
+      pageSize: 0,
+      publishingHouse: 'string',
+      quantityOfBook: 0,
+   }
 
-   const validateImages = images.mainImg.length >= 1
+   const clickHandle = async () => {
+      const aiperi = {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+         },
+         body: JSON.stringify(postToBack),
+      }
+      const aktilek = await fetch(
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/book/save/paperBook',
+         aiperi
+      )
 
-   const clickHandle = () => {
-      onClick()
-      if (validateValues && validateImages) {
+      const aktilek2 = await aktilek.json()
+      console.log(aktilek2)
+      console.log(aiperi)
+
+      if (isFormValid()) {
          dispatch(
             bookAction.addBook({
                ...inputValues,
-               images,
+               ...images,
                typeBook: 'paperbook',
             })
          )
-         // setShowSnackbar(true)
+         dispatch(bookAction.deleteImage())
+         setShowSnackbar(true)
+
+         setInputValues({
+            name: '',
+            author: '',
+            genre: '',
+            publishingHouse: '',
+            description: '',
+            fragment: '',
+            pageSize: '',
+            price: '',
+            yearOfIssue: '',
+            discount: '',
+         })
+      } else {
+         setShowSnackbar(false)
       }
-      setinputValues({
-         bookname: '',
-         author: '',
-         genre: '',
-         publish: '',
-         aboutbook: '',
-         fragment: '',
-         size: '',
-         price: '',
-         data: '',
-         amount: '',
-         discount: '',
-      })
    }
 
    return (
       <>
-         {/* {showSnackbar && <Snackbar/>} */}
+         {showSnackbar && <h1>Uspeshno</h1>}
+         {showSnackbar === false && <h1>Oshibka</h1>}
          <InputWrapper onSubmit={clickHandle}>
             <InputDiv>
-               <LabelStyle htmlFor="bookname">
+               <LabelStyle htmlFor="name">
                   Название книги <strong>*</strong>
                </LabelStyle>
                <InputText
-                  value={inputValues.bookname}
-                  id="bookname"
-                  onChange={handleChange}
+                  value={inputValues.name}
+                  id="name"
+                  onChange={handleChangeInput}
                   placeholder="Напишите полное название книги"
-                  name="bookname"
+                  name="name"
                />
                <LabelStyle htmlFor="author">
                   ФИО автора <strong>*</strong>
@@ -96,7 +136,7 @@ const PaperBookComponent = ({ images, onClick }) => {
                   placeholder="Напишите ФИО автора"
                   value={inputValues.author}
                   id="author"
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   name="author"
                />
                <LabelStyle htmlFor="genre">
@@ -105,29 +145,29 @@ const PaperBookComponent = ({ images, onClick }) => {
                <InputText
                   placeholder="Литература, роман, стихи..."
                   value={inputValues.genre}
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   name="genre"
                />
-               <LabelStyle htmlFor="publish">
+               <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
                </LabelStyle>
                <InputText
                   placeholder="Напишите название издательства"
-                  value={inputValues.publish}
-                  onChange={handleChange}
-                  name="publish"
-                  id="publish"
+                  value={inputValues.publishingHouse}
+                  onChange={handleChangeInput}
+                  name="publishingHouse"
+                  id="publishingHouse"
                />
                <Textarea
-                  onChange={handleChange}
-                  value={inputValues.aboutbook}
-                  name="aboutbook"
+                  onChange={handleChangeInput}
+                  value={inputValues.description}
+                  name="description"
                   title="О книге"
                   placeholder="Напишите о книге"
                   maxLength="1234"
                />
                <Textarea
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   value={inputValues.fragment}
                   name="fragment"
                   title="Фрагмент книги"
@@ -141,28 +181,28 @@ const PaperBookComponent = ({ images, onClick }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectStyle onChange={handleChange} name="language">
+                     <SelectStyle onChange={handleChangeInput} name="language">
                         <option>Русский</option>
                         <option>Кыргызский</option>
                         <option>Английский</option>
                      </SelectStyle>
-                     <LabelStyle htmlFor="size">
+                     <LabelStyle htmlFor="pageSize">
                         Объем <strong>*</strong>
                      </LabelStyle>
                      <InputText
                         textAlign="end"
                         placeholder="стр."
-                        onChange={handleChange}
-                        value={inputValues.size}
-                        name="size"
-                        id="size"
+                        onChange={handleChangeInput}
+                        value={inputValues.pageSize}
+                        name="pageSize"
+                        id="pageSize"
                      />
                      <LabelStyle htmlFor="price">
                         Стоимость <strong>*</strong>
                      </LabelStyle>
                      <InputText
                         id="price"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.price}
                         textAlign="end"
                         placeholder="сом"
@@ -173,23 +213,23 @@ const PaperBookComponent = ({ images, onClick }) => {
                      </Bestssler>
                   </SelectDiv>
                   <SelectDiv>
-                     <LabelStyle htmlFor="data">
+                     <LabelStyle htmlFor="yearOfIssue">
                         Год выпуска <strong>*</strong>
                      </LabelStyle>
                      <InputText
-                        id="data"
-                        onChange={handleChange}
-                        value={inputValues.data}
+                        id="yearOfIssue"
+                        onChange={handleChangeInput}
+                        value={inputValues.yearOfIssue}
                         textAlign="end"
                         placeholder="гг"
-                        name="data"
+                        name="yearOfIssue"
                      />
                      <LabelStyle htmlFor="amount">
                         Кол-во <strong>*</strong>
                      </LabelStyle>
                      <InputText
                         data="amount"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.amount}
                         textAlign="end"
                         placeholder="шт"
@@ -200,7 +240,7 @@ const PaperBookComponent = ({ images, onClick }) => {
                      </LabelStyle>
                      <InputText
                         id="discount"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.discount}
                         textAlign="end"
                         placeholder="%"
@@ -218,7 +258,7 @@ const PaperBookComponent = ({ images, onClick }) => {
       </>
    )
 }
-export default PaperBookComponent
+export default PaperBookForm
 
 export const InputWrapper = styled('form')`
    display: flex;

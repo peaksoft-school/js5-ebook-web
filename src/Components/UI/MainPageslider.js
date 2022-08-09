@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react'
 import { styled } from '@mui/material'
-import AboutSlide from 'react-slick'
+import AboutSlider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
@@ -37,7 +37,7 @@ function MainPageSlider({ images }) {
       lazyLoad: false,
       speed: 900,
       autoplay: true,
-      autoplaySpeed: 5000,
+      autoplaySpeed: 3000,
       slidesToShow: 3,
       tabindex: -1,
       centerMode: true,
@@ -49,13 +49,16 @@ function MainPageSlider({ images }) {
 
    return (
       <Container className="slider">
-         <AboutSlide {...settings}>
+         <AboutSlider {...settings}>
             {images.map((img, idx) => (
-               <div className={idx === imageIndex ? 'activeSlide' : 'slide'}>
+               <div
+                  key={img.id}
+                  className={idx === imageIndex ? 'activeSlide' : 'slide'}
+               >
                   <Image src={img} alt={img} />
                </div>
             ))}
-         </AboutSlide>
+         </AboutSlider>
       </Container>
    )
 }

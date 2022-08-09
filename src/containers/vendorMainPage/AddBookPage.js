@@ -1,10 +1,11 @@
 import { styled } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import ImagePicker from '../../Components/UI/imagePicker/imagePicker'
 import RadioButton from '../../Components/UI/RadioButton'
-import PaperBook from './PaperBook'
-import AudioBook from './AudioBook'
-import ElectronicBook from './ElectronicBook'
+import PaperBook from './PaperBookForm'
+import AudioBook from './AudioBookForm'
+import ElectronicBook from './ElectronicBookForm'
 
 const allImages = {
    mainImg: '',
@@ -12,36 +13,25 @@ const allImages = {
    thirdImg: '',
 }
 
-const AddAbook = () => {
+const AddBookPage = () => {
    const [images, setImages] = useState(allImages)
    const [radio, setRadio] = useState('Бумажная')
-   const [deleteImagePicker, setDeleteImagePicker] = useState(false)
+   const { deleteImage } = useSelector((state) => state.addbook)
 
    const saveImageValue = (imageFile, e) => {
       const { name } = e.target
       setImages({ ...images, [name]: URL.createObjectURL(imageFile) })
    }
 
-   useEffect(() => {
-      setDeleteImagePicker(true)
-   }, [radio])
-
-   const deleteImages = () => {
-      setDeleteImagePicker(true)
-   }
-   useEffect(() => {
-      setDeleteImagePicker(false)
-   }, [deleteImagePicker])
-
    let bookComponents
    if (radio === 'Бумажная') {
-      bookComponents = <PaperBook onClick={deleteImages} images={images} />
+      bookComponents = <PaperBook images={images} />
    }
    if (radio === 'Аудиокнига') {
-      bookComponents = <AudioBook onClick={deleteImages} images={images} />
+      bookComponents = <AudioBook images={images} />
    }
    if (radio === 'Электронная книга') {
-      bookComponents = <ElectronicBook onClick={deleteImages} images={images} />
+      bookComponents = <ElectronicBook images={images} />
    }
 
    return (
@@ -54,7 +44,7 @@ const AddAbook = () => {
                <ImagesPickerStyle>
                   <div>
                      <ImagePicker
-                        onDelete={deleteImagePicker}
+                        onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="mainImg"
                         id="e1"
@@ -63,7 +53,7 @@ const AddAbook = () => {
                   </div>
                   <div>
                      <ImagePicker
-                        onDelete={deleteImagePicker}
+                        onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="secondImg"
                         id="e2"
@@ -72,7 +62,7 @@ const AddAbook = () => {
                   </div>
                   <div>
                      <ImagePicker
-                        onDelete={deleteImagePicker}
+                        onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="thirdImg"
                         id="e3"
@@ -136,7 +126,7 @@ const AddAbook = () => {
       </ContainerDiv>
    )
 }
-export default AddAbook
+export default AddBookPage
 
 const ContainerDiv = styled('div')`
    width: 100%;
@@ -153,7 +143,7 @@ const ThreeImagesDiv = styled('p')`
    font-family: 'Open Sans';
    color: #969696;
 `
-const WrapImages = styled('div')`
+export const WrapImages = styled('div')`
    display: flex;
    justify-content: space-between;
    flex-wrap: wrap;

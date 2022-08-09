@@ -28,7 +28,7 @@ function ImagePicker({ onChange, onDelete, file, id, name }) {
       onDelete()
    }
    useEffect(() => {
-      if (onDelete) {
+      if (onDelete || !onDelete) {
          setIcon('')
          filesRef.current.value = ''
       }

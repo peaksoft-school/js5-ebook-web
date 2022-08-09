@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
    bookContainer: [],
+   deleteImage: false,
 }
 export const addBookSlice = createSlice({
    name: 'addbook',
@@ -57,6 +58,9 @@ export const addBookSlice = createSlice({
                images: values.images,
             })
          }
+      },
+      deleteImage(state) {
+         state.deleteImage = !state.deleteImage
       },
    },
 })

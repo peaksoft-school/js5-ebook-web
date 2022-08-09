@@ -16,61 +16,66 @@ import {
    SelectDiv,
    SelectStyle,
    SelectWrapper,
-} from './PaperBook'
+} from './PaperBookForm'
 
-const ElectronicBookComponent = ({ images, onClick }) => {
+const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
-   const [inputValues, setinputValues] = useState(inputValuesForState)
+   const [inputValues, setInputValues] = useState(inputValuesForState)
    // const [showSnackbar, setShowSnackbar] = useState(false)
    const dispatch = useDispatch()
 
-   const saveAudioValue = (pdf) => {
-      setPdfFile(URL.createObjectURL(pdf))
+   const changePdfFileValue = (pdf) => {
+      setPdfFile(pdf)
    }
 
-   const handleChange = (e) => {
+   const handleChangeInput = (e) => {
       const valueEvent = e.target
-      setinputValues({ ...inputValues, [valueEvent.name]: valueEvent.value })
+      setInputValues({ ...inputValues, [valueEvent.name]: valueEvent.value })
    }
 
-   const validateValues =
-      inputValues.bookname.length >= 1 &&
-      inputValues.author.length >= 1 &&
-      inputValues.genre.length >= 1 &&
-      inputValues.publish.length >= 1 &&
-      inputValues.aboutbook.length >= 1 &&
-      inputValues.fragment.length >= 1 &&
-      inputValues.size.length >= 1 &&
-      inputValues.price.length >= 1 &&
-      inputValues.discount.length >= 1
+   const isFormValid = () => {
+      const validateValues =
+         inputValues.bookname.length >= 1 &&
+         inputValues.author.length >= 1 &&
+         inputValues.genre.length >= 1 &&
+         inputValues.publish.length >= 1 &&
+         inputValues.aboutbook.length >= 1 &&
+         inputValues.fragment.length >= 1 &&
+         inputValues.size.length >= 1 &&
+         inputValues.price.length >= 1 &&
+         inputValues.discount.length >= 1
 
-   const validateImages = images.mainImg.length >= 1
+      const validateImages = images.mainImg.length >= 1
+      return validateValues && validateImages
+   }
    const clickHandle = () => {
-      onClick()
-      if (validateValues && validateImages) {
+      if (isFormValid()) {
          dispatch(
             bookAction.addBook({
                ...inputValues,
                images,
-               typeBook: 'electronicbook',
+               typeBook: 'paperbook',
             })
          )
+         dispatch(bookAction.deleteImage())
          // setShowSnackbar(true)
-      }
 
-      setinputValues({
-         bookname: '',
-         author: '',
-         genre: '',
-         publish: '',
-         aboutbook: '',
-         fragment: '',
-         size: '',
-         price: '',
-         data: '',
-         amount: '',
-         discount: '',
-      })
+         setInputValues({
+            bookname: '',
+            author: '',
+            genre: '',
+            publish: '',
+            aboutbook: '',
+            fragment: '',
+            size: '',
+            price: '',
+            data: '',
+            amount: '',
+            discount: '',
+         })
+      } else {
+         // setShowSnackbar(false)
+      }
    }
 
    return (
@@ -82,7 +87,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                   Название книги <strong>*</strong>
                </LabelStyle>
                <InputText
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   id="bookname"
                   name="bookname"
                   placeholder="Напишите полное название книги"
@@ -94,7 +99,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                <InputText
                   id="author"
                   value={inputValues.author}
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   name="author"
                   placeholder="Напишите ФИО автора"
                />
@@ -105,7 +110,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                   id="genre"
                   value={inputValues.genre}
                   name="genre"
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   placeholder="Литература, роман, стихи..."
                />
                <LabelStyle htmlFor="publish">
@@ -114,13 +119,13 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                <InputText
                   placeholder="Напишите название издательства"
                   value={inputValues.publish}
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   name="publish"
                   id="publish"
                />
                <Textarea
                   title="О книге"
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   placeholder="Напишите о книге"
                   name="aboutbook"
                   maxLength="1234"
@@ -128,7 +133,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                />
                <Textarea
                   title="Фрагмент книги"
-                  onChange={handleChange}
+                  onChange={handleChangeInput}
                   placeholder="Напишите фрагмент книги"
                   name="fragment"
                   maxLength="9234"
@@ -141,7 +146,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectStyle onChange={handleChange} name="language">
+                     <SelectStyle onChange={handleChangeInput} name="language">
                         <option>Русский</option>
                         <option>Кыргызский</option>
                         <option>Английский</option>
@@ -152,7 +157,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                      <InputText
                         textAlign="end"
                         placeholder="стр."
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.size}
                         name="size"
                         id="size"
@@ -162,7 +167,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                      </LabelStyle>
                      <InputText
                         id="price"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.price}
                         textAlign="end"
                         placeholder="сом"
@@ -175,7 +180,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                      </LabelStyle>
                      <InputText
                         id="data"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.data}
                         textAlign="end"
                         placeholder="гг"
@@ -189,7 +194,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                      </LabelStyle>
                      <InputText
                         id="discount"
-                        onChange={handleChange}
+                        onChange={handleChangeInput}
                         value={inputValues.discount}
                         textAlign="end"
                         placeholder="%"
@@ -202,7 +207,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
                      Загрузите PDF <strong>*</strong>
                   </LabelStyle>
                   <FileUploadButton
-                     onChange={saveAudioValue}
+                     onChange={changePdfFileValue}
                      value={pdfValue}
                      title="Загрузите книгу *"
                      accept="application/pdf"
@@ -220,7 +225,7 @@ const ElectronicBookComponent = ({ images, onClick }) => {
       </>
    )
 }
-export default ElectronicBookComponent
+export default ElectronicBookForm
 
 const Wrapper = styled('div')`
    width: 398px;
