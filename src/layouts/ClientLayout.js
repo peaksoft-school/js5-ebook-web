@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router'
 import Header from './Header'
 import AppContainer, { Wrapper } from './AppContainer'
 import Logotype from './Logotype'
@@ -11,39 +12,12 @@ import Footer from './Footer'
 import CardItems from './CardItems'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 
-// const arr = [
-//    {
-//       name: 'Литература',
-//       id: Math.random(),
-//       quantity: 1234,
-//    },
-//    {
-//       name: 'Художественная литература ауауfjrgrgjrjgri',
-//       id: Math.random(),
-//       quantity: 1234,
-//    },
-//    {
-//       name: 'Книги для детей',
-//       id: Math.random(),
-//       quantity: 1234,
-//    },
-//    {
-//       name: 'Наука и техника',
-//       id: Math.random(),
-//       quantity: 1234,
-//    },
-//    {
-//       name: 'Общество',
-//       id: Math.random(),
-//       quantity: 1234,
-//    },
-// ]
-
 function ClientLayout() {
    return (
       <Wrapper>
          <AppContainer
             primary
+            main={<Outlet />}
             header={
                <Header
                   headerTop={
