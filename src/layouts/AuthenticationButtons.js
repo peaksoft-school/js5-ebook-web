@@ -5,6 +5,7 @@ import Button from '../Components/UI/Button/Button'
 import Modal from '../Components/UI/Modal'
 import SignUp from '../Components/signUp/SignUp'
 import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg'
+import { APP_ROLES } from '../utils/constants/constants'
 
 function AuthenticationButtons() {
    const [activeBtn, setActivBtn] = useState(false)
@@ -13,7 +14,7 @@ function AuthenticationButtons() {
    const user = useSelector((store) => store.auth.user)
    useEffect(() => {
       if (user) {
-         if (user.role === 'USER') {
+         if (user.role === APP_ROLES.USER) {
             setUserActive(true)
          } else {
             setUserActive(false)
