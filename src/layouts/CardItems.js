@@ -7,7 +7,6 @@ function CardItems({
    children,
    flexWrap,
    flexDirection,
-   marginRight,
    padding,
 }) {
    return (

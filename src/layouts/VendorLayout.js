@@ -9,13 +9,14 @@ import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.
 import CardItems from './CardItems'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 import Footer from './Footer'
+import { UserInnerPage } from '../containers/UserInnerPage/UserInnerPage'
 
-function Vendor({ children }) {
+function Vendor() {
    return (
       <Wrapper>
          <AppContainer
             primary
-            main={children}
+            main={<UserInnerPage />}
             header={
                <Header
                   headerTop={
