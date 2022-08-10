@@ -3,7 +3,18 @@ import { InputContainer, Input } from './InputStyle'
 
 const InputText = React.forwardRef(
    (
-      { placeholder, value, name, onChange, width, id, padding, textAlign },
+      {
+         placeholder,
+         value,
+         onChange,
+         id,
+         type,
+         pattern,
+         error,
+         onBlur,
+         onFocus,
+         ...props
+      },
       ref
    ) => {
       const [isFocus, setIsFocus] = useState(false)
@@ -12,20 +23,27 @@ const InputText = React.forwardRef(
          setIsFocus(!isFocus)
       }
 
+      const onBlurHandleChange = () => {
+         setIsFocus(false)
+         if (onBlur) {
+            onBlur()
+         }
+      }
+
       return (
-         <InputContainer focus={isFocus} width={width}>
+         <InputContainer focus={isFocus} error={error}>
             <Input
-               padding={padding}
-               textAlign={textAlign}
                placeholder={placeholder}
-               type="text"
-               id={id}
-               name={name}
+               type={type || 'text'}
                onFocus={onFocusHandleChange}
-               onBlur={onFocusHandleChange}
+               onBlur={onBlurHandleChange}
                ref={ref}
                value={value}
                onChange={onChange}
+               id={id}
+               pattern={pattern}
+               error={error}
+               {...props}
             />
          </InputContainer>
       )

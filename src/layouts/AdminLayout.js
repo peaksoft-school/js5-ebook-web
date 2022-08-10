@@ -21,13 +21,13 @@ function AdminLayout() {
                         <IconButton
                            icon={<AdminIcon />}
                            label="Администратор"
-                        ></IconButton>
+                        />
                      </CardItems>
                   </>
                }
             />
          }
-         sidebar={<SideDrawer></SideDrawer>}
+         sidebar={<SideDrawer />}
       />
    )
 }

@@ -8,14 +8,16 @@ import { ReactComponent as NotificatonIcon } from '../assets/icons/header/notifi
 import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.svg'
 import CardItems from './CardItems'
 import Footer from './Footer'
+// import Outlet from 'react-router-dom'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
+import AddBookPage from '../containers/vendorMainPage/AddBookPage'
 
 function Vendor({ children }) {
    return (
       <Wrapper>
          <AppContainer
             primary
-            main={children}
+            main={<AddBookPage />}
             header={
                <Header
                   headerTop={

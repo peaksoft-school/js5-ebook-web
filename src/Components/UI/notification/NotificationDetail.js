@@ -1,6 +1,6 @@
+import styled from '@emotion/styled'
 import { Menu } from '@mui/material'
 import backArrowIcon from '../../../assets/icons/backArrow.svg'
-import styled from '@emotion/styled'
 import {
    StyledMenuItem,
    StyledDate,
@@ -15,7 +15,7 @@ export const NotificationDetail = ({ onClick, anchorEl, item }) => {
    return (
       <StyledMenu id="basic-menu" anchorEl={anchorEl} open={onClick}>
          <StyledTitle onClick={onClick}>
-            <img src={backArrowIcon} /> Назад
+            <img src={backArrowIcon} alt="" /> Назад
          </StyledTitle>
          <StyledMenuItem key={item.id}>
             <StyledItem>

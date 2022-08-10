@@ -1,5 +1,5 @@
-import NotificationMenu from './NotificationMenu'
 import { useState } from 'react'
+import NotificationMenu from './NotificationMenu'
 import { NotificationDetail } from './NotificationDetail'
 
 const Notification = ({ open, anchorEl, handleClose, menuItems }) => {
