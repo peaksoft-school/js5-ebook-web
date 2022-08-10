@@ -7,8 +7,8 @@ function CardItems({
    children,
    flexWrap,
    flexDirection,
-   marginRight,
    padding,
+   marginRight,
 }) {
    return (
       <CardItemsBlock
