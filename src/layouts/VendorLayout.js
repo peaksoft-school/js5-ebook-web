@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router'
 import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
@@ -10,12 +11,12 @@ import CardItems from './CardItems'
 import Footer from './Footer'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 
-function Vendor({ children }) {
+function Vendor() {
    return (
       <Wrapper>
          <AppContainer
             primary
-            main={children}
+            main={<Outlet />}
             header={
                <Header
                   headerTop={
