@@ -2,12 +2,12 @@ import { useDispatch, useSelector } from 'react-redux/es/exports'
 import InputMask from 'react-input-mask'
 import { useNavigate } from 'react-router'
 import { useState, useEffect } from 'react'
-import InputText from '../Inputs/InputText'
-import PasswordInput from '../Inputs/PaswordInput'
-import Validation from './Validation'
+import InputText from '../UI/Inputs/InputText'
+import PasswordInput from '../UI/Inputs/PaswordInput'
+import Validation from '../../hooks/Validation'
 import * as Sign from './SignStyles'
-import { signUpVendor } from '../../../store/slices/authSlices'
-import { APP_ROLES } from '../../../utils/constants/constants'
+import { signUpVendor } from '../../store/slices/authSlices'
+import { APP_ROLES } from '../../utils/constants/constants'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
