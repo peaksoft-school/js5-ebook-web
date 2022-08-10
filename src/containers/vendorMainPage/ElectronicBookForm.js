@@ -59,20 +59,6 @@ const ElectronicBookForm = ({ images }) => {
          )
          dispatch(bookAction.deleteImage())
          // setShowSnackbar(true)
-
-         setInputValues({
-            bookname: '',
-            author: '',
-            genre: '',
-            publish: '',
-            aboutbook: '',
-            fragment: '',
-            size: '',
-            price: '',
-            data: '',
-            amount: '',
-            discount: '',
-         })
       } else {
          // setShowSnackbar(false)
       }

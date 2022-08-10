@@ -96,18 +96,18 @@ const PaperBookForm = ({ images }) => {
          dispatch(bookAction.deleteImage())
          setShowSnackbar(true)
 
-         setInputValues({
-            name: '',
-            author: '',
-            genre: '',
-            publishingHouse: '',
-            description: '',
-            fragment: '',
-            pageSize: '',
-            price: '',
-            yearOfIssue: '',
-            discount: '',
-         })
+         // setInputValues({
+         //    name: '',
+         //    author: '',
+         //    genre: '',
+         //    publishingHouse: '',
+         //    description: '',
+         //    fragment: '',
+         //    pageSize: '',
+         //    price: '',
+         //    yearOfIssue: '',
+         //    discount: '',
+         // })
       } else {
          setShowSnackbar(false)
       }

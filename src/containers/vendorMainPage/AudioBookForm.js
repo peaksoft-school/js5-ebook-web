@@ -81,19 +81,19 @@ const AudioBookForm = ({ images }) => {
          // setShowSnackbar(true)
          dispatch(bookAction.deleteImage())
 
-         setInputValues({
-            bookname: '',
-            author: '',
-            genre: '',
-            aboutbook: '',
-            data: '',
-            duration: '',
-            minute: '',
-            second: '',
-            size: '',
-            price: '',
-            discount: '',
-         })
+         // setInputValues({
+         //    bookname: '',
+         //    author: '',
+         //    genre: '',
+         //    aboutbook: '',
+         //    data: '',
+         //    duration: '',
+         //    minute: '',
+         //    second: '',
+         //    size: '',
+         //    price: '',
+         //    discount: '',
+         // })
       }
    }
 
