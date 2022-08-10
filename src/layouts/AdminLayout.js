@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router'
 import AppContainer from './AppContainer'
 import Header from './Header'
 import { ReactComponent as AdminIcon } from '../assets/icons/header/admin.svg'
@@ -9,6 +10,8 @@ import SearchInput from '../Components/UI/Inputs/SearchInput'
 function AdminLayout() {
    return (
       <AppContainer
+         primary
+         main={<Outlet />}
          header={
             <Header
                admin
