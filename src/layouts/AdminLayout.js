@@ -28,7 +28,10 @@ function AdminLayout({ children }) {
             />
          }
          sidebar={<SideDrawer />}
+<<<<<<< HEAD
          main={children}
+=======
+>>>>>>> 7ab4d325a79de30deaf003ce9bcbc53f3401de84
       />
    )
 }

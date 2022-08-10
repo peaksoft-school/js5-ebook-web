@@ -1,21 +1,20 @@
-import { Routes, Route } from 'react-router-dom'
 
-// import Breadcrumbs from './Components/UI/breadCrumbs/Breadcrumbs'
-// import Adminlayout from './layouts/AdminLayout'
+import { Routes, Route } from 'react-router-dom'
 import AdminApplications from './containers/AdminApplications'
 
 import { InnerPageAdminApplication } from './containers/InnerPageAdminApplication'
+=======
+import AppRoutes from './routes/AppRoutes'
+>>>>>>> 7ab4d325a79de30deaf003ce9bcbc53f3401de84
 
 function App() {
    return (
       <div className="App">
-         <Routes>
-            <Route path="/" element={<AdminApplications />} />
-            <Route
-               path="/request/:id"
-               element={<InnerPageAdminApplication />}
-            />
-         </Routes>
+
+         
+=======
+         <AppRoutes />
+>>>>>>> 7ab4d325a79de30deaf003ce9bcbc53f3401de84
       </div>
    )
 }
