@@ -1,13 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux/es/exports'
+import { useDispatch } from 'react-redux/es/exports'
 import InputMask from 'react-input-mask'
-import { useNavigate } from 'react-router'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
 import Validation from '../../hooks/Validation'
 import * as Sign from './SignStyles'
 import { signUpVendor } from '../../store/slices/authSlices'
-import { APP_ROLES } from '../../utils/constants/constants'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
@@ -33,17 +31,7 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
-   const user = useSelector((store) => store.auth.user)
    const dispatch = useDispatch()
-   const navigate = useNavigate()
-   useEffect(() => {
-      if (user) {
-         if (user.role === APP_ROLES.VENDOR) {
-            navigate('/vendor', { replace: true })
-         }
-      }
-   }, [user])
-
    const {
       value: name,
       inputChange: onChangeInputName,

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState } from 'react'
 import Slider from 'react-slick'
 import { styled } from '@mui/material'
@@ -5,16 +6,20 @@ import Vector from '../../assets/Vector.jpg'
 import Vector2 from '../../assets/Vector2.png'
 
 function MainPageSlider({ images }) {
+   // eslint-disable-next-line react/no-unstable-nested-components
    const NextArrow = ({ onClick }) => {
       return (
+         // eslint-disable-next-line jsx-a11y/click-events-have-key-events
          <div className="arrow next" onClick={onClick}>
             <img src={Vector} alt="book Vector" />
          </div>
       )
    }
 
+   // eslint-disable-next-line react/no-unstable-nested-components
    const PrevArrow = ({ onClick }) => {
       return (
+         // eslint-disable-next-line jsx-a11y/click-events-have-key-events
          <div className="arrow prev" onClick={onClick}>
             <img src={Vector2} alt="book Vector2  " />
          </div>
