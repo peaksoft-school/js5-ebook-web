@@ -35,7 +35,6 @@ export const signUpClient = createAsyncThunk(
    'SignSlices/signUpClient',
    async (data) => {
       const result = await appFetch('/api/public/user/register', 'POST', data)
-      console.log(result)
       const user = {
          id: result.id,
          token: result.jwt,

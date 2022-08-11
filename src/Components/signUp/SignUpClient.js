@@ -9,12 +9,12 @@ import Button from '../UI/Button/Button'
 import Validation from '../../hooks/Validation'
 import { signUpClient } from '../../store/slices/authSlices'
 
-function SignUpClient({ state }) {
+function SignUpClient({ toggleSignUpVendor }) {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
    const dispatch = useDispatch()
    const onClickVendor = () => {
-      state(true)
+      toggleSignUpVendor(true)
    }
    const {
       value: name,

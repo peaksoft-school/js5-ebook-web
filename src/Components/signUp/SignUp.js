@@ -20,7 +20,11 @@ function SignUp({ activeBtn }) {
          <Sign.ButtonIn onClick={signUpClickHandler} activeBtn={!isShowUp}>
             Регистрация
          </Sign.ButtonIn>
-         {isSignUp ? <SignUpVendor /> : <SignUpClient state={setIsSignUp} />}
+         {isSignUp ? (
+            <SignUpVendor />
+         ) : (
+            <SignUpClient toggleSignUpVendor={setIsSignUp} />
+         )}
       </Sign.SignBlock>
    )
 }
