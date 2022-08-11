@@ -42,7 +42,7 @@ export const ButtonIn = ({ children, activeBtn, ...props }) => {
          coloractive={activeBtn ? '#292929' : '#969696'}
          width="40%"
          fontSize="20px"
-         fontWeight="400"
+         fontWeight="600"
          {...props}
       >
          {children}

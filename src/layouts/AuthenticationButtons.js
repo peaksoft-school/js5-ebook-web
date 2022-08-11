@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
+import { MenuItem } from '@mui/material'
+import styled from '@emotion/styled'
 import Button from '../Components/UI/Button/Button'
 import Modal from '../Components/UI/Modal'
 import SignUp from '../Components/signUp/SignUp'
 import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg'
 import { APP_ROLES } from '../utils/constants/constants'
+import PopUp from '../Components/UI/popup'
 
 function AuthenticationButtons() {
    const [activeBtn, setActivBtn] = useState(false)
    const [isShowModal, setIsShowModal] = useState(false)
    const [userActive, setUserActive] = useState(false)
+   const [anchorEl, setAnchorEl] = useState(null)
+   const open = Boolean(anchorEl)
    const user = useSelector((store) => store.auth.user)
    useEffect(() => {
       if (user) {
@@ -32,14 +36,23 @@ function AuthenticationButtons() {
    const closeModal = () => {
       setIsShowModal(false)
    }
-   const onClickProfileHandler = () => {
-      alert('Hello world')
+   const onClickProfileHandler = (e) => {
+      setAnchorEl(e.currentTarget)
+   }
+   const onCloseProfileHandler = () => {
+      setAnchorEl(null)
    }
    const showUser = userActive ? (
-      <Profile onClick={onClickProfileHandler}>
-         <ProfileIcon />
-         <PofileSpan>{user.firstName}</PofileSpan>
-      </Profile>
+      <>
+         <Profile onClick={onClickProfileHandler}>
+            <ProfileIcon />
+            <PofileSpan>{user.firstName}</PofileSpan>
+         </Profile>
+         <PopUp open={open} onClose={onCloseProfileHandler} anchorEl={anchorEl}>
+            <MenuItem>Профиль</MenuItem>
+            <MenuItem>Выйти</MenuItem>
+         </PopUp>
+      </>
    ) : (
       <>
          <Modal
