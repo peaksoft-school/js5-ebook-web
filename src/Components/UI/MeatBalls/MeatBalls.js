@@ -1,6 +1,6 @@
+import styled from 'styled-components'
 import { useState } from 'react'
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBalls.jpg'
-import styled from 'styled-components'
 
 const Meatballs = ({ options }) => {
    const [state, setState] = useState(false)
@@ -66,7 +66,7 @@ const OptionMeadBalls = styled.span`
    display: flex;
    align-items: center;
    justify-content: flex-start;
-   font-family: "Open Sans";
+   font-family: 'Open Sans';
    font-weight: 400;
    font-size: 16px;
    line-height: 18.2px;

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import Button from '../Button/Button'
+import Button from '../UI/Button/Button'
 
 export const ButtonSubmit = ({ children, type, margintop }) => {
    return (

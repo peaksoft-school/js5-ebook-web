@@ -31,6 +31,21 @@ export const signUpVendor = createAsyncThunk(
    }
 )
 
+export const signUpClient = createAsyncThunk(
+   'SignSlices/signUpClient',
+   async (data) => {
+      const result = await appFetch('/api/public/user/register', 'POST', data)
+      const user = {
+         id: result.id,
+         token: result.jwt,
+         role: result.role,
+         firstName: result.firstName,
+      }
+      saveToLocaleStorage(EBOOK_AUTH_INFO, user)
+      return user
+   }
+)
+
 const authSlices = createSlice({
    name: 'SignSlices',
    initialState,
@@ -43,6 +58,17 @@ const authSlices = createSlice({
          state.status = 'fulfilled'
       },
       [signUpVendor.rejected]: (state, action) => {
+         state.status = 'rejected'
+         state.error = action.error
+      },
+      [signUpClient.pending]: (state) => {
+         state.status = 'pending'
+      },
+      [signUpClient.fulfilled]: (state, action) => {
+         state.user = action.payload
+         state.status = 'fulfilled'
+      },
+      [signUpClient.rejected]: (state, action) => {
          state.status = 'rejected'
          state.error = action.error
       },
