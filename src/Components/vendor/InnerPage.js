@@ -1,36 +1,121 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
+import { Link, NavLink, useParams } from 'react-router-dom'
 import Button from '../UI/Button/Button'
 import Modal from '../UI/Modal'
-import { Link, NavLink, Route } from 'react-router-dom'
 import About from './About'
 import BookFragment from './BookFragment'
-import likeIcon from '../../assets/icons/like.svg'
+import likeIcon from '../../assets/icons/like.png'
+import warningIcon from '../../assets/icons/warning.svg'
+import plusIcon from '../../assets/icons/plus.svg'
+import Breadcrumbs from '../UI/breadCrumbs/Breadcrumbs'
+import InputText from '../UI/Inputs/InputText'
 import { books } from './books'
-import { useParams } from 'react-router-dom'
-import AudioListener from '../UI/AudioListener'
+import { TabInnerPage } from '../TabInnerPage'
 
 export const InnerPage = () => {
-   const params = useParams()
-   const selectedItem = books.find((item) => item.id === params.bookId)
+   // const [books, setBooks] = useState(null)
+   const { bookId } = useParams()
+   const selectedItem = books.find((item) => item.id === bookId)
 
-   const [open, setOpen] = useState(false)
-   const handleOpen = () => setOpen(true)
-   const handleClose = () => setOpen(false)
+   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+   const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
+   const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
+
+   const [isOpenPromoModal, setIsOpenPromoModal] = useState(false)
+   const handleOpenPromoModal = () => setIsOpenPromoModal(true)
+   const handleClosePromoModal = () => setIsOpenPromoModal(false)
+
+   const pathTranslate = {
+      books: 'Главная',
+      [bookId]: selectedItem.name,
+   }
+
    return (
       <>
+         <StyledBtnBlock>
+            <StyledPromoBtnBlock>
+               <Button
+                  onClick={handleOpenPromoModal}
+                  variant="universal"
+                  color="#f34901"
+                  border="1px solid"
+                  background="none"
+                  width="177px"
+                  height="42px"
+                  padding="10px 16px"
+               >
+                  Создать промокод
+               </Button>
+               <Modal
+                  open={isOpenPromoModal}
+                  onClose={handleClosePromoModal}
+                  variant="mini"
+                  justifyContent="space-around"
+                  width="523px"
+                  height="258px"
+               >
+                  <div>
+                     <StyledPromoLabel>Промокод</StyledPromoLabel>
+                     <InputText placeholder="Напишите промокод" />
+                     <StyledDateFormBlock>
+                        <div>
+                           <StyledPromoLabel>Дата начала</StyledPromoLabel>
+                           <InputText type="date" />
+                        </div>
+                        <div>
+                           <StyledPromoLabel>Дата завершения</StyledPromoLabel>
+                           <InputText type="date" />
+                        </div>
+                        <div>
+                           <StyledPromoLabel>Процент скидки</StyledPromoLabel>
+                           <InputText
+                              placeholder="%"
+                              type="text"
+                              position="absolute"
+                              left="70%"
+                           />
+                        </div>
+                     </StyledDateFormBlock>
+                     <StyledPromoFormBtn>
+                        <Button variant="default">Создать</Button>
+                     </StyledPromoFormBtn>
+                  </div>
+               </Modal>
+               <img src={warningIcon} alt="icon" />
+            </StyledPromoBtnBlock>
+            <Button width="210px" height="42px" padding="10px 24px">
+               <img src={plusIcon} alt="icon" />
+               Добавить книгу
+            </Button>
+         </StyledBtnBlock>
+         <Breadcrumbs translate={pathTranslate} />
          <StyledMain>
-            <StyledBookImage src={selectedItem.image} />
+            <StyledBookImageCont>
+               <StyledBookImage src={selectedItem.images.mainImg} />
+               <StyledBookImage2>
+                  {selectedItem.images.secondImg && (
+                     <img src={selectedItem.images.secondImg} alt="book" />
+                  )}
+               </StyledBookImage2>
+            </StyledBookImageCont>
             <div>
-               <p>В корзине(13)</p>
-               <p>
-                  <img src={likeIcon} />
-                  (12)
-               </p>
+               <StyledAmountBlock>
+                  В корзине({selectedItem.id})
+               </StyledAmountBlock>
+               <StyledAmountBlock>
+                  <img src={likeIcon} alt="icon" />({selectedItem.id})
+                  {/* {selectedItem.audioValues.audioRecording && (
+                     // eslint-disable-next-line jsx-a11y/media-has-caption
+                     <audio
+                        controls
+                        src={selectedItem.audioValues.audioFragment}
+                     />
+                  )} */}
+               </StyledAmountBlock>
                <StyledBookName>{selectedItem.name}</StyledBookName>
                <div>
-               <StyledPrice>{selectedItem.price}</StyledPrice>
-               {/* <AudioListener url=""/> */}
+                  <StyledPrice>{selectedItem.price}</StyledPrice>
                </div>
                <StyledInfo>
                   <div>
@@ -54,7 +139,7 @@ export const InnerPage = () => {
                </StyledInfo>
                <StyledBtnCont>
                   <Button
-                     onClick={handleOpen}
+                     onClick={handleOpenDeleteModal}
                      variant="universal"
                      color="#f34901"
                      border="1px solid"
@@ -64,8 +149,8 @@ export const InnerPage = () => {
                      Удалить
                   </Button>
                   <Modal
-                     open={open}
-                     onClose={handleClose}
+                     open={isOpenDeleteModal}
+                     onClose={handleCloseDeleteModal}
                      variant="mini"
                      width="460px"
                      height="172px"
@@ -76,7 +161,6 @@ export const InnerPage = () => {
                            Вы уверены, что хотите удалить
                         </StyledInfoText>
                         <StyledInfoTitle>
-                           {' '}
                            “{selectedItem.name}” ?
                         </StyledInfoTitle>
                      </div>
@@ -85,7 +169,7 @@ export const InnerPage = () => {
                            variant="default"
                            background="white"
                            color="#A3A3A3"
-                           onClick={handleClose}
+                           onClick={handleCloseDeleteModal}
                         >
                            Отменить
                         </Button>
@@ -93,37 +177,19 @@ export const InnerPage = () => {
                      </StyledModalBtnCont>
                   </Modal>
                   <Button width="224px">
-                     <StyledLink to="/addBook">Редактировать</StyledLink>
+                     <StyledLink to={`/books/:${selectedItem.id}/addBook`}>
+                        Редактировать
+                     </StyledLink>
                   </Button>
                </StyledBtnCont>
             </div>
          </StyledMain>
-         <nav>
-            <StyledUl>
-               <li>
-                  <StyledNavLink
-                     activeClassName="selected"
-                     to={`/book-detail/${selectedItem.id}/about`}
-                  >
-                     О книге
-                  </StyledNavLink>
-               </li>
-               <li>
-                  <StyledNavLink
-                     activeClassName="selected"
-                     to={`/book-detail/${selectedItem.id}/fragment`}
-                  >
-                     Читать фрагмент
-                  </StyledNavLink>
-               </li>
-            </StyledUl>
-            <Route path="/book-detail/:bookId/about">
-               <About />
-            </Route>
-            <Route path="/book-detail/:bookId/fragment">
-               <BookFragment />
-            </Route>
-         </nav>
+         <StyledMainFooter>
+            <TabInnerPage about={<About />} bookFragment={<BookFragment />} />
+            {selectedItem.images.thirdImg && (
+               <img src={selectedItem.images.thirdImg} alt="book" />
+            )}
+         </StyledMainFooter>
       </>
    )
 }
@@ -146,16 +212,61 @@ export const StyledLink = styled(Link)`
    color: white;
    text-decoration: none;
 `
-const StyledUl = styled.ul`
-   width: 302px;
-   height: 100%;
-   list-style: none;
+const StyledDateFormBlock = styled.div`
    display: flex;
-   padding: 0;
-   margin: 0;
    align-items: center;
+   margin-bottom: 19px;
+`
+const StyledMainFooter = styled.div`
+   display: flex;
    justify-content: space-between;
-   margin-bottom: 84px;
+   align-items: flex-start;
+`
+const StyledPromoLabel = styled.p`
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 130%;
+`
+const StyledPromoFormBtn = styled.div`
+   display: flex;
+   justify-content: flex-end;
+`
+const StyledAmountBlock = styled.p`
+   display: flex;
+   align-items: center;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 130%;
+   color: #8a8a8a;
+   & :nth-child(1) {
+      margin-right: 9px;
+   }
+`
+const StyledBtnBlock = styled.div`
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 43px;
+`
+const StyledPromoBtnBlock = styled.div`
+   width: 213px;
+   height: 42px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+`
+const StyledBookImage2 = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   & img {
+      width: 100%;
+      margin: 0px 0px 20px 20px;
+   }
 `
 const StyledBookName = styled.h3`
    width: 504px;
@@ -184,7 +295,6 @@ const StyledInfoTitle = styled.p`
 `
 const StyledBookImage = styled.img`
    width: 357px;
-   /* height: 571px; */
    margin-bottom: 185px;
 `
 const StyledMain = styled.div`
@@ -217,4 +327,8 @@ const StyledPrice = styled.p`
    font-size: 16px;
    line-height: 120%;
    color: #f34901;
+`
+const StyledBookImageCont = styled.div`
+   display: flex;
+   width: 531px;
 `

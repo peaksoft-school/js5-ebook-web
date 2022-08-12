@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+// import calendarIcon from '../../../assets/icons/inputs/calendar.svg'
 
 export const InputContainer = styled.div`
    border: 1px solid;
@@ -12,7 +13,7 @@ export const InputContainer = styled.div`
 `
 
 export const Input = styled.input`
-   width: 100%;
+   width: ${(props) => props.width || '100%'};
    font-family: 'Open Sans';
    font-weight: 400;
    font-size: ${(props) => props.fontSize || '1rem'};
@@ -27,6 +28,24 @@ export const Input = styled.input`
    outline: none;
    &::placeholder {
       color: #969696;
+      position: ${(props) => props.position || ''};
+      left: ${(props) => props.left || ''};
+   }
+   &[type='date']::-webkit-calendar-picker-indicator {
+      color: rgba(0, 0, 0, 0);
+      opacity: 1;
+      background: url(https://www.iconpacks.net/icons/1/free-calendar-icon-865-thumb.png)
+         no-repeat;
+      background-size: 15%;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      transform: translateX(800%);
+      transform: translateY(40%);
+   }
+   &[type='date']::-webkit-datetime-edit {
+      color: #969696;
+      width: ${(props) => props.width || '100%'};
    }
 `
 export const BtnIcon = styled('button')`

@@ -73,7 +73,7 @@ const AppContainer = styled.div`
    ${(props) =>
       props.primary &&
       css`
-         max-width: 1260px;
+         max-width: 1280px;
          margin: 0 auto;
       `}
 `

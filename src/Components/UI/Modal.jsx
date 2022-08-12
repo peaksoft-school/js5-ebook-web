@@ -1,6 +1,6 @@
+import styled from '@emotion/styled'
 import Box from '@mui/material/Box'
 import MuiModal from '@mui/material/Modal'
-import styled from '@emotion/styled'
 
 export default function Modal({
    children,
@@ -18,7 +18,12 @@ export default function Modal({
          aria-labelledby="modal-modal-title"
          aria-describedby="modal-modal-description"
       >
-         <StyledBox variant={variant} width={width} height={height} justifyContent={justifyContent}>
+         <StyledBox
+            variant={variant}
+            width={width}
+            height={height}
+            justifyContent={justifyContent}
+         >
             {children}
          </StyledBox>
       </MuiModal>

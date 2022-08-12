@@ -12,7 +12,7 @@ const Button = ({ variant, children, onClick, ...props }) => {
 export default Button
 
 const ButtonStyle = styled(MuiButton)`
-   text-transform: capitalize;
+   text-transform: none;
    padding: 8px 40px 8px 40px;
    border: none;
    font-weight: 600;
@@ -22,10 +22,12 @@ const ButtonStyle = styled(MuiButton)`
    color: #ffffff;
    line-height: 120%;
    display: flex;
-   justify-content: center;
+   justify-content: space-around;
    align-items: center;
    border-radius: 0px;
    width: ${(props) => props.width || ''};
+   height: ${(props) => props.height || ''};
+   padding: ${(props) => props.padding || ''};
    background: ${(props) =>
       props.variant === 'default' ? '#1c1c1c' : '#f34901'};
    padding: ${(props) => (props.variant === 'default' ? '10px 24px ' : ' ')};
