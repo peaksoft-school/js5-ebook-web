@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router'
 import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
@@ -9,14 +10,13 @@ import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.
 import CardItems from './CardItems'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 import Footer from './Footer'
-import { UserInnerPage } from '../containers/UserInnerPage/UserInnerPage'
 
 function Vendor() {
    return (
       <Wrapper>
          <AppContainer
             primary
-            main={<UserInnerPage />}
+            main={<Outlet />}
             header={
                <Header
                   headerTop={

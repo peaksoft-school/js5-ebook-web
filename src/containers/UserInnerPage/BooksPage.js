@@ -6,7 +6,7 @@ import { books } from './books'
 export const BooksPage = () => {
    const navigate = useNavigate()
    const userinnerPage = (id) => {
-      navigate(`/home/${id}`)
+      navigate(`/books/${id}`)
    }
    return (
       <div>

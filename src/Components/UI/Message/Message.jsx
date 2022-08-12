@@ -41,14 +41,17 @@ function Message({ spanValues, onClick, saveText }) {
          <div>
             <Button
                background="#00AB1B"
-               backgroundHover="#00AB1B"
+               backgroundhover="#00AB1B"
                width="505px"
                padding="20px 24px"
                fontSize="14px"
                fontFamily="Open Sans"
                onClick={onClick}
             >
-               Отправить <IconMessage />
+               Отправить{' '}
+               <StyledIconMessage>
+                  <IconMessage />
+               </StyledIconMessage>
             </Button>
          </div>
       </form>
@@ -61,9 +64,10 @@ const TextareaStyled = styled.textarea`
    width: 100%;
    height: 116px;
    border-radius: 0px;
-   padding: 10px, 24px, 10px, 24px;
-   resize: none;
+   padding: 10px, 20px, 10px, 20px;
    border: 3px solid #f8f8f8;
+   outline: none;
+   resize: none;
    &::placeholder {
       font-size: 16px;
       font-family: Open Sans;
@@ -112,18 +116,21 @@ const SpanBlock = styled.div`
 const Span = styled.span`
    background-color: #f2f2f2;
    padding: 10px 14px;
-   min-width: 120px;
+   min-width: 150px;
    border-radius: 20px;
    color: #969696;
    cursor: pointer;
    display: flex;
    flex-direction: row;
    flex-wrap: nowrap;
-   justify-content: flex-start;
+   justify-content: center;
    margin-right: 10px;
-   text-align: center;
+   /* text-align: center; */
    &:active {
       background: #969696;
       color: #f8f8f8;
    }
+`
+const StyledIconMessage = styled.span`
+   padding-left: 20px;
 `

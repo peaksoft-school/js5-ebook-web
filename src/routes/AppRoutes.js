@@ -20,11 +20,12 @@ function AppRoutes() {
    }, [])
    return (
       <Routes>
-         <Route path="/" element={<ClientLayout />} />
+         <Route path="/" element={<ClientLayout />}>
+            <Route path="books" element={<BooksPage />} />
+            <Route path="/books/:bookId" element={<UserInnerPage />} />
+         </Route>
          <Route path="/vendor" element={<VendorLayout />} />
          <Route path="/admin" element={<AdminLayout />} />
-         <Route path="/home" element={<BooksPage />} />
-         <Route path="/home/:bookId" element={<UserInnerPage />} />
       </Routes>
    )
 }
