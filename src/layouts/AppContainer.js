@@ -50,7 +50,7 @@ const Main = styled(Header)`
 
 const Item = styled.div`
    /* border: 1px solid red; */
-   width: 250px;
+   min-width: 210px;
    flex-grow: 1;
    flex-shrink: 0;
    display: flex;

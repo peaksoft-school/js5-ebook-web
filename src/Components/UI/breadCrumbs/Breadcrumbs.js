@@ -1,63 +1,75 @@
-import React from 'react'
-import {
-   Breadcrumbs as MUIBreadcrumbs,
-   Link,
-   styled,
-   Typography,
-} from '@mui/material'
-import { withRouter } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { Breadcrumbs, Typography, Link, styled } from '@mui/material'
 
-const Breadcrumbs = ({ history, location: { pathname }, translate }) => {
-   const pathnames = pathname.split('/').filter((x) => x)
+const BreadCrumbs = ({ translate, ...props }) => {
+   const navigate = useNavigate()
+   const location = useLocation()
+   const pathnames = location.pathname.split('/').filter((x) => x)
    const updatedPathnames = pathnames.map((path) => translate[path] || path)
-   if (pathnames.length === 1) {
-      return null
-   }
 
-   const renderPaths = () => {
-      return updatedPathnames.map((name, index) => {
-         const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`
-         const isLast = index === pathnames.length - 1
-         const toUpperCase = name[0].toUpperCase() + name.slice(1)
-         return isLast ? (
-            <Typography key={toUpperCase}>{toUpperCase}</Typography>
-         ) : (
-            // eslint-disable-next-line jsx-a11y/anchor-is-valid
-            <Link key={toUpperCase} onClick={() => history.push(routeTo)}>
-               {toUpperCase}
-            </Link>
-         )
-      })
-   }
-
-   // eslint-disable-next-line consistent-return
    return (
-      <BreadCrumbsStyle aria-label="breadcrumb">
-         {renderPaths()}
-      </BreadCrumbsStyle>
+      <LayoutBreadcrumbs aria-label="breadcrumb">
+         {updatedPathnames.map((element, index) => {
+            const toUpperPathName = element[0].toUpperCase() + element.slice(1)
+            const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`
+            const isLast = index === updatedPathnames.length - 1
+            return isLast ? (
+               <Title
+                  key={toUpperPathName}
+                  color={props.color}
+                  fontSize={props.fontSize}
+               >
+                  {toUpperPathName}
+               </Title>
+            ) : (
+               <LinkStyle
+                  key={toUpperPathName}
+                  onClick={() => navigate(routeTo)}
+               >
+                  {toUpperPathName}
+               </LinkStyle>
+            )
+         })}
+      </LayoutBreadcrumbs>
    )
 }
-
-export default withRouter(Breadcrumbs)
-
-const BreadCrumbsStyle = styled(MUIBreadcrumbs)`
-   .MuiTypography-root {
-      margin: 0;
-      color: #1976d2;
-      -webkit-text-decoration: none;
-      text-decoration: none;
-      color: black;
-      font-family: 'Open Sans';
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 16.8px;
+export default BreadCrumbs
+const LayoutBreadcrumbs = styled(Breadcrumbs)`
+   display: flex;
+   align-items: center;
+   & .css-4pdmu4-MuiBreadcrumbs-ol {
+      display: flex;
+      align-items: center;
+      line-height: 17px;
+      height: 18px;
    }
-   .MuiLink-root {
-      margin: 0;
+   & .css-1wuw8dw-MuiBreadcrumbs-separator {
+      margin-left: 6px;
+      margin-right: 6px;
       font-family: 'Open Sans';
+      font-style: normal;
       font-weight: 400;
-      font-size: 14px;
-      line-height: 16.8px;
-      color: gray;
+      color: #c4c4c4;
+      margin-top: 0;
+      margin-bottom: 0;
    }
+`
+const Title = styled(Typography)`
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: ${(props) => props.fontSize || '14px'};
+   line-height: 17px;
+   cursor: pointer;
+   color: ${(props) => props.color || '#363636'};
+`
+const LinkStyle = styled(Link)`
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: ${(props) => props.fontSize || '14px'};
+   line-height: none;
+   text-decoration: none;
+   cursor: pointer;
+   color: ${(props) => props.colorlink || '#C4C4C4'};
 `

@@ -16,6 +16,7 @@ export default Jenre
 
 const Div = styled.div`
    position: relative;
+   /* border: 1px solid red; */
 `
 
 const LabelSpan = styled.span`

@@ -1,8 +1,8 @@
+import styled from 'styled-components'
 import React, { useState } from 'react'
 import { InputContainer, Input, BtnIcon } from './InputStyle'
 import { ReactComponent as OrangeSearchIcon } from '../../../assets/icons/inputs/search.svg'
 import { ReactComponent as GreySearchIcon } from '../../../assets/icons/inputs/greySearch.svg'
-import styled from 'styled-components'
 
 const SearchInput = React.forwardRef(
    (
