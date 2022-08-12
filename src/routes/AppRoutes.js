@@ -14,6 +14,9 @@ function AppRoutes() {
          if (user.role === APP_ROLES.VENDOR) {
             navigate(`/vendor`, { replace: true })
          }
+         if (user.role === APP_ROLES.ADMIN) {
+            navigate('/admin', { replace: true })
+         }
       }
    }, [user])
    return (
