@@ -17,7 +17,7 @@ function AppRoutes() {
             navigate(`/vendor`, { replace: true })
          }
       }
-   }, [])
+   }, [user])
    return (
       <Routes>
          <Route path="/" element={<ClientLayout />}>
