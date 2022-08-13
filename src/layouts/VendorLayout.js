@@ -1,4 +1,6 @@
 import { Outlet } from 'react-router'
+import { useState } from 'react'
+import { MenuItem } from '@mui/material'
 import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
@@ -10,8 +12,17 @@ import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.
 import CardItems from './CardItems'
 import Footer from './Footer'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
+import PopUp from '../Components/UI/popup'
 
 function Vendor() {
+   const [anchorEl, setAnchorEl] = useState(null)
+   const open = Boolean(anchorEl)
+   const onClickProfileHandler = (e) => {
+      setAnchorEl(e.currentTarget)
+   }
+   const onCloseProfileHandler = () => {
+      setAnchorEl(null)
+   }
    return (
       <Wrapper>
          <AppContainer
@@ -35,7 +46,16 @@ function Vendor() {
                               backgroundColor="#DBDBDB"
                               borderRadius="50%"
                               label={<Treugolnik />}
+                              onClick={onClickProfileHandler}
                            />
+                           <PopUp
+                              onClose={onCloseProfileHandler}
+                              open={open}
+                              anchorEl={anchorEl}
+                           >
+                              <MenuItem>Профиль</MenuItem>
+                              <MenuItem>Выйти</MenuItem>
+                           </PopUp>
                         </CardItems>
                      </>
                   }

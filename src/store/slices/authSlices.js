@@ -18,7 +18,7 @@ const initialState = {
 }
 
 export const signUpVendor = createAsyncThunk(
-   'SignSlices/SignUpVendorRequest',
+   'authSlices/SignUpVendorRequest',
    async (data) => {
       const result = await appFetch('/api/public/vendor/register', 'POST', data)
       const vendor = {
@@ -32,7 +32,7 @@ export const signUpVendor = createAsyncThunk(
 )
 
 export const signUpClient = createAsyncThunk(
-   'SignSlices/signUpClient',
+   'authSlices/signUpClient',
    async (data) => {
       const result = await appFetch('/api/public/user/register', 'POST', data)
       const user = {
@@ -46,8 +46,23 @@ export const signUpClient = createAsyncThunk(
    }
 )
 
+export const signInAll = createAsyncThunk(
+   'authSlices/signInAll',
+   async (data) => {
+      const result = await appFetch('/api/public/login', 'POST', data)
+      const user = {
+         id: result.id,
+         token: result.jwt,
+         role: result.role,
+         firstName: result.firstName,
+      }
+      saveToLocaleStorage(EBOOK_AUTH_INFO, user)
+      return user
+   }
+)
+
 const authSlices = createSlice({
-   name: 'SignSlices',
+   name: 'authSlices',
    initialState,
    extraReducers: {
       [signUpVendor.pending]: (state) => {
@@ -69,6 +84,17 @@ const authSlices = createSlice({
          state.status = 'fulfilled'
       },
       [signUpClient.rejected]: (state, action) => {
+         state.status = 'rejected'
+         state.error = action.error
+      },
+      [signInAll.pending]: (state) => {
+         state.status = 'pending'
+      },
+      [signInAll.fulfilled]: (state, action) => {
+         state.user = action.payload
+         state.status = 'fulfilled'
+      },
+      [signInAll.rejected]: (state, action) => {
          state.status = 'rejected'
          state.error = action.error
       },
