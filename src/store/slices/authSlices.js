@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import appFetch from '../../hooks/AppFetch'
+import appFetch from '../../hooks/appFetch'
 import { EBOOK_AUTH_INFO } from '../../utils/constants/constants'
 import { getFromLocaleStorage, saveToLocaleStorage } from '../../hooks/locale'
 
