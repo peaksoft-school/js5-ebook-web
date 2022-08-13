@@ -5,7 +5,7 @@ import { deleteFromLocaleStorage } from '../../hooks/locale'
 import { authSlicesActions } from '../../store/slices/authSlices'
 import { EBOOK_AUTH_INFO } from '../../utils/constants/constants'
 
-function ExitApp() {
+function ExitApp({ onCloseModal }) {
    const dispatch = useDispatch()
    const onClickExitHandler = () => {
       deleteFromLocaleStorage(EBOOK_AUTH_INFO)
@@ -14,7 +14,7 @@ function ExitApp() {
    return (
       <ExitContainer>
          <ExitText>Вы уверены что хотите выйти?</ExitText>
-         <ExitButton>Отменить</ExitButton>
+         <ExitButton onClick={onCloseModal}>Отменить</ExitButton>
          <ExitButton onClick={onClickExitHandler}>Выйти</ExitButton>
       </ExitContainer>
    )

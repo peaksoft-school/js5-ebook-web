@@ -9,10 +9,19 @@ import SideDrawer from './sideDrawer/SideDrawer'
 import CardItems from './CardItems'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 import PopUp from '../Components/UI/popup'
+import Modal from '../Components/UI/Modal'
+import ExitApp from '../Components/UI/ExitApp'
 
 function AdminLayout() {
    const [anchorEl, setAnchorEl] = useState(null)
+   const [isShowModal, setIsShowModal] = useState(false)
    const open = Boolean(anchorEl)
+   const onClickExitBtn = () => {
+      setIsShowModal(true)
+   }
+   const onCloseModal = () => {
+      setIsShowModal(false)
+   }
    const onClickPofile = (e) => {
       setAnchorEl(e.currentTarget)
    }
@@ -42,8 +51,11 @@ function AdminLayout() {
                            open={open}
                            onClose={onCloseProfile}
                         >
-                           <MenuItem>Выйти</MenuItem>
+                           <MenuItem onClick={onClickExitBtn}>Выйти</MenuItem>
                         </PopUp>
+                        <Modal open={isShowModal} onClose={onCloseModal}>
+                           <ExitApp onCloseModal={onCloseModal} />
+                        </Modal>
                      </CardItems>
                   </>
                }

@@ -68,7 +68,7 @@ function Vendor() {
                               </MenuItem>
                            </PopUp>
                            <Modal open={isModal} onClose={onCloseModal}>
-                              <ExitApp />
+                              <ExitApp onCloseModal={onCloseModal} />
                            </Modal>
                         </CardItems>
                      </>

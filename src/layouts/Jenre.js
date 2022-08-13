@@ -1,18 +1,44 @@
 import styled from 'styled-components'
+import { useState } from 'react'
+import { Menu } from '@mui/material'
+import GenreMenu from '../Components/UI/genreMenu/GenreMenu'
 
-function Jenre({ onClick, text, children }) {
+function Jenre({ text }) {
+   const [anchorEl, setAnchorEl] = useState(null)
+   const open = Boolean(anchorEl)
+   const onClickGenreBtn = (e) => {
+      setAnchorEl(e.currentTarget)
+   }
+   const onCloseGenreMenu = () => {
+      setAnchorEl(null)
+   }
    return (
       <Div>
          <Label>
-            <JenreButton onClick={onClick} />
+            <JenreButton onClick={onClickGenreBtn} />
             <LabelSpan>{text}</LabelSpan>
          </Label>
-         {children}
+         <GenreMenuPopUp
+            open={open}
+            anchorEl={anchorEl}
+            onClose={onCloseGenreMenu}
+         >
+            <GenreMenu />
+         </GenreMenuPopUp>
       </Div>
    )
 }
 
 export default Jenre
+
+const GenreMenuPopUp = styled(Menu)`
+   & div.MuiPaper-root {
+      margin-top: 30px;
+   }
+   & ul {
+      padding: 0;
+   }
+`
 
 const Div = styled.div`
    position: relative;

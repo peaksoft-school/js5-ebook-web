@@ -25,7 +25,6 @@ function AuthenticationButtons() {
          }
       }
       if (!user) {
-         console.log('auth')
          setUserActive(false)
          setIsShowModal(false)
       }
@@ -61,7 +60,7 @@ function AuthenticationButtons() {
             <MenuItem onClick={onClickExitBtn}>Выйти</MenuItem>
          </PopUp>
          <Modal open={isShowModal} onClose={closeModal}>
-            <ExitApp />
+            <ExitApp onCloseModal={closeModal} />
          </Modal>
       </>
    ) : (
