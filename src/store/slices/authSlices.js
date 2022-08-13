@@ -8,7 +8,7 @@ function reloadGetLocale() {
    if (user) {
       return user
    }
-   return null
+   return false
 }
 
 const initialState = {
@@ -64,6 +64,11 @@ export const signInAll = createAsyncThunk(
 const authSlices = createSlice({
    name: 'authSlices',
    initialState,
+   reducers: {
+      exitApp: (state) => {
+         state.user = false
+      },
+   },
    extraReducers: {
       [signUpVendor.pending]: (state) => {
          state.status = 'pending'

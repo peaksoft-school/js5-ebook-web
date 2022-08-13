@@ -13,10 +13,19 @@ import CardItems from './CardItems'
 import Footer from './Footer'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 import PopUp from '../Components/UI/popup'
+import Modal from '../Components/UI/Modal'
+import ExitApp from '../Components/UI/ExitApp'
 
 function Vendor() {
    const [anchorEl, setAnchorEl] = useState(null)
+   const [isModal, setIsModal] = useState(false)
    const open = Boolean(anchorEl)
+   const onClickExitBtn = () => {
+      setIsModal(true)
+   }
+   const onCloseModal = () => {
+      setIsModal(false)
+   }
    const onClickProfileHandler = (e) => {
       setAnchorEl(e.currentTarget)
    }
@@ -54,8 +63,13 @@ function Vendor() {
                               anchorEl={anchorEl}
                            >
                               <MenuItem>Профиль</MenuItem>
-                              <MenuItem>Выйти</MenuItem>
+                              <MenuItem onClick={onClickExitBtn}>
+                                 Выйти
+                              </MenuItem>
                            </PopUp>
+                           <Modal open={isModal} onClose={onCloseModal}>
+                              <ExitApp />
+                           </Modal>
                         </CardItems>
                      </>
                   }

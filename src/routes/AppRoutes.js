@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { APP_ROLES } from '../utils/constants/constants'
 import vendorLayout from './vendorLayout'
 import clientLayout from './clientLayout'
@@ -8,43 +8,17 @@ import adminLayout from './adminLayout'
 
 function AppRoutes() {
    const user = useSelector((store) => store.auth.user)
-   const [Protect, setProtect] = useState([
-      {
-         name: APP_ROLES.VENDOR,
-         access: false,
-      },
-      {
-         name: APP_ROLES.ADMIN,
-         access: false,
-      },
-      {
-         name: APP_ROLES.USER,
-         access: true,
-      },
-   ])
-   useEffect(() => {
-      if (user) {
-         setProtect((prev) => {
-            return prev.map((elem) => {
-               if (elem.name !== user.role) {
-                  return {
-                     ...elem,
-                     access: false,
-                  }
-               }
-               return {
-                  ...elem,
-                  access: true,
-               }
-            })
-         })
+   const RoutesComponent = useMemo(() => {
+      return {
+         [APP_ROLES.ADMIN]: adminLayout(),
+         [APP_ROLES.VENDOR]: vendorLayout(),
+         [APP_ROLES.USER]: clientLayout(),
+         [undefined]: clientLayout(),
       }
-   }, [user])
+   }, [])
    return (
       <Routes>
-         {Protect[0].access && vendorLayout()}
-         {Protect[1].access && adminLayout()}
-         {Protect[2].access && clientLayout()}
+         {RoutesComponent[user.role]}
          <Route
             path="*"
             element={

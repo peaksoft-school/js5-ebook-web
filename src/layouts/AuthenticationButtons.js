@@ -8,6 +8,7 @@ import SignUp from '../Components/signUp/SignUp'
 import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg'
 import { APP_ROLES } from '../utils/constants/constants'
 import PopUp from '../Components/UI/popup'
+import ExitApp from '../Components/UI/ExitApp'
 
 function AuthenticationButtons() {
    const [activeBtn, setActivBtn] = useState(false)
@@ -20,9 +21,13 @@ function AuthenticationButtons() {
       if (user) {
          if (user.role === APP_ROLES.USER) {
             setUserActive(true)
-         } else {
-            setUserActive(false)
+            setIsShowModal(false)
          }
+      }
+      if (!user) {
+         console.log('auth')
+         setUserActive(false)
+         setIsShowModal(false)
       }
    }, [user])
    const signInBtnClickHandler = () => {
@@ -42,6 +47,9 @@ function AuthenticationButtons() {
    const onCloseProfileHandler = () => {
       setAnchorEl(null)
    }
+   const onClickExitBtn = () => {
+      setIsShowModal(true)
+   }
    const showUser = userActive ? (
       <>
          <Profile onClick={onClickProfileHandler}>
@@ -50,20 +58,22 @@ function AuthenticationButtons() {
          </Profile>
          <PopUp open={open} onClose={onCloseProfileHandler} anchorEl={anchorEl}>
             <MenuItem>Профиль</MenuItem>
-            <MenuItem>Выйти</MenuItem>
+            <MenuItem onClick={onClickExitBtn}>Выйти</MenuItem>
          </PopUp>
+         <Modal open={isShowModal} onClose={closeModal}>
+            <ExitApp />
+         </Modal>
       </>
    ) : (
       <>
-         <Modal
+         <ModalSignUp
             open={isShowModal}
             width="500px"
-            height="70vh"
             justifyContent="flex-start"
             onClose={closeModal}
          >
             <SignUp activeBtn={activeBtn} />
-         </Modal>
+         </ModalSignUp>
          <Button
             variant="default"
             border="1px solid #000"
@@ -95,6 +105,12 @@ function AuthenticationButtons() {
 }
 
 export default AuthenticationButtons
+
+const ModalSignUp = styled(Modal)`
+   & > div {
+      border: 1px solid red;
+   }
+`
 
 const PofileSpan = styled('span')`
    margin-left: 8px;
