@@ -11,7 +11,7 @@ import { ReactComponent as NotificatonIcon } from '../assets/icons/header/notifi
 import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.svg'
 import CardItems from './CardItems'
 import Footer from './Footer'
-import SearchInput from '../Components/UI/Inputs/SearchInput'
+import SearchInputBlock from './SearchInputBlock'
 import PopUp from '../Components/UI/popup'
 import Modal from '../Components/UI/Modal'
 import ExitApp from '../Components/UI/ExitApp'
@@ -45,7 +45,7 @@ function Vendor() {
                            <Logotype />
                         </CardItems>
                         <CardItems flexGrow={1} padding="0 20px">
-                           <SearchInput />
+                           <SearchInputBlock />
                         </CardItems>
                         <CardItems flexGrow={0} flexShrink={0}>
                            <IconButton icon={<MessageIcon />} />

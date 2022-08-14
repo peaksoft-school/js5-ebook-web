@@ -10,7 +10,8 @@ import Navbar from './Navbar'
 import CominButtons from './AuthenticationButtons'
 import Footer from './Footer'
 import CardItems from './CardItems'
-import SearchInput from '../Components/UI/Inputs/SearchInput'
+// import SearchInput from '../Components/UI/Inputs/SearchInput'
+import SearchInputBlock from './SearchInputBlock'
 
 function ClientLayout() {
    return (
@@ -26,7 +27,7 @@ function ClientLayout() {
                            <Logotype />
                         </CardItems>
                         <CardItems flexGrow={1} padding="0 20px">
-                           <SearchInput />
+                           <SearchInputBlock />
                         </CardItems>
                         <CardItems flexGrow={0} flexShrink={0}>
                            <IconButton icon={<Message />} />
