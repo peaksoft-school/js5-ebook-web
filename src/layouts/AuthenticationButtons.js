@@ -32,9 +32,7 @@ function AuthenticationButtons() {
    const closeModal = () => {
       setIsShowModal(false)
    }
-   const onClickProfileHandler = () => {
-      alert('Hello world')
-   }
+   const onClickProfileHandler = () => {}
    const showUser = userActive ? (
       <Profile onClick={onClickProfileHandler}>
          <ProfileIcon />
