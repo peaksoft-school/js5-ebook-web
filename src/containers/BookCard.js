@@ -3,7 +3,10 @@ import React from 'react'
 // import Image from '../assets/Rectangle 138.jpg'
 import { ReactComponent as Heart } from '../assets/icons/bookCard/heartBook.svg'
 import { ReactComponent as HeartOrange } from '../assets/icons/bookCard/heartBookOrange.svg'
+import { ReactComponent as AudioBook } from '../assets/icons/bookCard/audioBook.svg'
+import { ReactComponent as PdfBook } from '../assets/icons/bookCard/pdfBook.svg'
 import Button from '../Components/UI/Button/Button'
+import { BookType } from '../utils/constants/datas'
 
 export const BooksCard = ({ book }) => {
    const [ShowBtn, setShowBtn] = React.useState(false)
@@ -19,8 +22,16 @@ export const BooksCard = ({ book }) => {
    const onOutCardHandler = () => {
       setShowBtn(false)
    }
+   const BookTypeBlock = React.useMemo(() => {
+      return {
+         [BookType.PAPER_BOOK]: '',
+         [BookType.AUDIO_BOOK]: <AudioBook />,
+         [BookType.ELECTRONIC_BOOK]: <PdfBook />,
+      }
+   }, [])
    return (
       <Card onMouseOver={onHoverCardHandler} onMouseOut={onOutCardHandler}>
+         <CartTypeIcon>{BookTypeBlock[book.bookType]}</CartTypeIcon>
          {!ShowBtn && activeHeart && (
             <CardIcon onClick={onClickIconBtn}>
                {heartActive ? <HeartOrange /> : <Heart />}
@@ -39,6 +50,15 @@ export const BooksCard = ({ book }) => {
       </Card>
    )
 }
+
+const CartTypeIcon = styled('div')`
+   /* border: 1px solid red; */
+   position: absolute;
+   top: 0;
+   left: 0;
+   margin-top: 20px;
+   margin-left: 20px;
+`
 
 const BtbBook = styled(Button)`
    padding: 20px 0px;
