@@ -1,12 +1,11 @@
 import { styled } from '@mui/material'
 import React from 'react'
-// import Image from '../assets/Rectangle 138.jpg'
 import { ReactComponent as Heart } from '../assets/icons/bookCard/heartBook.svg'
 import { ReactComponent as HeartOrange } from '../assets/icons/bookCard/heartBookOrange.svg'
 import { ReactComponent as AudioBook } from '../assets/icons/bookCard/audioBook.svg'
 import { ReactComponent as PdfBook } from '../assets/icons/bookCard/pdfBook.svg'
 import Button from '../Components/UI/Button/Button'
-import { BookType } from '../utils/constants/datas'
+import { BookType } from '../utils/constants/constants'
 
 export const BooksCard = ({ book }) => {
    const [ShowBtn, setShowBtn] = React.useState(false)

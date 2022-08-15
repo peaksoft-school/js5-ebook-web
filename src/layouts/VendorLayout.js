@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router'
 import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
@@ -14,6 +15,8 @@ function Vendor() {
    return (
       <Wrapper>
          <AppContainer
+            primary
+            main={<Outlet />}
             header={
                <Header
                   headerTop={
@@ -39,7 +42,7 @@ function Vendor() {
                />
             }
             footer={<Footer vendor />}
-         ></AppContainer>
+         />
       </Wrapper>
    )
 }

@@ -50,7 +50,7 @@ const Main = styled(Header)`
 
 const Item = styled.div`
    /* border: 1px solid red; */
-   width: 250px;
+   min-width: 240px;
    flex-grow: 1;
    flex-shrink: 0;
    display: flex;
@@ -73,7 +73,7 @@ const AppContainer = styled.div`
    ${(props) =>
       props.primary &&
       css`
-         max-width: 1260px;
+         max-width: 1280px;
          margin: 0 auto;
       `}
 `
