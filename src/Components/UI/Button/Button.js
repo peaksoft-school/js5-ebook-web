@@ -4,7 +4,7 @@ import { styled } from '@mui/material'
 const Button = ({ variant, children, onClick, ...props }) => {
    return (
       <ButtonStyle variant={variant} onClick={onClick} {...props}>
-         {children} 
+         {children}
       </ButtonStyle>
    )
 }
@@ -12,13 +12,10 @@ const Button = ({ variant, children, onClick, ...props }) => {
 export default Button
 
 const ButtonStyle = styled(MuiButton)`
-<<<<<<< HEAD
    text-transform: none;
    padding: 8px 40px 8px 40px;
-=======
    text-transform: capitalize;
    padding: ${(props) => props.padding || '10px 20px'};
->>>>>>> ae46b03886fbe7acb4d78c3b554a84c71c81fae3
    border: none;
    font-weight: ${(props) => props.fontWeight || '600'};
    font-family: 'Open Sans';
@@ -55,4 +52,3 @@ const ButtonStyle = styled(MuiButton)`
    margin-top: ${(props) => props.margintop || '0px'};
    width: ${(props) => props.width || '100%'};
 `
-   
