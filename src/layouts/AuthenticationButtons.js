@@ -18,13 +18,10 @@ function AuthenticationButtons() {
    const open = Boolean(anchorEl)
    const user = useSelector((store) => store.auth.user)
    useEffect(() => {
-      if (user) {
-         if (user.role === APP_ROLES.USER) {
-            setUserActive(true)
-            setIsShowModal(false)
-         }
-      }
-      if (!user) {
+      if (user.role === APP_ROLES.USER && user.token) {
+         setUserActive(true)
+         setIsShowModal(false)
+      } else {
          setUserActive(false)
          setIsShowModal(false)
       }

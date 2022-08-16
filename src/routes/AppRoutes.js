@@ -13,7 +13,6 @@ function AppRoutes() {
          [APP_ROLES.ADMIN]: adminLayout(),
          [APP_ROLES.VENDOR]: vendorLayout(),
          [APP_ROLES.USER]: clientLayout(),
-         [undefined]: clientLayout(),
       }
    }, [])
    return (

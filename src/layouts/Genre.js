@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Menu } from '@mui/material'
 import GenreMenu from '../Components/UI/genreMenu/GenreMenu'
 
-function Jenre({ text }) {
+function Genre({ text }) {
    const [anchorEl, setAnchorEl] = useState(null)
    const open = Boolean(anchorEl)
    const onClickGenreBtn = (e) => {
@@ -15,7 +15,7 @@ function Jenre({ text }) {
    return (
       <Div>
          <Label>
-            <JenreButton onClick={onClickGenreBtn} />
+            <GenreButton onClick={onClickGenreBtn} />
             <LabelSpan>{text}</LabelSpan>
          </Label>
          <GenreMenuPopUp
@@ -29,7 +29,7 @@ function Jenre({ text }) {
    )
 }
 
-export default Jenre
+export default Genre
 
 const GenreMenuPopUp = styled(Menu)`
    & div.MuiPaper-root {
@@ -59,7 +59,7 @@ const Label = styled.label`
    cursor: pointer;
 `
 
-const JenreButton = styled.button`
+const GenreButton = styled.button`
    width: 37px;
    height: 18px;
    background-color: rgba(0, 0, 0, 0);

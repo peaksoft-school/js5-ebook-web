@@ -2,7 +2,7 @@ import { useState } from 'react'
 import * as Sign from './SignStyles'
 import SignUpClient from './SignUpClient'
 import SignUpVendor from './SignUpVendor'
-import SignInAll from './signInAll'
+import SignIn from './signIn'
 
 function SignUp({ activeBtn }) {
    const [isShowUp, setIsShowUp] = useState(activeBtn)
@@ -26,7 +26,7 @@ function SignUp({ activeBtn }) {
          <Sign.ButtonIn onClick={signUpClickHandler} activeBtn={!isShowUp}>
             Регистрация
          </Sign.ButtonIn>
-         {isShowUp ? <SignInAll /> : SignUpComponents}
+         {isShowUp ? <SignIn /> : SignUpComponents}
       </Sign.SignBlock>
    )
 }

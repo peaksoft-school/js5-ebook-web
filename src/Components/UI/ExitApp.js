@@ -10,6 +10,7 @@ function ExitApp({ onCloseModal }) {
    const onClickExitHandler = () => {
       deleteFromLocaleStorage(EBOOK_AUTH_INFO)
       dispatch(authSlicesActions.exitApp())
+      onCloseModal()
    }
    return (
       <ExitContainer>

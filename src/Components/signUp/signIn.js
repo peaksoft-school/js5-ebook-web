@@ -3,9 +3,9 @@ import * as Sign from './SignStyles'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
 import Validation from '../../hooks/Validation'
-import { signInAll } from '../../store/slices/authSlices'
+import { signIn } from '../../store/slices/authSlices'
 
-function SignInAll() {
+function SignIn() {
    const dispatch = useDispatch()
    const {
       value: email,
@@ -40,7 +40,7 @@ function SignInAll() {
          email,
          password,
       }
-      dispatch(signInAll(user))
+      dispatch(signIn(user))
    }
    return (
       <Sign.Form onSubmit={signInOnSubmit}>
@@ -75,4 +75,4 @@ function SignInAll() {
    )
 }
 
-export default SignInAll
+export default SignIn

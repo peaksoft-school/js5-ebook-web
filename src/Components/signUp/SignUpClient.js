@@ -33,7 +33,7 @@ function SignUpClient({ toggleSignUpVendor }) {
       isValidValue: isEmailValue,
       onBlurHandler: onBlurEmailHandler,
    } = Validation((value) => {
-      if (value.length <= 5) {
+      if (value.length <= 5 || !value.includes('@')) {
          return true
       }
       return false
