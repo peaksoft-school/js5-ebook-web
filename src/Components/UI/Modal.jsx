@@ -10,6 +10,7 @@ export default function Modal({
    width,
    height,
    justifyContent,
+   ...props
 }) {
    return (
       <MuiModal
@@ -23,29 +24,13 @@ export default function Modal({
             width={width}
             height={height}
             justifyContent={justifyContent}
+            {...props}
          >
             {children}
          </StyledBox>
       </MuiModal>
    )
 }
-
-const StyledBox = styled(Box)((props) => ({
-   position: 'absolute',
-   top: '50%',
-   left: '50%',
-   width: props.width,
-   height: props.height,
-   padding: `${props.variant === 'mini' ? '20px' : '40px 30px'}`,
-   transform: 'translate(-50%, -50%)',
-   backgroundColor: ' #ffff',
-   color: '#000',
-   display: 'flex',
-   justifyContent: 'center',
-   flexDirection: 'column',
-   alignItems: 'center',
-   outline: 'none',
-}))
 
 const StyledBox = styled(Box)`
    position: absolute;
@@ -61,7 +46,7 @@ const StyledBox = styled(Box)`
    justify-content: ${(props) => props.justifyContent || 'center'};
    flex-direction: column;
    align-items: center;
-   overflow: auto;
+   overflow: ${(props) => props.overflow || 'auto'};
    ::-webkit-scrollbar {
       width: 5px;
    }

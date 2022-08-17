@@ -14,7 +14,7 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
          id: 1,
          title: 'Принять',
          icon: <CheckMark />,
-         onClick: acceptHandler,
+         onClick: acceptModal,
       },
       {
          id: 2,
@@ -28,30 +28,30 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
    const [isModal, setIsModal] = useState(false)
    const [toAccept, setToAccept] = useState(false)
 
-   function acceptHandler(closeMeatBall) {
+   function acceptModal() {
       setToAccept(!toAccept)
-      closeMeatBall()
 
       // POST
    }
 
-   function closeAcceptHandler() {
+   function closeAcceptModal(e) {
+      e.stopPropagation()
       setToAccept(!toAccept)
    }
 
-   function rejectModal(closeMeatBall) {
+   function rejectModal() {
       setRejectAplication(!rejectAplication)
       setIsModal(!isModal)
-      closeMeatBall()
    }
 
-   function onCloseRejectModal() {
+   function onCloseRejectModal(e) {
+      e.stopPropagation(e)
       setIsModal(!isModal)
    }
 
    return (
-      <BookItems primary={!rejectAplication} id={id}>
-         <MeatBall>
+      <BookItems primary={!rejectAplication} id={id} onClick={onClick}>
+         <MeatBall onClick={(e) => e.stopPropagation()}>
             <MeatBalls options={menuMeatBall} />
          </MeatBall>
          <Modal
@@ -59,7 +59,8 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
             variant="mini"
             width="523px"
             height="247px"
-            onClose={() => onCloseRejectModal()}
+            overflow="none"
+            onClose={(e) => onCloseRejectModal(e)}
          >
             <RejectRequest />
          </Modal>
@@ -68,12 +69,13 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
             variant="mini"
             width="460px"
             height="155px"
-            onClose={() => closeAcceptHandler()}
+            overflow="none"
+            onClose={(e) => closeAcceptModal(e)}
          >
             <AcceptRequest name={name} />
          </Modal>
          <Div>
-            <Book src={img} alt="photo" onClick={onClick} />
+            <Book src={img} alt="photo" />
             <NameBook>{name}</NameBook>
 
             <PriceDate>

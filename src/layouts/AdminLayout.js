@@ -7,7 +7,7 @@ import SideDrawer from './sideDrawer/SideDrawer'
 import CardItems from './CardItems'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
 
-function AdminLayout({ children }) {
+function AdminLayout() {
    return (
       <AppContainer
          primary
@@ -31,10 +31,6 @@ function AdminLayout({ children }) {
             />
          }
          sidebar={<SideDrawer />}
-<<<<<<< HEAD
-         main={children}
-=======
->>>>>>> 7ab4d325a79de30deaf003ce9bcbc53f3401de84
       />
    )
 }

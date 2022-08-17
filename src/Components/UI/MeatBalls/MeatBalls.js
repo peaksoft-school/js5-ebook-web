@@ -18,7 +18,7 @@ const MeatBalls = ({ options }) => {
 
    return (
       <DivBlock>
-         <Img onClick={clickHandler} src={MeadBalls} />
+         <Img onClick={() => clickHandler()} src={MeadBalls} />
          {state && (
             <DivMeatBalls>
                {options.map((option) => {
@@ -28,7 +28,7 @@ const MeatBalls = ({ options }) => {
                         onClick={() => clickCloseHandler(option)}
                      >
                         <Div>{option.icon}</Div>
-                        {option.title}
+                        <DivOprions>{option.title}</DivOprions>
                      </OptionMeadBalls>
                   )
                })}
@@ -39,7 +39,7 @@ const MeatBalls = ({ options }) => {
 }
 
 export default MeatBalls
-
+const DivOprions = styled('div')``
 const DivBlock = styled.div`
    display: flex;
    flex-direction: column;

@@ -4,7 +4,7 @@ import { ReactComponent as ToAccept } from '../../assets/icons/MeatBalls/accept.
 
 const AcceptRequest = ({ name }) => {
    return (
-      <Accept>
+      <Accept onClick={(e) => e.stopPropagation()}>
          <ToAccept />
          <div>
             <NameApplication> {name} </NameApplication>

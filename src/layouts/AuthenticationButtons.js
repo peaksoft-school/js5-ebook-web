@@ -43,11 +43,6 @@ function AuthenticationButtons() {
          </Button>
          <Button
             variant="default"
-<<<<<<< HEAD
-            background="#fff"
-            color="#1C1C1C"
-            border="1px solid #1C1C1C"
-=======
             border="1px solid #000"
             width="auto"
             background={!activeBtn ? '#000' : '#fff'}
@@ -55,7 +50,6 @@ function AuthenticationButtons() {
             backgroundhover={!activeBtn ? '#000' : '#fff'}
             colorhover={!activeBtn ? '#fff' : '#000'}
             onClick={signUpBtnClickHandler}
->>>>>>> 7ab4d325a79de30deaf003ce9bcbc53f3401de84
          >
             Регистрация
          </Button>

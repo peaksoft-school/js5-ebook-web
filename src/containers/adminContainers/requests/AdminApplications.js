@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
 import { useState } from 'react'
-import Button from '../Components/UI/Button/Button'
-import ApplicationCard from '../Components/admin-applications/ApplicationCard'
-import { books } from './books'
+import Button from '../../../Components/UI/Button/Button'
+import ApplicationCard from '../../../Components/admin-applications/ApplicationCard'
+import { books } from '../../../utils/constants/books'
 
 const AdminApplications = () => {
    const navigate = useNavigate()
@@ -19,7 +19,7 @@ const AdminApplications = () => {
    }
 
    const deatailRequest = (id) => {
-      navigate(`/request/${id}`)
+      navigate(`/admin/request/${id}`)
    }
    return (
       <Application>

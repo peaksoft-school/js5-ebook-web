@@ -5,6 +5,8 @@ import AdminLayout from '../layouts/AdminLayout'
 import VendorLayout from '../layouts/VendorLayout'
 import ClientLayout from '../layouts/ClientLayout'
 import { APP_ROLES } from '../utils/constants/constants'
+import AdminApplications from '../containers/adminContainers/requests/AdminApplications'
+import { InnerPageAdminApplication } from '../containers/adminContainers/requests/InnerPageAdminApplication'
 
 function AppRoutes() {
    const user = useSelector((store) => store.auth.user)
@@ -20,7 +22,10 @@ function AppRoutes() {
       <Routes>
          <Route path="/" element={<ClientLayout />} />
          <Route path="/vendor" element={<VendorLayout />} />
-         <Route path="/admin" element={<AdminLayout />} />
+         <Route path="/admin" element={<AdminLayout />}>
+            <Route path="request" element={<AdminApplications />} />
+            <Route path="request/:id" element={<InnerPageAdminApplication />} />
+         </Route>
       </Routes>
    )
 }

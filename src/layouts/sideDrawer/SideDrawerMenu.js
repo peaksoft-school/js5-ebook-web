@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
@@ -20,6 +21,7 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
+      link: 'request',
    },
    {
       name: 'Продавцы',
@@ -27,6 +29,7 @@ const items = [
          0: <Vendor />,
          1: <VendorOrange />,
       },
+      link: 'request',
    },
    {
       name: 'Пользователи',
@@ -34,6 +37,7 @@ const items = [
          0: <User />,
          1: <UserOrange />,
       },
+      link: 'request',
    },
    {
       name: 'Книги',
@@ -41,6 +45,7 @@ const items = [
          0: <Books />,
          1: <BooksOrange />,
       },
+      link: 'request',
    },
 ]
 
@@ -50,12 +55,13 @@ function SideDrawerMenu({ onClick }) {
          <DrowerList>
             {items.map((elem) => {
                return (
-                  <DrowerItem
-                     key={elem.name}
-                     onClick={onClick}
-                     name={elem.name}
-                     icon={elem.icon}
-                  />
+                  <Link to={elem.link} key={elem.name}>
+                     <DrowerItem
+                        onClick={onClick}
+                        name={elem.name}
+                        icon={elem.icon}
+                     />
+                  </Link>
                )
             })}
          </DrowerList>

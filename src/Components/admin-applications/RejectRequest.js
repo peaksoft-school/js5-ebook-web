@@ -13,7 +13,7 @@ export const RejectRequest = () => {
       // POST
    }
    return (
-      <RejectModal>
+      <RejectModal onClick={(e) => e.stopPropagation()}>
          <ReasonForRejection>Причина вашего отклонения</ReasonForRejection>
          <Input
             placeholder="Напишите причину отклонения..."
@@ -21,7 +21,12 @@ export const RejectRequest = () => {
             value={reasonReject}
          />
          <DivButton>
-            <Button variant="default" onClick={() => sendReason()}>
+            <Button
+               variant="default"
+               width="137px"
+               height="42px"
+               onClick={() => sendReason()}
+            >
                Отправить
             </Button>
          </DivButton>
