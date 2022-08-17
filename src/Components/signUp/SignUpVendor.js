@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux/es/exports'
 import InputMask from 'react-input-mask'
+import { useDispatch } from 'react-redux/es/exports'
 import { useState } from 'react'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
