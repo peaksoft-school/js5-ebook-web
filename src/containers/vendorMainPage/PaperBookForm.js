@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import Checkbox from '../../Components/UI/checkBox/CheckBox'
@@ -6,6 +6,7 @@ import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
 import bookAction from '../../store/slices/addBookSlice'
+import SelectSmall from '../../Components/UI/Select'
 
 export const inputValuesForState = {
    name: '',
@@ -28,6 +29,8 @@ const PaperBookForm = ({ images }) => {
    const [inputValues, setInputValues] = useState(paperInputValues)
    const dispatch = useDispatch()
    const [showSnackbar, setShowSnackbar] = useState(null)
+
+   const refId = useRef()
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -53,37 +56,52 @@ const PaperBookForm = ({ images }) => {
       mainImage: 'string',
       secondImage: 'string',
       thirdImage: 'string',
-      name: 'sadyr63',
-      genreId: 203,
+      name: 'er',
+      genreId: 3,
       price: 10,
-      author: 'er',
-      description: 'lolk',
+      author: 'fantastic',
+      description: 'string',
       language: 'KYRGYZ',
-      yearOfIssue: 40,
-      discount: 0,
+      yearOfIssue: 20,
+      discount: 120,
       bestseller: true,
       fragment: 'string',
-      pageSize: 0,
+      pageSize: 120,
       publishingHouse: 'string',
-      quantityOfBook: 0,
+      quantityOfBook: 3,
    }
 
    const clickHandle = async () => {
-      const aiperi = {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-         },
-         body: JSON.stringify(postToBack),
-      }
-      const aktilek = await fetch(
+      fetch(
          'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/book/save/paperBook',
-         aiperi
+         {
+            method: 'POST',
+            headers: {
+               Authorization:
+                  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDc1MTM4OSwiaWF0IjoxNjYwNzQ3Nzg5LCJ1c2VybmFtZSI6InN0cmluZyJ9.ZG6sbi9soBpkeLq1_X7sQUmg5FtExYY8L3fYkpN6Ehw',
+               'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify(postToBack),
+         }
       )
+         .then((response) => {
+            console.log(response)
+            return response.json()
+         })
+         .then((data) => {
+            console.log(data)
+         })
+         .catch((error) => {
+            console.log(error.message)
+         })
 
-      const aktilek2 = await aktilek.json()
-      console.log(aktilek2)
-      console.log(aiperi)
+      fetch(
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/book/save/paperBook'
+      )
+         .then((res) => res.json())
+         .then((data) => {
+            console.log(data)
+         })
 
       if (isFormValid()) {
          dispatch(
@@ -96,28 +114,66 @@ const PaperBookForm = ({ images }) => {
          dispatch(bookAction.deleteImage())
          setShowSnackbar(true)
 
-         // setInputValues({
-         //    name: '',
-         //    author: '',
-         //    genre: '',
-         //    publishingHouse: '',
-         //    description: '',
-         //    fragment: '',
-         //    pageSize: '',
-         //    price: '',
-         //    yearOfIssue: '',
-         //    discount: '',
-         // })
+         setInputValues({
+            name: '',
+            author: '',
+            genre: '',
+            publishingHouse: '',
+            description: '',
+            fragment: '',
+            pageSize: '',
+            price: '',
+            yearOfIssue: '',
+            discount: '',
+         })
       } else {
          setShowSnackbar(false)
       }
    }
 
+   const [selectedFile, setSelectedFile] = useState()
+   console.log(selectedFile)
+   const handleSubmission = (e) => {
+      e.preventDefault()
+      console.log(images.mainImg)
+      const formData = new FormData()
+      formData.append('file', images)
+      fetch(
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
+         {
+            method: 'POST',
+            headers: {
+               Authorization: `bearer+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDU5MjE5NywiaWF0IjoxNjYwNTg4NTk3LCJ1c2VybmFtZSI6ImZrZWlvQGdtYWlsLmNvbSJ9.pBZlWmVmMoMZQ7LhV0l8JgI8hOchq_rMJtc3p4tRl00`,
+            },
+            body: formData,
+         }
+      )
+         .then((response) => response.json())
+         .then((result) => {
+            console.log('Success:', result)
+            setSelectedFile(result)
+         })
+         .catch((error) => {
+            console.error('Error:', error)
+         })
+   }
+
+   const arr = [
+      { name: 'kyrgyzstan', id: 'w1' },
+      { name: 'Russion', id: 'w2' },
+      { name: 'English', id: 'w3' },
+   ]
+
    return (
       <>
+         <SelectSmall arr={arr} />
+         <form onSubmit={handleSubmission}>
+            <button type="submit">forma</button>
+            <img src={images.secondImg.link} alt={images.mainImg} />
+         </form>
          {showSnackbar && <h1>Uspeshno</h1>}
          {showSnackbar === false && <h1>Oshibka</h1>}
-         <InputWrapper onSubmit={clickHandle}>
+         <InputWrapper ref={refId} onSubmit={clickHandle}>
             <InputDiv>
                <LabelStyle htmlFor="name">
                   Название книги <strong>*</strong>

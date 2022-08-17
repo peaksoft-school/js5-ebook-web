@@ -46,12 +46,11 @@ const Main = styled(Header)`
 `
 
 const Item = styled.div`
-<<<<<<< HEAD
+   /* <<<<<<< HEAD
    width: 250px;
 =======
    /* border: 1px solid red; */
    min-width: 210px;
->>>>>>> 6c21052d8a211855dc4950bef27c3f588f8f7fe7
    flex-grow: 1;
    flex-shrink: 0;
    display: flex;

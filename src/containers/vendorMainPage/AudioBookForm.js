@@ -30,7 +30,7 @@ const audioBookInputValues = {
 
 const allAudioRecordingValues = {
    fragment: '',
-   mainRecording: '',
+   audiorecording: '',
 }
 
 const AudioBookForm = ({ images }) => {
@@ -38,13 +38,34 @@ const AudioBookForm = ({ images }) => {
    const [inputValues, setInputValues] = useState(audioBookInputValues)
    const data = useSelector((state) => state)
    console.log(data)
+   console.log(audioValues.fragment.link)
    // const [showSnackbar, setShowSnackbar] = useState(false)
 
    const dispatch = useDispatch()
 
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
-      setAudioValues({ ...audioValues, [name]: URL.createObjectURL(audio) })
+      // setAudioValues({ ...audioValues, [name]: URL.createObjectURL(audio) })
+      const formData = new FormData()
+      formData.append('file', audio)
+      fetch(
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
+         {
+            method: 'POST',
+            headers: {
+               Authorization: `bearer+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDU5MjE5NywiaWF0IjoxNjYwNTg4NTk3LCJ1c2VybmFtZSI6ImZrZWlvQGdtYWlsLmNvbSJ9.pBZlWmVmMoMZQ7LhV0l8JgI8hOchq_rMJtc3p4tRl00`,
+            },
+            body: formData,
+         }
+      )
+         .then((response) => response.json())
+         .then((result) => {
+            console.log('Success:', result)
+            setAudioValues({ ...audioValues, [name]: result })
+         })
+         .catch((error) => {
+            console.error('Error:', error)
+         })
    }
 
    const handleChangeInput = (e) => {
@@ -68,13 +89,33 @@ const AudioBookForm = ({ images }) => {
 
       return isInputsAreValid && validateImages
    }
-   const clickHandle = () => {
+   const clickHandle = async () => {
+      const response = await fetch(
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/wishlist/books/favorite',
+         {
+            headers: {
+               Authorization:
+                  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDc1MjkzNywiaWF0IjoxNjYwNzQ5MzM3LCJ1c2VybmFtZSI6ImVyZ2VnIn0.erkOIvpeIu1qgxnx3KTtQmiv3eY8r48upDBOjDE1IIc',
+            },
+         }
+      )
+      if (!response.ok) {
+         throw new Error('Не удалось получить курсы')
+      }
+      // .then((res) => res.json())
+      // .then((data) => {
+      //    console.log(data)
+      // })
+      // else {
+      //    return response.json()
+      // }
+
       if (isFormValid()) {
          dispatch(
             bookAction.addBook({
                ...inputValues,
                images,
-               audioValues,
+               ...audioValues.link,
                typeBook: 'audiobook',
             })
          )
@@ -99,6 +140,9 @@ const AudioBookForm = ({ images }) => {
 
    return (
       <>
+         <AudioDiv controls src={audioValues.fragment.link} />
+         {/* <source src={audioValues.fragment.link} type="audio/mpeg" /> */}
+         {/* </AudioDiv> */}
          {/* {showSnackbar && <Snackbar/>} */}
          <InputWrapper>
             <InputDiv>
@@ -241,7 +285,7 @@ const AudioBookForm = ({ images }) => {
                      <FileUploadButton
                         onChange={changeAudioValue}
                         title="Загрузите фрагмент аудиозаписи"
-                        name="audioFragment"
+                        name="fragment"
                         accept="audio/mpeg"
                      >
                         Загрузите аудиозапись
@@ -254,7 +298,7 @@ const AudioBookForm = ({ images }) => {
                      <FileUploadButton
                         onChange={changeAudioValue}
                         title="Загрузите аудиозапись "
-                        name="audioRecording"
+                        name="audiorecording"
                         accept="audio/mpeg"
                      >
                         Загрузите аудиозапись
@@ -272,6 +316,10 @@ const AudioBookForm = ({ images }) => {
    )
 }
 export default AudioBookForm
+
+const AudioDiv = styled('audio')`
+   border: 1px solid red;
+`
 
 const SelectWrapper = styled('div')`
    width: 398px;

@@ -49,6 +49,29 @@ const ElectronicBookForm = ({ images }) => {
       return validateValues && validateImages
    }
    const clickHandle = () => {
+      const pdfData = new FormData()
+      pdfData.append('age', pdfValue)
+      console.log(pdfValue)
+
+      fetch(
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
+         {
+            method: 'POST',
+            headers: {
+               Authorization: `bearer+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDU5MjE5NywiaWF0IjoxNjYwNTg4NTk3LCJ1c2VybmFtZSI6ImZrZWlvQGdtYWlsLmNvbSJ9.pBZlWmVmMoMZQ7LhV0l8JgI8hOchq_rMJtc3p4tRl00`,
+            },
+            body: pdfData,
+         }
+      )
+         .then((response) => response.json())
+         .then((data) => {
+            setPdfFile(data)
+            console.log(data)
+         })
+         .catch((error) => {
+            console.log(error)
+         })
+
       if (isFormValid()) {
          dispatch(
             bookAction.addBook({
@@ -156,6 +179,7 @@ const ElectronicBookForm = ({ images }) => {
                         onChange={handleChangeInput}
                         value={inputValues.price}
                         textAlign="end"
+                        type="number"
                         placeholder="сом"
                         name="price"
                      />

@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router'
 import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
@@ -10,14 +11,14 @@ import CardItems from './CardItems'
 import Footer from './Footer'
 // import Outlet from 'react-router-dom'
 import SearchInput from '../Components/UI/Inputs/SearchInput'
-import AddBookPage from '../containers/vendorMainPage/AddBookPage'
+// import AddBookPage from '../containers/vendorMainPage/AddBookPage'
 
-function Vendor({ children }) {
+function Vendor() {
    return (
       <Wrapper>
          <AppContainer
             primary
-            main={<AddBookPage />}
+            main={<Outlet />}
             header={
                <Header
                   headerTop={
