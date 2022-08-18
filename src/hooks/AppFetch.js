@@ -1,11 +1,14 @@
 import { URL } from '../utils/constants/constants'
 
-function appFetch(url, method, body) {
+function appFetch({ url, method, body, token }) {
    const requestOptions = {
       method: method || 'GET',
       headers: {
          'Content-Type': 'application/json; charset=utf-8',
       },
+   }
+   if (token) {
+      requestOptions.headers.Authorization = `Bearer${token}`
    }
    if (method && body) {
       requestOptions.body = JSON.stringify(body)

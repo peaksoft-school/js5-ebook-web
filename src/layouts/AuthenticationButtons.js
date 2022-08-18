@@ -1,24 +1,29 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
+import { MenuItem } from '@mui/material'
+import styled from '@emotion/styled'
 import Button from '../Components/UI/Button/Button'
 import Modal from '../Components/UI/Modal'
 import SignUp from '../Components/signUp/SignUp'
 import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg'
 import { APP_ROLES } from '../utils/constants/constants'
+import PopUp from '../Components/UI/popup'
+import ExitApp from '../Components/UI/ExitApp'
 
 function AuthenticationButtons() {
    const [activeBtn, setActivBtn] = useState(false)
    const [isShowModal, setIsShowModal] = useState(false)
    const [userActive, setUserActive] = useState(false)
+   const [anchorEl, setAnchorEl] = useState(null)
+   const open = Boolean(anchorEl)
    const user = useSelector((store) => store.auth.user)
    useEffect(() => {
-      if (user) {
-         if (user.role === APP_ROLES.USER) {
-            setUserActive(true)
-         } else {
-            setUserActive(false)
-         }
+      if (user.role === APP_ROLES.USER && user.token) {
+         setUserActive(true)
+         setIsShowModal(false)
+      } else {
+         setUserActive(false)
+         setIsShowModal(false)
       }
    }, [user])
    const signInBtnClickHandler = () => {
@@ -32,25 +37,39 @@ function AuthenticationButtons() {
    const closeModal = () => {
       setIsShowModal(false)
    }
-   const onClickProfileHandler = () => {
-      alert('Hello world')
+   const onClickProfileHandler = (e) => {
+      setAnchorEl(e.currentTarget)
+   }
+   const onCloseProfileHandler = () => {
+      setAnchorEl(null)
+   }
+   const onClickExitBtn = () => {
+      setIsShowModal(true)
    }
    const showUser = userActive ? (
-      <Profile onClick={onClickProfileHandler}>
-         <ProfileIcon />
-         <PofileSpan>{user.firstName}</PofileSpan>
-      </Profile>
+      <>
+         <Profile onClick={onClickProfileHandler}>
+            <ProfileIcon />
+            <PofileSpan>{user.firstName}</PofileSpan>
+         </Profile>
+         <PopUp open={open} onClose={onCloseProfileHandler} anchorEl={anchorEl}>
+            <MenuItem>Профиль</MenuItem>
+            <MenuItem onClick={onClickExitBtn}>Выйти</MenuItem>
+         </PopUp>
+         <Modal open={isShowModal} onClose={closeModal}>
+            <ExitApp onCloseModal={closeModal} />
+         </Modal>
+      </>
    ) : (
       <>
-         <Modal
+         <ModalSignUp
             open={isShowModal}
             width="500px"
-            height="70vh"
             justifyContent="flex-start"
             onClose={closeModal}
          >
             <SignUp activeBtn={activeBtn} />
-         </Modal>
+         </ModalSignUp>
          <Button
             variant="default"
             border="1px solid #000"
@@ -82,6 +101,12 @@ function AuthenticationButtons() {
 }
 
 export default AuthenticationButtons
+
+const ModalSignUp = styled(Modal)`
+   & > div {
+      border: 1px solid red;
+   }
+`
 
 const PofileSpan = styled('span')`
    margin-left: 8px;

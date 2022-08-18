@@ -9,6 +9,7 @@ export const InputContainer = styled.div`
       props.focus ? '#fff' : props.backgroundColor || '#f8f8f8'};
    transition: ease-in 0.2s;
    width: 100%;
+   position: relative;
    ${(props) =>
       props.error &&
       css`

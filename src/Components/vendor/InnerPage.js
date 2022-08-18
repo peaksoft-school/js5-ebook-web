@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import Button from '../UI/Button/Button'
@@ -12,11 +13,13 @@ import InputText from '../UI/Inputs/InputText'
 import Breadcrumbs from '../UI/breadCrumbs/Breadcrumbs'
 import { books } from './books'
 import { TabInnerPage } from '../TabInnerPage'
-// import appFetch from '../../hooks/AppFetch'
+// import appFetch from '../../hooks/appFetch'
+import { URL } from '../../utils/constants/constants'
 
 export const InnerPage = () => {
    // const [books, setBooks] = useState(null)
    const { bookId } = useParams()
+   const token = useSelector((store) => store.auth.user.token)
    const selectedItem = books.find((item) => item.id === bookId)
 
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
@@ -27,7 +30,20 @@ export const InnerPage = () => {
    const handleOpenPromoModal = () => setIsOpenPromoModal(true)
    const handleClosePromoModal = () => setIsOpenPromoModal(false)
 
-   const deleteBookHandler = () => {}
+   const deleteBookHandler = () => {
+      fetch(`${URL}/api/book/delete/${bookId}`, {
+         method: 'DELETE',
+         headers: {
+            Authorization: `Bearer ${token}`,
+         },
+      })
+         .then((response) => {
+            return response.json()
+         })
+         .then((data) => {
+            console.log(data)
+         })
+   }
 
    const pathTranslate = {
       books: 'Главная',

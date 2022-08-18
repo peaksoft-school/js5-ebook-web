@@ -33,7 +33,7 @@ function SignUpClient({ toggleSignUpVendor }) {
       isValidValue: isEmailValue,
       onBlurHandler: onBlurEmailHandler,
    } = Validation((value) => {
-      if (value.length <= 5) {
+      if (value.length <= 5 || !value.includes('@')) {
          return true
       }
       return false
@@ -164,7 +164,7 @@ function SignUpClient({ toggleSignUpVendor }) {
             color="#1C1C1C"
             border="1px solid #1C1C1C"
             backgroundhover="#fff"
-            colorHover="#1C1C1C"
+            colorhover="#1C1C1C"
             onClick={onClickVendor}
          >
             Стать продавцом на Ebook
