@@ -12,6 +12,7 @@ import InputText from '../UI/Inputs/InputText'
 import Breadcrumbs from '../UI/breadCrumbs/Breadcrumbs'
 import { books } from './books'
 import { TabInnerPage } from '../TabInnerPage'
+// import appFetch from '../../hooks/AppFetch'
 
 export const InnerPage = () => {
    // const [books, setBooks] = useState(null)
@@ -25,6 +26,8 @@ export const InnerPage = () => {
    const [isOpenPromoModal, setIsOpenPromoModal] = useState(false)
    const handleOpenPromoModal = () => setIsOpenPromoModal(true)
    const handleClosePromoModal = () => setIsOpenPromoModal(false)
+
+   const deleteBookHandler = () => {}
 
    const pathTranslate = {
       books: 'Главная',
@@ -61,19 +64,20 @@ export const InnerPage = () => {
                      <StyledDateFormBlock>
                         <div>
                            <StyledPromoLabel>Дата начала</StyledPromoLabel>
-                           <InputText type="date" />
+                           <InputText width="158px" type="date" />
                         </div>
                         <div>
                            <StyledPromoLabel>Дата завершения</StyledPromoLabel>
-                           <InputText type="date" />
+                           <InputText width="158px" type="date" />
                         </div>
                         <div>
                            <StyledPromoLabel>Процент скидки</StyledPromoLabel>
                            <InputText
+                              width="127px"
                               placeholder="%"
                               type="text"
                               position="absolute"
-                              left="70%"
+                              left="80%"
                            />
                         </div>
                      </StyledDateFormBlock>
@@ -173,7 +177,9 @@ export const InnerPage = () => {
                         >
                            Отменить
                         </Button>
-                        <Button variant="default">Удалить</Button>
+                        <Button variant="default" onClick={deleteBookHandler}>
+                           Удалить
+                        </Button>
                      </StyledModalBtnCont>
                   </Modal>
                   <Button width="224px">
@@ -215,12 +221,14 @@ export const StyledLink = styled(Link)`
 const StyledDateFormBlock = styled.div`
    display: flex;
    align-items: center;
+   justify-content: space-between;
    margin-bottom: 19px;
 `
 const StyledMainFooter = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: flex-start;
+   padding-bottom: 20px;
 `
 const StyledPromoLabel = styled.p`
    font-family: 'Open Sans';
@@ -300,6 +308,7 @@ const StyledBookImage = styled.img`
 const StyledMain = styled.div`
    display: flex;
    justify-content: space-between;
+   padding-top: 20px;
 `
 const StyledInfo = styled.div`
    display: flex;

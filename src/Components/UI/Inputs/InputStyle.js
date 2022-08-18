@@ -37,7 +37,7 @@ export const Input = styled.input`
       left: ${(props) => props.left || ''};
    }
    &[type='date']::-webkit-calendar-picker-indicator {
-      color: rgba(0, 0, 0, 0);
+      color: black;
       opacity: 1;
       background: url(https://www.iconpacks.net/icons/1/free-calendar-icon-865-thumb.png)
          no-repeat;
@@ -45,8 +45,11 @@ export const Input = styled.input`
       width: 100px;
       height: 100px;
       position: absolute;
-      transform: translateX(800%);
-      transform: translateY(40%);
+      bottom: -5px;
+      transform: translateX(100%);
+   }
+   &[type='date']::placeholder {
+      color: rgba(0, 0, 0, 0);
    }
    &[type='date']::-webkit-datetime-edit {
       color: #969696;
