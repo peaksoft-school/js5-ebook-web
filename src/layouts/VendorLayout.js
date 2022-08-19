@@ -22,6 +22,7 @@ function Vendor() {
    const open = Boolean(anchorEl)
    const onClickExitBtn = () => {
       setIsModal(true)
+      onCloseProfileHandler()
    }
    const onCloseModal = () => {
       setIsModal(false)

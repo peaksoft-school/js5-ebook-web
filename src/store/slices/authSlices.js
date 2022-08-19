@@ -69,6 +69,9 @@ const authSlices = createSlice({
       exitApp: (state) => {
          state.user = InitialUser
       },
+      cleanStatus: (state) => {
+         state.status = null
+      },
    },
    extraReducers: {
       [signUpVendor.pending]: (state) => {
