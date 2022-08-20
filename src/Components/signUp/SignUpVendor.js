@@ -1,6 +1,6 @@
+import { useDispatch, useSelector } from 'react-redux'
 import InputMask from 'react-input-mask'
-import { useDispatch } from 'react-redux/es/exports'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
 import Validation from '../../hooks/Validation'
@@ -32,6 +32,16 @@ function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
    const dispatch = useDispatch()
+   const { status } = useSelector((store) => store.auth)
+   useEffect(() => {
+      if (status === 'rejected') {
+         setErrorValue('такой email уже зарегистрирован!')
+         setIsValidError(true)
+      } else {
+         setErrorValue('')
+         setIsValidError(false)
+      }
+   }, [status])
    const {
       value: name,
       inputChange: onChangeInputName,

@@ -79,12 +79,14 @@ export const SignBlock = styled('div')`
    flex-direction: row;
    flex-wrap: wrap;
    justify-content: center;
+   opacity: ${(props) => props.opacity || 1};
 `
 export const SpanError = styled('span')`
    width: 100%;
    display: flex;
    margin-top: 20px;
+   font-family: 'Open Sans';
    justify-content: center;
-   font-size: 1rem;
+   font-size: 14px;
    color: red;
 `
