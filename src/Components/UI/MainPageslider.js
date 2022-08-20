@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import Slider from 'react-slick'
 import { styled } from '@mui/material'
-import Vector from '../../assets/Vector.jpg'
-import Vector2 from '../../assets/Vector2.png'
+import Vector from '../../assets/icons/next.svg'
+import Vector2 from '../../assets/icons/prev.svg'
 
 const NextArrow = () => {
    return (
