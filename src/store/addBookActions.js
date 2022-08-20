@@ -10,44 +10,47 @@ export const addPaperPage = (values, images, token) => {
    }
 
    return async (dispatch) => {
-      if (images.mainImg) {
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
-            method: 'POST',
-            file: formData,
-            token,
-         })
-         withFile.mainImage = imgFiles.link
-      }
+      try {
+         if (images.mainImg) {
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.mainImage = imgFiles.link
+         }
 
-      if (images.secondImg) {
-         formData.append('file', images.secondImg)
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
+         if (images.secondImg) {
+            formData.append('file', images.secondImg)
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.secondImage = imgFiles.link
+         }
+         if (images.thirdImg) {
+            formData.append('file', images.thirdImg)
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.thirdImage = imgFiles.link
+         }
+         const result = await appFetch({
+            url: '/api/book/save/paperBook',
             method: 'POST',
-            file: formData,
+            body: withFile,
             token,
          })
-         withFile.secondImage = imgFiles.link
+         console.log(result)
+      } catch (error) {
+         dispatch(bookAction.bookFromFetch(error))
       }
-      if (images.thirdImg) {
-         formData.append('file', images.thirdImg)
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
-            method: 'POST',
-            file: formData,
-            token,
-         })
-         withFile.thirdImage = imgFiles.link
-      }
-      const result = await appFetch({
-         url: '/api/book/save/paperBook',
-         method: 'POST',
-         body: withFile,
-         token,
-      })
-      console.log(result)
-      dispatch(bookAction.bookFromFetch(result))
    }
 }
 
@@ -60,46 +63,50 @@ export const addElectronicBoook = (electronicValue, images, token) => {
    }
 
    return async () => {
-      if (images.mainImg) {
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
+      try {
+         if (images.mainImg) {
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.mainImage = imgFiles.link
+         }
+
+         if (images.secondImg) {
+            formData.append('file', images.secondImg)
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.secondImage = imgFiles.link
+         }
+         if (images.thirdImg) {
+            formData.append('file', images.thirdImg)
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.thirdImage = imgFiles.link
+         }
+
+         // formData(PDF bolot)
+
+         const result = await appFetch({
+            url: '/api/book/save/eBook',
             method: 'POST',
-            file: formData,
+            body: withFile,
             token,
          })
-         withFile.mainImage = imgFiles.link
+         console.log(result)
+      } catch (error) {
+         console.log(console.log(error))
       }
-
-      if (images.secondImg) {
-         formData.append('file', images.secondImg)
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
-            method: 'POST',
-            file: formData,
-            token,
-         })
-         withFile.secondImage = imgFiles.link
-      }
-      if (images.thirdImg) {
-         formData.append('file', images.thirdImg)
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
-            method: 'POST',
-            file: formData,
-            token,
-         })
-         withFile.thirdImage = imgFiles.link
-      }
-
-      // formData(PDF bolot)
-
-      const result = await appFetch({
-         url: '/api/book/save/eBook',
-         method: 'POST',
-         body: withFile,
-         token,
-      })
-      console.log(result)
    }
 }
 
@@ -112,45 +119,49 @@ export const addAudioPage = (audioValue, images, token) => {
    }
 
    return async () => {
-      if (images.mainImg) {
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
+      try {
+         if (images.mainImg) {
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.mainImage = imgFiles.link
+         }
+
+         if (images.secondImg) {
+            formData.append('file', images.secondImg)
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.secondImage = imgFiles.link
+         }
+         if (images.thirdImg) {
+            formData.append('file', images.thirdImg)
+            const imgFiles = await appFetch({
+               url: '/api/file/upload',
+               method: 'POST',
+               file: formData,
+               token,
+            })
+            withFile.thirdImage = imgFiles.link
+         }
+
+         // formData(audio bolot razmer-1mb)
+
+         const result = await appFetch({
+            url: '/api/book/save/audioBook',
             method: 'POST',
-            file: formData,
+            body: withFile,
             token,
          })
-         withFile.mainImage = imgFiles.link
+         console.log(result)
+      } catch (error) {
+         console.log(error)
       }
-
-      if (images.secondImg) {
-         formData.append('file', images.secondImg)
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
-            method: 'POST',
-            file: formData,
-            token,
-         })
-         withFile.secondImage = imgFiles.link
-      }
-      if (images.thirdImg) {
-         formData.append('file', images.thirdImg)
-         const imgFiles = await appFetch({
-            url: '/api/file/upload',
-            method: 'POST',
-            file: formData,
-            token,
-         })
-         withFile.thirdImage = imgFiles.link
-      }
-
-      // formData(audio bolot razmer-1mb)
-
-      const result = await appFetch({
-         url: '/api/book/save/audioBook',
-         method: 'POST',
-         body: withFile,
-         token,
-      })
-      console.log(result)
    }
 }
