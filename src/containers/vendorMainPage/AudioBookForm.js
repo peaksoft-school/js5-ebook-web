@@ -7,21 +7,15 @@ import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
 import CheckBox from '../../Components/UI/checkBox/CheckBox'
 import bookAction from '../../store/slices/addBookSlice'
-import {
-   ButtonDiv,
-   InputDiv,
-   InputWrapper,
-   LabelStyle,
-   SelectStyle,
-} from './PaperBookForm'
-import { getBooks } from '../../store/addBookActions'
+import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
+import SelectSmall from '../../Components/UI/Select'
+import { addAudioPage } from '../../store/addBookActions'
 
 const audioBookInputValues = {
-   bookname: '',
+   name: '',
    author: '',
-   genre: '',
-   aboutbook: '',
-   data: '',
+   description: '',
+   yearOfIssue: '',
    duration: '',
    minute: '',
    second: '',
@@ -31,17 +25,26 @@ const audioBookInputValues = {
 
 const allAudioRecordingValues = {
    fragment: '',
-   audiorecording: '',
+   audioBook: '',
 }
 
-const AudioBookForm = ({ images }) => {
-   const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
-   const [inputValues, setInputValues] = useState(audioBookInputValues)
-   const data = useSelector((state) => state.addbook)
-   console.log(data)
-   console.log(audioValues.fragment.link)
-   // const [showSnackbar, setShowSnackbar] = useState(false)
+const languageSelect = [
+   { name: 'kyrgyzstan', id: 1 },
+   { name: 'Russian', id: 2 },
+   { name: 'English', id: 3 },
+]
 
+const AudioBookForm = ({ images }) => {
+   const [genreId, setJenreId] = useState(0)
+   const { token } = useSelector((store) => store.auth.user)
+   const [language, setLanguage] = useState()
+   const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
+   const [inputValues, setInputValues] = useState({
+      ...audioBookInputValues,
+      language,
+      genreId,
+   })
+   const jenre = useSelector((store) => store.addbook.jenreId)
    const dispatch = useDispatch()
 
    const changeAudioValue = (audio, e) => {
@@ -58,71 +61,50 @@ const AudioBookForm = ({ images }) => {
       const isInputsAreValid =
          inputValues.bookname.length >= 1 &&
          inputValues.author.length >= 1 &&
-         inputValues.genre.length >= 1 &&
-         inputValues.aboutbook.length >= 1 &&
+         inputValues.genreId.length >= 1 &&
+         inputValues.description.length >= 1 &&
          inputValues.duration.length >= 1 &&
          inputValues.minute.length >= 1 &&
          inputValues.second.length >= 1 &&
          inputValues.price.length >= 1
 
       const validateImages = images.mainImg.length >= 1
-      // const validateAudio = audioValues.fragment.length >= 1
-
-      return isInputsAreValid && validateImages
+      const validateAudio = audioValues.fragment.length >= 1
+      return isInputsAreValid && validateImages && validateAudio
    }
    const clickHandle = async () => {
-      dispatch(getBooks('sadyr'))
-      // .then((res) => res.json())
-      // .then((data) => {
-      //    console.log(data)
-      // })
-      // else {
-      //    return response.json()
-      // }
-
       if (isFormValid()) {
-         dispatch(
-            bookAction.addBook({
-               ...inputValues,
-               images,
-               ...audioValues.link,
-               typeBook: 'audiobook',
-            })
-         )
-         // setShowSnackbar(true)
          dispatch(bookAction.deleteImage())
+         dispatch(addAudioPage(inputValues, images, token))
+         // setShowSnackbar(true)
 
-         // setInputValues({
-         //    bookname: '',
-         //    author: '',
-         //    genre: '',
-         //    aboutbook: '',
-         //    data: '',
-         //    duration: '',
-         //    minute: '',
-         //    second: '',
-         //    size: '',
-         //    price: '',
-         //    discount: '',
-         // })
+         setInputValues({
+            name: '',
+            author: '',
+            genreId: '',
+            description: '',
+            yearOfIssue: '',
+            duration: '',
+            minute: '',
+            second: '',
+            size: '',
+            price: '',
+            discount: '',
+         })
       }
    }
 
    return (
       <>
-         <AudioDiv controls src={audioValues.fragment.link} />
-         {/* <source src={audioValues.fragment.link} type="audio/mpeg" /> */}
-         {/* </AudioDiv> */}
-         {/* {showSnackbar && <Snackbar/>} */}
          <InputWrapper>
             <InputDiv>
-               <LabelStyle htmlFor="bookname">
+               <LabelStyle htmlFor="name">
                   Название книги <strong>*</strong>
                </LabelStyle>
                <InputText
                   onChange={handleChangeInput}
-                  id="bookname"
-                  name="bookname"
+                  id="name"
+                  name="name"
                   placeholder="Напишите полное название книги"
                   value={inputValues.bookname}
                />
@@ -136,22 +118,20 @@ const AudioBookForm = ({ images }) => {
                   name="author"
                   placeholder="Напишите ФИО автора"
                />
-               <LabelStyle htmlFor="genre">
+               <LabelStyle htmlFor="genreId">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <InputText
-                  id="genre"
-                  value={inputValues.genre}
-                  name="genre"
-                  onChange={handleChangeInput}
-                  placeholder="Литература, роман, стихи..."
+               <SelectSmall
+                  variant
+                  onChange={(e) => setJenreId(e)}
+                  title={jenre}
                />
                <Textarea
                   title="О книге"
                   onChange={handleChangeInput}
                   placeholder="Напишите о книге"
-                  value={inputValues.aboutbook}
-                  name="aboutbook"
+                  value={inputValues.description}
+                  name="description"
                   maxLength="1234"
                />
             </InputDiv>
@@ -161,23 +141,23 @@ const AudioBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectStyle onChange={handleChangeInput} name="language">
-                        <option>Русский</option>
-                        <option>Кыргызский</option>
-                        <option>Английский</option>
-                     </SelectStyle>
+                     <SelectSmall
+                        variant
+                        onChange={(e) => setLanguage(e)}
+                        title={languageSelect}
+                     />
                   </PriceDiv>
                   <PriceDiv>
-                     <LabelStyle htmlFor="data">
+                     <LabelStyle htmlFor="yearOfIssue">
                         Год выпуска <strong>*</strong>
                      </LabelStyle>
                      <InputText
-                        id="data"
-                        name="data"
+                        id="yearOfIssue"
+                        name="yearOfIssue"
                         onChange={handleChangeInput}
                         textAlign="end"
                         placeholder="гг"
-                        value={inputValues.data}
+                        value={inputValues.yearOfIssue}
                      />
                   </PriceDiv>
                </SelectDiv>
@@ -268,7 +248,7 @@ const AudioBookForm = ({ images }) => {
                      <FileUploadButton
                         onChange={changeAudioValue}
                         title="Загрузите аудиозапись "
-                        name="audiorecording"
+                        name="audioBook"
                         accept="audio/mpeg"
                      >
                         Загрузите аудиозапись
@@ -286,10 +266,6 @@ const AudioBookForm = ({ images }) => {
    )
 }
 export default AudioBookForm
-
-const AudioDiv = styled('audio')`
-   border: 1px solid red;
-`
 
 const SelectWrapper = styled('div')`
    width: 398px;

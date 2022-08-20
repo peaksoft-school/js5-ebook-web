@@ -24,7 +24,11 @@ const initialState = {
 export const signUpVendor = createAsyncThunk(
    'authSlices/SignUpVendorRequest',
    async (data) => {
-      const result = await appFetch('/api/public/vendor/register', 'POST', data)
+      const result = await appFetch({
+         url: '/api/public/vendor/register',
+         method: 'POST',
+         body: data,
+      })
       const vendor = {
          id: result.id,
          token: result.jwt,
@@ -38,7 +42,11 @@ export const signUpVendor = createAsyncThunk(
 export const signUpClient = createAsyncThunk(
    'authSlices/signUpClient',
    async (data) => {
-      const result = await appFetch('/api/public/user/register', 'POST', data)
+      const result = await appFetch({
+         url: '/api/public/user/register',
+         method: 'POST',
+         body: data,
+      })
       const user = {
          id: result.id,
          token: result.jwt,
@@ -51,7 +59,11 @@ export const signUpClient = createAsyncThunk(
 )
 
 export const signIn = createAsyncThunk('authSlices/signIn', async (data) => {
-   const result = await appFetch('/api/public/login', 'POST', data)
+   const result = await appFetch({
+      url: '/api/public/login',
+      method: 'POST',
+      body: data,
+   })
    const user = {
       id: result.id,
       token: result.jwt,

@@ -15,7 +15,6 @@ const allImages = {
 
 const AddBookPage = () => {
    const [images, setImages] = useState(allImages)
-   console.log(images)
    const [radio, setRadio] = useState('Бумажная')
    const { deleteImage } = useSelector((state) => state.addbook)
 
@@ -24,15 +23,18 @@ const AddBookPage = () => {
       setImages({ ...images, [name]: imageFile })
    }
 
-   let bookComponents
-   if (radio === 'Бумажная') {
-      bookComponents = <PaperBook images={images} />
-   }
-   if (radio === 'Аудиокнига') {
-      bookComponents = <AudioBook images={images} />
-   }
-   if (radio === 'Электронная книга') {
-      bookComponents = <ElectronicBook images={images} />
+   const getBookFormsByType = () => {
+      let bookComponents
+      if (radio === 'Бумажная') {
+         bookComponents = <PaperBook images={images} />
+      }
+      if (radio === 'Аудиокнига') {
+         bookComponents = <AudioBook images={images} />
+      }
+      if (radio === 'Электронная книга') {
+         bookComponents = <ElectronicBook images={images} />
+      }
+      return bookComponents
    }
 
    return (
@@ -94,7 +96,7 @@ const AddBookPage = () => {
                <CheckboxDiv>
                   <ChildrenCheckbox>
                      <RadioButton
-                        checked="true"
+                        checked={radio}
                         label="Бумажная"
                         id="1"
                         onChange={(e) => {
@@ -122,7 +124,7 @@ const AddBookPage = () => {
                   </ChildrenCheckbox>
                </CheckboxDiv>
             </div>
-            {bookComponents}
+            {getBookFormsByType()}
          </div>
       </ContainerDiv>
    )

@@ -1,25 +1,30 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import Checkbox from '../../Components/UI/checkBox/CheckBox'
 import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
-import bookAction from '../../store/slices/addBookSlice'
 import SelectSmall from '../../Components/UI/Select'
 import { addPaperPage } from '../../store/addBookActions'
-// import { URL } from '../../utils/constants/constants'
+import bookAction from '../../store/slices/addBookSlice'
+
+const languageSelect = [
+   { name: 'kyrgyzstan', id: 1 },
+   { name: 'Russian', id: 2 },
+   { name: 'English', id: 3 },
+]
 
 export const inputValuesForState = {
    name: '',
    author: '',
-   genre: '',
    publishingHouse: '',
    description: '',
    fragment: '',
    pageSize: '',
    price: '',
    yearOfIssue: '',
+   quantityOfBook: '',
    discount: '',
 }
 const paperInputValues = {
@@ -28,13 +33,16 @@ const paperInputValues = {
 }
 
 const PaperBookForm = ({ images }) => {
-   const [inputValues, setInputValues] = useState(paperInputValues)
+   const [genreId, setJenreId] = useState(0)
+   const [language, setLanguage] = useState()
+   const [inputValues, setInputValues] = useState({
+      ...paperInputValues,
+      genreId,
+      language,
+   })
    const dispatch = useDispatch()
-   const [showSnackbar, setShowSnackbar] = useState(null)
-   const { token } = useSelector((store) => store.auth)
-   console.log(token)
-
-   const refId = useRef()
+   const { token } = useSelector((store) => store.auth.user)
+   const jenre = useSelector((store) => store.addbook.jenreId)
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -44,89 +52,29 @@ const PaperBookForm = ({ images }) => {
       const validateValues =
          inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
-         inputValues.genre.length >= 1 &&
+         inputValues.genreId.length >= 1 &&
          inputValues.publishingHouse.length >= 1 &&
-         inputValues.aboutbook.length >= 1 &&
+         inputValues.description.length >= 1 &&
          inputValues.fragment.length >= 1 &&
-         inputValues.size.length >= 1 &&
+         inputValues.pageSize.length >= 1 &&
          inputValues.price.length >= 1 &&
-         inputValues.discount.length >= 1
+         inputValues.discount.length >= 1 &&
+         inputValues.quantityOfBook.length >= 1
 
       const validateImages = images.mainImg.length >= 1
       return validateValues && validateImages
    }
 
-   const postToBack2 = {
-      mainImage: 'string',
-      secondImage: 'string',
-      thirdImage: 'string',
-      name: 'Jyragl',
-      genreId: 14,
-      price: 230,
-      author: 'Sadyr',
-      description: 'yeru',
-      language: 'KYRGYZ',
-      yearOfIssue: 0,
-      discount: 0,
-      bestseller: true,
-      fragment: 'string',
-      pageSize: 0,
-      publishingHouse: 'string',
-      quantityOfBook: 0,
-   }
-
    const clickHandle = async () => {
-      // dispatch(addBook(postToBack2, images))
-      dispatch(addPaperPage(postToBack2, images, token))
-      // dispatch(getBooks)
-      fetch(
-         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/books?bookType=PAPER_BOOK&search=all&page=1&size=12'
-      )
-         .then((response) => {
-            console.log(response)
-            return response.json()
-         })
-         .then((data) => {
-            console.log(data)
-         })
-         .catch((error) => {
-            console.log(error.message)
-         })
-      //  fetch(`${URL}/api/book/save/paperBook`, {
-      //    method: 'POST',
-      //    headers: {
-      //       Authorization:
-      //       'Content-Type': 'application/json',
-      //    },
-      //    // body: JSON.stringify(postToBack2),
-      // })
-      //    .then((response) => {
-      //       console.log(response)
-      //       return response.json()
-      //    })
-      //    .then((data) => {
-      //       console.log(data)
-      //    })
-      //    .catch((error) => {
-      //       console.log(error.message)
-      //    })
-
       if (isFormValid()) {
-         dispatch(
-            bookAction.addBook({
-               ...inputValues,
-               ...images,
-               typeBook: 'paperbook',
-            })
-         )
+         dispatch(addPaperPage(inputValues, images, token))
          dispatch(bookAction.deleteImage())
-         // dispatch(addImages(images))
-         setShowSnackbar(true)
+         // setShowSnackbar(true)
 
          setInputValues({
             name: '',
             author: '',
-            genre: '',
+            genreId: '',
             publishingHouse: '',
             description: '',
             fragment: '',
@@ -134,53 +82,17 @@ const PaperBookForm = ({ images }) => {
             price: '',
             yearOfIssue: '',
             discount: '',
+            quantityOfBook: '',
          })
       } else {
-         setShowSnackbar(false)
+         // setShowSnackbar(false)
       }
    }
 
-   const handleSubmission = (e) => {
-      e.preventDefault()
-      console.log(images.mainImg)
-      const formData = new FormData()
-      formData.append('file', images.mainImg)
-      fetch(
-         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
-         {
-            method: 'POST',
-            headers: {
-               Authorization:
-                  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDkzMTYyMywiaWF0IjoxNjYwOTI4MDIzLCJ1c2VybmFtZSI6Iml1eWlvIn0.rcz-Kw6wR6N5sadg4jUFNZDDjopNewEqKA4_jVTqux8',
-            },
-            body: formData,
-         }
-      )
-         .then((response) => response.json())
-         .then((result) => {
-            console.log('Success:', result)
-         })
-         .catch((error) => {
-            console.error('Error:', error)
-         })
-   }
-
-   const arr = [
-      { name: 'kyrgyzstan', id: 1 },
-      { name: 'Russion', id: 2 },
-      { name: 'English', id: 3 },
-   ]
-
    return (
       <>
-         <SelectSmall arr={arr} />
-         <form onSubmit={handleSubmission}>
-            <button type="submit">forma</button>
-            <img src={images.mainImg.link} alt={images.mainImg} />
-         </form>
-         {showSnackbar && <h1>Uspeshno</h1>}
-         {showSnackbar === false && <h1>Oshibka</h1>}
-         <InputWrapper ref={refId} onSubmit={clickHandle}>
+         {/* snackbar */}
+         <InputWrapper onSubmit={clickHandle}>
             <InputDiv>
                <LabelStyle htmlFor="name">
                   Название книги <strong>*</strong>
@@ -205,12 +117,10 @@ const PaperBookForm = ({ images }) => {
                <LabelStyle htmlFor="genre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <InputText
-                  placeholder="Литература, роман, стихи..."
-                  value={inputValues.genre}
-                  onChange={handleChangeInput}
-                  name="genre"
-                  type="number"
+               <SelectSmall
+                  variant
+                  onChange={(e) => setJenreId(e)}
+                  title={jenre}
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
@@ -245,11 +155,10 @@ const PaperBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectStyle onChange={handleChangeInput} name="language">
-                        <option>Русский</option>
-                        <option>Кыргызский</option>
-                        <option>Английский</option>
-                     </SelectStyle>
+                     <SelectSmall
+                        onChange={(e) => setLanguage(e)}
+                        title={languageSelect}
+                     />
                      <LabelStyle htmlFor="pageSize">
                         Объем <strong>*</strong>
                      </LabelStyle>
@@ -260,6 +169,7 @@ const PaperBookForm = ({ images }) => {
                         value={inputValues.pageSize}
                         name="pageSize"
                         id="pageSize"
+                        type="number"
                      />
                      <LabelStyle htmlFor="price">
                         Стоимость <strong>*</strong>
@@ -271,6 +181,7 @@ const PaperBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="сом"
                         name="price"
+                        type="number"
                      />
                      <Bestssler>
                         <Checkbox label="Бестселлер" />
@@ -286,18 +197,19 @@ const PaperBookForm = ({ images }) => {
                         value={inputValues.yearOfIssue}
                         textAlign="end"
                         placeholder="гг"
+                        type="number"
                         name="yearOfIssue"
                      />
-                     <LabelStyle htmlFor="amount">
+                     <LabelStyle htmlFor="quantityOfBook">
                         Кол-во <strong>*</strong>
                      </LabelStyle>
                      <InputText
-                        data="amount"
+                        data="quantityOfBook"
                         onChange={handleChangeInput}
-                        value={inputValues.amount}
+                        value={inputValues.quantityOfBook}
                         textAlign="end"
                         placeholder="шт"
-                        name="amount"
+                        name="quantityOfBook"
                      />
                      <LabelStyle htmlFor="discount">
                         Скидка <strong>*</strong>
@@ -309,6 +221,7 @@ const PaperBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="%"
                         name="discount"
+                        type="number"
                      />
                   </SelectDiv>
                </SelectWrapper>
