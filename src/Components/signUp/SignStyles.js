@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import Button from '../Button/Button'
+import Button from '../UI/Button/Button'
 
 export const ButtonSubmit = ({ children, type, margintop }) => {
    return (
@@ -42,7 +42,7 @@ export const ButtonIn = ({ children, activeBtn, ...props }) => {
          coloractive={activeBtn ? '#292929' : '#969696'}
          width="40%"
          fontSize="20px"
-         fontWeight="400"
+         fontWeight="600"
          {...props}
       >
          {children}

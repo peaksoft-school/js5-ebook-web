@@ -1,12 +1,14 @@
 import { useRef, useState } from 'react'
 import { styled } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Checkbox from '../../Components/UI/checkBox/CheckBox'
 import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
 import bookAction from '../../store/slices/addBookSlice'
 import SelectSmall from '../../Components/UI/Select'
+import { addPaperPage } from '../../store/addBookActions'
+// import { URL } from '../../utils/constants/constants'
 
 export const inputValuesForState = {
    name: '',
@@ -29,6 +31,8 @@ const PaperBookForm = ({ images }) => {
    const [inputValues, setInputValues] = useState(paperInputValues)
    const dispatch = useDispatch()
    const [showSnackbar, setShowSnackbar] = useState(null)
+   const { token } = useSelector((store) => store.auth)
+   console.log(token)
 
    const refId = useRef()
 
@@ -52,37 +56,31 @@ const PaperBookForm = ({ images }) => {
       return validateValues && validateImages
    }
 
-   const postToBack = {
+   const postToBack2 = {
       mainImage: 'string',
       secondImage: 'string',
       thirdImage: 'string',
-      name: 'er',
-      genreId: 3,
-      price: 10,
-      author: 'fantastic',
-      description: 'string',
+      name: 'Jyragl',
+      genreId: 14,
+      price: 230,
+      author: 'Sadyr',
+      description: 'yeru',
       language: 'KYRGYZ',
-      yearOfIssue: 20,
-      discount: 120,
+      yearOfIssue: 0,
+      discount: 0,
       bestseller: true,
       fragment: 'string',
-      pageSize: 120,
+      pageSize: 0,
       publishingHouse: 'string',
-      quantityOfBook: 3,
+      quantityOfBook: 0,
    }
 
    const clickHandle = async () => {
+      // dispatch(addBook(postToBack2, images))
+      dispatch(addPaperPage(postToBack2, images, token))
+      // dispatch(getBooks)
       fetch(
-         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/book/save/paperBook',
-         {
-            method: 'POST',
-            headers: {
-               Authorization:
-                  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDc1MTM4OSwiaWF0IjoxNjYwNzQ3Nzg5LCJ1c2VybmFtZSI6InN0cmluZyJ9.ZG6sbi9soBpkeLq1_X7sQUmg5FtExYY8L3fYkpN6Ehw',
-               'Content-Type': 'application/json; charset=utf-8',
-            },
-            body: JSON.stringify(postToBack),
-         }
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/books?bookType=PAPER_BOOK&search=all&page=1&size=12'
       )
          .then((response) => {
             console.log(response)
@@ -94,14 +92,24 @@ const PaperBookForm = ({ images }) => {
          .catch((error) => {
             console.log(error.message)
          })
-
-      fetch(
-         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/book/save/paperBook'
-      )
-         .then((res) => res.json())
-         .then((data) => {
-            console.log(data)
-         })
+      //  fetch(`${URL}/api/book/save/paperBook`, {
+      //    method: 'POST',
+      //    headers: {
+      //       Authorization:
+      //       'Content-Type': 'application/json',
+      //    },
+      //    // body: JSON.stringify(postToBack2),
+      // })
+      //    .then((response) => {
+      //       console.log(response)
+      //       return response.json()
+      //    })
+      //    .then((data) => {
+      //       console.log(data)
+      //    })
+      //    .catch((error) => {
+      //       console.log(error.message)
+      //    })
 
       if (isFormValid()) {
          dispatch(
@@ -112,6 +120,7 @@ const PaperBookForm = ({ images }) => {
             })
          )
          dispatch(bookAction.deleteImage())
+         // dispatch(addImages(images))
          setShowSnackbar(true)
 
          setInputValues({
@@ -131,19 +140,18 @@ const PaperBookForm = ({ images }) => {
       }
    }
 
-   const [selectedFile, setSelectedFile] = useState()
-   console.log(selectedFile)
    const handleSubmission = (e) => {
       e.preventDefault()
       console.log(images.mainImg)
       const formData = new FormData()
-      formData.append('file', images)
+      formData.append('file', images.mainImg)
       fetch(
          'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
          {
             method: 'POST',
             headers: {
-               Authorization: `bearer+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDU5MjE5NywiaWF0IjoxNjYwNTg4NTk3LCJ1c2VybmFtZSI6ImZrZWlvQGdtYWlsLmNvbSJ9.pBZlWmVmMoMZQ7LhV0l8JgI8hOchq_rMJtc3p4tRl00`,
+               Authorization:
+                  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDkzMTYyMywiaWF0IjoxNjYwOTI4MDIzLCJ1c2VybmFtZSI6Iml1eWlvIn0.rcz-Kw6wR6N5sadg4jUFNZDDjopNewEqKA4_jVTqux8',
             },
             body: formData,
          }
@@ -151,7 +159,6 @@ const PaperBookForm = ({ images }) => {
          .then((response) => response.json())
          .then((result) => {
             console.log('Success:', result)
-            setSelectedFile(result)
          })
          .catch((error) => {
             console.error('Error:', error)
@@ -159,9 +166,9 @@ const PaperBookForm = ({ images }) => {
    }
 
    const arr = [
-      { name: 'kyrgyzstan', id: 'w1' },
-      { name: 'Russion', id: 'w2' },
-      { name: 'English', id: 'w3' },
+      { name: 'kyrgyzstan', id: 1 },
+      { name: 'Russion', id: 2 },
+      { name: 'English', id: 3 },
    ]
 
    return (
@@ -169,7 +176,7 @@ const PaperBookForm = ({ images }) => {
          <SelectSmall arr={arr} />
          <form onSubmit={handleSubmission}>
             <button type="submit">forma</button>
-            <img src={images.secondImg.link} alt={images.mainImg} />
+            <img src={images.mainImg.link} alt={images.mainImg} />
          </form>
          {showSnackbar && <h1>Uspeshno</h1>}
          {showSnackbar === false && <h1>Oshibka</h1>}
@@ -203,6 +210,7 @@ const PaperBookForm = ({ images }) => {
                   value={inputValues.genre}
                   onChange={handleChangeInput}
                   name="genre"
+                  type="number"
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>

@@ -14,6 +14,7 @@ import {
    LabelStyle,
    SelectStyle,
 } from './PaperBookForm'
+import { getBooks } from '../../store/addBookActions'
 
 const audioBookInputValues = {
    bookname: '',
@@ -36,7 +37,7 @@ const allAudioRecordingValues = {
 const AudioBookForm = ({ images }) => {
    const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
    const [inputValues, setInputValues] = useState(audioBookInputValues)
-   const data = useSelector((state) => state)
+   const data = useSelector((state) => state.addbook)
    console.log(data)
    console.log(audioValues.fragment.link)
    // const [showSnackbar, setShowSnackbar] = useState(false)
@@ -45,27 +46,7 @@ const AudioBookForm = ({ images }) => {
 
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
-      // setAudioValues({ ...audioValues, [name]: URL.createObjectURL(audio) })
-      const formData = new FormData()
-      formData.append('file', audio)
-      fetch(
-         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
-         {
-            method: 'POST',
-            headers: {
-               Authorization: `bearer+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDU5MjE5NywiaWF0IjoxNjYwNTg4NTk3LCJ1c2VybmFtZSI6ImZrZWlvQGdtYWlsLmNvbSJ9.pBZlWmVmMoMZQ7LhV0l8JgI8hOchq_rMJtc3p4tRl00`,
-            },
-            body: formData,
-         }
-      )
-         .then((response) => response.json())
-         .then((result) => {
-            console.log('Success:', result)
-            setAudioValues({ ...audioValues, [name]: result })
-         })
-         .catch((error) => {
-            console.error('Error:', error)
-         })
+      setAudioValues({ ...audioValues, [name]: URL.createObjectURL(audio) })
    }
 
    const handleChangeInput = (e) => {
@@ -90,18 +71,7 @@ const AudioBookForm = ({ images }) => {
       return isInputsAreValid && validateImages
    }
    const clickHandle = async () => {
-      const response = await fetch(
-         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/wishlist/books/favorite',
-         {
-            headers: {
-               Authorization:
-                  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MDc1MjkzNywiaWF0IjoxNjYwNzQ5MzM3LCJ1c2VybmFtZSI6ImVyZ2VnIn0.erkOIvpeIu1qgxnx3KTtQmiv3eY8r48upDBOjDE1IIc',
-            },
-         }
-      )
-      if (!response.ok) {
-         throw new Error('Не удалось получить курсы')
-      }
+      dispatch(getBooks('sadyr'))
       // .then((res) => res.json())
       // .then((data) => {
       //    console.log(data)

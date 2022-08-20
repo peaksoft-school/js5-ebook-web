@@ -1,29 +1,32 @@
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import AdminLayout from '../layouts/AdminLayout'
-import VendorLayout from '../layouts/VendorLayout'
-import ClientLayout from '../layouts/ClientLayout'
+import { useMemo } from 'react'
 import { APP_ROLES } from '../utils/constants/constants'
-import AddBookPage from '../containers/vendorMainPage/AddBookPage'
+import vendorLayout from './vendorLayout'
+import clientLayout from './clientLayout'
+import adminLayout from './adminLayout'
 
 function AppRoutes() {
    const user = useSelector((store) => store.auth.user)
-   const navigate = useNavigate()
-   useEffect(() => {
-      if (user) {
-         if (user.role === APP_ROLES.VENDOR) {
-            navigate(`/vendor/addbook`, { replace: true })
-         }
+   const RoutesComponent = useMemo(() => {
+      return {
+         [APP_ROLES.ADMIN]: adminLayout(),
+         [APP_ROLES.VENDOR]: vendorLayout(),
+         [APP_ROLES.USER]: clientLayout(),
       }
    }, [])
+
    return (
       <Routes>
-         <Route path="/" element={<ClientLayout />} />
-         <Route path="/vendor" element={<VendorLayout />}>
-            <Route path="addbook" element={<AddBookPage />} />
-         </Route>
-         <Route path="/admin" element={<AdminLayout />} />
+         {RoutesComponent[user.role]}
+         <Route
+            path="/"
+            element={
+               <div>
+                  <h2>not found</h2>
+               </div>
+            }
+         />
       </Routes>
    )
 }

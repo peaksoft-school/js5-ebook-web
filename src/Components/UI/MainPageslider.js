@@ -8,7 +8,22 @@ import 'slick-carousel/slick/slick-theme.css'
 import Vector from '../../assets/Vector.jpg'
 import Vector2 from '../../assets/Vector2.png'
 
+const NextArrow = () => {
+   return (
+      <div className="arrow next">
+         <img src={Vector} alt="book Vector" />
+      </div>
+   )
+}
+const PrevArrow = () => {
+   return (
+      <div className="arrow prev">
+         <img src={Vector2} alt="book Vector2" />
+      </div>
+   )
+}
 function MainPageSlider({ images }) {
+<<<<<<< HEAD
    // eslint-disable-next-line react/no-unstable-nested-components
    const NextArrow = ({ onClick }) => {
       return (
@@ -29,6 +44,8 @@ function MainPageSlider({ images }) {
       )
    }
 
+=======
+>>>>>>> 88da9523e598ee93e8ece69e4eb0a75b9005ca56
    const [imageIndex, setImageIndex] = useState(0)
 
    const settings = {

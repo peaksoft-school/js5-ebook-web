@@ -1,4 +1,6 @@
 import { Outlet } from 'react-router'
+import { useState } from 'react'
+import { MenuItem } from '@mui/material'
 import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
@@ -9,11 +11,33 @@ import { ReactComponent as NotificatonIcon } from '../assets/icons/header/notifi
 import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.svg'
 import CardItems from './CardItems'
 import Footer from './Footer'
+// <<<<<<< HEAD
 // import Outlet from 'react-router-dom'
-import SearchInput from '../Components/UI/Inputs/SearchInput'
+// import SearchInput from '../Components/UI/Inputs/SearchInput'
 // import AddBookPage from '../containers/vendorMainPage/AddBookPage'
+// =======
+import SearchInputBlock from './SearchInputBlock'
+import PopUp from '../Components/UI/popup'
+import Modal from '../Components/UI/Modal'
+import ExitApp from '../Components/UI/ExitApp'
+// >>>>>>> 88da9523e598ee93e8ece69e4eb0a75b9005ca56
 
-function Vendor() {
+const Vendor = () => {
+   const [anchorEl, setAnchorEl] = useState(null)
+   const [isModal, setIsModal] = useState(false)
+   const open = Boolean(anchorEl)
+   const onClickExitBtn = () => {
+      setIsModal(true)
+   }
+   const onCloseModal = () => {
+      setIsModal(false)
+   }
+   const onClickProfileHandler = (e) => {
+      setAnchorEl(e.currentTarget)
+   }
+   const onCloseProfileHandler = () => {
+      setAnchorEl(null)
+   }
    return (
       <Wrapper>
          <AppContainer
@@ -27,7 +51,7 @@ function Vendor() {
                            <Logotype />
                         </CardItems>
                         <CardItems flexGrow={1} padding="0 20px">
-                           <SearchInput />
+                           <SearchInputBlock />
                         </CardItems>
                         <CardItems flexGrow={0} flexShrink={0}>
                            <IconButton icon={<MessageIcon />} />
@@ -37,7 +61,21 @@ function Vendor() {
                               backgroundColor="#DBDBDB"
                               borderRadius="50%"
                               label={<Treugolnik />}
+                              onClick={onClickProfileHandler}
                            />
+                           <PopUp
+                              onClose={onCloseProfileHandler}
+                              open={open}
+                              anchorEl={anchorEl}
+                           >
+                              <MenuItem>Профиль</MenuItem>
+                              <MenuItem onClick={onClickExitBtn}>
+                                 Выйти
+                              </MenuItem>
+                           </PopUp>
+                           <Modal open={isModal} onClose={onCloseModal}>
+                              <ExitApp onCloseModal={onCloseModal} />
+                           </Modal>
                         </CardItems>
                      </>
                   }

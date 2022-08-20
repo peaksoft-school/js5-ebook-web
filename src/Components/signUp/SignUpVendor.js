@@ -1,13 +1,22 @@
-import { useDispatch, useSelector } from 'react-redux/es/exports'
 import InputMask from 'react-input-mask'
+// <<<<<<< HEAD:src/Components/UI/signUp/SignUpVendor.js
 import { useNavigate } from 'react-router'
+// import { useState, useEffect } from 'react'
+// import InputText from '../Inputs/InputText'
+// import PasswordInput from '../Inputs/PaswordInput'
+// import Validation from './Validation'
+// import { signUpVendor } from '../../../store/slices/authSlices'
+// import * as Sign from './SignStyles'
+// =======
+import { useDispatch } from 'react-redux/es/exports'
 import { useState, useEffect } from 'react'
-import InputText from '../Inputs/InputText'
-import PasswordInput from '../Inputs/PaswordInput'
-import Validation from './Validation'
-import { APP_ROLES } from '../../../utils/constants/constants'
-import { signUpVendor } from '../../../store/slices/authSlices'
+// import { APP_ROLES } from '../../utils/constants/constants'
+import InputText from '../UI/Inputs/InputText'
+import PasswordInput from '../UI/Inputs/PaswordInput'
+import Validation from '../../hooks/Validation'
 import * as Sign from './SignStyles'
+import { signUpVendor } from '../../store/slices/authSlices'
+// >>>>>>> 88da9523e598ee93e8ece69e4eb0a75b9005ca56:src/Components/signUp/SignUpVendor.js
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
@@ -32,16 +41,14 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
-   const user = useSelector((store) => store.auth.user)
    const dispatch = useDispatch()
+   // <<<<<<< HEAD:src/Components/UI/signUp/SignUpVendor.js
    const navigate = useNavigate()
    useEffect(() => {
-      if (user) {
-         if (user.role === APP_ROLES.VENDOR) {
-            navigate('/vendor', { replace: true })
-         }
-      }
-   }, [user])
+      navigate('/vendor', { replace: true })
+   }, [])
+   // =======
+   // >>>>>>> 88da9523e598ee93e8ece69e4eb0a75b9005ca56:src/Components/signUp/SignUpVendor.js
    const {
       value: name,
       inputChange: onChangeInputName,

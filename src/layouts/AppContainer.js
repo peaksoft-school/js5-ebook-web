@@ -50,7 +50,7 @@ const Item = styled.div`
    width: 250px;
 =======
    /* border: 1px solid red; */
-   min-width: 210px;
+   min-width: 240px;
    flex-grow: 1;
    flex-shrink: 0;
    display: flex;

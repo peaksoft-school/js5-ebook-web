@@ -12,6 +12,7 @@ export const InputContainer = styled.div`
    width: ${(props) => (props.width ? props.width : '100%')};
 ======= */
    width: 100%;
+   position: relative;
    ${(props) =>
       props.error &&
       css`
