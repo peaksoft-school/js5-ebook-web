@@ -29,9 +29,10 @@ export const Input = styled.input`
    padding-bottom: 10px;
    padding-left: 20px;
    padding-right: ${(props) => props.paddingRight || '20px'};
-   border: none;
+   border: 1px solid rgba(0, 0, 0, 0);
    color: #222222;
    outline: none;
+   transition: ease-in 0.2s;
    &::placeholder {
       color: #969696;
    }
