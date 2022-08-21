@@ -5,10 +5,9 @@ import Checkbox from '../../Components/UI/checkBox/CheckBox'
 import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
-import SelectSmall from '../../Components/UI/Select'
-import { addPaperBook, appFileFetchService } from '../../store/addBookActions'
+import { addPaperBook } from '../../store/addBookActions'
 import bookAction from '../../store/slices/addBookSlice'
-import { URL } from '../../utils/constants/constants'
+import Selected from '../../Components/UI/Select'
 
 const languageSelect = [
    { name: 'kyrgyzstan', id: 1 },
@@ -35,7 +34,6 @@ const paperInputValues = {
 
 const PaperBookForm = ({ images }) => {
    const [inputValues, setInputValues] = useState(paperInputValues)
-   console.log(inputValues)
    const dispatch = useDispatch()
    const { token } = useSelector((store) => store.auth.user)
    const jenre = useSelector((store) => store.addbook.jenreId)
@@ -61,56 +59,32 @@ const PaperBookForm = ({ images }) => {
       return validateValues && validateImages
    }
 
-   const clickHandle = async () => {
-      dispatch(appFileFetchService(images, token))
-      console.log(images.mainImg)
-      const file = new FormData()
-      file.append('file', images.mainImg)
-      const res = await fetch(
-         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
-         {
-            method: 'POST',
-            headers: {
-               Authorization:
-                  'Bearer+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MTA5OTg1OCwiaWF0IjoxNjYxMDk2MjU4LCJ1c2VybmFtZSI6InRkeWR5ZCJ9.5XNuNgLEljC7hcp5ffkpequkFh1rmGiCkitX5PvP6ls',
-            },
-            body: file,
-         }
-      )
-         .then((data) => data.json())
-         .then((rest) => {
-            console.log(rest)
-         })
-      console.log(res)
-      console.log(URL, 'oo')
+   const clickSendFormValues = async () => {
       if (isFormValid()) {
+         dispatch(addPaperBook(inputValues, images, token))
          dispatch(addPaperBook(inputValues, images, token))
          dispatch(bookAction.deleteImage())
 
-         // setShowSnackbar(true)
-
-         // setInputValues({
-         //    name: '',
-         //    author: '',
-         //    genreId: '',
-         //    publishingHouse: '',
-         //    description: '',
-         //    fragment: '',
-         //    pageSize: '',
-         //    price: '',
-         //    yearOfIssue: '',
-         //    discount: '',
-         //    quantityOfBook: '',
-         // })
-      } else {
-         // setShowSnackbar(false)
+         setInputValues({
+            name: '',
+            author: '',
+            genreId: '',
+            publishingHouse: '',
+            description: '',
+            fragment: '',
+            pageSize: '',
+            price: '',
+            yearOfIssue: '',
+            discount: '',
+            quantityOfBook: '',
+         })
       }
    }
 
    return (
       <>
          {/* snackbar */}
-         <InputWrapper onSubmit={clickHandle}>
+         <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
                <LabelStyle htmlFor="name">
                   Название книги <strong>*</strong>
@@ -135,7 +109,7 @@ const PaperBookForm = ({ images }) => {
                <LabelStyle htmlFor="genre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectSmall
+               <Selected
                   variant
                   onChange={(jenreId) =>
                      setInputValues({ ...inputValues, jenreId })
@@ -175,7 +149,7 @@ const PaperBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectSmall
+                     <Selected
                         onChange={(language) =>
                            setInputValues({ ...inputValues, language })
                         }
@@ -250,7 +224,7 @@ const PaperBookForm = ({ images }) => {
             </div>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickHandle}>
+            <Button width="160px" onClick={clickSendFormValues}>
                Отправить
             </Button>
          </ButtonDiv>

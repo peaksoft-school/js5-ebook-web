@@ -45,6 +45,7 @@ function AuthenticationButtons() {
    }
    const onClickExitBtn = () => {
       setIsShowModal(true)
+      onCloseProfileHandler()
    }
    const showUser = userActive ? (
       <>

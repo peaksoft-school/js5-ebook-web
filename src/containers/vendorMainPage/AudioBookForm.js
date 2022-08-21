@@ -8,8 +8,8 @@ import InputText from '../../Components/UI/Inputs/InputText'
 import CheckBox from '../../Components/UI/checkBox/CheckBox'
 import bookAction from '../../store/slices/addBookSlice'
 import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
-import SelectSmall from '../../Components/UI/Select'
 import { addAudioBook } from '../../store/addBookActions'
+import Selected from '../../Components/UI/Select'
 
 const audioBookInputValues = {
    name: '',
@@ -35,18 +35,11 @@ const languageSelect = [
 ]
 
 const AudioBookForm = ({ images }) => {
-   const [genreId, setJenreId] = useState(0)
    const { token } = useSelector((store) => store.auth.user)
-   const [language, setLanguage] = useState()
    const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
-   const [inputValues, setInputValues] = useState({
-      ...audioBookInputValues,
-      language,
-      genreId,
-   })
+   const [inputValues, setInputValues] = useState(audioBookInputValues)
    const jenre = useSelector((store) => store.addbook.jenreId)
    const dispatch = useDispatch()
-
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
       setAudioValues({ ...audioValues, [name]: URL.createObjectURL(audio) })
@@ -59,7 +52,7 @@ const AudioBookForm = ({ images }) => {
 
    const isFormValid = () => {
       const isInputsAreValid =
-         inputValues.bookname.length >= 1 &&
+         inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
          inputValues.genreId.length >= 1 &&
          inputValues.description.length >= 1 &&
@@ -72,11 +65,10 @@ const AudioBookForm = ({ images }) => {
       const validateAudio = audioValues.fragment.length >= 1
       return isInputsAreValid && validateImages && validateAudio
    }
-   const clickHandle = async () => {
+   const clickSendFormValues = async () => {
       if (isFormValid()) {
          dispatch(bookAction.deleteImage())
-         dispatch(addAudioBook(inputValues, images, token))
-         // setShowSnackbar(true)
+         dispatch(addAudioBook(inputValues, images, token, audioValues))
 
          setInputValues({
             name: '',
@@ -121,9 +113,11 @@ const AudioBookForm = ({ images }) => {
                <LabelStyle htmlFor="genreId">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectSmall
+               <Selected
                   variant
-                  onChange={(e) => setJenreId(e)}
+                  onChange={(jenreId) =>
+                     setInputValues({ ...inputValues, jenreId })
+                  }
                   title={jenre}
                />
                <Textarea
@@ -141,9 +135,10 @@ const AudioBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectSmall
-                        variant
-                        onChange={(e) => setLanguage(e)}
+                     <Selected
+                        onChange={(language) =>
+                           setInputValues({ ...inputValues, language })
+                        }
                         title={languageSelect}
                      />
                   </PriceDiv>
@@ -258,7 +253,7 @@ const AudioBookForm = ({ images }) => {
             </SelectWrapper>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickHandle}>
+            <Button width="160px" onClick={clickSendFormValues}>
                Отправить
             </Button>
          </ButtonDiv>

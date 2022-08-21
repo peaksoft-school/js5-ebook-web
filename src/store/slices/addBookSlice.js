@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-   bookContainer: [],
-   array: [],
    deleteImage: false,
+   postData: [],
+   status: null,
+   error: null,
    jenreId: [
       { name: 'Художественнная лит...', id: 1 },
       { name: 'Общество', id: 4 },
@@ -20,13 +21,12 @@ export const addBookSlice = createSlice({
       deleteImage(state) {
          state.deleteImage = !state.deleteImage
       },
-      // bookFromFetch(state, action) {
-      // },
-      saveBooks(state, action) {
-         state.array = action.payload
+      bookFromFetch(state, action) {
+         state.postData = action.payload
       },
-      // genreId(state) {
-      // },
+      statusError(state, action) {
+         state.error = action.payload
+      },
    },
 })
 

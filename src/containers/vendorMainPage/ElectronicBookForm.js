@@ -7,6 +7,8 @@ import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
 import CheckBox from '../../Components/UI/checkBox/CheckBox'
+import { addElectronicBoook } from '../../store/addBookActions'
+import Selected from '../../Components/UI/Select'
 import {
    ButtonDiv,
    InputDiv,
@@ -16,8 +18,6 @@ import {
    SelectDiv,
    SelectWrapper,
 } from './PaperBookForm'
-import SelectSmall from '../../Components/UI/Select'
-import { addElectronicBoook } from '../../store/addBookActions'
 
 const languageSelect = [
    { name: 'kyrgyzstan', id: 1 },
@@ -27,17 +27,10 @@ const languageSelect = [
 
 const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
-   const [language, setLanguage] = useState(0)
-   const [jenreId, setJenreId] = useState()
    const { token } = useSelector((store) => store.auth.user)
    const jenre = useSelector((store) => store.addbook.jenreId)
    const dispatch = useDispatch()
-   const [inputValues, setInputValues] = useState({
-      ...inputValuesForState,
-      language,
-      jenreId,
-   })
-   console.log(inputValues)
+   const [inputValues, setInputValues] = useState(inputValuesForState)
 
    const changePdfFileValue = (pdf) => {
       setPdfFile(pdf)
@@ -53,12 +46,13 @@ const ElectronicBookForm = ({ images }) => {
          inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
          inputValues.genreId.length >= 1 &&
-         inputValues.publish.length >= 1 &&
+         inputValues.publishingHouse.length >= 1 &&
          inputValues.description.length >= 1 &&
          inputValues.fragment.length >= 1 &&
          inputValues.pageSize.length >= 1 &&
          inputValues.price.length >= 1 &&
-         inputValues.discount.length >= 1
+         inputValues.discount.length >= 1 &&
+         inputValues.quantityOfBook.length >= 1
 
       const validateImages = images.mainImg.length >= 1
       const validatePdf = pdfValue.length >= 1
@@ -66,14 +60,24 @@ const ElectronicBookForm = ({ images }) => {
       return validateValues && validateImages && validatePdf
    }
 
-   const clickHandle = () => {
+   const clickSendFormValues = () => {
       if (isFormValid()) {
-         dispatch(addElectronicBoook(inputValues, images, token))
+         dispatch(addElectronicBoook(inputValues, images, token, pdfValue))
          dispatch(bookAction.deleteImage())
-         // setShowSnackbar(true)
-      } else {
-         // setShowSnackbar(false)
       }
+      setInputValues({
+         name: '',
+         author: '',
+         genreId: '',
+         publishingHouse: '',
+         description: '',
+         fragment: '',
+         pageSize: '',
+         price: '',
+         yearOfIssue: '',
+         discount: '',
+         quantityOfBook: '',
+      })
    }
 
    return (
@@ -104,8 +108,10 @@ const ElectronicBookForm = ({ images }) => {
                <LabelStyle htmlFor="genreId">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectSmall
-                  onChange={(e) => setJenreId(e)}
+               <Selected
+                  onChange={(jenreId) =>
+                     setInputValues({ ...inputValues, jenreId })
+                  }
                   variant
                   title={jenre}
                />
@@ -142,8 +148,10 @@ const ElectronicBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectSmall
-                        onChange={(e) => setLanguage(e)}
+                     <Selected
+                        onChange={(language) =>
+                           setInputValues({ ...inputValues, language })
+                        }
                         title={languageSelect}
                      />
                      <LabelStyle htmlFor="obem">
@@ -216,7 +224,7 @@ const ElectronicBookForm = ({ images }) => {
             </Wrapper>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickHandle}>
+            <Button width="160px" onClick={clickSendFormValues}>
                Отправить
             </Button>
          </ButtonDiv>

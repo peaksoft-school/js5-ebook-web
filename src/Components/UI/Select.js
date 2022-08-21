@@ -5,10 +5,8 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import { styled } from '@mui/material'
 
-export default function SelectSmall({ title, onChange, variant }) {
+export default function Selected({ title, onChange, variant }) {
    const [age, setAge] = React.useState('')
-   console.log(age)
-
    React.useEffect(() => {
       onChange(age)
    }, [age])
@@ -31,17 +29,11 @@ export default function SelectSmall({ title, onChange, variant }) {
                <em>None</em>
             </MenuItem> */}
 
-            {variant
-               ? title.map((el) => (
-                    <CopyMenuItem key={el.id} value={el.id}>
-                       {el.name}
-                    </CopyMenuItem>
-                 ))
-               : title.map((el) => (
-                    <CopyMenuItem key={el.id} value={el.name}>
-                       {el.name}
-                    </CopyMenuItem>
-                 ))}
+            {title.map((el) => (
+               <CopyMenuItem key={el.id} value={variant ? el.id : el.name}>
+                  {el.name}
+               </CopyMenuItem>
+            ))}
          </Select>
       </FormSelect>
    )

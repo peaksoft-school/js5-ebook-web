@@ -1,7 +1,6 @@
 import { URL } from '../utils/constants/constants'
 
-export const appFileFetchServi = async (file, tok) => {
-   console.log(tok)
+export const appFileFetchService = async (file, token) => {
    const formData = new FormData()
    formData.append('file', file)
    const response = await fetch(
@@ -10,7 +9,7 @@ export const appFileFetchServi = async (file, tok) => {
       {
          method: 'POST',
          headers: {
-            Authorization: `Bearer${tok}`,
+            Authorization: `Bearer${token}`,
          },
          body: formData,
       }

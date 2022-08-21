@@ -1,12 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Sign from './SignStyles'
 import SignUpClient from './SignUpClient'
+import { authSlicesActions } from '../../store/slices/authSlices'
 import SignUpVendor from './SignUpVendor'
 import SignIn from './signIn'
 
-const SignUp = ({ activeBtn }) => {
+// <<<<<<< HEAD
+// const SignUp = ({ activeBtn }) => {
+// =======
+function SignUp({ activeBtn }) {
+   const [opacity, setOpactity] = useState(1)
+   // >>>>>>> 099d0961f9c257fd0c89508768ba2036085d6cb0
    const [isShowUp, setIsShowUp] = useState(activeBtn)
    const [isSignUp, setIsSignUp] = useState(false)
+   const { status } = useSelector((store) => store.auth)
+   const dispatch = useDispatch()
+   useEffect(() => {
+      if (status === 'pending') {
+         setOpactity(0.5)
+      } else {
+         setOpactity(1)
+      }
+   }, [status])
+   useEffect(() => {
+      if (status) {
+         dispatch(authSlicesActions.cleanStatus())
+      }
+   }, [isShowUp, isSignUp])
    const signInClickHandler = () => {
       setIsShowUp(true)
    }
@@ -19,7 +40,7 @@ const SignUp = ({ activeBtn }) => {
       <SignUpClient toggleSignUpVendor={setIsSignUp} />
    )
    return (
-      <Sign.SignBlock>
+      <Sign.SignBlock opacity={opacity}>
          <Sign.ButtonIn onClick={signInClickHandler} activeBtn={isShowUp}>
             Войти
          </Sign.ButtonIn>
