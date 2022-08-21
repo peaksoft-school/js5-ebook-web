@@ -4,7 +4,7 @@ import AddBookPage from '../containers/vendorMainPage/AddBookPage'
 
 export default function vendorLayout() {
    return (
-      <Route path="/" element={<VendorLayout />}>
+      <Route path="*" element={<VendorLayout />}>
          <Route path="addbook" element={<AddBookPage />} />
       </Route>
    )

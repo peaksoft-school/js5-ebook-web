@@ -9,7 +9,7 @@ import CheckBox from '../../Components/UI/checkBox/CheckBox'
 import bookAction from '../../store/slices/addBookSlice'
 import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
 import SelectSmall from '../../Components/UI/Select'
-import { addAudioPage } from '../../store/addBookActions'
+import { addAudioBook } from '../../store/addBookActions'
 
 const audioBookInputValues = {
    name: '',
@@ -75,7 +75,7 @@ const AudioBookForm = ({ images }) => {
    const clickHandle = async () => {
       if (isFormValid()) {
          dispatch(bookAction.deleteImage())
-         dispatch(addAudioPage(inputValues, images, token))
+         dispatch(addAudioBook(inputValues, images, token))
          // setShowSnackbar(true)
 
          setInputValues({

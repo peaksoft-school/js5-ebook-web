@@ -37,6 +37,7 @@ const ElectronicBookForm = ({ images }) => {
       language,
       jenreId,
    })
+   console.log(inputValues)
 
    const changePdfFileValue = (pdf) => {
       setPdfFile(pdf)

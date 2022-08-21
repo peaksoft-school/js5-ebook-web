@@ -5,6 +5,7 @@ import { APP_ROLES } from '../utils/constants/constants'
 import vendorLayout from './vendorLayout'
 import clientLayout from './clientLayout'
 import adminLayout from './adminLayout'
+import AddBookPage from '../containers/vendorMainPage/AddBookPage'
 
 function AppRoutes() {
    const user = useSelector((store) => store.auth.user)
@@ -19,14 +20,7 @@ function AppRoutes() {
    return (
       <Routes>
          {RoutesComponent[user.role]}
-         <Route
-            path="/"
-            element={
-               <div>
-                  <h2>not found</h2>
-               </div>
-            }
-         />
+         <Route path="/" element={<AddBookPage />} />
       </Routes>
    )
 }

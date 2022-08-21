@@ -11,16 +11,10 @@ import { ReactComponent as NotificatonIcon } from '../assets/icons/header/notifi
 import { ReactComponent as Treugolnik } from '../assets/icons/header/treugolnik.svg'
 import CardItems from './CardItems'
 import Footer from './Footer'
-// <<<<<<< HEAD
-// import Outlet from 'react-router-dom'
-// import SearchInput from '../Components/UI/Inputs/SearchInput'
-// import AddBookPage from '../containers/vendorMainPage/AddBookPage'
-// =======
 import SearchInputBlock from './SearchInputBlock'
 import PopUp from '../Components/UI/popup'
 import Modal from '../Components/UI/Modal'
 import ExitApp from '../Components/UI/ExitApp'
-// >>>>>>> 88da9523e598ee93e8ece69e4eb0a75b9005ca56
 
 const Vendor = () => {
    const [anchorEl, setAnchorEl] = useState(null)

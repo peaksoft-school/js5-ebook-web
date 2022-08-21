@@ -96,7 +96,8 @@ const AddBookPage = () => {
                <CheckboxDiv>
                   <ChildrenCheckbox>
                      <RadioButton
-                        checked={radio}
+                        value="Бумажная"
+                        isSelect={radio === 'Бумажная'}
                         label="Бумажная"
                         id="1"
                         onChange={(e) => {
@@ -107,7 +108,9 @@ const AddBookPage = () => {
                   <ChildrenCheckbox>
                      <RadioButton
                         id="1"
+                        value="Аудиокнига"
                         label="Аудиокнига"
+                        isSelect={radio === 'Аудиокнига'}
                         onChange={(e) => {
                            setRadio(e.target.value)
                         }}
@@ -117,6 +120,8 @@ const AddBookPage = () => {
                      <RadioButton
                         id="1"
                         label="Электронная книга"
+                        isSelect={radio === 'Электронная книга'}
+                        value="Электронная книга"
                         onChange={(e) => {
                            setRadio(e.target.value)
                         }}

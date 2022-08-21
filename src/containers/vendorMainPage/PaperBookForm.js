@@ -6,8 +6,9 @@ import Button from '../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../Components/UI/Inputs/InputText'
 import SelectSmall from '../../Components/UI/Select'
-import { addPaperPage } from '../../store/addBookActions'
+import { addPaperBook, appFileFetchService } from '../../store/addBookActions'
 import bookAction from '../../store/slices/addBookSlice'
+import { URL } from '../../utils/constants/constants'
 
 const languageSelect = [
    { name: 'kyrgyzstan', id: 1 },
@@ -33,13 +34,8 @@ const paperInputValues = {
 }
 
 const PaperBookForm = ({ images }) => {
-   const [genreId, setJenreId] = useState(0)
-   const [language, setLanguage] = useState()
-   const [inputValues, setInputValues] = useState({
-      ...paperInputValues,
-      genreId,
-      language,
-   })
+   const [inputValues, setInputValues] = useState(paperInputValues)
+   console.log(inputValues)
    const dispatch = useDispatch()
    const { token } = useSelector((store) => store.auth.user)
    const jenre = useSelector((store) => store.addbook.jenreId)
@@ -66,24 +62,46 @@ const PaperBookForm = ({ images }) => {
    }
 
    const clickHandle = async () => {
+      dispatch(appFileFetchService(images, token))
+      console.log(images.mainImg)
+      const file = new FormData()
+      file.append('file', images.mainImg)
+      const res = await fetch(
+         'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com/api/file/upload',
+         {
+            method: 'POST',
+            headers: {
+               Authorization:
+                  'Bearer+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MTA5OTg1OCwiaWF0IjoxNjYxMDk2MjU4LCJ1c2VybmFtZSI6InRkeWR5ZCJ9.5XNuNgLEljC7hcp5ffkpequkFh1rmGiCkitX5PvP6ls',
+            },
+            body: file,
+         }
+      )
+         .then((data) => data.json())
+         .then((rest) => {
+            console.log(rest)
+         })
+      console.log(res)
+      console.log(URL, 'oo')
       if (isFormValid()) {
-         dispatch(addPaperPage(inputValues, images, token))
+         dispatch(addPaperBook(inputValues, images, token))
          dispatch(bookAction.deleteImage())
+
          // setShowSnackbar(true)
 
-         setInputValues({
-            name: '',
-            author: '',
-            genreId: '',
-            publishingHouse: '',
-            description: '',
-            fragment: '',
-            pageSize: '',
-            price: '',
-            yearOfIssue: '',
-            discount: '',
-            quantityOfBook: '',
-         })
+         // setInputValues({
+         //    name: '',
+         //    author: '',
+         //    genreId: '',
+         //    publishingHouse: '',
+         //    description: '',
+         //    fragment: '',
+         //    pageSize: '',
+         //    price: '',
+         //    yearOfIssue: '',
+         //    discount: '',
+         //    quantityOfBook: '',
+         // })
       } else {
          // setShowSnackbar(false)
       }
@@ -119,7 +137,9 @@ const PaperBookForm = ({ images }) => {
                </LabelStyle>
                <SelectSmall
                   variant
-                  onChange={(e) => setJenreId(e)}
+                  onChange={(jenreId) =>
+                     setInputValues({ ...inputValues, jenreId })
+                  }
                   title={jenre}
                />
                <LabelStyle htmlFor="publishingHouse">
@@ -156,7 +176,9 @@ const PaperBookForm = ({ images }) => {
                         Язык <strong>*</strong>
                      </LabelStyle>
                      <SelectSmall
-                        onChange={(e) => setLanguage(e)}
+                        onChange={(language) =>
+                           setInputValues({ ...inputValues, language })
+                        }
                         title={languageSelect}
                      />
                      <LabelStyle htmlFor="pageSize">

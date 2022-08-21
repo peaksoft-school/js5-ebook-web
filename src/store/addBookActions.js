@@ -1,7 +1,26 @@
 import appFetch from '../hooks/AppFetch'
-import bookAction from './slices/addBookSlice'
+// import bookAction from './slices/addBookSlice'
+import { appFileFetchServi } from '../api/fileService'
 
-export const addPaperPage = (values, images, token) => {
+const token =
+   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MTEwNTI0MCwiaWF0IjoxNjYxMTAxNjQwLCJ1c2VybmFtZSI6InNkZXJ2In0.iLJz6xvjXlmcj1v0o5T5Wm9b4s3ym776Si8ijniLcAI'
+
+export const appFileFetchService = (images, tok) => {
+   console.log(token)
+   console.log(tok)
+   return async (dispatch) => {
+      try {
+         const imgFiles = await appFileFetchServi(images.mainImg, token)
+         console.log(imgFiles)
+         dispatch()
+      } catch (error) {
+         console.log(error)
+      }
+   }
+}
+
+export const addPaperBook = (values, images, token) => {
+   // console.log(imgFiles)
    const formData = new FormData()
    formData.append('file', images.mainImg)
 
@@ -9,15 +28,11 @@ export const addPaperPage = (values, images, token) => {
       ...values,
    }
 
-   return async (dispatch) => {
+   return async () => {
       try {
          if (images.mainImg) {
-            const imgFiles = await appFetch({
-               url: '/api/file/upload',
-               method: 'POST',
-               file: formData,
-               token,
-            })
+            const imgFiles = await appFileFetchServi(images.mainImg)
+            console.log(imgFiles)
             withFile.mainImage = imgFiles.link
          }
 
@@ -49,7 +64,7 @@ export const addPaperPage = (values, images, token) => {
          })
          console.log(result)
       } catch (error) {
-         dispatch(bookAction.bookFromFetch(error))
+         // dispatch(bookAction.bookFromFetch(error))
       }
    }
 }
@@ -110,7 +125,7 @@ export const addElectronicBoook = (electronicValue, images, token) => {
    }
 }
 
-export const addAudioPage = (audioValue, images, token) => {
+export const addAudioBook = (audioValue, images, token) => {
    const formData = new FormData()
    formData.append('file', images.mainImg)
 

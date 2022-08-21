@@ -7,6 +7,7 @@ import { styled } from '@mui/material'
 
 export default function SelectSmall({ title, onChange, variant }) {
    const [age, setAge] = React.useState('')
+   console.log(age)
 
    React.useEffect(() => {
       onChange(age)
@@ -49,10 +50,7 @@ export default function SelectSmall({ title, onChange, variant }) {
 const FormSelect = styled(FormControl)`
    width: 100%;
    outline: red;
-   border: none;
-   &:active {
-      /* border: 1px solid red; */
-   }
+   outline: none !important;
 `
 const CopyMenuItem = styled(MenuItem)`
    border-bottom: 1px solid grey;
