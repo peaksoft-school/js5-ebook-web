@@ -42,11 +42,12 @@ const PaperBookForm = ({ images }) => {
       const { name, value } = e.target
       setInputValues({ ...inputValues, [name]: value })
    }
+   console.log(inputValues)
    const isFormValid = () => {
       const validateValues =
          inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
-         inputValues.genreId.length >= 1 &&
+         inputValues.jenreId > +0 &&
          inputValues.publishingHouse.length >= 1 &&
          inputValues.description.length >= 1 &&
          inputValues.fragment.length >= 1 &&
@@ -55,14 +56,38 @@ const PaperBookForm = ({ images }) => {
          inputValues.discount.length >= 1 &&
          inputValues.quantityOfBook.length >= 1
 
-      const validateImages = images.mainImg.length >= 1
-      return validateValues && validateImages
+      return validateValues && images.mainImage
+   }
+   const back = {
+      mainImage: 'string',
+      secondImage: 'string',
+      thirdImage: 'string',
+      name: 'wegwg22',
+      genreId: 5,
+      price: 0,
+      author: 'string',
+      description: 'string',
+      language: 'KYRGYZ',
+      yearOfIssue: 0,
+      discount: 0,
+      bestseller: true,
+      fragment: 'string',
+      pageSize: 0,
+      publishingHouse: 'string',
+      quantityOfBook: 0,
    }
 
    const clickSendFormValues = async () => {
+      console.log(images)
+      if (images.mainImage) {
+         console.log(33)
+      } else {
+         console.log(88)
+      }
       if (isFormValid()) {
-         dispatch(addPaperBook(inputValues, images, token))
-         dispatch(addPaperBook(inputValues, images, token))
+         console.log(111111)
+         dispatch(addPaperBook({ back, images }))
+         dispatch(addPaperBook(images, token))
          dispatch(bookAction.deleteImage())
 
          setInputValues({
@@ -78,6 +103,8 @@ const PaperBookForm = ({ images }) => {
             discount: '',
             quantityOfBook: '',
          })
+      } else {
+         console.log(22)
       }
    }
 
@@ -106,7 +133,7 @@ const PaperBookForm = ({ images }) => {
                   onChange={handleChangeInput}
                   name="author"
                />
-               <LabelStyle htmlFor="genre">
+               <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
                <Selected

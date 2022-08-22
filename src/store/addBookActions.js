@@ -2,14 +2,15 @@ import appFetch from '../hooks/AppFetch'
 import bookAction from './slices/addBookSlice'
 import { appFileFetchService } from '../api/fileService'
 
-export const addPaperBook = (values, images, token) => {
+export const addPaperBook = ({ back, images }) => {
+   console.log(back)
    const valuesWithFile = {
-      ...values,
+      ...back,
    }
    return async (dispatch) => {
       try {
          if (images.mainImg) {
-            const imgFiles = await appFileFetchService(images.mainImg, token)
+            const imgFiles = await appFileFetchService(images.mainImg)
             valuesWithFile.mainImage = imgFiles.link
          }
 
@@ -24,8 +25,7 @@ export const addPaperBook = (values, images, token) => {
          const result = await appFetch({
             url: '/api/book/save/paperBook',
             method: 'POST',
-            body: valuesWithFile,
-            token,
+            body: back,
          })
          dispatch(bookAction.bookFromFetch(result))
       } catch (error) {

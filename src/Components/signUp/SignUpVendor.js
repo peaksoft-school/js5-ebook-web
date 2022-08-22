@@ -1,12 +1,6 @@
-// <<<<<<< HEAD
-// import { useDispatch } from 'react-redux/es/exports'
-// import InputMask from 'react-input-mask'
-// import { useState } from 'react'
-// =======
 import { useDispatch, useSelector } from 'react-redux'
 import InputMask from 'react-input-mask'
 import { useEffect, useState } from 'react'
-// >>>>>>> 099d0961f9c257fd0c89508768ba2036085d6cb0
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
 import Validation from '../../hooks/Validation'

@@ -6,12 +6,8 @@ import { authSlicesActions } from '../../store/slices/authSlices'
 import SignUpVendor from './SignUpVendor'
 import SignIn from './signIn'
 
-// <<<<<<< HEAD
-// const SignUp = ({ activeBtn }) => {
-// =======
 function SignUp({ activeBtn }) {
    const [opacity, setOpactity] = useState(1)
-   // >>>>>>> 099d0961f9c257fd0c89508768ba2036085d6cb0
    const [isShowUp, setIsShowUp] = useState(activeBtn)
    const [isSignUp, setIsSignUp] = useState(false)
    const { status } = useSelector((store) => store.auth)

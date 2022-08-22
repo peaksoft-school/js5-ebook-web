@@ -42,7 +42,7 @@ const AudioBookForm = ({ images }) => {
    const dispatch = useDispatch()
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
-      setAudioValues({ ...audioValues, [name]: URL.createObjectURL(audio) })
+      setAudioValues({ ...audioValues, [name]: audio })
    }
 
    const handleChangeInput = (e) => {
@@ -54,16 +54,15 @@ const AudioBookForm = ({ images }) => {
       const isInputsAreValid =
          inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
-         inputValues.genreId.length >= 1 &&
+         inputValues.genreId > 0 &&
          inputValues.description.length >= 1 &&
          inputValues.duration.length >= 1 &&
          inputValues.minute.length >= 1 &&
          inputValues.second.length >= 1 &&
+         inputValues.yearOfIssue.length >= 1 &&
          inputValues.price.length >= 1
 
-      const validateImages = images.mainImg.length >= 1
-      const validateAudio = audioValues.fragment.length >= 1
-      return isInputsAreValid && validateImages && validateAudio
+      return isInputsAreValid && images.mainImage && audioValues.fragment
    }
    const clickSendFormValues = async () => {
       if (isFormValid()) {
@@ -83,6 +82,9 @@ const AudioBookForm = ({ images }) => {
             price: '',
             discount: '',
          })
+         console.log(true)
+      } else {
+         console.log(false)
       }
    }
 
@@ -98,7 +100,7 @@ const AudioBookForm = ({ images }) => {
                   id="name"
                   name="name"
                   placeholder="Напишите полное название книги"
-                  value={inputValues.bookname}
+                  value={inputValues.name}
                />
                <LabelStyle htmlFor="author">
                   ФИО автора <strong>*</strong>
@@ -115,8 +117,8 @@ const AudioBookForm = ({ images }) => {
                </LabelStyle>
                <Selected
                   variant
-                  onChange={(jenreId) =>
-                     setInputValues({ ...inputValues, jenreId })
+                  onChange={(genreId) =>
+                     setInputValues({ ...inputValues, genreId })
                   }
                   title={jenre}
                />

@@ -6,11 +6,12 @@ import PaperBook from './PaperBookForm'
 import RadioButton from '../../Components/UI/RadioButton'
 import AudioBook from './AudioBookForm'
 import ElectronicBook from './ElectronicBookForm'
+import VendorMainPage from '../MainPage'
 
 const allImages = {
-   mainImg: '',
-   secondImg: '',
-   thirdImg: '',
+   mainImage: '',
+   secondImage: '',
+   thirdImage: '',
 }
 
 const AddBookPage = () => {
@@ -39,6 +40,7 @@ const AddBookPage = () => {
 
    return (
       <ContainerDiv>
+         <VendorMainPage />
          <div>
             <ThreeImagesDiv>
                Загрузите 3 фото <strong>*</strong>
@@ -49,7 +51,7 @@ const AddBookPage = () => {
                      <ImagePicker
                         onDelete={deleteImage}
                         onChange={saveImageValue}
-                        name="mainImg"
+                        name="mainImage"
                         id="e1"
                      />
                      <p>Главное фото</p>
@@ -58,7 +60,7 @@ const AddBookPage = () => {
                      <ImagePicker
                         onDelete={deleteImage}
                         onChange={saveImageValue}
-                        name="secondImg"
+                        name="secondImage"
                         id="e2"
                      />
                      <p>2</p>
@@ -67,7 +69,7 @@ const AddBookPage = () => {
                      <ImagePicker
                         onDelete={deleteImage}
                         onChange={saveImageValue}
-                        name="thirdImg"
+                        name="thirdImage"
                         id="e3"
                      />
                      <p>3</p>

@@ -12,12 +12,24 @@ import Selected from '../../Components/UI/Select'
 import {
    ButtonDiv,
    InputDiv,
-   inputValuesForState,
    InputWrapper,
    LabelStyle,
    SelectDiv,
    SelectWrapper,
 } from './PaperBookForm'
+
+const sad = {
+   name: '',
+   author: '',
+   publishingHouse: '',
+   description: '',
+   fragment: '',
+   pageSize: '',
+   price: '',
+   yearOfIssue: '',
+   quantityOfBook: '',
+   discount: '',
+}
 
 const languageSelect = [
    { name: 'kyrgyzstan', id: 1 },
@@ -30,7 +42,7 @@ const ElectronicBookForm = ({ images }) => {
    const { token } = useSelector((store) => store.auth.user)
    const jenre = useSelector((store) => store.addbook.jenreId)
    const dispatch = useDispatch()
-   const [inputValues, setInputValues] = useState(inputValuesForState)
+   const [inputValues, setInputValues] = useState(sad)
 
    const changePdfFileValue = (pdf) => {
       setPdfFile(pdf)
@@ -45,39 +57,42 @@ const ElectronicBookForm = ({ images }) => {
       const validateValues =
          inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
-         inputValues.genreId.length >= 1 &&
+         inputValues.genreId > +0 &&
          inputValues.publishingHouse.length >= 1 &&
          inputValues.description.length >= 1 &&
          inputValues.fragment.length >= 1 &&
          inputValues.pageSize.length >= 1 &&
          inputValues.price.length >= 1 &&
-         inputValues.discount.length >= 1 &&
-         inputValues.quantityOfBook.length >= 1
+         inputValues.discount.length >= 1
+      // inputValues.quantityOfBook.length >= 1
 
-      const validateImages = images.mainImg.length >= 1
-      const validatePdf = pdfValue.length >= 1
-
-      return validateValues && validateImages && validatePdf
+      return validateValues && images.mainImage && pdfValue
    }
+   console.log(inputValues)
 
    const clickSendFormValues = () => {
+      console.log(inputValues.genreId)
       if (isFormValid()) {
          dispatch(addElectronicBoook(inputValues, images, token, pdfValue))
          dispatch(bookAction.deleteImage())
+         console.log(999)
+
+         setInputValues({
+            name: '',
+            author: '',
+            genreId: '',
+            publishingHouse: '',
+            description: '',
+            fragment: '',
+            pageSize: '',
+            price: '',
+            yearOfIssue: '',
+            discount: '',
+            quantityOfBook: '',
+         })
+      } else {
+         console.log(777777)
       }
-      setInputValues({
-         name: '',
-         author: '',
-         genreId: '',
-         publishingHouse: '',
-         description: '',
-         fragment: '',
-         pageSize: '',
-         price: '',
-         yearOfIssue: '',
-         discount: '',
-         quantityOfBook: '',
-      })
    }
 
    return (
@@ -105,12 +120,12 @@ const ElectronicBookForm = ({ images }) => {
                   name="author"
                   placeholder="Напишите ФИО автора"
                />
-               <LabelStyle htmlFor="genreId">
+               <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
                <Selected
-                  onChange={(jenreId) =>
-                     setInputValues({ ...inputValues, jenreId })
+                  onChange={(genreId) =>
+                     setInputValues({ ...inputValues, genreId })
                   }
                   variant
                   title={jenre}
@@ -180,16 +195,16 @@ const ElectronicBookForm = ({ images }) => {
                      />
                   </SelectDiv>
                   <SelectDiv>
-                     <LabelStyle htmlFor="data">
+                     <LabelStyle htmlFor="yearOfIssue">
                         Год выпуска <strong>*</strong>
                      </LabelStyle>
                      <InputText
-                        id="data"
+                        id="yearOfIssue"
                         onChange={handleChangeInput}
                         value={inputValues.data}
                         textAlign="end"
                         placeholder="гг"
-                        name="data"
+                        name="yearOfIssue"
                      />
                      <CheckBoxDiv>
                         <CheckBox label="besteller" />

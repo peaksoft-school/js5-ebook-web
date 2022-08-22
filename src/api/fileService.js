@@ -1,6 +1,9 @@
 import { URL } from '../utils/constants/constants'
 
-export const appFileFetchService = async (file, token) => {
+const token =
+   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MTE2NTIxMiwiaWF0IjoxNjYxMTYxNjEyLCJ1c2VybmFtZSI6InZlbmRvckBnbWFpbC5jb20ifQ.U1MNn3y4XldbVWqasxblyuds95Teaw7ZdryWr1RIXOk'
+
+export const appFileFetchService = async (file) => {
    const formData = new FormData()
    formData.append('file', file)
    const response = await fetch(

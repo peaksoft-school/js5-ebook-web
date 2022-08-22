@@ -1,6 +1,11 @@
 import { URL } from '../utils/constants/constants'
 
-function appFetch({ url, method, body, token }) {
+// const { token } = JSON.parse(localStorage.getItem('EBOOK_AUTH_INFO'))
+// console.log(token)
+const token =
+   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MTE2NTIxMiwiaWF0IjoxNjYxMTYxNjEyLCJ1c2VybmFtZSI6InZlbmRvckBnbWFpbC5jb20ifQ.U1MNn3y4XldbVWqasxblyuds95Teaw7ZdryWr1RIXOk'
+
+function appFetch({ url, method, body }) {
    const requestOptions = {
       method: method || 'GET',
       headers: {
@@ -8,7 +13,7 @@ function appFetch({ url, method, body, token }) {
       },
    }
 
-   if (token) {
+   if (body) {
       requestOptions.headers.Authorization = `Bearer ${token}`
    }
    if (method && body) {
