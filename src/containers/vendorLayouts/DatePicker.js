@@ -12,20 +12,41 @@ import { ReactComponent as DateIcon } from '../../assets/icons/datePicker/suitca
 //   fixRelativePosition: false,
 //   offsetY: 0,
 //   offsetX: 0
-export default function BasicDatePicker() {
+export default function BasicDatePicker({ onChange }) {
    const [value, setValue] = React.useState(null)
-   const year = value?.getFullYear()
-   const month = value?.getMonth()
-   const day = value?.getDate()
-   console.log(`${year}-${month + 1}-${day}`)
+   const [date, setDate] = React.useState({
+      year: '',
+      month: '',
+      day: '',
+   })
+   React.useEffect(() => {
+      if (onChange) {
+         onChange(date)
+      }
+   }, [date])
+   React.useEffect(() => {
+      if (value) {
+         setDate(() => {
+            const m = value.getMonth()
+            return {
+               year: value.getFullYear(),
+               month: m + 1,
+               day: value.getDate(),
+            }
+         })
+      }
+   }, [value])
+
+   const onChangeDateHandler = (newValue) => {
+      setValue(newValue)
+   }
+
    return (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
          <DatePickerBlock
             value={value}
             format="mm/dd/yy"
-            onChange={(newValue) => {
-               setValue(newValue)
-            }}
+            onChange={onChangeDateHandler}
             components={{
                OpenPickerIcon: DateIcon,
             }}

@@ -6,6 +6,9 @@ import Modal from '../../Components/UI/Modal'
 import BasicDatePicker from './DatePicker'
 
 export default function CreatePromocode() {
+   const onChangeDateStart = (date) => {
+      console.log(date)
+   }
    return (
       <Modal open variant="mini">
          <PromoCodeBlock>
@@ -22,7 +25,7 @@ export default function CreatePromocode() {
             <PromoCodeItem width="33.33%">
                <Label htmlFor="dataOne" width="33.33%" pr="20px">
                   <LabelSpan>Дата начала</LabelSpan>
-                  <BasicDatePicker />
+                  <BasicDatePicker onChange={onChangeDateStart} />
                </Label>
             </PromoCodeItem>
             <PromoCodeItem width="33.33%">
