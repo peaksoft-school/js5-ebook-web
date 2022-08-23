@@ -37,7 +37,7 @@ const StyledBox = styled(Box)`
    top: 50%;
    left: 50%;
    width: ${(props) => props.width};
-   height: ${(props) => props.height};
+   max-height: ${(props) => props.height || '90vh'};
    padding: ${(props) => (props.variant === 'mini' ? '20px' : '40px 30px')};
    transform: translate(-50%, -50%);
    background-color: #fff;

@@ -1,25 +1,29 @@
 import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux/'
 import Button from '../../../Components/UI/Button/Button'
 import ApplicationCard from '../../../Components/admin-applications/ApplicationCard'
 import { books } from '../../../utils/constants/books'
+import applicationActions from '../../../store/slices/applicationsSlices'
 
 const AdminApplications = () => {
+   const dispatch = useDispatch()
    const navigate = useNavigate()
    const [allRequest, setAllLimits] = useState(0)
 
    const [noSeeArr, setNoSeeArr] = useState(0)
 
-   const [requestBooks, setRequestBooks] = useState(books)
+   const [requestBooks, setRequestBooks] = useState([])
 
-   const getRequsetBooks = () => {
-      // GET
+   const getRequsetBooks = async () => {
       setRequestBooks()
+      dispatch(applicationActions(setRequestBooks))
+      console.log(requestBooks)
    }
 
    const deatailRequest = (id) => {
-      navigate(`/admin/request/${id}`)
+      navigate(`/request/${id}`)
    }
    return (
       <Application>

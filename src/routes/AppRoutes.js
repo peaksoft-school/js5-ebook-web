@@ -1,31 +1,31 @@
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import AdminLayout from '../layouts/AdminLayout'
-import VendorLayout from '../layouts/VendorLayout'
-import ClientLayout from '../layouts/ClientLayout'
+import { useMemo } from 'react'
 import { APP_ROLES } from '../utils/constants/constants'
-import AdminApplications from '../containers/adminContainers/requests/AdminApplications'
-import { InnerPageAdminApplication } from '../containers/adminContainers/requests/InnerPageAdminApplication'
+import vendorLayout from './vendorLayout'
+import clientLayout from './clientLayout'
+import adminLayout from './adminLayout'
 
 function AppRoutes() {
    const user = useSelector((store) => store.auth.user)
-   const navigate = useNavigate()
-   useEffect(() => {
-      if (user) {
-         if (user.role === APP_ROLES.VENDOR) {
-            navigate(`/vendor`, { replace: true })
-         }
+   const RoutesComponent = useMemo(() => {
+      return {
+         [APP_ROLES.ADMIN]: adminLayout(),
+         [APP_ROLES.VENDOR]: vendorLayout(),
+         [APP_ROLES.USER]: clientLayout(),
       }
    }, [])
    return (
       <Routes>
-         <Route path="/" element={<ClientLayout />} />
-         <Route path="/vendor" element={<VendorLayout />} />
-         <Route path="/admin" element={<AdminLayout />}>
-            <Route path="request" element={<AdminApplications />} />
-            <Route path="request/:id" element={<InnerPageAdminApplication />} />
-         </Route>
+         {RoutesComponent.ADMIN}
+         <Route
+            path="*"
+            element={
+               <div>
+                  <h2>not found</h2>
+               </div>
+            }
+         />
       </Routes>
    )
 }

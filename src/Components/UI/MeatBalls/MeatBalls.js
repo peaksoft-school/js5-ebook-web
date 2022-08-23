@@ -1,6 +1,6 @@
-import { useState } from 'react'
-
 import styled from 'styled-components'
+
+import { useState } from 'react'
 
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBall.svg'
 
