@@ -12,6 +12,8 @@ const Button = ({ variant, children, onClick, ...props }) => {
 export default Button
 
 const ButtonStyle = styled(MuiButton)`
+   text-transform: none;
+   padding: 8px 40px 8px 40px;
    text-transform: capitalize;
    padding: ${(props) => props.padding || '10px 20px'};
    border: none;

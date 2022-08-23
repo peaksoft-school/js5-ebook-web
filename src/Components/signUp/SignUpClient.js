@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Sign from './SignStyles'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
@@ -12,6 +12,16 @@ import { signUpClient } from '../../store/slices/authSlices'
 function SignUpClient({ toggleSignUpVendor }) {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
+   const status = useSelector((store) => store.auth.status)
+   useEffect(() => {
+      if (status === 'rejected') {
+         setErrorValue('Такой email уже загеристрирован!')
+         setIsValidError(true)
+      } else {
+         setErrorValue('')
+         setIsValidError(false)
+      }
+   }, [status])
    const dispatch = useDispatch()
    const onClickVendor = () => {
       toggleSignUpVendor(true)
