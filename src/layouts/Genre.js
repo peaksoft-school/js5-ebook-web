@@ -1,11 +1,70 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu } from '@mui/material'
 import GenreMenu from '../Components/UI/genreMenu/GenreMenu'
+import { URL } from '../utils/constants/constants'
+
+const requestObj = {
+   genres: [1, 2],
+   bookType: 'PAPER_BOOK',
+   priceFrom: null,
+   priceTo: null,
+   languages: null,
+   search: 'all',
+   sortBy: null,
+   page: null,
+   size: null,
+}
+function test(obj) {
+   let text = ''
+   // eslint-disable-next-line no-restricted-syntax
+   for (const key in obj) {
+      if (obj[key] !== null) {
+         if (text !== '') {
+            if (key === 'genres') {
+               text = `${text}&${genresFunc(obj[key])}`
+            } else {
+               text = `${text}&${key}=${obj[key]}`
+            }
+         } else if (key === 'genres') {
+            text = `?${genresFunc(obj[key])}`
+         } else {
+            text = `?${key}=${obj[key]}`
+         }
+      }
+   }
+   return text
+}
+
+function genresFunc(genres) {
+   let text = ''
+   for (let i = 0; i < genres.length; i += 1) {
+      if (text !== '') {
+         text = `${text}&genres=${genres[i]}`
+      } else {
+         text = `genres=${genres[i]}`
+      }
+   }
+   return text
+}
+
+console.log(genresFunc(requestObj.genres))
+
+console.log(test(requestObj))
 
 function Genre({ text }) {
    const [anchorEl, setAnchorEl] = useState(null)
    const open = Boolean(anchorEl)
+   // const [books, setBooks] = useState(null)
+   useEffect(() => {
+      fetch(`${URL}/api/books${test(requestObj)}`)
+         .then((response) => {
+            return response.json()
+         })
+         .then((data) => {
+            console.log(data)
+         })
+   }, [requestObj])
    const onClickGenreBtn = (e) => {
       setAnchorEl(e.currentTarget)
    }
