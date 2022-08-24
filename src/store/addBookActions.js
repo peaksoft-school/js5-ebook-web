@@ -28,7 +28,7 @@ export const addPaperBook = (inputValues, images) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(bookAction.statusError(result))
+         dispatch(bookAction.statusSuccess(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
       }
@@ -72,7 +72,7 @@ export const addAudioBook = (inputValues, images, audioValues) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(bookAction.statusError(result))
+         dispatch(bookAction.statusSuccess(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
       }
@@ -112,7 +112,7 @@ export const addElectronicBoook = (inputValues, images, pdf) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(bookAction.statusError(result))
+         dispatch(bookAction.statusSuccess(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
       }
