@@ -16,7 +16,7 @@ import PopUp from '../Components/UI/popup'
 import Modal from '../Components/UI/Modal'
 import ExitApp from '../Components/UI/ExitApp'
 
-function Vendor() {
+const Vendor = () => {
    const [anchorEl, setAnchorEl] = useState(null)
    const [isModal, setIsModal] = useState(false)
    const open = Boolean(anchorEl)

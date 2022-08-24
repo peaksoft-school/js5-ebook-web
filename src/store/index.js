@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-// eslint-disable-next-line import/no-named-as-default
+import { addBookSlice } from './slices/addBookSlice'
 import authSlices from './slices/authSlices'
 
 const store = configureStore({
    reducer: {
       auth: authSlices.reducer,
+      addbook: addBookSlice.reducer,
    },
 })
 
