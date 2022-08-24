@@ -1,57 +1,60 @@
-import appFetch from '../hooks/AppFetch'
+import appFetch from '../hooks/appFetch'
 import bookAction from './slices/addBookSlice'
 import { appFileFetchService } from '../api/fileService'
 
-export const addPaperBook = ({ back, images }) => {
-   console.log(back)
+export const addPaperBook = (inputValues, images) => {
    const valuesWithFile = {
-      ...back,
+      ...inputValues,
+      ...images,
+      bestseller: true,
    }
    return async (dispatch) => {
       try {
-         if (images.mainImg) {
-            const imgFiles = await appFileFetchService(images.mainImg)
+         if (images.mainImage) {
+            const imgFiles = await appFileFetchService(images.mainImage)
             valuesWithFile.mainImage = imgFiles.link
          }
 
-         if (images.secondImg) {
-            const imgFiles = await appFileFetchService(images.secondImg)
+         if (images.secondImage) {
+            const imgFiles = await appFileFetchService(images.secondImage)
             valuesWithFile.secondImage = imgFiles.link
          }
-         if (images.thirdImg) {
-            const imgFiles = await appFileFetchService(images.thirdImg)
+         if (images.thirdImage) {
+            const imgFiles = await appFileFetchService(images.thirdImage)
             valuesWithFile.thirdImage = imgFiles.link
          }
          const result = await appFetch({
             url: '/api/book/save/paperBook',
             method: 'POST',
-            body: back,
+            body: valuesWithFile,
          })
-         dispatch(bookAction.bookFromFetch(result))
+         dispatch(bookAction.statusError(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
       }
    }
 }
 
-export const addAudioBook = (audioValue, images, token, audioValues) => {
+export const addAudioBook = (inputValues, images, audioValues) => {
    const valuesWithFile = {
-      ...audioValue,
+      ...inputValues,
+      ...images,
+      bestseller: true,
    }
 
    return async (dispatch) => {
       try {
-         if (images.mainImg) {
-            const imgFiles = await appFileFetchService(images.mainImg, token)
+         if (images.mainImage) {
+            const imgFiles = await appFileFetchService(images.mainImage)
             valuesWithFile.mainImage = imgFiles.link
          }
 
-         if (images.secondImg) {
-            const imgFiles = await appFileFetchService(images.secondImg)
+         if (images.secondImage) {
+            const imgFiles = await appFileFetchService(images.secondImage)
             valuesWithFile.secondImage = imgFiles.link
          }
-         if (images.thirdImg) {
-            const imgFiles = await appFileFetchService(images.thirdImg)
+         if (images.thirdImage) {
+            const imgFiles = await appFileFetchService(images.thirdImage)
             valuesWithFile.thirdImage = imgFiles.link
          }
 
@@ -68,38 +71,37 @@ export const addAudioBook = (audioValue, images, token, audioValues) => {
             url: '/api/book/save/audioBook',
             method: 'POST',
             body: valuesWithFile,
-            token,
          })
-         dispatch(bookAction.bookFromFetch(result))
+         dispatch(bookAction.statusError(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
       }
    }
 }
 
-export const addElectronicBoook = (electronicValue, images, token, pdf) => {
-   const formData = new FormData()
-   formData.append('file', images.mainImg)
-
+export const addElectronicBoook = (inputValues, images, pdf) => {
    const valuesWithFile = {
-      ...electronicValue,
+      ...inputValues,
+      ...images,
+      bestseller: true,
    }
 
    return async (dispatch) => {
       try {
-         if (images.mainImg) {
-            const imgFiles = await appFileFetchService(images.mainImg, token)
+         if (images.mainImage) {
+            const imgFiles = await appFileFetchService(images.mainImage)
             valuesWithFile.mainImage = imgFiles.link
          }
 
-         if (images.secondImg) {
-            const imgFiles = await appFileFetchService(images.secondImg)
+         if (images.secondImage) {
+            const imgFiles = await appFileFetchService(images.secondImage)
             valuesWithFile.secondImage = imgFiles.link
          }
-         if (images.thirdImg) {
-            const imgFiles = await appFileFetchService(images.thirdImg)
+         if (images.thirdImage) {
+            const imgFiles = await appFileFetchService(images.thirdImage)
             valuesWithFile.thirdImage = imgFiles.link
          }
+
          if (pdf) {
             const imgFiles = await appFileFetchService(pdf)
             valuesWithFile.thirdImage = imgFiles.link
@@ -109,9 +111,8 @@ export const addElectronicBoook = (electronicValue, images, token, pdf) => {
             url: '/api/book/save/eBook',
             method: 'POST',
             body: valuesWithFile,
-            token,
          })
-         dispatch(bookAction.bookFromFetch(result))
+         dispatch(bookAction.statusError(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
       }

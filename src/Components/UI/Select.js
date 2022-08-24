@@ -7,7 +7,6 @@ import { styled } from '@mui/material'
 
 export default function Selected({ title, onChange, variant }) {
    const [age, setAge] = React.useState('')
-   // console.log(age)
    React.useEffect(() => {
       onChange(age)
    }, [age])

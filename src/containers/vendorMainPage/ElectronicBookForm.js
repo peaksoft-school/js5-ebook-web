@@ -18,7 +18,7 @@ import {
    SelectWrapper,
 } from './PaperBookForm'
 
-const sad = {
+const fromInputValues = {
    name: '',
    author: '',
    publishingHouse: '',
@@ -39,10 +39,9 @@ const languageSelect = [
 
 const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
-   const { token } = useSelector((store) => store.auth.user)
    const jenre = useSelector((store) => store.addbook.jenreId)
    const dispatch = useDispatch()
-   const [inputValues, setInputValues] = useState(sad)
+   const [inputValues, setInputValues] = useState(fromInputValues)
 
    const changePdfFileValue = (pdf) => {
       setPdfFile(pdf)
@@ -64,18 +63,14 @@ const ElectronicBookForm = ({ images }) => {
          inputValues.pageSize.length >= 1 &&
          inputValues.price.length >= 1 &&
          inputValues.discount.length >= 1
-      // inputValues.quantityOfBook.length >= 1
 
       return validateValues && images.mainImage && pdfValue
    }
-   console.log(inputValues)
 
    const clickSendFormValues = () => {
-      console.log(inputValues.genreId)
       if (isFormValid()) {
-         dispatch(addElectronicBoook(inputValues, images, token, pdfValue))
+         dispatch(addElectronicBoook(inputValues, images, pdfValue))
          dispatch(bookAction.deleteImage())
-         console.log(999)
 
          setInputValues({
             name: '',
@@ -90,8 +85,6 @@ const ElectronicBookForm = ({ images }) => {
             discount: '',
             quantityOfBook: '',
          })
-      } else {
-         console.log(777777)
       }
    }
 

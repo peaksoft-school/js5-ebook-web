@@ -33,16 +33,17 @@ const paperInputValues = {
 }
 
 const PaperBookForm = ({ images }) => {
-   const [inputValues, setInputValues] = useState(paperInputValues)
+   const [inputValues, setInputValues] = useState({
+      ...paperInputValues,
+      ...images,
+   })
    const dispatch = useDispatch()
-   const { token } = useSelector((store) => store.auth.user)
    const jenre = useSelector((store) => store.addbook.jenreId)
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
       setInputValues({ ...inputValues, [name]: value })
    }
-   console.log(inputValues)
    const isFormValid = () => {
       const validateValues =
          inputValues.name.length >= 1 &&
@@ -58,36 +59,10 @@ const PaperBookForm = ({ images }) => {
 
       return validateValues && images.mainImage
    }
-   const back = {
-      mainImage: 'string',
-      secondImage: 'string',
-      thirdImage: 'string',
-      name: 'wegwg22',
-      genreId: 5,
-      price: 0,
-      author: 'string',
-      description: 'string',
-      language: 'KYRGYZ',
-      yearOfIssue: 0,
-      discount: 0,
-      bestseller: true,
-      fragment: 'string',
-      pageSize: 0,
-      publishingHouse: 'string',
-      quantityOfBook: 0,
-   }
 
    const clickSendFormValues = async () => {
-      console.log(images)
-      if (images.mainImage) {
-         console.log(33)
-      } else {
-         console.log(88)
-      }
       if (isFormValid()) {
-         console.log(111111)
-         dispatch(addPaperBook({ back, images }))
-         dispatch(addPaperBook(images, token))
+         dispatch(addPaperBook(inputValues, images))
          dispatch(bookAction.deleteImage())
 
          setInputValues({
@@ -103,8 +78,6 @@ const PaperBookForm = ({ images }) => {
             discount: '',
             quantityOfBook: '',
          })
-      } else {
-         console.log(22)
       }
    }
 
@@ -138,8 +111,8 @@ const PaperBookForm = ({ images }) => {
                </LabelStyle>
                <Selected
                   variant
-                  onChange={(jenreId) =>
-                     setInputValues({ ...inputValues, jenreId })
+                  onChange={(genreId) =>
+                     setInputValues({ ...inputValues, genreId })
                   }
                   title={jenre}
                />

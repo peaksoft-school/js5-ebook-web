@@ -6,7 +6,6 @@ import PaperBook from './PaperBookForm'
 import RadioButton from '../../Components/UI/RadioButton'
 import AudioBook from './AudioBookForm'
 import ElectronicBook from './ElectronicBookForm'
-import VendorMainPage from '../MainPage'
 
 const allImages = {
    mainImage: '',
@@ -40,7 +39,6 @@ const AddBookPage = () => {
 
    return (
       <ContainerDiv>
-         <VendorMainPage />
          <div>
             <ThreeImagesDiv>
                Загрузите 3 фото <strong>*</strong>

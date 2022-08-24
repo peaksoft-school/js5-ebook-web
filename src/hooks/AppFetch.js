@@ -1,11 +1,13 @@
 import { URL } from '../utils/constants/constants'
 
-// const { token } = JSON.parse(localStorage.getItem('EBOOK_AUTH_INFO'))
-// console.log(token)
-const token =
-   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyIGRldGFpbHMiLCJpc3MiOiJwZWFrc29mdCIsImV4cCI6MTY2MTE2NTIxMiwiaWF0IjoxNjYxMTYxNjEyLCJ1c2VybmFtZSI6InZlbmRvckBnbWFpbC5jb20ifQ.U1MNn3y4XldbVWqasxblyuds95Teaw7ZdryWr1RIXOk'
+let store
 
-function appFetch({ url, method, body }) {
+export const injectStore = (fromStore) => {
+   store = fromStore
+}
+const appFetch = ({ url, method, body }) => {
+   const { token } = store.getState().auth.user
+
    const requestOptions = {
       method: method || 'GET',
       headers: {
@@ -13,7 +15,7 @@ function appFetch({ url, method, body }) {
       },
    }
 
-   if (body) {
+   if (token) {
       requestOptions.headers.Authorization = `Bearer ${token}`
    }
    if (method && body) {

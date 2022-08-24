@@ -35,7 +35,6 @@ const languageSelect = [
 ]
 
 const AudioBookForm = ({ images }) => {
-   const { token } = useSelector((store) => store.auth.user)
    const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
    const [inputValues, setInputValues] = useState(audioBookInputValues)
    const jenre = useSelector((store) => store.addbook.jenreId)
@@ -67,7 +66,7 @@ const AudioBookForm = ({ images }) => {
    const clickSendFormValues = async () => {
       if (isFormValid()) {
          dispatch(bookAction.deleteImage())
-         dispatch(addAudioBook(inputValues, images, token, audioValues))
+         dispatch(addAudioBook(inputValues, images, audioValues))
 
          setInputValues({
             name: '',
@@ -82,9 +81,6 @@ const AudioBookForm = ({ images }) => {
             price: '',
             discount: '',
          })
-         console.log(true)
-      } else {
-         console.log(false)
       }
    }
 

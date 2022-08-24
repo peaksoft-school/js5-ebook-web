@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
    deleteImage: false,
-   postData: [],
    status: null,
    error: null,
    jenreId: [
@@ -13,6 +12,7 @@ const initialState = {
       { name: 'Деловая литература', id: 5 },
       { name: 'Красота. Здоровье.Спорт ', id: 6 },
    ],
+   array: [],
 }
 export const addBookSlice = createSlice({
    name: 'addbook',
@@ -21,11 +21,15 @@ export const addBookSlice = createSlice({
       deleteImage(state) {
          state.deleteImage = !state.deleteImage
       },
-      bookFromFetch(state, action) {
-         state.postData = action.payload
+      statusSuccess(state, action) {
+         state.status = 'fulfilled'
+         state.user = action.payload
       },
       statusError(state, action) {
          state.error = action.payload
+      },
+      saveBook(state, action) {
+         state.array = action.payload
       },
    },
 })
