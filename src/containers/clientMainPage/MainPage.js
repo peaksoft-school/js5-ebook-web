@@ -1,14 +1,16 @@
+import Select from '@mui/material/Select'
 import styled from '@emotion/styled'
 import Button from '../../Components/UI/Button/Button'
 import InputText from '../../Components/UI/Inputs/InputText'
 import MainPageSlider from '../../Components/UI/MainPageslider'
 import { books } from './bookImage'
 
-function App() {
+function MainPage() {
    return (
       <StyledMainPage>
+         <Select />
          <StyledSliderCont>
-            <MainPageSlider images={books} />
+            <MainPageSlider images={books} variant="mainSlider" />
          </StyledSliderCont>
 
          <StyledBestSlider>
@@ -167,7 +169,7 @@ function App() {
    )
 }
 
-export default App
+export default MainPage
 
 const StyledMainPage = styled.div`
    width: 100%;

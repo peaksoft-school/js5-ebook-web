@@ -3,32 +3,32 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react'
 import { styled } from '@mui/material'
-import AboutSlider from 'react-slick'
+import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { ReactComponent as NextIcon } from '../../assets/icons/slider/next.svg'
 import { ReactComponent as ArrowIcon } from '../../assets/icons/slider/prev.svg'
 
-const NextArrow = ({ onClick }) => {
+const NextArrow = ({ onClick, variant }) => {
    return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div className="arrow next" onClick={onClick}>
-         <NextIcon />
-      </div>
+      <StyledNextArrow onClick={onClick}>
+         <NextIcon variant={variant} />
+      </StyledNextArrow>
    )
 }
 // eslint-disable-next-line react/no-unstable-nested-components
 const PrevArrow = ({ onClick }) => {
    return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div className="arrow prev" onClick={onClick}>
+      <StyledPrevArrow onClick={onClick}>
          <ArrowIcon />
-      </div>
+      </StyledPrevArrow>
    )
 }
-function MainPageSlider({ images }) {
+function MainPageSlider({ images, variant }) {
    const [imageIndex, setImageIndex] = useState(0)
-   const settings = {
+   const mainSettings = {
       dots: false,
       infinite: true,
       lazyLoad: false,
@@ -39,34 +39,58 @@ function MainPageSlider({ images }) {
       tabindex: -1,
       centerMode: true,
       centerPadding: 0,
+      nextArrow: <NextArrow variant="mainSlider" />,
+      prevArrow: <PrevArrow />,
+      beforeChange: (current, next) => setImageIndex(next),
+   }
+   const settings = {
+      autoplay: false,
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 1,
       nextArrow: <NextArrow />,
       prevArrow: <PrevArrow />,
       beforeChange: (current, next) => setImageIndex(next),
    }
    return (
-      <Container className="slider">
-         <AboutSlider {...settings}>
-            {images.map((img, idx) => (
-               <div
-                  key={img.id}
-                  className={idx === imageIndex ? 'activeSlide' : 'slide'}
-               >
-                  <Image src={img.image} alt={img} />
-                  <BookInfoBlock>
-                     <BookInfoItem>
-                        <Title>{img.name}</Title>
-                     </BookInfoItem>
-                     <BookInfoItem width="80%">
-                        <Author>{img.author}</Author>
-                     </BookInfoItem>
-                     <BookInfoItem width="20%">
-                        <Price>{img.price}</Price>
-                     </BookInfoItem>
-                  </BookInfoBlock>
-               </div>
-            ))}
-         </AboutSlider>
-      </Container>
+      <div>
+         {variant === 'mainSlider' ? (
+            <Container className="slider">
+               <Slider {...mainSettings}>
+                  {images.map((item, idx) => (
+                     <div
+                        key={item.id}
+                        className={idx === imageIndex ? 'activeSlide' : 'slide'}
+                     >
+                        <Image src={item.image} alt={item} />
+                        <BookInfoBlock>
+                           <BookInfoItem>
+                              <Title>{item.name}</Title>
+                           </BookInfoItem>
+                           <BookInfoItem width="80%">
+                              <Author>{item.author}</Author>
+                           </BookInfoItem>
+                           <BookInfoItem width="20%">
+                              <Price>{item.price}</Price>
+                           </BookInfoItem>
+                        </BookInfoBlock>
+                     </div>
+                  ))}
+               </Slider>
+            </Container>
+         ) : (
+            <Slider {...settings}>
+               {images.map((item, idx) => (
+                  <div
+                     key={item.id}
+                     className={idx === imageIndex ? 'activeSlide' : 'slide'}
+                  >
+                     <StyledSliderImage src={item.image} alt="book" />
+                  </div>
+               ))}
+            </Slider>
+         )}
+      </div>
    )
 }
 export default MainPageSlider
@@ -91,14 +115,11 @@ const Price = styled(Title)`
    padding-top: 10px;
 `
 const BookInfoItem = styled('div')`
-   /* border: 1px solid red; */
-   /* height: 30px; */
    margin: 0;
    padding: 0;
    width: ${(props) => props.width || '100%'};
 `
 const BookInfoBlock = styled('div')`
-   /* border: 1px solid red; */
    width: 292px;
    display: flex;
    justify-content: space-between;
@@ -108,30 +129,14 @@ const BookInfoBlock = styled('div')`
 `
 const Container = styled('div')`
    width: 480px;
-   /* margin: 97px auto; */
-   /* margin-bottom: 155px; */
-   /* border: 1px solid red; */
    .slide {
       transform: scale(0.5);
-      /* transition: ease-in transform 900ms; */
       transition: 900ms;
       margin-left: -35px;
       position: relative;
       z-index: 0;
    }
-   .arrow.next {
-      /* border: 1px solid aqua; */
-      background-color: rgba(0, 0, 0, 0);
-      right: -150px;
-   }
-   .arrow.prev {
-      /* border: 1px solid aqua; */
-      background-color: rgba(0, 0, 0, 0);
-      left: -150px;
-   }
    .activeSlide {
-      /* transform: scale(1); */
-      /* transition: transform 900ms; */
       transition: 900ms;
       margin-left: -65px;
       position: relative;
@@ -140,19 +145,18 @@ const Container = styled('div')`
          opacity: 1;
       }
    }
-   .arrow {
-      /* background-color: #fff; */
+   /* .arrow {
       position: absolute;
       cursor: pointer;
       z-index: 10;
-   }
+   } */
    .arrow svg {
       transition: color 300ms;
    }
    .arrow svg:hover {
       color: #68edff;
    }
-   .next {
+   /* .next {
       right: -20%;
       top: 45%;
       color: red;
@@ -161,10 +165,28 @@ const Container = styled('div')`
       left: -16%;
       top: 45%;
       color: red;
-   }
+   } */
+`
+const StyledNextArrow = styled('div')`
+   position: absolute;
+   right: ${(props) => (props.variant === 'mainSlider' ? '-20%' : '0%')};
+   top: ${(props) => (props.variant === 'mainSlider' ? '45%' : '1000%')};
+   cursor: pointer;
+   z-index: 10;
+`
+const StyledPrevArrow = styled('div')`
+   position: absolute;
+   left: -16%;
+   top: 45%;
+   cursor: pointer;
+   z-index: 10;
 `
 const Image = styled('img')`
    width: 292px;
    margin: 0 auto;
    transition: ease-in 0.2s;
+`
+const StyledSliderImage = styled('img')`
+   width: 220px;
+   margin-right: 20px;
 `

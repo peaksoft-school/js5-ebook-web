@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+// import { Outlet } from 'react-router'
 import Header from './Header'
 import AppContainer, { Wrapper } from './AppContainer'
 import Logotype from './Logotype'
@@ -13,12 +13,13 @@ import CardItems from './CardItems'
 // import SearchInput from '../Components/UI/Inputs/SearchInput'
 import SearchInputBlock from './SearchInputBlock'
 
-function ClientLayout() {
+function ClientLayout({ children }) {
    return (
       <Wrapper>
          <AppContainer
             primary
-            main={<Outlet />}
+            // main={<Outlet />}
+            main={children}
             header={
                <Header
                   headerTop={
