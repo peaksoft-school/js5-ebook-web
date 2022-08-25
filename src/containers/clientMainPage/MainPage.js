@@ -1,4 +1,3 @@
-import Select from '@mui/material/Select'
 import styled from '@emotion/styled'
 import Button from '../../Components/UI/Button/Button'
 import InputText from '../../Components/UI/Inputs/InputText'
@@ -8,7 +7,6 @@ import { books } from './bookImage'
 function MainPage() {
    return (
       <StyledMainPage>
-         <Select />
          <StyledSliderCont>
             <MainPageSlider images={books} variant="mainSlider" />
          </StyledSliderCont>

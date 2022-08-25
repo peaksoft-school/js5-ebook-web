@@ -1,5 +1,3 @@
-//
-
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react'
 import { styled } from '@mui/material'
@@ -26,6 +24,7 @@ const PrevArrow = ({ onClick }) => {
       </StyledPrevArrow>
    )
 }
+
 function MainPageSlider({ images, variant }) {
    const [imageIndex, setImageIndex] = useState(0)
    const mainSettings = {
@@ -129,12 +128,19 @@ const BookInfoBlock = styled('div')`
 `
 const Container = styled('div')`
    width: 480px;
-   .slide {
+   /* .slide {
       transform: scale(0.5);
       transition: 900ms;
       margin-left: -35px;
       position: relative;
-      z-index: 0;
+      z-index: 0; */
+   width: 532px;
+   margin: 10rem auto;
+
+   .slide {
+      transform: scale(0.5);
+      transition: transform 900ms;
+      margin-left: -14px;
    }
    .activeSlide {
       transition: 900ms;
@@ -144,6 +150,11 @@ const Container = styled('div')`
       & > div {
          opacity: 1;
       }
+      /* transform: scale(1);
+         transition: transform 900ms;
+         margin-left: -38px;
+         position: relative;
+         z-index: 10; */
    }
    /* .arrow {
       position: absolute;
@@ -156,21 +167,13 @@ const Container = styled('div')`
    .arrow svg:hover {
       color: #68edff;
    }
-   /* .next {
-      right: -20%;
-      top: 45%;
-      color: red;
-   }
-   .prev {
-      left: -16%;
-      top: 45%;
-      color: red;
-   } */
 `
 const StyledNextArrow = styled('div')`
    position: absolute;
-   right: ${(props) => (props.variant === 'mainSlider' ? '-20%' : '0%')};
-   top: ${(props) => (props.variant === 'mainSlider' ? '45%' : '1000%')};
+   right: -20%;
+   top: 45%;
+   /* right: ${(props) => (props.variant === 'mainSlider' ? '-20%' : '-20%')};
+   top: ${(props) => (props.variant === 'mainSlider' ? '45%' : '45%')}; */
    cursor: pointer;
    z-index: 10;
 `
@@ -183,8 +186,8 @@ const StyledPrevArrow = styled('div')`
 `
 const Image = styled('img')`
    width: 292px;
-   margin: 0 auto;
-   transition: ease-in 0.2s;
+   /* margin: 0 auto;
+   transition: ease-in 0.2s; */
 `
 const StyledSliderImage = styled('img')`
    width: 220px;

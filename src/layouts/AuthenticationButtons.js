@@ -45,6 +45,7 @@ function AuthenticationButtons() {
    }
    const onClickExitBtn = () => {
       setIsShowModal(true)
+      onCloseProfileHandler()
    }
    const showUser = userActive ? (
       <>
@@ -85,6 +86,11 @@ function AuthenticationButtons() {
          </Button>
          <Button
             variant="default"
+            // <<<<<<< HEAD
+            //             background="#fff"
+            //             color="#1C1C1C"
+            //             border="1px solid #1C1C1C"
+            // =======
             border="1px solid #000"
             width="auto"
             background={!activeBtn ? '#000' : '#fff'}

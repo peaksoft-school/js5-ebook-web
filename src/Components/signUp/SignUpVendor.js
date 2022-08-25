@@ -1,6 +1,6 @@
+import { useDispatch, useSelector } from 'react-redux'
 import InputMask from 'react-input-mask'
-import { useDispatch } from 'react-redux/es/exports'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
 import Validation from '../../hooks/Validation'
@@ -27,11 +27,20 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
       </InputMask>
    )
 }
-
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
    const dispatch = useDispatch()
+   const { status } = useSelector((store) => store.auth)
+   useEffect(() => {
+      if (status === 'rejected') {
+         setErrorValue('такой email уже зарегистрирован!')
+         setIsValidError(true)
+      } else {
+         setErrorValue('')
+         setIsValidError(false)
+      }
+   }, [status])
    const {
       value: name,
       inputChange: onChangeInputName,
@@ -43,7 +52,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: lastName,
       inputChange: onChangeLastName,
@@ -55,7 +63,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: email,
       inputChange: onChangeEmail,
@@ -67,7 +74,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: phone,
       inputChange: onChangeInputPhone,
@@ -79,7 +85,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: password,
       inputChange: onChangePassword,
@@ -91,7 +96,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: lastPassword,
       inputChange: onChangeLastPassword,
@@ -103,7 +107,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const onSubmitUser = async (e) => {
       e.preventDefault()
       if (lastPassword !== password) {
@@ -113,7 +116,6 @@ function SignUpVendor() {
       }
       setErrorValue('')
       setIsValidError(false)
-
       if (
          name === '' ||
          lastName === '' ||
@@ -145,7 +147,6 @@ function SignUpVendor() {
       }
       dispatch(signUpVendor(user))
    }
-
    return (
       <Sign.Form onSubmit={onSubmitUser}>
          <Sign.InputLabel htmlFor="name">
@@ -232,5 +233,4 @@ function SignUpVendor() {
       </Sign.Form>
    )
 }
-
 export default SignUpVendor

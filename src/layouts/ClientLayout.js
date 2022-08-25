@@ -10,7 +10,6 @@ import Navbar from './Navbar'
 import AuthenticationButtons from './AuthenticationButtons'
 import Footer from './Footer'
 import CardItems from './CardItems'
-// import SearchInput from '../Components/UI/Inputs/SearchInput'
 import SearchInputBlock from './SearchInputBlock'
 
 function ClientLayout({ children }) {
