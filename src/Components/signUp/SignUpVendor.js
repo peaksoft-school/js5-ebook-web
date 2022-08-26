@@ -27,7 +27,6 @@ function InputMaskPhone({ value, onChange, onBlur, error }) {
       </InputMask>
    )
 }
-
 function SignUpVendor() {
    const [errorValue, setErrorValue] = useState('')
    const [isValidError, setIsValidError] = useState(false)
@@ -53,7 +52,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: lastName,
       inputChange: onChangeLastName,
@@ -65,7 +63,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: email,
       inputChange: onChangeEmail,
@@ -77,7 +74,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: phone,
       inputChange: onChangeInputPhone,
@@ -89,7 +85,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: password,
       inputChange: onChangePassword,
@@ -101,7 +96,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const {
       value: lastPassword,
       inputChange: onChangeLastPassword,
@@ -113,7 +107,6 @@ function SignUpVendor() {
       }
       return false
    })
-
    const onSubmitUser = async (e) => {
       e.preventDefault()
       if (lastPassword !== password) {
@@ -123,7 +116,6 @@ function SignUpVendor() {
       }
       setErrorValue('')
       setIsValidError(false)
-
       if (
          name === '' ||
          lastName === '' ||
@@ -155,7 +147,6 @@ function SignUpVendor() {
       }
       dispatch(signUpVendor(user))
    }
-
    return (
       <Sign.Form onSubmit={onSubmitUser}>
          <Sign.InputLabel htmlFor="name">
@@ -242,5 +233,4 @@ function SignUpVendor() {
       </Sign.Form>
    )
 }
-
 export default SignUpVendor

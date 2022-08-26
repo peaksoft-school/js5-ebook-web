@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Sign from './SignStyles'
 import SignUpClient from './SignUpClient'
+import { authSlicesActions } from '../../store/slices/authSlices'
 import SignUpVendor from './SignUpVendor'
 import SignIn from './signIn'
-import { authSlicesActions } from '../../store/slices/authSlices'
 
 function SignUp({ activeBtn }) {
    const [opacity, setOpactity] = useState(1)
