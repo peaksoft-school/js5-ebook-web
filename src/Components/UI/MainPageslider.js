@@ -84,6 +84,16 @@ function MainPageSlider({ images, variant }) {
                      key={item.id}
                      className={idx === imageIndex ? 'activeSlide' : 'slide'}
                   >
+                     {/* <StyledBookTitle>
+                        <StyledBookName>{item.name}</StyledBookName>
+                        <StyledBookDescription>
+                           {item.description}
+                        </StyledBookDescription>
+                        <div>
+                           <StyledNavLink href="/">Подробнее</StyledNavLink>
+                           <StyledBookPrice>{item.price}</StyledBookPrice>
+                        </div>
+                     </StyledBookTitle> */}
                      <StyledSliderImage src={item.image} alt="book" />
                   </div>
                ))}
@@ -93,6 +103,49 @@ function MainPageSlider({ images, variant }) {
    )
 }
 export default MainPageSlider
+
+// const StyledBookTitle = styled('div')`
+//    width: 492px;
+//    height: 423px;
+//    display: flex;
+//    flex-direction: column;
+//    & div {
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//    }
+// `
+// const StyledBookName = styled('p')`
+//    font-family: 'Open Sans';
+//    font-style: normal;
+//    font-weight: 600;
+//    font-size: 56px;
+//    line-height: 130%;
+// `
+// const StyledBookDescription = styled('p')`
+//    font-family: 'Open Sans';
+//    font-style: normal;
+//    font-weight: 400;
+//    font-size: 16px;
+//    line-height: 130%;
+// `
+// const StyledNavLink = styled('a')`
+//    font-family: 'Open Sans';
+//    font-style: normal;
+//    font-weight: 400;
+//    font-size: 14px;
+//    line-height: 120%;
+//    text-decoration-line: underline;
+//    color: #ff4c00;
+// `
+// const StyledBookPrice = styled('p')`
+//    font-family: 'Open Sans';
+//    font-style: normal;
+//    font-weight: 600;
+//    font-size: 16px;
+//    line-height: 130%;
+//    color: #ff4c00;
+// `
 const Title = styled('h3')`
    font-family: 'Open Sans';
    font-weight: 400;
@@ -140,7 +193,7 @@ const Container = styled('div')`
    .slide {
       transform: scale(0.5);
       transition: transform 900ms;
-      margin-left: -14px;
+      margin-left: -35px;
    }
    .activeSlide {
       transition: 900ms;

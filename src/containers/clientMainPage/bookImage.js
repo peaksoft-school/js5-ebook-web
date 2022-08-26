@@ -15,7 +15,7 @@ export const books = [
       image3:
          'https://res.cloudinary.com/bloomsbury-atlas/image/upload/w_360,c_scale/jackets/9781408883761.jpg',
       description:
-         'Just set it up, turn it on, and brew. There you have it! Rich-tasting coffee expertly brewed for you without the fuss. Grab-A-Cup Auto Pause is a lifesaver when you need a cup before the brew cycle is finished. It stops brewing so you can pour a rich-tasting cup and then finishes the brewing cycle after you place the carafe back in position. We put our best brewing forward with this easy-to-use, Simple Brew coffee maker. Experience the taste with the Mr. Coffee brand.',
+         'Современное общество пропагандирует культ успеха будь умнее, богаче, продуктивнее— будь лучше всех. Соцсети изобилуют историями натему, как какой-томалец придумал. Соцсети изобилуют историями натему, как какой-томалец придумал приложение…',
    },
    {
       id: '4249204596',
@@ -51,15 +51,15 @@ export const books = [
    },
    {
       id: '7781265193',
-      name: 'Гордость и предубеждение',
+      name: 'НИ СЫ',
       genre: 'Typhoo',
-      price: '$10.00',
+      price: '234 с',
       language: 'Русский',
       publishingHouse: 'МСК',
       year: '2021',
       volume: '360 стр',
-      author: 'n/a',
-      image: 'https://book24.ua/upload/iblock/c7d/c7de50c50c62414e395c819335196c8b.jpg',
+      author: 'Джен Синсеро',
+      image: 'https://cv9.litres.ru/pub/c/audiokniga/cover_415/37402792-dzhen-sinsero-ni-sy-vostochnaya-mudrost-kotoraya-glasit-bud-uvere-37402792.jpg',
       image3:
          'https://res.cloudinary.com/bloomsbury-atlas/image/upload/w_360,c_scale/jackets/9781408883761.jpg',
       description:
@@ -75,7 +75,7 @@ export const books = [
       year: '2021',
       volume: '360 стр',
       author: 'n/a',
-      image: 'https://book24.ua/upload/iblock/c7d/c7de50c50c62414e395c819335196c8b.jpg',
+      image: 'https://img-gorod.ru/28/363/2836344_detail.jpg',
       image3:
          'https://res.cloudinary.com/bloomsbury-atlas/image/upload/w_360,c_scale/jackets/9781408883761.jpg',
       description:
@@ -83,7 +83,7 @@ export const books = [
    },
    {
       id: '7781265193',
-      name: 'Гордость и предубеждение',
+      name: 'Тонкое искусство пофигизма',
       genre: 'Typhoo',
       price: '$10.00',
       language: 'Русский',
@@ -91,7 +91,7 @@ export const books = [
       year: '2021',
       volume: '360 стр',
       author: 'n/a',
-      image: 'https://book24.ua/upload/iblock/c7d/c7de50c50c62414e395c819335196c8b.jpg',
+      image: 'https://cm.author.today/content/2021/11/23/48cb14773d40404c8200e22fb14fc4af.jpg',
       image3:
          'https://res.cloudinary.com/bloomsbury-atlas/image/upload/w_360,c_scale/jackets/9781408883761.jpg',
       description:
