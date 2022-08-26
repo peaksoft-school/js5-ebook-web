@@ -251,7 +251,7 @@ const StyledBookName = styled.p`
    line-height: 130%;
 `
 const StyledBookSlider = styled.div`
-   width: 774px;
+   width: 700px;
    height: 443px;
 `
 const StyledLatestPublCont = styled.div`
@@ -365,7 +365,6 @@ const StyledBookCardTime = styled.span`
    color: #8c8c8c;
 `
 const StyledMainFooter = styled.div`
-   /* height: 440px; */
    padding: 150px 0px;
    display: flex;
    flex-direction: column;

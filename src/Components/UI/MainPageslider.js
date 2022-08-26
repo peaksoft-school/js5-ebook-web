@@ -5,22 +5,22 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { ReactComponent as NextIcon } from '../../assets/icons/slider/next.svg'
-import { ReactComponent as ArrowIcon } from '../../assets/icons/slider/prev.svg'
+import { ReactComponent as PrevIcon } from '../../assets/icons/slider/prev.svg'
 
 const NextArrow = ({ onClick, variant }) => {
    return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <StyledNextArrow onClick={onClick}>
-         <NextIcon variant={variant} />
+      <StyledNextArrow onClick={onClick} variant={variant}>
+         <NextIcon />
       </StyledNextArrow>
    )
 }
 // eslint-disable-next-line react/no-unstable-nested-components
-const PrevArrow = ({ onClick }) => {
+const PrevArrow = ({ onClick, variant }) => {
    return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <StyledPrevArrow onClick={onClick}>
-         <ArrowIcon />
+      <StyledPrevArrow onClick={onClick} variant={variant}>
+         <PrevIcon />
       </StyledPrevArrow>
    )
 }
@@ -39,7 +39,7 @@ function MainPageSlider({ images, variant }) {
       centerMode: true,
       centerPadding: 0,
       nextArrow: <NextArrow variant="mainSlider" />,
-      prevArrow: <PrevArrow />,
+      prevArrow: <PrevArrow variant="mainSlider" />,
       beforeChange: (current, next) => setImageIndex(next),
    }
    const settings = {
@@ -223,17 +223,15 @@ const Container = styled('div')`
 `
 const StyledNextArrow = styled('div')`
    position: absolute;
-   right: -20%;
-   top: 45%;
-   /* right: ${(props) => (props.variant === 'mainSlider' ? '-20%' : '-20%')};
-   top: ${(props) => (props.variant === 'mainSlider' ? '45%' : '45%')}; */
+   right: ${(props) => (props.variant === 'mainSlider' ? '-20%' : '50px')};
+   top: ${(props) => (props.variant === 'mainSlider' ? '45%' : '400px')};
    cursor: pointer;
    z-index: 10;
 `
 const StyledPrevArrow = styled('div')`
    position: absolute;
-   left: -16%;
-   top: 45%;
+   left: ${(props) => (props.variant === 'mainSlider' ? '-16%' : '450px')};
+   top: ${(props) => (props.variant === 'mainSlider' ? '45%' : '400px')};
    cursor: pointer;
    z-index: 10;
 `
