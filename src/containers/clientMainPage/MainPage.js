@@ -172,6 +172,7 @@ export default MainPage
 const StyledMainPage = styled.div`
    width: 100%;
    margin-top: 27px;
+   /* border: 2px solid red; */
 `
 const StyledSliderCont = styled.div`
    background: #1c1c1c;
@@ -180,10 +181,14 @@ const StyledSliderCont = styled.div`
    justify-content: center;
 `
 const StyledBestSlider = styled.div`
-   padding: 150px 80px;
+   /* border: 1px solid red; */
+   padding: 150px 0px;
+   padding-bottom: 250px;
+   width: 100%;
 `
 const StyledTitle = styled.div`
    width: 100%;
+   /* border: 1px solid red; */
    display: flex;
    justify-content: space-between;
    align-items: center;
@@ -251,7 +256,7 @@ const StyledBookName = styled.p`
    line-height: 130%;
 `
 const StyledBookSlider = styled.div`
-   width: 774px;
+   width: 700px;
    height: 443px;
 `
 const StyledLatestPublCont = styled.div`
@@ -323,7 +328,7 @@ const StyledBookCardTitle = styled.div`
    align-items: center;
 `
 const StyledBookCardCont = styled.div`
-   width: 1280px;
+   width: 100%;
    height: 747px;
    display: flex;
    justify-content: space-between;

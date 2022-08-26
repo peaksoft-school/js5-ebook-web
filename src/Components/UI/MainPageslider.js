@@ -223,7 +223,7 @@ const Container = styled('div')`
 `
 const StyledNextArrow = styled('div')`
    position: absolute;
-   right: -20%;
+   right: -15%;
    top: 45%;
    /* right: ${(props) => (props.variant === 'mainSlider' ? '-20%' : '-20%')};
    top: ${(props) => (props.variant === 'mainSlider' ? '45%' : '45%')}; */
