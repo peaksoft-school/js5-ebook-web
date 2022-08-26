@@ -41,7 +41,7 @@ export const BooksCard = ({ book }) => {
                {heartActive ? <HeartOrange /> : <Heart />}
             </CardIcon>
          )}
-         <Img src={book.image} alt="photo" />
+         <Img src={book.mainImage} alt="photo" />
          <TitleBook>{book.name}</TitleBook>
          <AuthorBook>{book.author}</AuthorBook>
          <PriceBook>{book.price}</PriceBook>
@@ -67,7 +67,7 @@ const BtbBook = styled(Button)`
 `
 
 const CardIcon = styled('button')`
-   /* border: 1px solid red; */
+   border: none;
    position: absolute;
    top: 0;
    right: 0;
@@ -75,6 +75,7 @@ const CardIcon = styled('button')`
    margin-top: 20px;
    padding: 0;
    background-color: rgba(0, 0, 0, 0);
+   outline: 0px solid red;
    cursor: pointer;
    transition: ease-in 0.2s;
 `
@@ -115,10 +116,10 @@ const Card = styled('div')`
    min-height: 343px;
    /* margin: 0 auto; */
    padding: 0;
-   margin-right: 20px;
+   /* margin-right: 20px; */
    position: relative;
    transition: ease-in 0.2s;
-   &:nth-child(4n) {
+   /* &:nth-child(4n) {
       margin-right: 0;
-   }
+   } */
 `

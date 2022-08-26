@@ -17,9 +17,12 @@ export default CheckBox
 
 const FormLabelStyle = styled(FormControlLabel)`
    .MuiFormControlLabel-label {
+      font-family: 'Open Sans';
       color: black;
-      font-size: 16px;
+      font-style: normal;
       font-weight: 400;
+      font-size: 16px;
+      line-height: 130%;
    }
 `
 const ChesckboxStyle = styled(MuiCheckbox)`

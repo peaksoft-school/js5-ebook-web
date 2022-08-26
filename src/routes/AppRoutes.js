@@ -17,7 +17,7 @@ function AppRoutes() {
    }, [])
    return (
       <Routes>
-         {RoutesComponent.ADMIN}
+         {RoutesComponent[user.role]}
          <Route
             path="*"
             element={

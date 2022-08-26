@@ -1,25 +1,23 @@
 import { URL } from '../utils/constants/constants'
 
-function appFetch({ url, method, body, token, file }) {
+let store
+export const injectStore = (fromStore) => {
+   store = fromStore
+}
+
+const appFetch = ({ url, method, body }) => {
+   const { auth } = store.getState()
    const requestOptions = {
       method: method || 'GET',
       headers: {
          'Content-Type': 'application/json; charset=utf-8',
       },
    }
-   if (token && file) {
-      requestOptions.headers = {
-         Authorization: `Bearer ${token}`,
-      }
-   }
-   if (token) {
-      requestOptions.headers.Authorization = `Bearer ${token}`
+   if (auth.user.token) {
+      requestOptions.headers.Authorization = `Bearer ${auth.user.token}`
    }
    if (method && body) {
       requestOptions.body = JSON.stringify(body)
-   }
-   if (method && file) {
-      requestOptions.body = file
    }
    const promise = new Promise((resolve, reject) => {
       fetch(URL + url, requestOptions)
@@ -38,5 +36,4 @@ function appFetch({ url, method, body, token, file }) {
    })
    return promise
 }
-
 export default appFetch

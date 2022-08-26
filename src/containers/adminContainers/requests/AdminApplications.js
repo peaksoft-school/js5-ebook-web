@@ -1,25 +1,28 @@
 import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux/'
+// import { useDispatch, useSelector } from 'react-redux/'
 import Button from '../../../Components/UI/Button/Button'
 import ApplicationCard from '../../../Components/admin-applications/ApplicationCard'
 import { books } from '../../../utils/constants/books'
-import applicationActions from '../../../store/slices/applicationsSlices'
+// import applicationActions from '../../../store/slices/applicationsSlices'
 
 const AdminApplications = () => {
-   const dispatch = useDispatch()
+   // const data = useSelector((state) => state.data)
+   // console.log(data)
+   // const dispatch = useDispatch()
    const navigate = useNavigate()
-   const [allRequest, setAllLimits] = useState(0)
+   // const [allRequest, setAllLimits] = useState(0)
 
-   const [noSeeArr, setNoSeeArr] = useState(0)
+   // const [noSeeArr, setNoSeeArr] = useState(0)
 
-   const [requestBooks, setRequestBooks] = useState([])
+   const [requestBooks, setRequestBooks] = useState(books)
 
-   const getRequsetBooks = async () => {
+   // useEffect(() => {
+   //    dispatch(applicationActions.getApplications())
+   // })
+   const getRequsetBooks = () => {
       setRequestBooks()
-      dispatch(applicationActions(setRequestBooks))
-      console.log(requestBooks)
    }
 
    const deatailRequest = (id) => {
