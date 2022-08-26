@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useMemo } from 'react'
 import { APP_ROLES } from '../utils/constants/constants'
