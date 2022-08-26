@@ -17,7 +17,6 @@ export function sortRequestApplic(obj) {
       if (obj[key] !== null) {
          if (text !== '') {
             if (key === 'genres') {
-               console.log('g')
                text = `${text}&${genresFunc(obj[key])}`
             } else {
                text = `${text}&${key}=${obj[key]}`
