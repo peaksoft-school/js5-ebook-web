@@ -5,17 +5,18 @@ function GenreMenu({ data, onSelect }) {
    return (
       <MenuContainer>
          <MenuUl>
-            {data.map((elem) => {
-               return (
-                  <GenreItem
-                     key={elem.id}
-                     name={elem.name}
-                     quantity={elem.quantity}
-                     id={elem.id}
-                     onSelect={onSelect}
-                  />
-               )
-            })}
+            {data &&
+               data.map((elem) => {
+                  return (
+                     <GenreItem
+                        key={elem.id}
+                        name={elem.name}
+                        quantity={elem.quantity}
+                        id={elem.id}
+                        onSelect={onSelect}
+                     />
+                  )
+               })}
          </MenuUl>
       </MenuContainer>
    )
@@ -59,11 +60,11 @@ const MenuUl = styled.ul`
 const MenuContainer = styled.div`
    padding: 25px 35px;
    background-color: #f8f8f8;
-   position: absolute;
+   /* position: absolute; */
    box-sizing: border-box;
-   top: 36px;
-   left: 0px;
-   z-index: 10;
+   /* top: 36px; */
+   /* left: 0px; */
+   /* z-index: 10; */
    transition: ease-in-out 1.2s;
    width: auto;
    display: inline-block;

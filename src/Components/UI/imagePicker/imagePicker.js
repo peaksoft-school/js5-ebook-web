@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import Icon from '../../../assets/icons/Vector.svg'
 
-function ImagePicker({ onChange, onDelete, file, id }) {
+function ImagePicker({ onChange, onDelete, file, id, name }) {
    const [icon, setIcon] = useState()
    const filesRef = useRef()
 
@@ -13,13 +13,13 @@ function ImagePicker({ onChange, onDelete, file, id }) {
       }
    }, [file])
 
-   const iconHandleChange = () => {
+   const iconHandleChange = (e) => {
       if (!filesRef.current.files[0]) {
          return
       }
       const name = URL.createObjectURL(filesRef.current.files[0])
       setIcon(name)
-      onChange(filesRef.current.files[0])
+      onChange(filesRef.current.files[0], e)
    }
 
    const deleteFileHandler = () => {
@@ -27,6 +27,12 @@ function ImagePicker({ onChange, onDelete, file, id }) {
       setIcon('')
       onDelete()
    }
+   useEffect(() => {
+      if (onDelete || !onDelete) {
+         setIcon('')
+         filesRef.current.value = ''
+      }
+   }, [onDelete])
 
    return (
       <ImageContainer primary={icon}>
@@ -34,6 +40,7 @@ function ImagePicker({ onChange, onDelete, file, id }) {
          <InputFile
             type="file"
             id={id}
+            name={name}
             ref={filesRef}
             onChange={iconHandleChange}
             accept="image/jpeg,image/png,image/gif"
@@ -103,6 +110,7 @@ const InputLabel = styled.label`
 const ImageContainer = styled.div`
    height: 312px;
    width: 235px;
+   /* width: 18.35%; */
    background-color: #ececec;
    background-repeat: no-repeat;
    background-position: 50% 50%;

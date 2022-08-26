@@ -1,8 +1,9 @@
+import styled from 'styled-components'
 import React, { useState } from 'react'
+// import { Menu, MenuItem } from '@mui/material'
 import { InputContainer, Input, BtnIcon } from './InputStyle'
 import { ReactComponent as OrangeSearchIcon } from '../../../assets/icons/inputs/search.svg'
 import { ReactComponent as GreySearchIcon } from '../../../assets/icons/inputs/greySearch.svg'
-import styled from 'styled-components'
 
 const SearchInput = React.forwardRef(
    (
@@ -16,30 +17,28 @@ const SearchInput = React.forwardRef(
       }
 
       return (
-         <>
-            <InputContainer
-               borderColor={isFocus ? '#F34901' : ''}
-               focus={isFocus}
-               backgroundColor={backgroundColor}
-            >
-               <Input
-                  type="search"
-                  value={value}
-                  placeholder={placeholder}
-                  onChange={onChange}
-                  ref={ref}
-                  fontSize="14px"
-                  onFocus={IsFocusHandleChange}
-                  onBlur={IsFocusHandleChange}
-                  paddingRight="0"
-               />
-               <BtnIcon>
-                  {isFocus ? <GreySearchIcon /> : <OrangeSearchIcon />}
-               </BtnIcon>
-            </InputContainer>
-            <ItemBlock>
-               {books &&
-                  books.map((elem) => {
+         <InputContainer
+            borderColor={isFocus ? '#F34901' : ''}
+            focus={isFocus}
+            backgroundColor={backgroundColor}
+         >
+            <Input
+               type="search"
+               value={value}
+               placeholder={placeholder}
+               onChange={onChange}
+               ref={ref}
+               fontSize="14px"
+               onFocus={IsFocusHandleChange}
+               onBlur={IsFocusHandleChange}
+               paddingRight="0"
+            />
+            <BtnIcon>
+               {isFocus ? <GreySearchIcon /> : <OrangeSearchIcon />}
+            </BtnIcon>
+            {books && (
+               <ItemBlock>
+                  {books.map((elem) => {
                      return (
                         <Item
                            key={elem.id}
@@ -49,17 +48,28 @@ const SearchInput = React.forwardRef(
                         </Item>
                      )
                   })}
-            </ItemBlock>
-         </>
+               </ItemBlock>
+            )}
+         </InputContainer>
       )
    }
 )
 export default SearchInput
 
-const ItemBlock = styled('ul')`
+const ItemBlock = styled('ui')`
    list-style: none;
    margin: 0;
    padding: 0;
+   position: absolute;
+   top: calc(100% + 10px);
+   left: 0;
+   right: 0;
+   background: #fff;
+   z-index: 10;
+   border-radius: 3px;
+   overflow: hidden;
+   box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
+      0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
 `
 
 const Item = styled('li')`

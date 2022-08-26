@@ -12,10 +12,12 @@ const Button = ({ variant, children, onClick, ...props }) => {
 export default Button
 
 const ButtonStyle = styled(MuiButton)`
-   text-transform: capitalize;
+   text-transform: none;
    padding: 8px 40px 8px 40px;
+   text-transform: capitalize;
+   padding: ${(props) => props.padding || '10px 20px'};
    border: none;
-   font-weight: 600;
+   font-weight: ${(props) => props.fontWeight || '600'};
    font-family: 'Open Sans';
    line-height: 16.8px;
    font-style: normal;
@@ -29,12 +31,11 @@ const ButtonStyle = styled(MuiButton)`
    background: ${(props) =>
       props.variant === 'default' ? '#1c1c1c' : '#f34901'};
    padding: ${(props) => (props.variant === 'default' ? '10px 24px ' : ' ')};
-   height: ${(props) => (props.variant === 'default' ? '42px' : ' 33px')};
-   font-size: ${(props) => (props.variant === 'default' ? '16px' : '14px')};
+   font-size: ${(props) => props.fontSize || '16px'};
 
    &:hover {
-      background: ${(props) => props.backgroundHover || '#fe6f33'};
-      color: #ffffff;
+      background: ${(props) => props.backgroundhover || '#fe6f33'};
+      color: ${(props) => props.colorhover || 'fff'};
    }
 
    background: ${(props) => (props.variant === 'universal' ? 'white' : '')};
@@ -42,10 +43,12 @@ const ButtonStyle = styled(MuiButton)`
    border: ${(props) => (props.variant === 'universal' ? props.border : '')};
    color: ${(props) => (props.color ? props.color : '')};
    border: ${(props) => (props.border ? props.border : '')};
-   border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '')};
+   border-radius: ${(props) => (props.borderradius ? props.borderradius : '')};
    width: ${(props) => props.width || '100%'};
    padding: ${(props) => props.padding || '10px 24px'};
    font-size: ${(props) => props.fontSize || '16px'};
-   font-family: ${(props) => props.fontFamily || ''};
+   font-family: ${(props) => props.fontFamily || 'Open Sans'};
    margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
+   margin-top: ${(props) => props.margintop || '0px'};
+   width: ${(props) => props.width || '100%'};
 `
