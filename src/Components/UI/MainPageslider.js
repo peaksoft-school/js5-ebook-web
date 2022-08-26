@@ -193,11 +193,11 @@ const Container = styled('div')`
    .slide {
       transform: scale(0.5);
       transition: transform 900ms;
-      margin-left: -35px;
+      margin-left: -15px;
    }
    .activeSlide {
       transition: 900ms;
-      margin-left: -65px;
+      margin-left: -45px;
       position: relative;
       z-index: 10;
       & > div {

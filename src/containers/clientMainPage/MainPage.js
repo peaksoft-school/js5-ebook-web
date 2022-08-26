@@ -172,6 +172,7 @@ export default MainPage
 const StyledMainPage = styled.div`
    width: 100%;
    margin-top: 27px;
+   /* border: 2px solid red; */
 `
 const StyledSliderCont = styled.div`
    background: #1c1c1c;
@@ -180,10 +181,14 @@ const StyledSliderCont = styled.div`
    justify-content: center;
 `
 const StyledBestSlider = styled.div`
-   padding: 150px 80px;
+   /* border: 1px solid red; */
+   padding: 150px 0px;
+   padding-bottom: 250px;
+   width: 100%;
 `
 const StyledTitle = styled.div`
    width: 100%;
+   /* border: 1px solid red; */
    display: flex;
    justify-content: space-between;
    align-items: center;
@@ -253,9 +258,10 @@ const StyledBookName = styled.p`
 const StyledBookSlider = styled.div`
    width: 700px;
    height: 443px;
+   margin-top: 200px;
 `
 const StyledLatestPublCont = styled.div`
-   padding: 150.25px 80px 159.42px 80px;
+   padding: 150px 0px;
    background: #1c1c1c;
    display: flex;
    flex-direction: column;
@@ -315,7 +321,7 @@ const StyledLatestBookDesc = styled.p`
 `
 const StyledAudioBooksCont = styled.div`
    width: 100%;
-   padding: 150px 80px 0px 80px;
+   padding: 150px 0px;
 `
 const StyledBookCardTitle = styled.div`
    display: flex;
@@ -323,7 +329,7 @@ const StyledBookCardTitle = styled.div`
    align-items: center;
 `
 const StyledBookCardCont = styled.div`
-   width: 1280px;
+   width: 100%;
    height: 747px;
    display: flex;
    justify-content: space-between;
