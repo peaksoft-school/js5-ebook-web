@@ -1,11 +1,11 @@
-import { Route, Routes } from 'react-router-dom'
+import { Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useMemo } from 'react'
 import { APP_ROLES } from '../utils/constants/constants'
 import vendorLayout from './vendorLayout'
 import clientLayout from './clientLayout'
 import adminLayout from './adminLayout'
-import AddBookPage from '../containers/vendorMainPage/AddBookPage'
+// import AddBookPage from '../containers/vendorMainPage/AddBookPage'
 
 function AppRoutes() {
    const user = useSelector((store) => store.auth.user)
@@ -17,11 +17,6 @@ function AppRoutes() {
       }
    }, [])
 
-   return (
-      <Routes>
-         {RoutesComponent[user.role]}
-         <Route path="*" element={<AddBookPage />} />
-      </Routes>
-   )
+   return <Routes>{RoutesComponent[user.role]}</Routes>
 }
 export default AppRoutes
