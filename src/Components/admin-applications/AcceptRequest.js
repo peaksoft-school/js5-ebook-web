@@ -1,13 +1,13 @@
 import React from 'react'
-import { ReactComponent as ToAccept } from '../../assets/icons/MeatBalls/accept.svg'
 import { styled } from '@mui/material'
-// POST
+import { ReactComponent as ToAccept } from '../../assets/icons/MeatBalls/accept.svg'
+
 const AcceptRequest = ({ name }) => {
    return (
-      <Accept>
+      <Accept onClick={(e) => e.stopPropagation()}>
          <ToAccept />
          <div>
-            <NameApplication>"{name}"</NameApplication>
+            <NameApplication> {name} </NameApplication>
             <p>был успешно принят!</p>
          </div>
       </Accept>
@@ -27,8 +27,7 @@ const Accept = styled('div')`
    line-height: 130%;
    text-align: center;
    color: #000000;
-   
 `
-const NameApplication=styled("h4")`
-margin-bottom: -18px;
+const NameApplication = styled('h4')`
+   margin-bottom: -18px;
 `

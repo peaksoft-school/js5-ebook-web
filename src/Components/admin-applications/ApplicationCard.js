@@ -1,19 +1,20 @@
 import { styled } from '@mui/material'
 import React, { useState } from 'react'
-import MeatBalls from '../UI/MeatBalls/MeatBalls'
+
 import { ReactComponent as CheckMark } from '../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../assets/icons/MeatBalls/reject.svg'
 import Modal from '../UI/Modal'
-import { ModalReject } from './ModalReject'
+import { RejectRequest } from './RejectRequest'
 import AcceptRequest from './AcceptRequest'
+import MeatBalls from '../UI/MeatBalls/MeatBalls'
 
-const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
+const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
    const menuMeatBall = [
       {
          id: 1,
          title: 'Принять',
          icon: <CheckMark />,
-         onClick: acceptHandler,
+         onClick: acceptModal,
       },
       {
          id: 2,
@@ -27,30 +28,30 @@ const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
    const [isModal, setIsModal] = useState(false)
    const [toAccept, setToAccept] = useState(false)
 
-   function acceptHandler(closeMeatBall) {
+   function acceptModal() {
       setToAccept(!toAccept)
-      closeMeatBall()
-      minusView(id)
+
+      // POST
    }
 
-   function closeAcceptHandler() {
+   function closeAcceptModal(e) {
+      e.stopPropagation()
       setToAccept(!toAccept)
    }
 
-   function rejectModal(closeMeatBall) {
+   function rejectModal() {
       setRejectAplication(!rejectAplication)
       setIsModal(!isModal)
-      closeMeatBall()
-      minusView(id)
    }
 
-   function onCloseRejectModal() {
+   function onCloseRejectModal(e) {
+      e.stopPropagation(e)
       setIsModal(!isModal)
    }
 
    return (
-      <BookItems primary={!rejectAplication}>
-         <MeatBall>
+      <BookItems primary={!rejectAplication} id={id} onClick={onClick}>
+         <MeatBall onClick={(e) => e.stopPropagation()}>
             <MeatBalls options={menuMeatBall} />
          </MeatBall>
          <Modal
@@ -58,16 +59,18 @@ const ApplicationCard = ({ id, img, date, name, price, minusView }) => {
             variant="mini"
             width="523px"
             height="247px"
-            onClose={onCloseRejectModal}
+            overflow="none"
+            onClose={(e) => onCloseRejectModal(e)}
          >
-            <ModalReject />
+            <RejectRequest />
          </Modal>
          <Modal
             open={toAccept}
             variant="mini"
             width="460px"
             height="155px"
-            onClose={closeAcceptHandler}
+            overflow="none"
+            onClose={(e) => closeAcceptModal(e)}
          >
             <AcceptRequest name={name} />
          </Modal>
@@ -99,7 +102,6 @@ const BookItems = styled('div')`
    font-family: 'Open Sans';
    margin-top: 20px;
    padding-top: 20px;
-  
 `
 const MeatBall = styled('div')`
    display: flex;
@@ -110,11 +112,12 @@ const MeatBall = styled('div')`
 const Book = styled('img')`
    width: 170px;
    height: 260px;
-
+   cursor: pointer;
 `
 const NameBook = styled('p')`
    font-size: 14px;
    font-weight: 600;
+   width: 194px;
 `
 const PriceDate = styled('p')`
    width: 169px;
@@ -122,7 +125,6 @@ const PriceDate = styled('p')`
    justify-content: space-between;
    align-items: center;
    margin-top: -20px;
-  
 `
 const Date = styled('p')`
    font-size: 14px;
@@ -139,6 +141,4 @@ const Div = styled('div')`
    flex-direction: column;
    align-items: flex-start;
    width: 197px;
-   
-   
 `

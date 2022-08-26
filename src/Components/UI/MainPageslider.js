@@ -4,23 +4,25 @@ import { styled } from '@mui/material'
 import Vector from '../../assets/Vector.jpg'
 import Vector2 from '../../assets/Vector2.png'
 
+const NextArrow = () => {
+   return (
+      <div className="arrow next">
+         <img src={Vector} alt="book Vector" />
+      </div>
+   )
+}
+const PrevArrow = () => {
+   return (
+      <div className="arrow prev">
+         <img src={Vector2} alt="book Vector2" />
+      </div>
+   )
+}
+// const images = [
+//    'fjjfjf',
+//    ''
+// ]
 function MainPageSlider({ images }) {
-   const NextArrow = ({ onClick }) => {
-      return (
-         <div className="arrow next" onClick={onClick}>
-            <img src={Vector} alt="book Vector" />
-         </div>
-      )
-   }
-
-   const PrevArrow = ({ onClick }) => {
-      return (
-         <div className="arrow prev" onClick={onClick}>
-            <img src={Vector2} alt="book Vector2  " />
-         </div>
-      )
-   }
-
    const [imageIndex, setImageIndex] = useState(0)
 
    const settings = {

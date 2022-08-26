@@ -5,7 +5,7 @@ function Container({ header, main, footer, sidebar, primary }) {
    return (
       <>
          <AppContainer primary={primary}>
-            <Item>
+            <Item maxWidth={sidebar}>
                <Header>{header}</Header>
                <Main>{main}</Main>
             </Item>
@@ -50,13 +50,18 @@ const Main = styled(Header)`
 
 const Item = styled.div`
    /* border: 1px solid red; */
-   width: 250px;
+   min-width: 240px;
    flex-grow: 1;
    flex-shrink: 0;
    display: flex;
    flex-flow: column;
    height: auto;
    /* padding: 20px; */
+   ${(props) =>
+      props.maxWidth &&
+      css`
+         max-width: 900px;
+      `}
    &:nth-child(2) {
       flex-grow: 0;
       flex-shrink: 0;
@@ -73,7 +78,7 @@ const AppContainer = styled.div`
    ${(props) =>
       props.primary &&
       css`
-         max-width: 1260px;
+         max-width: 1280px;
          margin: 0 auto;
       `}
 `
