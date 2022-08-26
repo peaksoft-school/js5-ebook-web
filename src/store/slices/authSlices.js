@@ -1,14 +1,18 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import appFetch from '../../hooks/AppFetch'
-import { EBOOK_AUTH_INFO } from '../../utils/constants/constants'
+import { EBOOK_AUTH_INFO, APP_ROLES } from '../../utils/constants/constants'
 import { getFromLocaleStorage, saveToLocaleStorage } from '../../hooks/locale'
+
+const InitialUser = {
+   role: APP_ROLES.USER,
+}
 
 function reloadGetLocale() {
    const user = getFromLocaleStorage(EBOOK_AUTH_INFO)
    if (user) {
       return user
    }
-   return null
+   return InitialUser
 }
 
 const initialState = {
@@ -17,60 +21,26 @@ const initialState = {
    error: null,
 }
 
-export const signUpVendor = createAsyncThunk(
-   'SignSlices/SignUpVendorRequest',
-   async (data) => {
-      const result = await appFetch('/api/public/vendor/register', 'POST', data)
-      const vendor = {
-         id: result.id,
-         token: result.jwt,
-         role: result.role,
-      }
-      saveToLocaleStorage(EBOOK_AUTH_INFO, vendor)
-      return vendor
-   }
-)
-
-export const signUpClient = createAsyncThunk(
-   'SignSlices/signUpClient',
-   async (data) => {
-      const result = await appFetch('/api/public/user/register', 'POST', data)
-      const user = {
-         id: result.id,
-         token: result.jwt,
-         role: result.role,
-         firstName: result.firstName,
-      }
-      saveToLocaleStorage(EBOOK_AUTH_INFO, user)
-      return user
-   }
-)
-
 const authSlices = createSlice({
-   name: 'SignSlices',
+   name: 'authSlices',
    initialState,
-   extraReducers: {
-      [signUpVendor.pending]: (state) => {
+   reducers: {
+      pending: (state) => {
          state.status = 'pending'
       },
-      [signUpVendor.fulfilled]: (state, action) => {
-         state.user = action.payload
+      userUpate: (state, action) => {
          state.status = 'fulfilled'
-      },
-      [signUpVendor.rejected]: (state, action) => {
-         state.status = 'rejected'
-         state.error = action.error
-      },
-      [signUpClient.pending]: (state) => {
-         state.status = 'pending'
-      },
-      [signUpClient.fulfilled]: (state, action) => {
          state.user = action.payload
-         state.status = 'fulfilled'
       },
-      [signUpClient.rejected]: (state, action) => {
+      rejected: (state, action) => {
          state.status = 'rejected'
-         state.error = action.error
+         state.error = action.payload
+      },
+      exitApp: (state) => {
+         state.user = InitialUser
+      },
+      cleanStatus: (state) => {
+         state.status = null
       },
    },
 })
@@ -78,3 +48,70 @@ const authSlices = createSlice({
 export const authSlicesActions = authSlices.actions
 
 export default authSlices
+
+export const signIn = (data) => {
+   return async (dispatch) => {
+      try {
+         dispatch(authSlicesActions.pending())
+         const result = await appFetch({
+            url: '/api/public/login',
+            method: 'POST',
+            body: data,
+         })
+         const user = {
+            id: result.id,
+            token: result.jwt,
+            role: result.role,
+            firstName: result.firstName,
+         }
+         saveToLocaleStorage(EBOOK_AUTH_INFO, user)
+         dispatch(authSlicesActions.userUpate(user))
+      } catch (error) {
+         dispatch(authSlicesActions.rejected(error))
+      }
+   }
+}
+
+export const signUpClient = (data) => {
+   return async (dispatch) => {
+      try {
+         dispatch(authSlicesActions.pending())
+         const result = await appFetch({
+            url: '/api/public/user/register',
+            method: 'POST',
+            body: data,
+         })
+         const user = {
+            id: result.id,
+            token: result.jwt,
+            role: result.role,
+            firstName: result.firstName,
+         }
+         saveToLocaleStorage(EBOOK_AUTH_INFO, user)
+         dispatch(authSlicesActions.userUpate(user))
+      } catch (error) {
+         dispatch(authSlicesActions.rejected(error))
+      }
+   }
+}
+
+export const signUpVendor = (data) => {
+   return async (dispatch) => {
+      try {
+         dispatch(authSlicesActions.pending())
+         const result = await appFetch({
+            url: '/api/public/vendor/register',
+            method: 'POST',
+            body: data,
+         })
+         const vendor = {
+            id: result.id,
+            token: result.jwt,
+            role: result.role,
+         }
+         dispatch(authSlicesActions.userUpate(vendor))
+      } catch (error) {
+         dispatch(authSlicesActions.rejected(error))
+      }
+   }
+}

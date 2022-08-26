@@ -1,11 +1,12 @@
 import styled from '@emotion/styled'
-import { useParams } from 'react-router'
-import { books } from './books'
+// import { useParams } from 'react-router'
+// import { books } from './books'
 
-const About = () => {
-   const params = useParams()
-   const selectedItem = books.find((item) => item.id === params.bookId)
-   return <StyledText>{selectedItem.description}</StyledText>
+const About = ({ book }) => {
+   console.log(book)
+   // const params = useParams()
+   // const selectedItem = book.find((item) => item.id === params.bookId)
+   return <StyledText>{book.description}</StyledText>
 }
 
 export default About

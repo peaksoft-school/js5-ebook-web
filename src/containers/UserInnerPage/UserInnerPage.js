@@ -1,15 +1,18 @@
 import styled from '@emotion/styled'
 
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+// import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
 import About from './About'
 import BookFragment from './BookFragment'
 
-import { books } from './books'
+// import { books } from './books'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
+import { URL } from '../../utils/constants/constants'
+import appFetch from '../../hooks/AppFetch'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -20,18 +23,33 @@ const DataValues = [
 
 export const UserInnerPage = () => {
    const [text, setText] = useState('')
+   const { token } = useSelector((store) => store.auth.user)
+   // const { bookId } = useParams()
+   const bookId = 3
+   console.log(typeof bookId)
+   const [book, setBook] = useState('')
+   useEffect(async () => {
+      const result = await appFetch({
+         url: `${URL}/api/books/${bookId}`,
+         headers: {
+            Authorization: `Bearer ${token}`,
+         },
+      })
+      const data = await result.json()
+      console.log(data)
+      setBook(data)
+   }, [])
    const sendText = () => {
       console.log(text)
    }
    const saveValue = (e) => {
       setText(e)
    }
-   const { bookId } = useParams()
-   const selectedItem = books.find((item) => item.id === bookId)
+   // const selectedItem = books.find((item) => item.id === bookId)
 
    const pathTranslate = {
       books: 'Главная',
-      [bookId]: selectedItem.name,
+      [bookId]: book.bookName,
    }
 
    return (
@@ -40,17 +58,17 @@ export const UserInnerPage = () => {
          <StyledMain>
             <Div>
                <StyledBookImageCont>
-                  <StyledBookImage src={selectedItem.image} />
+                  <StyledBookImage src={book.mainImage} />
                   <StyledBookImage2>
-                     {selectedItem.image2 && (
-                        <img src={selectedItem.image2} alt="book" />
+                     {book.secondImage && (
+                        <img src={book.secondImage} alt="book" />
                      )}
                   </StyledBookImage2>
                </StyledBookImageCont>
                <div>
-                  <StyledBookName>{selectedItem.name}</StyledBookName>
+                  <StyledBookName>{book.bookName}</StyledBookName>
                   <div>
-                     <StyledPrice>{selectedItem.price}</StyledPrice>
+                     <StyledPrice>{book.price}</StyledPrice>
                   </div>
                   <StyledInfo>
                      <div>
@@ -62,14 +80,12 @@ export const UserInnerPage = () => {
                         <StyledInfoTitle>Обьем</StyledInfoTitle>
                      </div>
                      <div>
-                        <StyledInfoText>{selectedItem.author}</StyledInfoText>
-                        <StyledInfoText>{selectedItem.genre}</StyledInfoText>
-                        <StyledInfoText>{selectedItem.language}</StyledInfoText>
-                        <StyledInfoText>
-                           {selectedItem.publishingHouse}
-                        </StyledInfoText>
-                        <StyledInfoText>{selectedItem.year}</StyledInfoText>
-                        <StyledInfoText>{selectedItem.volume}</StyledInfoText>
+                        <StyledInfoText>{book.author}</StyledInfoText>
+                        <StyledInfoText>{book.genre}</StyledInfoText>
+                        <StyledInfoText>{book.language}</StyledInfoText>
+                        <StyledInfoText>{book.publishingHouse}</StyledInfoText>
+                        <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
+                        <StyledInfoText>{book.duration}</StyledInfoText>
                      </div>
                   </StyledInfo>
 
@@ -97,12 +113,12 @@ export const UserInnerPage = () => {
 
             <Div1>
                <TabInnerPage
-                  about={<About />}
+                  about={<About book={book} />}
                   bookFragment={<BookFragment />}
                />
                <div>
-                  {selectedItem.image3 && (
-                     <img src={selectedItem.image3} alt="book" />
+                  {book.thirdImage && (
+                     <StyleThirdImage src={book.thirdImage} alt="book" />
                   )}
                </div>
             </Div1>
@@ -192,4 +208,10 @@ const StyledBookImageCont = styled.div`
 `
 const DivStyledMessage = styled.div`
    margin-top: 30px;
+`
+const StyleThirdImage = styled.img`
+   width: 443px;
+   height: 574px;
+   margin-bottom: 109px;
+   /* width: 100%; */
 `

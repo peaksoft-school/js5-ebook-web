@@ -42,7 +42,7 @@ export const ButtonIn = ({ children, activeBtn, ...props }) => {
          coloractive={activeBtn ? '#292929' : '#969696'}
          width="40%"
          fontSize="20px"
-         fontWeight="400"
+         fontWeight="600"
          {...props}
       >
          {children}
@@ -79,12 +79,14 @@ export const SignBlock = styled('div')`
    flex-direction: row;
    flex-wrap: wrap;
    justify-content: center;
+   opacity: ${(props) => props.opacity || 1};
 `
 export const SpanError = styled('span')`
    width: 100%;
    display: flex;
    margin-top: 20px;
+   font-family: 'Open Sans';
    justify-content: center;
-   font-size: 1rem;
+   font-size: 14px;
    color: red;
 `
