@@ -1,3 +1,7 @@
+
+
+function App() {
+   return <div className="App" />
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import AppRoutes from './routes/AppRoutes'
