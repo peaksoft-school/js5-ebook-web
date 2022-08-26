@@ -138,4 +138,5 @@ const SeeMore = styled(Button)`
    width: 100%;
    text-align: center;
    padding: 10px;
+   margin-top: 64px;
 `

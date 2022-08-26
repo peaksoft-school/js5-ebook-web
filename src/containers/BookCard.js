@@ -122,4 +122,5 @@ const Card = styled('div')`
    /* &:nth-child(4n) {
       margin-right: 0;
    } */
+   margin-bottom: 100px;
 `

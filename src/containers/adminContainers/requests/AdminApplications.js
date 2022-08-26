@@ -12,9 +12,9 @@ const AdminApplications = () => {
    // console.log(data)
    // const dispatch = useDispatch()
    const navigate = useNavigate()
-   // const [allRequest, setAllLimits] = useState(0)
+   const [allRequest, setAllLimits] = useState(0)
 
-   // const [noSeeArr, setNoSeeArr] = useState(0)
+   const [noSeeArr, setNoSeeArr] = useState(0)
 
    const [requestBooks, setRequestBooks] = useState(books)
 

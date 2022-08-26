@@ -11,7 +11,7 @@ function GenreMenu({ data, onSelect }) {
                      <GenreItem
                         key={elem.id}
                         name={elem.name}
-                        quantity={elem.quantity}
+                        quantity={elem.quantityOfBook}
                         id={elem.id}
                         onSelect={onSelect}
                      />
