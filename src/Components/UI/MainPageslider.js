@@ -25,7 +25,7 @@ const PrevArrow = ({ onClick, variant }) => {
    )
 }
 
-function MainPageSlider({ images, variant }) {
+function MainPageSlider({ images, variant, setBook }) {
    const [imageIndex, setImageIndex] = useState(0)
    const mainSettings = {
       dots: false,
@@ -47,6 +47,7 @@ function MainPageSlider({ images, variant }) {
       infinite: true,
       slidesToShow: 3,
       slidesToScroll: 1,
+      centerMode: false,
       nextArrow: <NextArrow />,
       prevArrow: <PrevArrow />,
       beforeChange: (current, next) => setImageIndex(next),
@@ -79,12 +80,19 @@ function MainPageSlider({ images, variant }) {
             </Container>
          ) : (
             <Slider {...settings}>
-               {images.map((item, idx) => (
-                  <div
-                     key={item.id}
-                     className={idx === imageIndex ? 'activeSlide' : 'slide'}
-                  >
-                     {/* <StyledBookTitle>
+               {images.map((item, idx) => {
+                  if (setBook) {
+                     if (idx === imageIndex) {
+                        console.log(item)
+                        setBook(item)
+                     }
+                  }
+                  return (
+                     <div
+                        key={item.id}
+                        className={idx === imageIndex ? 'activeSlide' : 'slide'}
+                     >
+                        {/* <StyledBookTitle>
                         <StyledBookName>{item.name}</StyledBookName>
                         <StyledBookDescription>
                            {item.description}
@@ -94,9 +102,10 @@ function MainPageSlider({ images, variant }) {
                            <StyledBookPrice>{item.price}</StyledBookPrice>
                         </div>
                      </StyledBookTitle> */}
-                     <StyledSliderImage src={item.image} alt="book" />
-                  </div>
-               ))}
+                        <StyledSliderImage src={item.image} alt="book" />
+                     </div>
+                  )
+               })}
             </Slider>
          )}
       </div>
@@ -180,15 +189,15 @@ const BookInfoBlock = styled('div')`
    transition: ease-in 0.2s;
 `
 const Container = styled('div')`
-   width: 480px;
+   /* border: 1px solid red; */
+   width: 600px;
    /* .slide {
       transform: scale(0.5);
       transition: 900ms;
       margin-left: -35px;
       position: relative;
       z-index: 0; */
-   width: 532px;
-   margin: 10rem auto;
+   /* margin: 10rem auto; */
 
    .slide {
       transform: scale(0.5);
