@@ -1,20 +1,26 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
-import { books } from '../../../utils/constants/books'
+// import { books } from '../../../utils/constants/books'
 import { RejectRequest } from '../../../Components/admin-applications/RejectRequest'
 import AcceptRequest from '../../../Components/admin-applications/AcceptRequest'
 import { TabInnerPage } from '../../TabInnerPage'
 import About from '../../../Components/admin-applications/About'
 import BookFragment from '../../../Components/admin-applications/BookFragment'
-
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
+import applicationInnerPageAction from '../../../store/slices/applicationInnerPagesSlices'
 
 export const InnerPageAdminApplication = () => {
+   const selectedItem = useSelector((state) => state.applicationsInnerPage.data)
+   const dispatch = useDispatch()
+   useEffect(() => {
+      dispatch(applicationInnerPageAction())
+   }, [])
    const { id } = useParams()
-   const selectedItem = books.find((item) => item.id === id)
+   // const selectedItem = data.find((item) => item.id === id)
 
    const [rejectAplication, setRejectAplication] = useState(false)
    const [isModal, setIsModal] = useState(false)
@@ -31,12 +37,12 @@ export const InnerPageAdminApplication = () => {
       setIsModal(!isModal)
    }
 
-   function onCloseRejectModal() {
+   function onCloseRejectModal(response) {
       setIsModal(!isModal)
    }
    const pathTranslate = {
       request: 'Заявки',
-      [id]: selectedItem.name,
+      [id]: selectedItem.bookName,
    }
 
    return (
@@ -45,15 +51,15 @@ export const InnerPageAdminApplication = () => {
          <StyledMain>
             <ImageDiv>
                <StyledBookImageCont>
-                  <StyledBookImage src={selectedItem.image} />
+                  <StyledBookImage src={selectedItem.mainImage} />
                   <StyledBookImage2>
-                     {selectedItem.image2 && (
-                        <img src={selectedItem.image2} alt="book" />
+                     {selectedItem.secondImage && (
+                        <img src={selectedItem.secondImage} alt="book" />
                      )}
                   </StyledBookImage2>
                </StyledBookImageCont>
                <InfoContainer>
-                  <StyledBookName>{selectedItem.name}</StyledBookName>
+                  <StyledBookName>{selectedItem.bookName}</StyledBookName>
                   <div>
                      <StyledPrice>{selectedItem.price}</StyledPrice>
                   </div>
@@ -73,7 +79,9 @@ export const InnerPageAdminApplication = () => {
                         <StyledInfoText>
                            {selectedItem.publishingHouse}
                         </StyledInfoText>
-                        <StyledInfoText>{selectedItem.year}</StyledInfoText>
+                        <StyledInfoText>
+                           {selectedItem.yearOfIssue}
+                        </StyledInfoText>
                         <StyledInfoText>{selectedItem.volume}</StyledInfoText>
                      </div>
                   </StyledInfo>
@@ -96,7 +104,9 @@ export const InnerPageAdminApplication = () => {
                            overflow="none"
                            onClose={() => onCloseRejectModal()}
                         >
-                           <RejectRequest />
+                           <RejectRequest
+                              onClose={() => onCloseRejectModal()}
+                           />
                         </Modal>
                         Отклонить
                      </Button>
@@ -118,19 +128,23 @@ export const InnerPageAdminApplication = () => {
                         overflow="none"
                         onClose={() => acceptHandler()}
                      >
-                        <AcceptRequest name={selectedItem.name} />
+                        <AcceptRequest name={selectedItem.bookName} />
                      </Modal>
                   </StyledBtnCont>
                </InfoContainer>
             </ImageDiv>
             <FragmentRequest>
                <TabInnerPage
-                  about={<About />}
-                  bookFragment={<BookFragment />}
+                  about={<About about={selectedItem.description} />}
+                  bookFragment={
+                     <BookFragment
+                        audioBookFragment={selectedItem.audioBookFragment}
+                     />
+                  }
                />
                <FragmentDiv>
-                  {selectedItem.image3 && (
-                     <img src={selectedItem.image3} alt="book" />
+                  {selectedItem.thirdImage && (
+                     <img src={selectedItem.thirdImage} alt="book" />
                   )}
                </FragmentDiv>
             </FragmentRequest>

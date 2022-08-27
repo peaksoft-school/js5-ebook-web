@@ -6,7 +6,9 @@ import { ReactComponent as Reject } from '../../assets/icons/MeatBalls/reject.sv
 // import Modal from '../UI/Modal'
 import MeatBalls from '../UI/MeatBalls/MeatBalls'
 
-const BookCard = ({ id, img, date, name, price, onClick }) => {
+const BookCardAdmin = ({ id, img, name, price, onClick }) => {
+   console.log(name)
+   console.log(price)
    const menuMeatBall = [
       {
          id: 1,
@@ -35,7 +37,7 @@ const BookCard = ({ id, img, date, name, price, onClick }) => {
             <NameBook>{name}</NameBook>
 
             <PriceDate>
-               <Date>{date}</Date>
+               {/* <Date>{date}</Date> */}
                <Price>{price}</Price>
             </PriceDate>
          </Div>
@@ -43,7 +45,7 @@ const BookCard = ({ id, img, date, name, price, onClick }) => {
    )
 }
 
-export default BookCard
+export default BookCardAdmin
 
 const BookItems = styled('div')`
    width: 225px;

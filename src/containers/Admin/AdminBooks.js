@@ -5,6 +5,7 @@ import { BookType, URL } from '../../utils/constants/constants'
 import SelectBooks from './SelectBooks'
 import { addGenres } from '../../store/slices/genres'
 import { sortRequestApplic } from '../../utils/helpers/helpers'
+import BookCardAdmin from '../../Components/adminBooks/BookCardAdmin'
 
 const arr = [
    {
@@ -26,6 +27,7 @@ const arr = [
 ]
 
 export default function AdminBooks() {
+   const [books, setBooks] = useState(null)
    const { genres: booktypes } = useSelector((store) => store.globalValues)
    const dispatch = useDispatch()
    const [requestObj, setRequestObj] = useState({
@@ -42,10 +44,17 @@ export default function AdminBooks() {
    useEffect(() => {
       fetch(`${URL}/api/books${sortRequestApplic(requestObj)}`)
          .then((response) => {
+            if (!response.ok) {
+               throw new Error('error')
+            }
             return response.json()
          })
          .then((data) => {
-            console.log(data)
+            setBooks(data)
+            // console.log(data)
+         })
+         .catch((error) => {
+            console.log(error.message)
          })
    }, [requestObj])
    useEffect(() => {
@@ -65,6 +74,7 @@ export default function AdminBooks() {
          }
       })
    }
+   console.log(books)
    return (
       <AdminBooksBlock>
          <SelectBlock>
@@ -81,6 +91,21 @@ export default function AdminBooks() {
                onClick={onClickSelect}
             />
          </SelectBlock>
+
+         <Books>
+            {books &&
+               books.map((el) => (
+                  <BookCardAdmin
+                     key={el.id}
+                     id={el.id}
+                     img={el.mainImage}
+                     name={el.name}
+                     price={el.price}
+                     //  onClick={() => deatailRequest(el.id)}
+                  />
+               ))}
+            {/* <SeeMore onClick={getRequsetBooks}>Смотреть больше</SeeMore> */}
+         </Books>
       </AdminBooksBlock>
    )
 }
@@ -93,5 +118,9 @@ const SelectBlock = styled('div')`
 `
 
 const AdminBooksBlock = styled('div')`
-   border: 1px solid red;
+   /* border: 1px solid red; */
+`
+const Books = styled('div')`
+   display: flex;
+   justify-content: space-between;
 `

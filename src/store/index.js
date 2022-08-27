@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { applicationsSlices } from './slices/applicationsSlices'
+import { applicationsInnerPageSlices } from './slices/applicationInnerPagesSlices'
+
 // eslint-disable-next-line import/no-named-as-default
 import authSlices from './slices/authSlices'
 import globalValues from './slices/genres'
@@ -7,7 +8,7 @@ import globalValues from './slices/genres'
 const store = configureStore({
    reducer: {
       auth: authSlices.reducer,
-      applications: applicationsSlices.reducer,
+      applicationsInnerPage: applicationsInnerPageSlices.reducer,
       globalValues: globalValues.reducer,
    },
 })

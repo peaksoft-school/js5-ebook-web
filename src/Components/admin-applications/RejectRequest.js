@@ -1,16 +1,27 @@
 import { styled } from '@mui/material'
 import { useState } from 'react'
+// import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
+import appFetch from '../../hooks/appFetch'
+// import { authSlicesActions } from '../../store/slices/authSlices'
 import Button from '../UI/Button/Button'
 
-export const RejectRequest = () => {
+export const RejectRequest = ({ onClose }) => {
+   // const dispatch = useDispatch()
+   const { id } = useParams()
    const [reasonReject, setReasonReject] = useState('')
 
    const reasonChangeHandler = (e) => {
       setReasonReject(e.target.value)
    }
-
-   async function sendReason() {
-      // POST
+   function sendReason() {
+      appFetch({
+         url: `/api/admin/application/books/${id}/rejected?description=${reasonReject}`,
+         method: 'POST',
+      }).then((response) => {
+         console.log(response)
+         onClose(response)
+      })
    }
    return (
       <RejectModal onClick={(e) => e.stopPropagation()}>
