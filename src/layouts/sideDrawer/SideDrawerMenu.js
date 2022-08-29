@@ -1,4 +1,5 @@
 import { useState } from 'react'
+// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
@@ -20,6 +21,8 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
+      link: 'request',
+      navigate: 'request',
    },
    {
       name: 'Продавцы',
@@ -27,6 +30,8 @@ const items = [
          0: <Vendor />,
          1: <VendorOrange />,
       },
+      link: 'request',
+      navigate: 'vendors',
    },
    {
       name: 'Пользователи',
@@ -34,6 +39,8 @@ const items = [
          0: <User />,
          1: <UserOrange />,
       },
+      link: 'request',
+      navigate: 'users',
    },
    {
       name: 'Книги',
@@ -41,10 +48,15 @@ const items = [
          0: <Books />,
          1: <BooksOrange />,
       },
+      link: 'books',
+      navigate: 'books',
    },
 ]
 
 function SideDrawerMenu({ onClick }) {
+   const onClickItem = (nav) => {
+      onClick(nav)
+   }
    return (
       <SideDrowerMenuContainer>
          <DrowerList>
@@ -52,7 +64,7 @@ function SideDrawerMenu({ onClick }) {
                return (
                   <DrowerItem
                      key={elem.name}
-                     onClick={onClick}
+                     onClick={() => onClickItem(elem.navigate)}
                      name={elem.name}
                      icon={elem.icon}
                   />
@@ -64,7 +76,7 @@ function SideDrawerMenu({ onClick }) {
 }
 export default SideDrawerMenu
 
-function DrowerItem({ name, icon }) {
+function DrowerItem({ name, icon, onClick }) {
    const [bool, setBool] = useState(false)
    const onHoverItem = () => {
       setBool(true)
@@ -74,7 +86,11 @@ function DrowerItem({ name, icon }) {
       setBool(false)
    }
    return (
-      <DrowerItemBlock onMouseOver={onHoverItem} onMouseOut={offHoverItem}>
+      <DrowerItemBlock
+         onMouseOver={onHoverItem}
+         onMouseOut={offHoverItem}
+         onClick={onClick}
+      >
          <span>{name}</span>
          <span>{bool ? icon[1] : icon[0]}</span>
       </DrowerItemBlock>

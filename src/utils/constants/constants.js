@@ -13,3 +13,9 @@ export const BookType = {
    AUDIO_BOOK: 'AUDIO_BOOK',
    ELECTRONIC_BOOK: 'ELECTRONIC_BOOK',
 }
+
+export const Languages = {
+   KYRGYZ: 'KYRGYZ',
+   RUSSIAN: 'RUSSIAN',
+   ENGLISH: 'ENGLISH',
+}

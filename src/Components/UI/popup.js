@@ -27,4 +27,24 @@ const MenuPopUp = styled(Menu)`
    & li:last-child {
       border-bottom: none;
    }
+   & div {
+      scroll-snap-type: x proximity;
+      ::-webkit-scrollbar {
+         width: 5px;
+      }
+      /* Track */
+      ::-webkit-scrollbar-track {
+         background: #f1f1f1;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+         background: #888;
+         border-radius: 10px;
+      }
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+         background: #555;
+      }
+   }
 `

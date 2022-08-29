@@ -49,6 +49,9 @@ const ButtonStyle = styled(MuiButton)`
    font-size: ${(props) => props.fontSize || '16px'};
    font-family: ${(props) => props.fontFamily || 'Open Sans'};
    margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
+   width: ${(props) => props.width || ''};
+   height: ${(props) => props.height || ''};
+   padding: ${(props) => props.padding || ''};
    margin-top: ${(props) => props.margintop || '0px'};
    width: ${(props) => props.width || '100%'};
 `
