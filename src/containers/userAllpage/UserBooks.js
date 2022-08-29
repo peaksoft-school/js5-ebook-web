@@ -1,14 +1,12 @@
 import { styled } from '@mui/material'
 import React from 'react'
-// import { useParams } from 'react-router'
-// import Button from '../../Components/UI/Button/Button'
 import LanguageBooks from './LanguageBooks'
 import Genres from './Genres'
 import TypeBooks from './TypeBooks'
 import PriceBooks from './PriceBooks'
 import { BooksCard } from '../BookCard'
-// import { URL } from '../../utils/constants/constants'
-// import BreadCrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
+import ShowChoice from './ShowChoice'
+// import { sortRequestApplic } from '../../utils/helpers/helpers'
 
 const books = [
    {
@@ -58,43 +56,59 @@ const books = [
    },
 ]
 const UserBooks = () => {
-   // const [requestBooks, setRequestBooks] = useState(null)
+   const [requestObj, setRequestObj] = React.useState({
+      genres: [],
+      bookType: 'PAPER_BOOK',
+      priceFrom: null,
+      priceTo: null,
+      languages: [],
+      search: 'all',
+      sortBy: null,
+      page: null,
+      size: null,
+   })
 
-   // const getRequsetBooks = () => {
-   //    setRequestBooks()
-   // }
-
-   // useEffect(() => {
-   //    fetch(`${URL}/api/books?search=all&page=1&size=12`)
-   //       .then((response) => {
-   //          return response.json()
-   //       })
-   //       .then((data) => {
-   //          setRequestBooks(data)
-   //       })
-   // }, [])
-
-   // const deatailRequest = (id) => {
-   //    navigate(`/request/${id}`)
-   // }
-   // const pathTranslate = {
-   //    allBooks: 'Главная',
-   //    allbooks: 'Психология',
-   // }
+   const [showGenres, setShowGenres] = React.useState([])
+   console.log(requestObj)
+   const onChangeGenreHandler = (choiseGenre) => {
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            genres: [...choiseGenre.ids],
+         }
+      })
+      setShowGenres(() => {
+         return [...choiseGenre.labels]
+      })
+   }
+   const onChangeTypeBook = (value) => {
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            bookType: value,
+         }
+      })
+   }
    return (
       <FilterBooks>
-         {/* <BreadCrumbs translate={pathTranslate} /> */}
+         <HeaderBooks>
+            <HeaderItem width="25%" />
+            <HeaderItem width="60%">
+               <ShowChoice arr={showGenres} onChange={onChangeGenreHandler} />
+            </HeaderItem>
+            <HeaderItem width="17%" />
+         </HeaderBooks>
          <SortBooks>
-            <Genres />
+            <Genres onChange={onChangeGenreHandler} />
             <TypeBlock>
-               <TypeBooks />
+               <TypeBooks onChange={onChangeTypeBook} />
             </TypeBlock>
             <PriceBooks />
             <LanguageBooks />
          </SortBooks>
          <Books>
             {books.map((elem) => {
-               return <BooksCard book={elem} />
+               return <BooksCard key={elem.id} book={elem} />
             })}
 
             {/* <SeeMore onClick={getRequsetBooks}>Смотреть больше</SeeMore> */}
@@ -105,25 +119,43 @@ const UserBooks = () => {
 
 export default UserBooks
 
+const HeaderItem = styled('div')`
+   width: ${(props) => props.width || '100%'};
+   /* border: 1px solid red; */
+`
+
+const HeaderBooks = styled('div')`
+   /* border: 1px solid red; */
+   padding: 20px 0px;
+   width: 100%;
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: space-between;
+`
+
 const FilterBooks = styled('div')`
    display: flex;
-   justify-content: space-between;
+   justify-content: flex-start;
+   flex-direction: row;
+   flex-wrap: wrap;
    font-family: 'Open Sans';
    padding-top: 50px;
    padding-bottom: 50px;
+   /* border: 1px solid red; */
 `
 
 const SortBooks = styled('div')`
-   width: 266px;
+   width: calc(1 / 5 * 100%);
    margin-top: 18px;
    margin-right: 40px;
 `
 
 const Books = styled('div')`
-   width: 955px;
+   /* width: 910px; */
+   /* border: 1px solid red; */
+   width: calc(3.8 / 5 * 100%);
    display: flex;
    justify-content: space-between;
-   width: 954px;
    flex-wrap: wrap;
 `
 const TypeBlock = styled('div')`

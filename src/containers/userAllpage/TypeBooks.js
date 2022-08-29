@@ -1,21 +1,32 @@
 import React from 'react'
 import { styled } from '@mui/material'
 import RadioButton from '../../Components/UI/RadioButton'
+import { BookType } from '../../utils/constants/constants'
 
-const typBooks = [
-   { id: 1, name: 'Бумажная книга' },
-   { id: 1, name: 'Аудиокнига' },
-   { id: 1, name: 'Электронная книга' },
-]
-const TypeBooks = () => {
+const TypeBooks = ({ onChange }) => {
+   const onChangeHandler = (e) => {
+      onChange(e.target.value)
+   }
    return (
       <TypeBlock>
          <Type>Тип</Type>
          <Line />
-         <TypeStyles>
-            {typBooks.map((el) => (
-               <RadioButton key={el.id} id={el.id} label={el.name} />
-            ))}
+         <TypeStyles onChange={onChangeHandler}>
+            <RadioButton
+               id="1"
+               label="Бумажная книга"
+               value={BookType.PAPER_BOOK}
+            />
+            <RadioButton
+               id="1"
+               label="Аудиокнига"
+               value={BookType.AUDIO_BOOK}
+            />
+            <RadioButton
+               id="1"
+               label="Электронная книга"
+               value={BookType.ELECTRONIC_BOOK}
+            />
          </TypeStyles>
       </TypeBlock>
    )

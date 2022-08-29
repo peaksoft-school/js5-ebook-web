@@ -53,6 +53,7 @@ const Item = styled.div`
    min-width: 240px;
    flex-grow: 1;
    flex-shrink: 0;
+   max-width: 100%;
    display: flex;
    flex-flow: column;
    height: auto;

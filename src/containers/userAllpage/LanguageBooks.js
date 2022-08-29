@@ -1,21 +1,23 @@
 import React from 'react'
 import { styled } from '@mui/material'
 import CheckBox from '../../Components/UI/checkBox/CheckBox'
+import { Languages } from '../../utils/constants/constants'
 
 const languageBooks = [
-   { id: 1, name: 'Кыргызский язык' },
-   { id: 1, name: 'Русский язык' },
-   { id: 1, name: 'Английский язык' },
+   { id: 1, name: 'Кыргызский язык', type: Languages.KYRGYZ },
+   { id: 2, name: 'Русский язык', type: Languages.RUSSIAN },
+   { id: 3, name: 'Английский язык', type: Languages.ENGLISH },
 ]
+
 const LanguageBooks = () => {
    return (
       <TypeBlock>
          <Type>Язык издания</Type>
          <Line />
          <TypeStyles>
-            {languageBooks.map((el) => (
-               <CheckBox key={el.id} id={el.id} label={el.name} />
-            ))}
+            {languageBooks.map((el) => {
+               return <CheckBox key={el.id} id={el.type} label={el.name} />
+            })}
          </TypeStyles>
       </TypeBlock>
    )

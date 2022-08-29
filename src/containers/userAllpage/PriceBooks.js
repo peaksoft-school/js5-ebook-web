@@ -1,14 +1,14 @@
 import React from 'react'
 import { styled } from '@mui/material'
 // import InputText from '../../Components/UI/Inputs/InputText'
-import RangeSlider from './RangeSlider'
+// import RangeSlider from './RangeSlider'
 
 const PriceBooks = () => {
    return (
       <div>
          <Type>Стоимость</Type>
          <Line />
-         <RangeSlider />
+         {/* <RangeSlider /> */}
       </div>
    )
 }

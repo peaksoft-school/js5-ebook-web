@@ -1,39 +1,67 @@
 import { styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import CheckBox from '../../Components/UI/checkBox/CheckBox'
-import { URL } from '../../utils/constants/constants'
 import SearchInput from '../../Components/UI/Inputs/SearchInput'
+// import appFetch from '../../hooks/appFetch'
+import { URL } from '../../utils/constants/constants'
 
-const Genres = () => {
+const Genres = ({ onChange }) => {
    const [books, setBooks] = useState([])
+   const [choiseGenres, setChoiseGenres] = useState({
+      labels: [],
+      ids: [],
+   })
+   useEffect(() => {
+      onChange(choiseGenres)
+   }, [choiseGenres])
    async function booksUser() {
-      const response = await fetch(`${URL}/api/genres`)
-      const userBooks = await response.json()
-      setBooks(userBooks)
+      const userBooks = await fetch(`${URL}/api/genres`)
+      const data = await userBooks.json()
+      setBooks(data)
    }
    useEffect(() => {
       booksUser()
    }, [])
-   // const checkBoxHandler = (id) => {
-   //    console.log(id)
-   // }
-
+   const onChangeCheckBox = (id, checked, label, setCheckedFunc) => {
+      setChoiseGenres((prev) => {
+         if (checked) {
+            return {
+               ...prev,
+               labels: [
+                  ...prev.labels,
+                  {
+                     label,
+                     setCheckedFunc,
+                     id,
+                  },
+               ],
+               ids: [...prev.ids, id],
+            }
+         }
+         return {
+            ...prev,
+            labels: prev.labels.filter((el) => el.label !== label),
+            ids: prev.ids.filter((el) => el !== id),
+         }
+      })
+   }
    return (
       <>
          <Genre>Жанры</Genre>
          <Line />
          <SearchInput placeholder=" Я ищу..." />
          <FormStyles>
-            {books.map((genres) => {
-               return (
-                  <CheckBox
-                     // checkBoxHandler={checkBoxHandler}
-                     key={genres.id}
-                     // id={genres.id}
-                     label={genres.name}
-                  />
-               )
-            })}
+            {books &&
+               books.map((genres) => {
+                  return (
+                     <CheckBox
+                        key={genres.id}
+                        label={genres.name}
+                        id={genres.id}
+                        onChange={onChangeCheckBox}
+                     />
+                  )
+               })}
          </FormStyles>
       </>
    )

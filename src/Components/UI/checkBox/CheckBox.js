@@ -1,13 +1,24 @@
+import { useState } from 'react'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import MuiCheckbox from '@mui/material/Checkbox'
 import { styled } from '@mui/material'
 
-const CheckBox = ({ onChange, checked, label }) => {
+const CheckBox = ({ onChange, label, id }) => {
+   const [checked, setChecked] = useState(false)
+   const onChangeHandler = (id, checked, label) => {
+      setChecked(!checked)
+      onChange(id, !checked, label, onChangeHandler)
+   }
    return (
       <FormGroup>
          <FormLabelStyle
-            control={<ChesckboxStyle onChange={onChange} checked={checked} />}
+            control={
+               <ChesckboxStyle
+                  onChange={() => onChangeHandler(id, checked, label)}
+                  checked={checked}
+               />
+            }
             label={label}
          />
       </FormGroup>
