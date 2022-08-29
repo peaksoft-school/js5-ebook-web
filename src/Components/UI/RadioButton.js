@@ -3,7 +3,7 @@ import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 import { styled } from '@mui/material'
 
-function RadioButton({ onChange, label, id }) {
+function RadioButton({ onChange, label, id, isSelect }) {
    return (
       <FormControl>
          <FormLabel id="demo-radio-buttons-group-label" />
@@ -15,7 +15,12 @@ function RadioButton({ onChange, label, id }) {
             <FormControlLabel
                value={label}
                control={
-                  <InputRadio type="radio" name={id} onChange={onChange} />
+                  <InputRadio
+                     checked={isSelect}
+                     type="radio"
+                     name={id}
+                     onChange={onChange}
+                  />
                }
                label={label}
             />

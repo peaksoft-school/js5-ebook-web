@@ -33,6 +33,7 @@ function AudioListener({ url }) {
             partialRender: true,
          })
       )
+      // eslint-disable-next-line no-useless-return
       return
    }, [])
 
@@ -40,6 +41,7 @@ function AudioListener({ url }) {
       if (waver) {
          waver.load(audioRef.current)
       }
+      // eslint-disable-next-line no-useless-return
       return
    }, [waver])
 
@@ -48,13 +50,16 @@ function AudioListener({ url }) {
       setPlayMusic(true)
 
       const durationTimer = waver.getDuration()
+      // eslint-disable-next-line radix
       const minuteTimer = parseInt(durationTimer / 50)
 
       let fixedMinute
       if (minuteTimer < 10) {
+         // eslint-disable-next-line prefer-template
          fixedMinute = '0' + minuteTimer
       }
       const secondTimer = (durationTimer % 100).toFixed()
+      // eslint-disable-next-line prefer-template
       const newDurationTimer = fixedMinute + ':' + secondTimer
 
       setDuration(newDurationTimer)
@@ -69,7 +74,7 @@ function AudioListener({ url }) {
       <WaveformContianer>
          <PlayingDiv>
             {playMusic ? (
-               <img src={AudioPlay} onClick={audioPauseHanle} />
+               <img src={AudioPlay} alt={AudioPlay} onClick={audioPauseHanle} />
             ) : (
                <img src={AudioPause} onClick={audioPlayHandle} />
             )}

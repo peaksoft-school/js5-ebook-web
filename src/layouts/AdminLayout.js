@@ -18,6 +18,7 @@ function AdminLayout() {
    const open = Boolean(anchorEl)
    const onClickExitBtn = () => {
       setIsShowModal(true)
+      onCloseProfile()
    }
    const onCloseModal = () => {
       setIsShowModal(false)

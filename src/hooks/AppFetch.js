@@ -1,6 +1,13 @@
 import { URL } from '../utils/constants/constants'
 
-function appFetch({ url, method, body, token }) {
+let store
+
+export const injectStore = (fromStore) => {
+   store = fromStore
+}
+const appFetch = ({ url, method, body }) => {
+   const { token } = store.getState().auth.user
+
    const requestOptions = {
       method: method || 'GET',
       headers: {
@@ -8,16 +15,17 @@ function appFetch({ url, method, body, token }) {
       },
    }
    if (token) {
-      requestOptions.headers.Authorization = `Bearer${token}`
+      requestOptions.headers.Authorization = `Bearer ${token}`
    }
    if (method && body) {
       requestOptions.body = JSON.stringify(body)
    }
+
    const promise = new Promise((resolve, reject) => {
       fetch(URL + url, requestOptions)
          .then((response) => {
             if (!response.ok) {
-               throw new Error(response.message)
+               throw new Error('Что то пошло не так!')
             }
             return response.json()
          })
@@ -25,7 +33,7 @@ function appFetch({ url, method, body, token }) {
             resolve(data)
          })
          .catch((error) => {
-            reject(error)
+            reject(error.message)
          })
    })
    return promise

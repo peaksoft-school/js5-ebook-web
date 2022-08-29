@@ -11,6 +11,7 @@ function ImagePicker({ onChange, onDelete, file, id, name }) {
          setIcon(name)
       }
    }, [file])
+
    const iconHandleChange = (e) => {
       if (!filesRef.current.files[0]) {
          return
@@ -25,11 +26,12 @@ function ImagePicker({ onChange, onDelete, file, id, name }) {
       onDelete()
    }
    useEffect(() => {
-      if (onDelete) {
+      if (onDelete || !onDelete) {
          setIcon('')
          filesRef.current.value = ''
       }
    }, [onDelete])
+
    return (
       <ImageContainer primary={icon}>
          <InputLabel htmlFor={id} primary={icon} />

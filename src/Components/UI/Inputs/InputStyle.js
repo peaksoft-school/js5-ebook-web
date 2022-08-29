@@ -25,9 +25,7 @@ export const Input = styled.input`
    font-size: ${(props) => props.fontSize || '1rem'};
    background-color: rgba(0, 0, 0, 0);
    line-height: 20.8px;
-   padding-top: 10px;
-   padding-bottom: 10px;
-   padding-left: 20px;
+   padding: ${(props) => props.padding || '10px 20px 10px 20px'};
    padding-right: ${(props) => props.paddingRight || '20px'};
    border: none;
    color: #222222;
@@ -55,6 +53,7 @@ export const Input = styled.input`
    &[type='date']::-webkit-datetime-edit {
       color: #969696;
       width: ${(props) => props.width || '100%'};
+      text-align: ${(props) => (props.textAlign ? props.textAlign : '')};
    }
 `
 export const BtnIcon = styled('button')`
