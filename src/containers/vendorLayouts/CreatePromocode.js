@@ -6,38 +6,62 @@ import Modal from '../../Components/UI/Modal'
 import BasicDatePicker from './DatePicker'
 
 export default function CreatePromocode() {
-   const onChangeDateStart = (date) => {
-      console.log(date)
+   const [promocode, setPromocod] = React.useState({
+      value: '',
+      dataIn: '',
+      dataOut: '',
+      percent: 0,
+   })
+   const onChangeHandler = (key, value) => {
+      setPromocod((prev) => {
+         return {
+            ...prev,
+            [key]: value,
+         }
+      })
    }
    return (
       <Modal open variant="mini">
          <PromoCodeBlock>
             <PromoCodeItem>
-               <Label htmlFor="promo" width="100%">
+               <Label htmlFor="value" width="100%">
                   <LabelSpan>Промокод</LabelSpan>
                   <InputDate
                      type="text"
-                     id="promo"
+                     value={promocode.value}
+                     onChange={(e) => onChangeHandler('value', e.target.value)}
+                     id="value"
                      placeholder="Напишите промокод"
                   />
                </Label>
             </PromoCodeItem>
             <PromoCodeItem width="33.33%">
-               <Label htmlFor="dataOne" width="33.33%" pr="20px">
+               <Label htmlFor="dataIn" width="33.33%" pr="20px">
                   <LabelSpan>Дата начала</LabelSpan>
-                  <BasicDatePicker onChange={onChangeDateStart} />
+                  <BasicDatePicker
+                     onChange={(date) => onChangeHandler('dataIn', date)}
+                  />
                </Label>
             </PromoCodeItem>
             <PromoCodeItem width="33.33%">
-               <Label htmlFor="dataTwo" width="33.33%" pr="20px">
+               <Label htmlFor="dataOut" width="33.33%" pr="20px">
                   <LabelSpan>Дата завершения</LabelSpan>
-                  <BasicDatePicker />
+                  <BasicDatePicker
+                     onChange={(date) => onChangeHandler('dataOut', date)}
+                  />
                </Label>
             </PromoCodeItem>
             <PromoCodeItem width="33.33%">
-               <Label htmlFor="dataThree" width="33.33%">
+               <Label htmlFor="percent" width="33.33%">
                   <LabelSpan>Процент скидки</LabelSpan>
-                  <InputDate type="number" id="dataThree" />
+                  <InputDate
+                     value={promocode.percent}
+                     onChange={(e) =>
+                        onChangeHandler('percent', e.target.value)
+                     }
+                     type="number"
+                     id="percent"
+                  />
                </Label>
             </PromoCodeItem>
             <PromoCodeItem>

@@ -1,8 +1,9 @@
+/* eslint-disable import/no-unresolved */
 import * as React from 'react'
 import styled from '@emotion/styled'
 import TextField from '@mui/material/TextField'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { ReactComponent as DateIcon } from '../../assets/icons/datePicker/suitcase.svg'
 // import DateIcon from '../../assets/icons/datePicker/suitcase.png'
@@ -12,6 +13,14 @@ import { ReactComponent as DateIcon } from '../../assets/icons/datePicker/suitca
 //   fixRelativePosition: false,
 //   offsetY: 0,
 //   offsetX: 0
+function getDateValue(value) {
+   const arr = String(value).split('')
+   if (arr.length < 2) {
+      arr.unshift('0')
+   }
+   return arr.join('')
+}
+
 export default function BasicDatePicker({ onChange }) {
    const [value, setValue] = React.useState(null)
    const [date, setDate] = React.useState({
@@ -21,7 +30,10 @@ export default function BasicDatePicker({ onChange }) {
    })
    React.useEffect(() => {
       if (onChange) {
-         onChange(date)
+         const text = `${date.year}-${getDateValue(date.month)}-${getDateValue(
+            date.day
+         )}`
+         onChange(text)
       }
    }, [date])
    React.useEffect(() => {
