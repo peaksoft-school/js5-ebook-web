@@ -27,7 +27,6 @@ export const Wrapper = styled('div')`
 `
 
 const Header = styled.div`
-   /* border: 1px solid red; */
    min-height: 100px;
    flex-grow: 0;
    flex-shrink: 0;
@@ -38,8 +37,6 @@ const Footer = styled(Header)`
 `
 
 const Main = styled(Header)`
-   /* padding-top: 10px; */
-   /* padding-bottom: 10px; */
    flex-basis: auto;
    min-height: 100vh;
    flex-grow: 1;
@@ -49,6 +46,9 @@ const Main = styled(Header)`
 `
 
 const Item = styled.div`
+   /* <<<<<<< HEAD
+   width: 250px;
+=======
    /* border: 1px solid red; */
    min-width: 240px;
    flex-grow: 1;
@@ -56,7 +56,6 @@ const Item = styled.div`
    display: flex;
    flex-flow: column;
    height: auto;
-   /* padding: 20px; */
    &:nth-child(2) {
       flex-grow: 0;
       flex-shrink: 0;
@@ -65,7 +64,6 @@ const Item = styled.div`
 `
 
 const AppContainer = styled.div`
-   /* border: 1px solid #000; */
    padding: 0 20px;
    display: flex;
    flex-flow: row nowrap;

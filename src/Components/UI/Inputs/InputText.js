@@ -20,10 +20,7 @@ const InputText = React.forwardRef(
       const [isFocus, setIsFocus] = useState(false)
 
       const onFocusHandleChange = () => {
-         setIsFocus(true)
-         if (onFocus) {
-            onFocus()
-         }
+         setIsFocus(!isFocus)
       }
 
       const onBlurHandleChange = () => {

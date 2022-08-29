@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useMemo } from 'react'
 import { APP_ROLES } from '../utils/constants/constants'
@@ -15,19 +15,7 @@ function AppRoutes() {
          [APP_ROLES.USER]: clientLayout(),
       }
    }, [])
-   return (
-      <Routes>
-         {RoutesComponent[user.role]}
-         <Route
-            path="*"
-            element={
-               <div>
-                  <h2>not found</h2>
-               </div>
-            }
-         />
-      </Routes>
-   )
-}
 
+   return <Routes>{RoutesComponent[user.role]}</Routes>
+}
 export default AppRoutes
