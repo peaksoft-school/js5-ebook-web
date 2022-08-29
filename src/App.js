@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import AppRoutes from './routes/AppRoutes'
+import AppRoutes from './routes/appRoutes'
 import Spinner from './Components/UI/Spinner'
 
 function App() {
