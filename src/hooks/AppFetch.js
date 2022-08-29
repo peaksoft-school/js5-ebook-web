@@ -21,7 +21,6 @@ const appFetch = ({ url, method, body }) => {
    if (method && body) {
       requestOptions.body = JSON.stringify(body)
    }
-
    const promise = new Promise((resolve, reject) => {
       fetch(URL + url, requestOptions)
          .then((response) => {

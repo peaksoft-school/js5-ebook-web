@@ -1,18 +1,14 @@
 import styled from '@emotion/styled'
-
-import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-// import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
 import About from './About'
 import BookFragment from './BookFragment'
 
-// import { books } from './books'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
-import { URL } from '../../utils/constants/constants'
-import appFetch from '../../hooks/AppFetch'
+import appFetch from '../../hooks/appFetch'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -23,21 +19,14 @@ const DataValues = [
 
 export const UserInnerPage = () => {
    const [text, setText] = useState('')
-   const { token } = useSelector((store) => store.auth.user)
-   // const { bookId } = useParams()
-   const bookId = 3
-   console.log(typeof bookId)
+   const { bookId } = useParams()
    const [book, setBook] = useState('')
-   useEffect(async () => {
-      const result = await appFetch({
-         url: `${URL}/api/books/${bookId}`,
-         headers: {
-            Authorization: `Bearer ${token}`,
-         },
+   useEffect(() => {
+      appFetch({
+         url: `/api/books/${bookId}`,
+      }).then((result) => {
+         setBook(result)
       })
-      const data = await result.json()
-      console.log(data)
-      setBook(data)
    }, [])
    const sendText = () => {
       console.log(text)
@@ -45,7 +34,6 @@ export const UserInnerPage = () => {
    const saveValue = (e) => {
       setText(e)
    }
-   // const selectedItem = books.find((item) => item.id === bookId)
 
    const pathTranslate = {
       books: 'Главная',
@@ -114,7 +102,7 @@ export const UserInnerPage = () => {
             <Div1>
                <TabInnerPage
                   about={<About book={book} />}
-                  bookFragment={<BookFragment />}
+                  bookFragment={<BookFragment book={book} />}
                />
                <div>
                   {book.thirdImage && (
@@ -213,5 +201,4 @@ const StyleThirdImage = styled.img`
    width: 443px;
    height: 574px;
    margin-bottom: 109px;
-   /* width: 100%; */
 `

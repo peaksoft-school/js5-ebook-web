@@ -5,7 +5,6 @@ import Spinner from './Components/UI/Spinner'
 
 function App() {
    const status = useSelector((store) => store.auth.status)
-   console.log(status)
    const [showSpinner, setShowSpinner] = useState()
    useEffect(() => {
       if (status === 'pending') {

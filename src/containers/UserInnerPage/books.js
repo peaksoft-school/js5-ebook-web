@@ -52,4 +52,38 @@ export const books = [
       description:
          "Typhoo Has Always Been Britain's Favorite Tea. And there's a good reason for it! A lot goes into creating the perfect tea bag- and you can be sure that with Typhoo, it’s all pure goodness from start to finish. From hand picking only the best tea leaves from top crops and blending to perfection, to packing the tea in foil to lock in extra freshness, we are committed to bringing you the finest that British tea has to offer.",
    },
+   {
+      id: 4,
+      name: 'Гордость и предубеждение',
+      genre: 'Typhoo',
+      price: '$10.00',
+      language: 'Русский',
+      publishingHouse: 'МСК',
+      year: '2021',
+      date: '20 февраль 2021',
+      volume: '360 стр',
+      author: 'n/a',
+      image: 'https://book24.ua/upload/iblock/c7d/c7de50c50c62414e395c819335196c8b.jpg',
+      image3:
+         'https://res.cloudinary.com/bloomsbury-atlas/image/upload/w_360,c_scale/jackets/9781408883761.jpg',
+      description:
+         "Typhoo Has Always Been Britain's Favorite Tea. And there's a good reason for it! A lot goes into creating the perfect tea bag- and you can be sure that with Typhoo, it’s all pure goodness from start to finish. From hand picking only the best tea leaves from top crops and blending to perfection, to packing the tea in foil to lock in extra freshness, we are committed to bringing you the finest that British tea has to offer.",
+   },
+   {
+      id: 5,
+      name: 'Гордость и предубеждение',
+      genre: 'Typhoo',
+      price: '$10.00',
+      language: 'Русский',
+      publishingHouse: 'МСК',
+      year: '2021',
+      date: '20 февраль 2021',
+      volume: '360 стр',
+      author: 'n/a',
+      image: 'https://book24.ua/upload/iblock/c7d/c7de50c50c62414e395c819335196c8b.jpg',
+      image3:
+         'https://res.cloudinary.com/bloomsbury-atlas/image/upload/w_360,c_scale/jackets/9781408883761.jpg',
+      description:
+         "Typhoo Has Always Been Britain's Favorite Tea. And there's a good reason for it! A lot goes into creating the perfect tea bag- and you can be sure that with Typhoo, it’s all pure goodness from start to finish. From hand picking only the best tea leaves from top crops and blending to perfection, to packing the tea in foil to lock in extra freshness, we are committed to bringing you the finest that British tea has to offer.",
+   },
 ]

@@ -1,12 +1,19 @@
-import React from 'react'
+import styled from '@emotion/styled'
 
-const BookFragment = () => {
-   return (
-      <img
-         src="https://knigagolik.it/wp-content/uploads/2021/10/libro-in-russo-%D1%80arry-potter-e-la-camera-dei-segreti-p1.jpg"
-         alt="dfgd"
-      />
-   )
+const BookFragment = ({ book }) => {
+   return <StyledText>{book.fragment}</StyledText>
 }
 
 export default BookFragment
+
+const StyledText = styled.div`
+   width: 676px;
+   height: 240px;
+   margin-bottom: 200px;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 150%;
+   color: #222222;
+`

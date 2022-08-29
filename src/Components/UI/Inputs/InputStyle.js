@@ -8,9 +8,6 @@ export const InputContainer = styled.div`
    background-color: ${(props) =>
       props.focus ? '#fff' : props.backgroundColor || '#f8f8f8'};
    transition: ease-in 0.2s;
-   /* <<<<<<< HEAD
-   width: ${(props) => (props.width ? props.width : '100%')};
-======= */
    width: 100%;
    position: relative;
    ${(props) =>
@@ -18,7 +15,7 @@ export const InputContainer = styled.div`
       css`
          border: 1px solid red;
          background-color: #fff5f5;
-      `}/* >>>>>>> 7ab4d325a79de30deaf003ce9bcbc53f3401de84 */
+      `}
 `
 
 export const Input = styled.input`
