@@ -6,7 +6,6 @@ import { getFromLocaleStorage, saveToLocaleStorage } from '../../hooks/locale'
 const InitialUser = {
    role: APP_ROLES.USER,
 }
-
 function reloadGetLocale() {
    const user = getFromLocaleStorage(EBOOK_AUTH_INFO)
    if (user) {
@@ -14,13 +13,11 @@ function reloadGetLocale() {
    }
    return InitialUser
 }
-
 const initialState = {
    user: reloadGetLocale(),
    status: null,
    error: null,
 }
-
 const authSlices = createSlice({
    name: 'authSlices',
    initialState,
@@ -50,9 +47,7 @@ const authSlices = createSlice({
       },
    },
 })
-
 export const authSlicesActions = authSlices.actions
-
 export default authSlices
 
 export const signIn = (data) => {
@@ -77,7 +72,6 @@ export const signIn = (data) => {
       }
    }
 }
-
 export const signUpClient = (data) => {
    return async (dispatch) => {
       try {
@@ -100,7 +94,6 @@ export const signUpClient = (data) => {
       }
    }
 }
-
 export const signUpVendor = (data) => {
    return async (dispatch) => {
       try {

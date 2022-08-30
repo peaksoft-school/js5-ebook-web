@@ -13,12 +13,15 @@ const appFetch = ({ url, method, body }) => {
          'Content-Type': 'application/json; charset=utf-8',
       },
    }
+
    if (auth.user.token) {
       requestOptions.headers.Authorization = `Bearer ${auth.user.token}`
    }
+
    if (method && body) {
       requestOptions.body = JSON.stringify(body)
    }
+
    const promise = new Promise((resolve, reject) => {
       fetch(URL + url, requestOptions)
          .then((response) => {

@@ -3,7 +3,7 @@ import { styled } from '@mui/material'
 import { useState } from 'react'
 // import { useDispatch, useSelector } from 'react-redux/'
 import Button from '../../../Components/UI/Button/Button'
-import ApplicationCard from '../../../Components/admin-applications/ApplicationCard'
+import ApplicationCard from './ApplicationCard'
 import { books } from '../../../utils/constants/books'
 // import applicationActions from '../../../store/slices/applicationsSlices'
 

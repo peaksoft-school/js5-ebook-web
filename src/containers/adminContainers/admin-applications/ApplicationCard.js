@@ -1,43 +1,85 @@
 import { styled } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 
-import { ReactComponent as CheckMark } from '../../assets/icons/MeatBalls/checkmark.svg'
-import { ReactComponent as Reject } from '../../assets/icons/MeatBalls/reject.svg'
-// import Modal from '../UI/Modal'
-import MeatBalls from '../UI/MeatBalls/MeatBalls'
+import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
+import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
+import Modal from '../../../Components/UI/Modal'
+import { RejectRequest } from './RejectRequest'
+import AcceptRequest from './AcceptRequest'
+import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 
-const BookCardAdmin = ({ id, img, name, price, onClick }) => {
-   console.log(name)
-   console.log(price)
+const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
    const menuMeatBall = [
       {
          id: 1,
          title: 'Принять',
          icon: <CheckMark />,
-         //  onClick: acceptModal,
+         onClick: acceptModal,
       },
       {
          id: 2,
          title: 'Отклонить',
          icon: <Reject />,
-         //  onClick: rejectModal,
+         onClick: rejectModal,
       },
    ]
 
-   //    const [rejectAplication, setRejectAplication] = useState(false)
+   const [rejectAplication, setRejectAplication] = useState(false)
+   const [isModal, setIsModal] = useState(false)
+   const [toAccept, setToAccept] = useState(false)
+
+   function acceptModal() {
+      setToAccept(!toAccept)
+
+      // POST
+   }
+
+   function closeAcceptModal(e) {
+      e.stopPropagation()
+      setToAccept(!toAccept)
+   }
+
+   function rejectModal() {
+      setRejectAplication(!rejectAplication)
+      setIsModal(!isModal)
+   }
+
+   function onCloseRejectModal(e) {
+      e.stopPropagation(e)
+      setIsModal(!isModal)
+   }
 
    return (
-      <BookItems id={id} onClick={onClick}>
+      <BookItems primary={!rejectAplication} id={id} onClick={onClick}>
          <MeatBall onClick={(e) => e.stopPropagation()}>
             <MeatBalls options={menuMeatBall} />
          </MeatBall>
-
+         <Modal
+            open={isModal}
+            variant="mini"
+            width="523px"
+            height="247px"
+            overflow="none"
+            onClose={(e) => onCloseRejectModal(e)}
+         >
+            <RejectRequest />
+         </Modal>
+         <Modal
+            open={toAccept}
+            variant="mini"
+            width="460px"
+            height="155px"
+            overflow="none"
+            onClose={(e) => closeAcceptModal(e)}
+         >
+            <AcceptRequest name={name} />
+         </Modal>
          <Div>
             <Book src={img} alt="photo" />
             <NameBook>{name}</NameBook>
 
             <PriceDate>
-               {/* <Date>{date}</Date> */}
+               <Date>{date}</Date>
                <Price>{price}</Price>
             </PriceDate>
          </Div>
@@ -45,7 +87,7 @@ const BookCardAdmin = ({ id, img, name, price, onClick }) => {
    )
 }
 
-export default BookCardAdmin
+export default ApplicationCard
 
 const BookItems = styled('div')`
    width: 225px;

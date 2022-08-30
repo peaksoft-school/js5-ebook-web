@@ -3,11 +3,17 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import MuiCheckbox from '@mui/material/Checkbox'
 import { styled } from '@mui/material'
 
-const CheckBox = ({ onChange, checked, label }) => {
+const CheckBox = ({ onChange, checked, label, ...props }) => {
    return (
       <FormGroup>
          <FormLabelStyle
-            control={<ChesckboxStyle onChange={onChange} checked={checked} />}
+            control={
+               <ChesckboxStyle
+                  onChange={onChange}
+                  checked={checked}
+                  {...props}
+               />
+            }
             label={label}
          />
       </FormGroup>
@@ -27,6 +33,7 @@ const FormLabelStyle = styled(FormControlLabel)`
 `
 const ChesckboxStyle = styled(MuiCheckbox)`
    .MuiSvgIcon-root {
+      margin: ${(props) => props.margin || ''};
       width: 26px;
       height: 26px;
    }
