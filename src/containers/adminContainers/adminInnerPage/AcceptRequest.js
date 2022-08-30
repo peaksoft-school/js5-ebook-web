@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material'
-import { ReactComponent as ToAccept } from '../../../../../assets/icons/MeatBalls/accept.svg'
+import { ReactComponent as ToAccept } from '../../../assets/icons/modal/accept.svg'
 
 const AcceptRequest = ({ name }) => {
    return (
