@@ -29,6 +29,9 @@ export default function BasicDatePicker({ onChange }) {
       day: '',
    })
    React.useEffect(() => {
+      if (date.year === '' && date.month === '' && date.day === '') {
+         return
+      }
       if (onChange) {
          const text = `${date.year}-${getDateValue(date.month)}-${getDateValue(
             date.day
@@ -73,6 +76,7 @@ export default function BasicDatePicker({ onChange }) {
 
 const DatePickerBlock = styled(DatePicker)`
    transform: translate(223.667px, 145.667px);
+   border: 1px solid red;
 `
 
 const TextDate = styled(TextField)`

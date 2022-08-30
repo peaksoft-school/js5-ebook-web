@@ -1,12 +1,14 @@
 import styled from '@emotion/styled'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../Components/UI/Button/Button'
 import InputText from '../../Components/UI/Inputs/InputText'
-import Modal from '../../Components/UI/Modal'
-import appFetch from '../../hooks/appFetch'
 import BasicDatePicker from './DatePicker'
-import Snackbar from '../../Components/UI/Snacbar'
-import { ReactComponent as OkSnackBar } from '../../assets/icons/snacbar/fulfilled.svg'
+import SnackBarDate from './SnackBarDate'
+import {
+   setPromocode,
+   promocodeActions,
+} from '../../store/slices/promocodeSlices'
 
 export default function CreatePromocode() {
    const [promocode, setPromocod] = React.useState({
@@ -15,6 +17,17 @@ export default function CreatePromocode() {
       dataOut: '',
       percent: 0,
    })
+   const [snackbar, setSnackbar] = React.useState(false)
+   const { promocode: success, error: errorPromo } = useSelector(
+      (store) => store.promocodeStore
+   )
+   const dispatch = useDispatch()
+   React.useEffect(() => {
+      setTimeout(() => {
+         setSnackbar(false)
+         dispatch(promocodeActions.clean())
+      }, [5000])
+   }, [snackbar, success, errorPromo])
    const onChangeHandler = (key, value) => {
       setPromocod((prev) => {
          return {
@@ -23,45 +36,31 @@ export default function CreatePromocode() {
          }
       })
    }
-   const PostPromocode = async (requestData) => {
-      try {
-         const response = await appFetch({
-            method: 'POST',
-            body: requestData,
-            url: '/api/promocode/create',
-         })
-         console.log(response)
-      } catch (error) {
-         console.log(error)
-      }
-   }
    const onSubmitPromocode = (e) => {
       e.preventDefault()
       if (
          promocode.value === '' ||
          promocode.dataIn === '' ||
          promocode.dataOut === '' ||
-         promocode.percent === ''
+         promocode.percent === 0
       ) {
+         setSnackbar(true)
          return
       }
-      const requestData = {
+      const promo = {
          name: promocode.value,
          discount: promocode.percent,
          dateOfStart: promocode.dataIn,
          dateOfFinish: promocode.dataOut,
       }
-      PostPromocode(requestData)
+      dispatch(setPromocode(promo))
    }
    return (
-      <Modal open variant="mini">
-         <OkSnackBar />
-         <img src={<OkSnackBar />} alt="Hello" />
-         <Snackbar
-            open
-            severity=""
-            message="Hello world"
-            icon={<OkSnackBar />}
+      <>
+         <SnackBarDate
+            snack={snackbar || Boolean(success) || Boolean(errorPromo)}
+            message={success || errorPromo || ''}
+            variant={success ? 'success' : ''}
          />
          <PromoCodeBlock onSubmit={onSubmitPromocode}>
             <PromoCodeItem>
@@ -111,7 +110,7 @@ export default function CreatePromocode() {
                <PromoSubmit type="submit">Создать</PromoSubmit>
             </PromoCodeItem>
          </PromoCodeBlock>
-      </Modal>
+      </>
    )
 }
 
