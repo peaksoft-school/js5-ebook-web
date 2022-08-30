@@ -2,7 +2,7 @@
 // import { useSelector } from 'react-redux'
 // import AppRoutes from './routes/AppRoutes'
 // import Spinner from './Components/UI/Spinner'
-import InnerPageAdminApplication from './containers/adminInnerPage/InnerPageAdminApplication'
+import InnerPageAdminApplication from './containers/adminContainers/adminInnerPage/InnerPageAdminApplication'
 
 function App() {
    // const status = useSelector((store) => store.auth.status)
