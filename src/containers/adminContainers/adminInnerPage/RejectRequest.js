@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import appFetch from '../../../hooks/AppFetch'
 // import { authSlicesActions } from '../../store/slices/authSlices'
 import Button from '../../../Components/UI/Button/Button'
-import Snackbar from '../../../Components/UI/Snacbar'
+// import Snackbar from '../../../Components/UI/Snacbar'
 
 export const RejectRequest = ({ onClose }) => {
    // const dispatch = useDispatch()
