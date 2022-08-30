@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
-import { injectStore } from './hooks/appFetch'
+import { injectStore } from './hooks/AppFetch'
 import store from './store/index'
 
 injectStore(store)
