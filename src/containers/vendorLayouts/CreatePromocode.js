@@ -6,6 +6,7 @@ import Modal from '../../Components/UI/Modal'
 import appFetch from '../../hooks/appFetch'
 import BasicDatePicker from './DatePicker'
 import Snackbar from '../../Components/UI/Snacbar'
+import { ReactComponent as OkSnackBar } from '../../assets/icons/snacbar/fulfilled.svg'
 
 export default function CreatePromocode() {
    const [promocode, setPromocod] = React.useState({
@@ -54,7 +55,14 @@ export default function CreatePromocode() {
    }
    return (
       <Modal open variant="mini">
-         <Snackbar open severity="" />
+         <OkSnackBar />
+         <img src={<OkSnackBar />} alt="Hello" />
+         <Snackbar
+            open
+            severity=""
+            message="Hello world"
+            icon={<OkSnackBar />}
+         />
          <PromoCodeBlock onSubmit={onSubmitPromocode}>
             <PromoCodeItem>
                <Label htmlFor="value" width="100%">
