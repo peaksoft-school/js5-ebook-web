@@ -2,7 +2,7 @@ import { styled } from '@mui/material'
 import React from 'react'
 
 import { ReactComponent as CheckMark } from '../../assets/icons/MeatBalls/checkmark.svg'
-import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
+import { ReactComponent as Reject } from '../../assets/icons/MeatBalls/reject.svg'
 // import Modal from '../UI/Modal'
 import MeatBalls from '../../Components/UI/MeatBalls/MeatBalls'
 
