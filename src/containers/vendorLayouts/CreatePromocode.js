@@ -3,7 +3,9 @@ import React from 'react'
 import Button from '../../Components/UI/Button/Button'
 import InputText from '../../Components/UI/Inputs/InputText'
 import Modal from '../../Components/UI/Modal'
+import appFetch from '../../hooks/appFetch'
 import BasicDatePicker from './DatePicker'
+import Snackbar from '../../Components/UI/Snacbar'
 
 export default function CreatePromocode() {
    const [promocode, setPromocod] = React.useState({
@@ -20,9 +22,40 @@ export default function CreatePromocode() {
          }
       })
    }
+   const PostPromocode = async (requestData) => {
+      try {
+         const response = await appFetch({
+            method: 'POST',
+            body: requestData,
+            url: '/api/promocode/create',
+         })
+         console.log(response)
+      } catch (error) {
+         console.log(error)
+      }
+   }
+   const onSubmitPromocode = (e) => {
+      e.preventDefault()
+      if (
+         promocode.value === '' ||
+         promocode.dataIn === '' ||
+         promocode.dataOut === '' ||
+         promocode.percent === ''
+      ) {
+         return
+      }
+      const requestData = {
+         name: promocode.value,
+         discount: promocode.percent,
+         dateOfStart: promocode.dataIn,
+         dateOfFinish: promocode.dataOut,
+      }
+      PostPromocode(requestData)
+   }
    return (
       <Modal open variant="mini">
-         <PromoCodeBlock>
+         <Snackbar open severity="" />
+         <PromoCodeBlock onSubmit={onSubmitPromocode}>
             <PromoCodeItem>
                <Label htmlFor="value" width="100%">
                   <LabelSpan>Промокод</LabelSpan>
@@ -32,6 +65,7 @@ export default function CreatePromocode() {
                      onChange={(e) => onChangeHandler('value', e.target.value)}
                      id="value"
                      placeholder="Напишите промокод"
+                     focusColor="#1976d2"
                   />
                </Label>
             </PromoCodeItem>
@@ -61,11 +95,12 @@ export default function CreatePromocode() {
                      }
                      type="number"
                      id="percent"
+                     focusColor="#1976d2"
                   />
                </Label>
             </PromoCodeItem>
             <PromoCodeItem>
-               <PromoSubmit>Создать</PromoSubmit>
+               <PromoSubmit type="submit">Создать</PromoSubmit>
             </PromoCodeItem>
          </PromoCodeBlock>
       </Modal>
@@ -82,9 +117,6 @@ const PromoSubmit = styled(Button)`
 
 const InputDate = styled(InputText)`
    background-color: #fff;
-   &:focus {
-      border: 1px solid #1976d2;
-   }
 `
 
 const LabelSpan = styled('span')`
