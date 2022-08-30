@@ -6,13 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { ReactComponent as DateIcon } from '../../assets/icons/datePicker/suitcase.svg'
-// import DateIcon from '../../assets/icons/datePicker/suitcase.png'
-// mainPosition: "bottom",
-//   relativePosition: "center",
-//   fixMainPosition: false,
-//   fixRelativePosition: false,
-//   offsetY: 0,
-//   offsetX: 0
+
 function getDateValue(value) {
    const arr = String(value).split('')
    if (arr.length < 2) {

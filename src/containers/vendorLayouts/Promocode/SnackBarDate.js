@@ -1,5 +1,5 @@
 import React from 'react'
-import Snackbar from '../../Components/UI/Snacbar'
+import Snackbar from '../../../Components/UI/Snacbar'
 import { ReactComponent as OkSnackBar } from '../../assets/icons/snacbar/fulfilled.svg'
 import { ReactComponent as Error } from '../../assets/icons/snacbar/error.svg'
 

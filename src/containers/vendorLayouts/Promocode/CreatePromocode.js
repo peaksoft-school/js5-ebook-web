@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Button from '../../Components/UI/Button/Button'
-import InputText from '../../Components/UI/Inputs/InputText'
+import Button from '../../../Components/UI/Button/Button'
+import InputText from '../../../Components/UI/Inputs/InputText'
 import BasicDatePicker from './DatePicker'
 import SnackBarDate from './SnackBarDate'
 import {
    setPromocode,
    promocodeActions,
-} from '../../store/slices/promocodeSlices'
+} from '../../../store/slices/promocodeSlices'
 
 export default function CreatePromocode() {
    const [promocode, setPromocod] = React.useState({
