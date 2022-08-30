@@ -1,11 +1,18 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Menu } from '@mui/material'
 import GenreMenu from '../Components/UI/genreMenu/GenreMenu'
+import { setGenres } from '../store/slices/globalSlices'
 
 function Genre({ text }) {
    const [anchorEl, setAnchorEl] = useState(null)
    const open = Boolean(anchorEl)
+   const { genres } = useSelector((store) => store.globalValues)
+   const dispatch = useDispatch()
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
    const onClickGenreBtn = (e) => {
       setAnchorEl(e.currentTarget)
    }
@@ -23,7 +30,7 @@ function Genre({ text }) {
             anchorEl={anchorEl}
             onClose={onCloseGenreMenu}
          >
-            <GenreMenu />
+            <GenreMenu data={genres} />
          </GenreMenuPopUp>
       </Div>
    )
