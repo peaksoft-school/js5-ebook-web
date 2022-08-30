@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Menu } from '@mui/material'
 import GenreMenu from '../Components/UI/genreMenu/GenreMenu'
-import { addGenres } from '../store/slices/genres'
+import { setGenres } from '../store/slices/globalSlices'
 
 function Genre({ text }) {
    const [anchorEl, setAnchorEl] = useState(null)
@@ -11,7 +11,7 @@ function Genre({ text }) {
    const { genres } = useSelector((store) => store.globalValues)
    const dispatch = useDispatch()
    useEffect(() => {
-      dispatch(addGenres())
+      dispatch(setGenres())
    }, [])
    const onClickGenreBtn = (e) => {
       setAnchorEl(e.currentTarget)

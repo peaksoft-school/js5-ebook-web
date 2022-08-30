@@ -1,17 +1,12 @@
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router'
 import Logotype from '../Logotype'
 import SideDrowerMenu from './SideDrawerMenu'
 
 function SideDrawer() {
-   const navigate = useNavigate()
-   const onClickItem = (nav) => {
-      navigate(`/${nav}`)
-   }
    return (
       <SideDrowerContainer>
          <Logotype />
-         <SideDrowerMenu onClick={onClickItem} />
+         <SideDrowerMenu />
       </SideDrowerContainer>
    )
 }

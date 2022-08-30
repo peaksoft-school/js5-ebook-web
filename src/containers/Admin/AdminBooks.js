@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
-import { BookType, URL } from '../../utils/constants/constants'
+import { BookType } from '../../utils/constants/constants'
 import SelectBooks from './SelectBooks'
-import { addGenres } from '../../store/slices/genres'
-import { sortRequestApplic } from '../../utils/helpers/helpers'
+import { setBooks, setGenres } from '../../store/slices/globalSlices'
 
 const arr = [
    {
@@ -40,16 +39,10 @@ export default function AdminBooks() {
       size: null,
    })
    useEffect(() => {
-      fetch(`${URL}/api/books${sortRequestApplic(requestObj)}`)
-         .then((response) => {
-            return response.json()
-         })
-         .then((data) => {
-            console.log(data)
-         })
+      dispatch(setBooks(requestObj))
    }, [requestObj])
    useEffect(() => {
-      dispatch(addGenres())
+      dispatch(setGenres())
    }, [])
    const onClickSelect = (id, key) => {
       setRequestObj((prev) => {

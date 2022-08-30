@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { addBookSlice } from './slices/addBookSlice'
 import authSlices from './slices/authSlices'
-import globalValues from './slices/genres'
+import globalValues from './slices/globalSlices'
 
 const store = configureStore({
    reducer: {

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
 import { ReactComponent as ApplicationOrange } from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.svg'
@@ -48,9 +49,10 @@ const items = [
    },
 ]
 
-function SideDrawerMenu({ onClick }) {
+function SideDrawerMenu() {
+   const navigate = useNavigate()
    const onClickItem = (nav) => {
-      onClick(nav)
+      navigate(`/${nav}`)
    }
    return (
       <SideDrowerMenuContainer>

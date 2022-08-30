@@ -12,7 +12,7 @@ import Footer from './Footer'
 import CardItems from './CardItems'
 import SearchInputBlock from './SearchInputBlock'
 
-function ClientLayout() {
+function GuestLayout() {
    return (
       <Wrapper>
          <AppContainer
@@ -50,4 +50,4 @@ function ClientLayout() {
    )
 }
 
-export default ClientLayout
+export default GuestLayout
