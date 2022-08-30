@@ -20,6 +20,8 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
+      link: 'innerpage',
+      navigate: 'innerpage',
    },
    {
       name: 'Продавцы',
