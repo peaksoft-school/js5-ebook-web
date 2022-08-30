@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useLocation, useNavigate } from 'react-router'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
 import { ReactComponent as ApplicationOrange } from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.svg'
@@ -21,7 +22,7 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
-      link: 'request',
+      // link: 'request',
       navigate: 'request',
    },
    {
@@ -53,9 +54,12 @@ const items = [
    },
 ]
 
-function SideDrawerMenu({ onClick }) {
+function SideDrawerMenu() {
+   const location = useLocation()
+   // console.log(location.pathname)
+   const navigate = useNavigate()
    const onClickItem = (nav) => {
-      onClick(nav)
+      navigate(`/${nav}`)
    }
    return (
       <SideDrowerMenuContainer>
@@ -67,6 +71,8 @@ function SideDrawerMenu({ onClick }) {
                      onClick={() => onClickItem(elem.navigate)}
                      name={elem.name}
                      icon={elem.icon}
+                     navigate={elem.navigate}
+                     active={location.pathname}
                   />
                )
             })}
@@ -76,8 +82,15 @@ function SideDrawerMenu({ onClick }) {
 }
 export default SideDrawerMenu
 
-function DrowerItem({ name, icon, onClick }) {
+function DrowerItem({ name, icon, onClick, navigate, active }) {
    const [bool, setBool] = useState(false)
+   useEffect(() => {
+      if (`/${navigate}` === active) {
+         onHoverItem()
+      } else {
+         offHoverItem()
+      }
+   }, [active])
    const onHoverItem = () => {
       setBool(true)
    }
