@@ -4,23 +4,26 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
-// import { books } from '../../../utils/constants/books'
 import { RejectRequest } from './RejectRequest'
 import AcceptRequest from './AcceptRequest'
+import New from '../../../assets/icons/New.svg'
 import { TabInnerPage } from '../../../Components/TabInnerPage'
 import About from './About'
 import BookFragment from './BookFragment'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
-import applicationInnerPageAction from '../../../store/slices/applicationInnerPagesSlices'
 import Snackbar from '../../../Components/UI/Snacbar'
+import { applicationInnerPageAction } from '../../../store/slices/applicationInnerPageActions'
 
 export const InnerPageAdminApplication = () => {
+   const { id } = useParams()
+   console.log(id)
    const selectedItem = useSelector((state) => state.applicationsInnerPage.data)
+   console.log(selectedItem)
    const dispatch = useDispatch()
    useEffect(() => {
-      dispatch(applicationInnerPageAction())
+      dispatch(applicationInnerPageAction(id))
    }, [])
-   const { id } = useParams()
+
    // const selectedItem = data.find((item) => item.id === id)
 
    const [rejectAplication, setRejectAplication] = useState(false)
@@ -63,6 +66,7 @@ export const InnerPageAdminApplication = () => {
             <ImageDiv>
                <StyledBookImageCont>
                   <StyledBookImage src={selectedItem.mainImage} />
+                  {selectedItem.new === true ? <Img src={New} /> : ''}
                   <StyledBookImage2>
                      {selectedItem.secondImage && (
                         <img src={selectedItem.secondImage} alt="book" />
@@ -261,4 +265,8 @@ const StyledBookImageCont = styled.div`
    justify-content: space-between;
    width: 531px;
    margin-right: 20px;
+`
+const Img = styled('img')`
+   width: 206px;
+   height: 206px;
 `

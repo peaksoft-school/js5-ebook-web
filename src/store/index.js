@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { addBookSlice } from './slices/addBookSlice'
-import { applicationsInnerPageSlices } from './slices/applicationInnerPagesSlices'
+import applicationsInnerPageSlices from './slices/applicationInnerPagesSlices'
 import authSlices from './slices/authSlices'
 import globalValues from './slices/globalSlices'
 

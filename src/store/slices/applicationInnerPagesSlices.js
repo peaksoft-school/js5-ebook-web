@@ -1,31 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
-import appFetch from '../../hooks/AppFetch'
+import { applicationInnerPageAction } from './applicationInnerPageActions'
 
 const initialState = {
    data: {},
+   status: null,
 }
 
-export const applicationsInnerPageSlices = createSlice({
+const applicationsInnerPageSlices = createSlice({
    name: 'getApplications',
    initialState,
-   reducers: {
-      getApplications(state, action) {
+   reducers: {},
+   extraReducers: {
+      [applicationInnerPageAction.fulfilled]: (state, action) => {
          state.data = action.payload
+         state.status = 'success'
       },
    },
 })
-export const applicationInnerPageActions = applicationsInnerPageSlices.actions
-
-const applicationInnerPageAction = () => {
-   // 'applications/applicationActions',
-
-   return async (dispatch) => {
-      const result = await appFetch({
-         url: '/api/books/1',
-      })
-
-      dispatch(applicationInnerPageActions.getApplications(result))
-      return result
-   }
-}
-export default applicationInnerPageAction
+export const applicationsInnerPageSlicesAction =
+   applicationsInnerPageSlices.actions
+export default applicationsInnerPageSlices
