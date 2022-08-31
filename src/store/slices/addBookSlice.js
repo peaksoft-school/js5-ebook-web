@@ -13,6 +13,7 @@ const initialState = {
       { name: 'Красота. Здоровье.Спорт ', id: 6 },
    ],
    array: [],
+   getUserInnerBook: {},
 }
 export const addBookSlice = createSlice({
    name: 'addbook',
@@ -30,6 +31,9 @@ export const addBookSlice = createSlice({
       },
       saveBook(state, action) {
          state.array = action.payload
+      },
+      getUserBook(state, action) {
+         state.getUserInnerBook = action.payload
       },
    },
 })

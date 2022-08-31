@@ -1,9 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-// import InputMask from 'react-input-mask'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import NumberFormat from 'react-number-format'
-import { Formik } from 'formik'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
 import Validation from '../../hooks/Validation'
@@ -12,19 +10,17 @@ import { signUpVendor } from '../../store/slices/authSlices'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
-      <Formik>
-         <InputForm
-            name="phone"
-            type="tel"
-            value={value}
-            onChange={onChange}
-            onBlur={onBlur}
-            format="+996 ### ## ## ##"
-            placeholder="+996 ___ ___ ___"
-            mask="_"
-            error={error}
-         />
-      </Formik>
+      <InputForm
+         name="phone"
+         type="tel"
+         value={value}
+         onChange={onChange}
+         onBlur={onBlur}
+         format="+996 ### ## ## ##"
+         placeholder="+996 ___ ___ ___"
+         mask="_"
+         error={error}
+      />
    )
 }
 function SignUpVendor() {

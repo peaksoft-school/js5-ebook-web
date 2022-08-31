@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
 import About from './About'
@@ -8,7 +9,8 @@ import BookFragment from './BookFragment'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
-import appFetch from '../../hooks/appFetch'
+import { getUserInnerPageBook } from '../../store/getBookActions'
+import New from '../../assets/icons/UserInnerPage/New.png'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -20,13 +22,10 @@ const DataValues = [
 export const UserInnerPage = () => {
    const [text, setText] = useState('')
    const { bookId } = useParams()
-   const [book, setBook] = useState('')
+   const book = useSelector((state) => state.addbook.getUserInnerBook)
+   const dispatch = useDispatch()
    useEffect(() => {
-      appFetch({
-         url: `/api/books/${bookId}`,
-      }).then((result) => {
-         setBook(result)
-      })
+      dispatch(getUserInnerPageBook(bookId))
    }, [])
    const sendText = () => {
       console.log(text)
@@ -44,7 +43,7 @@ export const UserInnerPage = () => {
       <>
          <Breadcrumbs translate={pathTranslate} />
          <StyledMain>
-            <Div>
+            <StyledContainer>
                <StyledBookImageCont>
                   <StyledBookImage src={book.mainImage} />
                   <StyledBookImage2>
@@ -53,6 +52,7 @@ export const UserInnerPage = () => {
                      )}
                   </StyledBookImage2>
                </StyledBookImageCont>
+               {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
                <div>
                   <StyledBookName>{book.bookName}</StyledBookName>
                   <div>
@@ -97,9 +97,9 @@ export const UserInnerPage = () => {
                      />
                   </DivStyledMessage>
                </div>
-            </Div>
+            </StyledContainer>
 
-            <Div1>
+            <StyledimageThirdImage>
                <TabInnerPage
                   about={<About book={book} />}
                   bookFragment={<BookFragment book={book} />}
@@ -109,19 +109,19 @@ export const UserInnerPage = () => {
                      <StyleThirdImage src={book.thirdImage} alt="book" />
                   )}
                </div>
-            </Div1>
+            </StyledimageThirdImage>
          </StyledMain>
       </>
    )
 }
 
-const Div = styled.div`
+const StyledContainer = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: flex-start;
 `
 
-const Div1 = styled.div`
+const StyledimageThirdImage = styled.div`
    display: flex;
    justify-content: space-between;
    margin-top: 100px;
@@ -133,7 +133,6 @@ const StyledBookImage2 = styled.div`
    align-items: center;
    & img {
       width: 100%;
-      margin: 0px 0px 20px 20px;
    }
 `
 const StyledBookName = styled.h3`
@@ -201,4 +200,11 @@ const StyleThirdImage = styled.img`
    width: 443px;
    height: 574px;
    margin-bottom: 109px;
+`
+const ImageStyled = styled.img`
+   width: 206px;
+   height: 206px;
+   border-radius: 20px;
+   margin-top: 250px;
+   margin-left: -42%;
 `
