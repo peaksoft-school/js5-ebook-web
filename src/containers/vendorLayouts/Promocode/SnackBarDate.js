@@ -1,7 +1,7 @@
 import React from 'react'
-import Snackbar from '../../../Components/UI/Snacbar'
-import { ReactComponent as OkSnackBar } from '../../assets/icons/snacbar/fulfilled.svg'
-import { ReactComponent as Error } from '../../assets/icons/snacbar/error.svg'
+import Snackbar from '../../../Components/UI/Snackbar'
+import { ReactComponent as OkSnackBar } from '../../../assets/icons/snackbar/fulfilled.svg'
+import { ReactComponent as Error } from '../../../assets/icons/snackbar/error.svg'
 
 const SnackBarDate = ({ snack, variant, message }) => {
    return (

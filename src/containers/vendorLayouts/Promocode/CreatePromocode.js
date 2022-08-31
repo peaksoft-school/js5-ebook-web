@@ -6,7 +6,7 @@ import InputText from '../../../Components/UI/Inputs/InputText'
 import BasicDatePicker from './DatePicker'
 import SnackBarDate from './SnackBarDate'
 import {
-   setPromocode,
+   createPromocode,
    promocodeActions,
 } from '../../../store/slices/promocodeSlices'
 
@@ -23,10 +23,13 @@ export default function CreatePromocode() {
    )
    const dispatch = useDispatch()
    React.useEffect(() => {
-      setTimeout(() => {
+      const time = setTimeout(() => {
          setSnackbar(false)
          dispatch(promocodeActions.clean())
-      }, [5000])
+      }, [3000])
+      return () => {
+         clearTimeout(time)
+      }
    }, [snackbar, success, errorPromo])
    const onChangeHandler = (key, value) => {
       setPromocod((prev) => {
@@ -53,7 +56,7 @@ export default function CreatePromocode() {
          dateOfStart: promocode.dataIn,
          dateOfFinish: promocode.dataOut,
       }
-      dispatch(setPromocode(promo))
+      dispatch(createPromocode(promo))
    }
    return (
       <>
