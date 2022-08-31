@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import appFetch from '../../hooks/appFetch'
 import { EBOOK_AUTH_INFO, APP_ROLES } from '../../utils/constants/constants'
-import { getFromLocaleStorage, saveToLocaleStorage } from '../../hooks/locale'
+import {
+   getFromLocaleStorage,
+   saveToLocaleStorage,
+   deleteFromLocaleStorage,
+} from '../../hooks/locale'
 
 const InitialUser = {
-   role: APP_ROLES.USER,
+   role: APP_ROLES.QUEST,
 }
 function reloadGetLocale() {
    const user = getFromLocaleStorage(EBOOK_AUTH_INFO)
@@ -43,6 +47,13 @@ const authSlices = createSlice({
 })
 export const authSlicesActions = authSlices.actions
 export default authSlices
+
+export const exitApp = () => {
+   return (dispatch) => {
+      deleteFromLocaleStorage(EBOOK_AUTH_INFO)
+      dispatch(authSlicesActions.exitApp())
+   }
+}
 
 export const signIn = (data) => {
    return async (dispatch) => {
