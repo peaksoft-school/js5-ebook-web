@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import appFetch from '../../hooks/appFetch'
-// import appFetch from '../../hooks/appFetch'
-// import { URL } from '../../utils/constants/constants'
 
 const initialState = {
    genres: '',
@@ -31,18 +29,5 @@ export function addGenres() {
       } catch (error) {
          console.log(error)
       }
-      // fetch(`${URL}/api/genres`)
-      //    .then((response) => {
-      //       if (!response.ok) {
-      //          throw new Error('Что то пошло не так!')
-      //       }
-      //       return response.json()
-      //    })
-      //    .then((data) => {
-      //       dispatch(globalValuesAction.updateGenres(data))
-      //    })
-      //    .catch((error) => {
-      //       console.log(error)
-      //    })
    }
 }
