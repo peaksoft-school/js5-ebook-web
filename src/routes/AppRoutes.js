@@ -17,7 +17,6 @@ function AppRoutes() {
          [APP_ROLES.GUEST]: guestLayout(),
       }
    }, [])
-
    return <Routes>{RoutesComponent[user.role]}</Routes>
 }
 export default AppRoutes
