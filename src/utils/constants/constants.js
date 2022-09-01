@@ -6,6 +6,7 @@ export const APP_ROLES = {
    USER: 'USER',
    VENDOR: 'VENDOR',
    ADMIN: 'ADMIN',
+   GUEST: 'GUEST',
 }
 
 export const BookType = {
