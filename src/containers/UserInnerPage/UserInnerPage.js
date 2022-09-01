@@ -133,6 +133,7 @@ const StyledBookImage2 = styled.div`
    align-items: center;
    & img {
       width: 100%;
+      margin: 0 0 20px 20px;
    }
 `
 const StyledBookName = styled.h3`
@@ -163,7 +164,7 @@ const StyledInfoTitle = styled.p`
 `
 const StyledBookImage = styled.img`
    width: 357px;
-   /* margin-bottom: 185px; */
+   margin-bottom: 185px;
 `
 const StyledMain = styled.div`
    padding-top: 72px;
@@ -202,9 +203,7 @@ const StyleThirdImage = styled.img`
    margin-bottom: 109px;
 `
 const ImageStyled = styled.img`
-   width: 206px;
-   height: 206px;
-   border-radius: 20px;
-   margin-top: 250px;
-   margin-left: -42%;
+   position: absolute;
+   top: 75%;
+   left: 26%;
 `
