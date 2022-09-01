@@ -1,16 +1,16 @@
 import { useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
+import { useNavigate } from 'react-router'
 import Button from './Button/Button'
-import { deleteFromLocaleStorage } from '../../hooks/locale'
-import { authSlicesActions } from '../../store/slices/authSlices'
-import { EBOOK_AUTH_INFO } from '../../utils/constants/constants'
+import { exitApp } from '../../store/slices/authSlices'
 
 function ExitApp({ onCloseModal }) {
+   const navigate = useNavigate()
    const dispatch = useDispatch()
    const onClickExitHandler = () => {
-      deleteFromLocaleStorage(EBOOK_AUTH_INFO)
-      dispatch(authSlicesActions.exitApp())
+      dispatch(exitApp())
       onCloseModal()
+      navigate('/')
    }
    return (
       <ExitContainer>

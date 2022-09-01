@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components'
 export const InputContainer = styled.div`
    border: 1px solid;
    border-color: ${(props) => props.borderColor || '#c4c4c4'};
+   border-color: ${(props) =>
+      props.focus ? props.focusColor : props.borderColor || '#c4c4c4'};
    display: flex;
    align-items: center;
    background-color: ${(props) =>
@@ -27,9 +29,10 @@ export const Input = styled.input`
    line-height: 20.8px;
    padding: ${(props) => props.padding || '10px 20px 10px 20px'};
    padding-right: ${(props) => props.paddingRight || '20px'};
-   border: none;
+   border: 1px solid rgba(0, 0, 0, 0);
    color: #222222;
    outline: none;
+   transition: ease-in 0.2s;
    &::placeholder {
       color: #969696;
       text-align: ${(props) => (props.textAlign ? props.textAlign : '')};
