@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
-import Button from '../UI/Button/Button'
-import Modal from '../UI/Modal'
-import warningIcon from '../../assets/icons/warning.svg'
+import Button from '../../../Components/UI/Button/Button'
+import Modal from '../../../Components/UI/Modal'
+import warningIcon from '../../../assets/icons/warning.svg'
 
 const Promocode = () => {
    const [isOpenPromoModal, setIsOpenPromoModal] = useState(false)

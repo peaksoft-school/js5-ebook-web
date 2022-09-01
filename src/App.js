@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Spinner from './Components/UI/Spinner'
-import AppRoutes from './routes/appRoutes'
+import AppRoutes from './routes/AppRoutes'
 
 function App() {
    const status = useSelector((store) => store.auth.status)

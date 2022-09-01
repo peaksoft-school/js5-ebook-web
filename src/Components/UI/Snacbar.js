@@ -11,7 +11,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 function Snackbar({
    width,
    height,
-   // open,
+   open,
    handleClose,
    severity,
    message,
@@ -21,7 +21,7 @@ function Snackbar({
    return (
       <Stack>
          <StyledSnackbar
-            open={handleClose}
+            open={open}
             autoHideDuration={3000}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             onClose={handleClose}

@@ -1,45 +1,47 @@
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
-import Button from '../UI/Button/Button'
-import AboutBook from './AboutBook'
-import BookFragment from './BookFragment'
-import plusIcon from '../../assets/icons/plus.svg'
-import Breadcrumbs from '../UI/breadCrumbs/Breadcrumbs'
-import { TabInnerPage } from './TabInnerPage'
-import appFetch from '../../hooks/appFetch'
+import Button from '../../../Components/UI/Button/Button'
+import plusIcon from '../../../assets/icons/plus.svg'
+import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 import BookInfo from './BookInfo'
 import Promocode from './Promocode'
+import {
+   deleteVendorBook,
+   getVendorBookInnerPage,
+} from '../../../store/vendorBookInnerPageActions'
 
 export const InnerPage = () => {
-   const [book, setBook] = useState(null)
+   const { book, deleteBook } = useSelector(
+      (state) => state.vendorBookInnerPage
+   )
    const { bookId } = useParams()
+   const dispatch = useDispatch()
    const navigate = useNavigate()
-
    useEffect(() => {
-      appFetch({
-         url: `/api/books/${bookId}`,
-      }).then((response) => {
-         setBook(response)
-      })
+      dispatch(getVendorBookInnerPage(bookId))
    }, [])
 
+   useEffect(() => {
+      if (deleteBook) {
+         booksCardNavHandler()
+      }
+   }, [deleteBook])
+
    const deleteBookHandler = () => {
-      appFetch({
-         url: `/api/book/delete/${bookId}`,
-         method: 'DELETE',
-      })
-      booksCardNavHandler()
+      dispatch(deleteVendorBook(bookId))
    }
 
    const pathTranslate = {
       books: 'Главная',
-      [bookId]: book.bookName,
+      // [bookId]: book.bookName,
    }
 
    const addBookNavHandler = () => {
       navigate('/addBook')
    }
+
    const booksCardNavHandler = () => {
       navigate('/mainPage')
    }
@@ -60,21 +62,11 @@ export const InnerPage = () => {
          </StyledBtnBlock>
          <Breadcrumbs translate={pathTranslate} />
          {book && (
-            <>
-               <BookInfo
-                  book={book}
-                  onDelete={deleteBookHandler}
-                  bookId={bookId}
-               />
-
-               <StyledTabBlock>
-                  <TabInnerPage
-                     about={<AboutBook aboutBook={book.description} />}
-                     bookFragment={<BookFragment fragment={book.description} />}
-                  />
-                  {book.thirdImage && <img src={book.thirdImage} alt="book" />}
-               </StyledTabBlock>
-            </>
+            <BookInfo
+               book={book}
+               onDelete={deleteBookHandler}
+               bookId={bookId}
+            />
          )}
       </>
    )
@@ -97,12 +89,6 @@ export const StyledNavLink = styled(NavLink)`
 export const StyledLink = styled(Link)`
    color: white;
    text-decoration: none;
-`
-const StyledTabBlock = styled.div`
-   display: flex;
-   justify-content: space-between;
-   align-items: flex-start;
-   padding-bottom: 20px;
 `
 const StyledBtnBlock = styled.div`
    width: 100%;

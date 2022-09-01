@@ -33,16 +33,12 @@ function AudioListener({ url }) {
             partialRender: true,
          })
       )
-      // eslint-disable-next-line no-useless-return
-      return
    }, [])
 
    useEffect(() => {
       if (waver) {
          waver.load(audioRef.current)
       }
-      // eslint-disable-next-line no-useless-return
-      return
    }, [waver])
 
    const audioPlayHandle = () => {
@@ -50,17 +46,14 @@ function AudioListener({ url }) {
       setPlayMusic(true)
 
       const durationTimer = waver.getDuration()
-      // eslint-disable-next-line radix
-      const minuteTimer = parseInt(durationTimer / 50)
+      const minuteTimer = +durationTimer / 50
 
       let fixedMinute
       if (minuteTimer < 10) {
-         // eslint-disable-next-line prefer-template
-         fixedMinute = '0' + minuteTimer
+         fixedMinute = `0 + ${minuteTimer}`
       }
       const secondTimer = (durationTimer % 100).toFixed()
-      // eslint-disable-next-line prefer-template
-      const newDurationTimer = fixedMinute + ':' + secondTimer
+      const newDurationTimer = `${fixedMinute} ${':'} ${secondTimer}`
 
       setDuration(newDurationTimer)
    }
@@ -74,14 +67,18 @@ function AudioListener({ url }) {
       <WaveformContianer>
          <PlayingDiv>
             {playMusic ? (
-               <img src={AudioPlay} alt={AudioPlay} onClick={audioPauseHanle} />
+               <ImgCopy
+                  src={AudioPlay}
+                  alt={AudioPlay}
+                  onClick={audioPauseHanle}
+               />
             ) : (
-               <img src={AudioPause} onClick={audioPlayHandle} />
+               <ImgCopy src={AudioPause} onClick={audioPlayHandle} />
             )}
          </PlayingDiv>
          <WaverStyle>
             <WaverDiv ref={wavesurferElement} />
-            <audio src={url} ref={audioRef} />
+            <AudioCopy src={url} ref={audioRef} />
          </WaverStyle>
          <span>{duration}</span>
       </WaveformContianer>
@@ -111,3 +108,6 @@ const PlayingDiv = styled('div')`
    border: none;
    cursor: pointer;
 `
+
+const ImgCopy = styled('div')``
+const AudioCopy = styled('div')``
