@@ -50,7 +50,7 @@ function AudioListener({ url }) {
 
       let fixedMinute
       if (minuteTimer < 10) {
-         fixedMinute = `0 + ${minuteTimer}`
+         fixedMinute = `0 ${minuteTimer}`
       }
       const secondTimer = (durationTimer % 100).toFixed()
       const newDurationTimer = `${fixedMinute} ${':'} ${secondTimer}`
