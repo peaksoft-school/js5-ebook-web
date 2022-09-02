@@ -1,17 +1,16 @@
 import { styled } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { useDispatch } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
 import Modal from '../../../Components/UI/Modal'
 import { RejectRequest } from './RejectRequest'
-import AcceptRequest from './AcceptRequest'
 import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
+import Snackbar from '../../../Components/UI/Snacbar'
 
 const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
-   console.log(id)
    const dispatch = useDispatch()
    const menuMeatBall = [
       {
@@ -32,16 +31,8 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
    const [isModal, setIsModal] = useState(false)
    const [toAccept, setToAccept] = useState(false)
 
-   // useEffect(() => {
-   //    dispatch(acceptApplication(id))
-   // }, [toAccept])
    function acceptModal() {
-      // setToAccept((prev) => !prev)
       dispatch(acceptApplication(id))
-   }
-
-   function closeAcceptModal(e) {
-      e.stopPropagation()
       setToAccept(!toAccept)
    }
 
@@ -70,16 +61,16 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
          >
             <RejectRequest />
          </Modal>
-         <Modal
-            open={toAccept}
-            variant="mini"
-            width="460px"
-            height="155px"
-            overflow="none"
-            onClose={(e) => closeAcceptModal(e)}
-         >
-            <AcceptRequest />
-         </Modal>
+         {toAccept && (
+            <Snackbar
+               width="460px"
+               height="155px"
+               open={!toAccept}
+               handleClose={toAccept}
+               severity=""
+               // message={}
+            />
+         )}
          <Div>
             <Book src={img} alt="photo" />
             <NameBook>{name}</NameBook>

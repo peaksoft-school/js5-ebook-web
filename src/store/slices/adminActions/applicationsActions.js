@@ -37,7 +37,8 @@ export const acceptApplication = (id) => {
             url: `/api/admin/application/books/${id}/accepted`,
             body: id,
          })
-         console.log(result)
+         console.log(result.message)
+
          return result
       } catch (error) {
          return error
