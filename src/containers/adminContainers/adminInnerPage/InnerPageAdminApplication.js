@@ -3,39 +3,38 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
-import Modal from '../../../Components/UI/Modal'
-import { RejectRequest } from './RejectRequest'
-import AcceptRequest from './AcceptRequest'
-import New from '../../../assets/icons/New.svg'
+import New from '../../../assets/icons/new.svg'
 import { TabInnerPage } from '../../../Components/TabInnerPage'
 import About from './About'
 import BookFragment from './BookFragment'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
-import Snackbar from '../../../Components/UI/Snacbar'
-import { applicationInnerPageAction } from '../../../store/slices/applicationInnerPageActions'
+import Snackbar from '../../../Components/UI/Snackbar'
+import {
+   applicationInnerPageAction,
+   acceptApplication,
+} from '../../../store/slices/applicationInnerPageActions'
+import { ReactComponent as IconAccept } from '../../../assets/icons/IconSnackbar.svg'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
-   console.log(id)
-   const selectedItem = useSelector((state) => state.applicationsInnerPage.data)
-   console.log(selectedItem)
    const dispatch = useDispatch()
+   const { application, message } = useSelector(
+      (state) => state.applicationsInnerPage
+   )
+   console.log(message)
+
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
    }, [])
 
-   // const selectedItem = data.find((item) => item.id === id)
-
    const [rejectAplication, setRejectAplication] = useState(false)
    const [isModal, setIsModal] = useState(false)
    const [toAccept, setToAccept] = useState(false)
-   const [message, setMessage] = useState('')
-   const [open, setOpen] = useState(true)
+   // const [message, setMessage] = useState('')
 
    function acceptHandler() {
-      setToAccept(!toAccept)
-
-      // POST
+      setToAccept(toAccept)
+      dispatch(acceptApplication(id))
    }
 
    function rejectModal() {
@@ -43,11 +42,11 @@ export const InnerPageAdminApplication = () => {
       setIsModal(!isModal)
    }
 
-   function onCloseRejectModal() {
-      setIsModal(!isModal)
-      setOpen(open)
-      setMessage()
-   }
+   // function onCloseRejectModal() {
+   //    setIsModal(!isModal)
+   //    setOpen(open)
+   //    setMessage()
+   // }
    // function openSnackbar() {
    //    setOpen(open)
    // }
@@ -56,7 +55,7 @@ export const InnerPageAdminApplication = () => {
    // }
    const pathTranslate = {
       request: 'Заявки',
-      [id]: selectedItem.bookName,
+      [id]: application.bookName,
    }
 
    return (
@@ -65,18 +64,18 @@ export const InnerPageAdminApplication = () => {
          <StyledMain>
             <ImageDiv>
                <StyledBookImageCont>
-                  <StyledBookImage src={selectedItem.mainImage} />
-                  {selectedItem.new === true ? <Img src={New} /> : ''}
+                  <StyledBookImage src={application.mainImage} />
+                  {application.new === true ? <Img src={New} /> : ''}
                   <StyledBookImage2>
-                     {selectedItem.secondImage && (
-                        <img src={selectedItem.secondImage} alt="book" />
+                     {application.secondImage && (
+                        <img src={application.secondImage} alt="book" />
                      )}
                   </StyledBookImage2>
                </StyledBookImageCont>
                <InfoContainer>
-                  <StyledBookName>{selectedItem.bookName}</StyledBookName>
+                  <StyledBookName>{application.bookName}</StyledBookName>
                   <div>
-                     <StyledPrice>{selectedItem.price}</StyledPrice>
+                     <StyledPrice>{application.price}</StyledPrice>
                   </div>
                   <StyledInfo>
                      <div>
@@ -88,16 +87,16 @@ export const InnerPageAdminApplication = () => {
                         <StyledInfoTitle>Обьем</StyledInfoTitle>
                      </div>
                      <div>
-                        <StyledInfoText>{selectedItem.author}</StyledInfoText>
-                        <StyledInfoText>{selectedItem.genre}</StyledInfoText>
-                        <StyledInfoText>{selectedItem.language}</StyledInfoText>
+                        <StyledInfoText>{application.author}</StyledInfoText>
+                        <StyledInfoText>{application.genre}</StyledInfoText>
+                        <StyledInfoText>{application.language}</StyledInfoText>
                         <StyledInfoText>
-                           {selectedItem.publishingHouse}
+                           {application.publishingHouse}
                         </StyledInfoText>
                         <StyledInfoText>
-                           {selectedItem.yearOfIssue}
+                           {application.yearOfIssue}
                         </StyledInfoText>
-                        <StyledInfoText>{selectedItem.volume}</StyledInfoText>
+                        <StyledInfoText>{application.volume}</StyledInfoText>
                      </div>
                   </StyledInfo>
 
@@ -110,20 +109,6 @@ export const InnerPageAdminApplication = () => {
                         background="none"
                         width="195px"
                      >
-                        {' '}
-                        <Modal
-                           open={isModal}
-                           variant="mini"
-                           width="523px"
-                           height="247px"
-                           overflow="none"
-                           onClose={() => onCloseRejectModal()}
-                        >
-                           <RejectRequest
-                              onClose={() => onCloseRejectModal()}
-                              setMessage={() => setMessage()}
-                           />
-                        </Modal>
                         Отклонить
                      </Button>
 
@@ -136,42 +121,36 @@ export const InnerPageAdminApplication = () => {
                      >
                         Принять
                      </Button>
-                     <Modal
-                        open={toAccept}
-                        variant="mini"
-                        width="460px"
-                        height="155px"
-                        overflow="none"
-                        onClose={() => acceptHandler()}
-                     >
-                        <AcceptRequest name={selectedItem.bookName} />
-                     </Modal>
+
+                     {!toAccept && (
+                        <Snackbar
+                           severity=""
+                           open={!toAccept}
+                           handleClose={toAccept}
+                           width="460px"
+                           height="155px"
+                           message={message.message}
+                           icon={<IconAccept />}
+                        />
+                     )}
                   </StyledBtnCont>
                </InfoContainer>
             </ImageDiv>
             <FragmentRequest>
                <TabInnerPage
-                  about={<About about={selectedItem.description} />}
+                  about={<About about={application.description} />}
                   bookFragment={
                      <BookFragment
-                        audioBookFragment={selectedItem.audioBookFragment}
+                        audioBookFragment={application.audioBookFragment}
                      />
                   }
                />
                <FragmentDiv>
-                  {selectedItem.thirdImage && (
-                     <img src={selectedItem.thirdImage} alt="book" />
+                  {application.thirdImage && (
+                     <img src={application.thirdImage} alt="book" />
                   )}
                </FragmentDiv>
             </FragmentRequest>
-            <Snackbar
-               severity=""
-               open={() => onCloseRejectModal()}
-               message={message}
-               // onClose={() => onCloseSnackbar()}
-            >
-               {message}
-            </Snackbar>
          </StyledMain>
       </>
    )

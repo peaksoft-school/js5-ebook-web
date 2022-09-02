@@ -5,7 +5,6 @@ import Icon from '../../../assets/icons/Vector.svg'
 function ImagePicker({ onChange, onDelete, file, id, name }) {
    const [icon, setIcon] = useState()
    const filesRef = useRef()
-
    useEffect(() => {
       if (file) {
          const name = URL.createObjectURL(file)
@@ -21,7 +20,6 @@ function ImagePicker({ onChange, onDelete, file, id, name }) {
       setIcon(name)
       onChange(filesRef.current.files[0], e)
    }
-
    const deleteFileHandler = () => {
       filesRef.current.value = ''
       setIcon('')
@@ -49,9 +47,7 @@ function ImagePicker({ onChange, onDelete, file, id, name }) {
       </ImageContainer>
    )
 }
-
 export default ImagePicker
-
 const DeleteFile = styled.button`
    border: none;
    position: absolute;
@@ -69,7 +65,6 @@ const DeleteFile = styled.button`
       color: #f34901;
    }
 `
-
 const InputLabel = styled.label`
    /* border: 1px solid red; */
    display: block;
@@ -106,7 +101,6 @@ const InputLabel = styled.label`
          }
       `}
 `
-
 const ImageContainer = styled.div`
    height: 312px;
    width: 235px;

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import InputMask from 'react-input-mask'
+import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
+import NumberFormat from 'react-number-format'
 import InputText from '../UI/Inputs/InputText'
 import PasswordInput from '../UI/Inputs/PaswordInput'
 import Validation from '../../hooks/Validation'
@@ -9,22 +10,17 @@ import { signUpVendor } from '../../store/slices/authSlices'
 
 function InputMaskPhone({ value, onChange, onBlur, error }) {
    return (
-      <InputMask
-         // eslint-disable-next-line no-octal-escape, no-nonoctal-decimal-escape
-         mask="+\9\9\6 999 99 99 99"
+      <InputForm
+         name="phone"
+         type="tel"
          value={value}
          onChange={onChange}
          onBlur={onBlur}
+         format="+996 ### ## ## ##"
+         placeholder="+996 ___ ___ ___"
+         mask="_"
          error={error}
-      >
-         {(inputProps) => (
-            <InputText
-               {...inputProps}
-               type="tel"
-               placeholder="+996 557 60 22 24"
-            />
-         )}
-      </InputMask>
+      />
    )
 }
 function SignUpVendor() {
@@ -234,3 +230,10 @@ function SignUpVendor() {
    )
 }
 export default SignUpVendor
+
+const InputForm = styled(NumberFormat)`
+   border: 1px solid #c4c4c4;
+   padding: 10px 20px;
+   background-color: #f8f8f8;
+   outline: none;
+`

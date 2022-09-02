@@ -33,7 +33,8 @@ function Snackbar({
                onClose={handleClose}
                sx={{ width: '100%' }}
             >
-               <img src={icon} alt="icon" />
+               {/* <img src={icon} alt="icon" /> */}
+               <Icon>{icon}</Icon>
                <StyledMessage>{message}</StyledMessage>
                {children}
             </StyledAlert>
@@ -43,6 +44,13 @@ function Snackbar({
 }
 
 export default Snackbar
+
+const Icon = styled('div')`
+   /* border: 1px solid red; */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+`
 
 const StyledAlert = styled(Alert)`
    display: flex;
@@ -59,7 +67,8 @@ const StyledMessage = styled.p`
 const StyledSnackbar = styled(MuiSnackbar)`
    width: ${(props) => props.width};
    height: ${(props) => props.height};
-   background: #ffffff;
+   /* background: #ffffff; */
+   z-index: 2;
    color: black;
    border-radius: 0px;
    padding: 0px;
@@ -67,7 +76,7 @@ const StyledSnackbar = styled(MuiSnackbar)`
    justify-content: center;
    align-items: center;
    .css-ki1hdl-MuiAlert-action {
-      position: absolute;
+      /* position: absolute; */
       right: 20px;
    }
 `

@@ -1,19 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { applicationInnerPageAction } from './applicationInnerPageActions'
 
 const initialState = {
-   data: {},
-   status: null,
+   application: {},
+   message: {},
 }
 
 const applicationsInnerPageSlices = createSlice({
    name: 'getApplications',
    initialState,
-   reducers: {},
-   extraReducers: {
-      [applicationInnerPageAction.fulfilled]: (state, action) => {
-         state.data = action.payload
-         state.status = 'success'
+   reducers: {
+      getInnerPage(state, action) {
+         state.application = action.payload
+      },
+      acceptApplication(state, action) {
+         console.log(action)
+         state.message = action.payload
       },
    },
 })

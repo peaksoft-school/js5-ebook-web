@@ -1,6 +1,6 @@
+import styled from '@emotion/styled'
 import Box from '@mui/material/Box'
 import MuiModal from '@mui/material/Modal'
-import styled from '@emotion/styled'
 
 export default function Modal({
    children,
