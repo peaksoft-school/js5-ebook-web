@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import bookAction from '../../store/slices/addBookSlice'
-import FileUploadButton from '../../Components/UI/uploadaudio/FileUploadButton'
-import Button from '../../Components/UI/Button/Button'
+import bookAction from '../../../store/slices/addBookSlice'
+import FileUploadButton from '../../../Components/UI/uploadaudio/FileUploadButton'
+import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
-import InputText from '../../Components/UI/Inputs/InputText'
-import CheckBox from '../../Components/UI/checkBox/CheckBox'
-import { addElectronicBoook } from '../../store/addBookActions'
-import Selected from '../../Components/UI/Select'
+import InputText from '../../../Components/UI/Inputs/InputText'
+import CheckBox from '../../../Components/UI/checkBox/CheckBox'
+import { addElectronicBoook } from '../../../store/addBookActions'
+import Selected from '../../../Components/UI/Select'
 import {
    ButtonDiv,
    InputDiv,

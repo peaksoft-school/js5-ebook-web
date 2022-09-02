@@ -8,7 +8,7 @@ import {
 } from '../../hooks/locale'
 
 const InitialUser = {
-   role: APP_ROLES.QUEST,
+   role: APP_ROLES.GUEST,
 }
 function reloadGetLocale() {
    const user = getFromLocaleStorage(EBOOK_AUTH_INFO)

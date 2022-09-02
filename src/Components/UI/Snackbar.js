@@ -33,7 +33,8 @@ function Snackbar({
                onClose={handleClose}
                sx={{ width: '100%' }}
             >
-               <img src={icon} alt="icon" />
+               {/* <img src={icon} alt="icon" /> */}
+               <Icon>{icon}</Icon>
                <StyledMessage>{message}</StyledMessage>
                {children}
             </StyledAlert>
@@ -43,6 +44,13 @@ function Snackbar({
 }
 
 export default Snackbar
+
+const Icon = styled('div')`
+   /* border: 1px solid red; */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+`
 
 const StyledAlert = styled(Alert)`
    display: flex;
