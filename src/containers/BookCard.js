@@ -60,7 +60,7 @@ const CartTypeIcon = styled('div')`
 `
 
 const BtbBook = styled(Button)`
-   padding: 20px 0px;
+   padding: 10px 0px;
    width: 100%;
    position: absolute;
    z-index: 10;
@@ -116,11 +116,11 @@ const Card = styled('div')`
    min-height: 343px;
    /* margin: 0 auto; */
    padding: 0;
-   /* margin-right: 20px; */
+   margin-right: 20px;
    position: relative;
    transition: ease-in 0.2s;
-   /* &:nth-child(4n) {
+   &:nth-child(4n + 1) {
       margin-right: 0;
-   } */
-   margin-bottom: 100px;
+   }
+   margin-bottom: 20px;
 `

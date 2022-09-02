@@ -64,6 +64,7 @@ const Item = styled.div`
    }
 `
 const AppContainer = styled.div`
+   /* border: 1px solid red; */
    padding: 0 20px;
    display: flex;
    flex-flow: row nowrap;

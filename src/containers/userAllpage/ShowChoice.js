@@ -53,4 +53,5 @@ const ChoiceItem = styled('div')`
 const ShowChoiceBlock = styled('div')`
    display: flex;
    flex-wrap: wrap;
+   /* border: 1px solid red; */
 `

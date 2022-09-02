@@ -20,3 +20,8 @@ export const Languages = {
    RUSSIAN: 'RUSSIAN',
    ENGLISH: 'ENGLISH',
 }
+
+export const SortBy = {
+   BESTSELLER: 'BESTSELLER',
+   NEW: 'NEW',
+}

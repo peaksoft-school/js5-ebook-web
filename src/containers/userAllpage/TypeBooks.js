@@ -2,28 +2,31 @@ import React from 'react'
 import { styled } from '@mui/material'
 import RadioButton from '../../Components/UI/RadioButton'
 import { BookType } from '../../utils/constants/constants'
+import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconSort.svg'
 
 const TypeBooks = ({ onChange }) => {
    const onChangeHandler = (e) => {
-      onChange(e.target.value)
+      onChange('bookType', e.target.value)
    }
    return (
       <TypeBlock>
-         <Type>Тип</Type>
+         <Type>
+            Тип <Icontriangle />
+         </Type>
          <Line />
          <TypeStyles onChange={onChangeHandler}>
             <RadioButton
-               id="1"
+               id="bookType"
                label="Бумажная книга"
                value={BookType.PAPER_BOOK}
             />
             <RadioButton
-               id="1"
+               id="bookType"
                label="Аудиокнига"
                value={BookType.AUDIO_BOOK}
             />
             <RadioButton
-               id="1"
+               id="bookType"
                label="Электронная книга"
                value={BookType.ELECTRONIC_BOOK}
             />
@@ -43,6 +46,10 @@ const Type = styled('div')`
    font-size: 16px;
    line-height: 120%;
    margin-bottom: 10px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-flow: row nowrap;
 `
 const Line = styled('div')`
    border-bottom: 1px solid gray;

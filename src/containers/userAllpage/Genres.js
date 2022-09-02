@@ -1,12 +1,12 @@
 import { styled } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import CheckBox from '../../Components/UI/checkBox/CheckBox'
 import SearchInput from '../../Components/UI/Inputs/SearchInput'
-// import appFetch from '../../hooks/appFetch'
-import { URL } from '../../utils/constants/constants'
+import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconSort.svg'
 
 const Genres = ({ onChange }) => {
-   const [books, setBooks] = useState([])
+   const { genres } = useSelector((store) => store.globalValues)
    const [choiseGenres, setChoiseGenres] = useState({
       labels: [],
       ids: [],
@@ -14,18 +14,6 @@ const Genres = ({ onChange }) => {
    useEffect(() => {
       onChange(choiseGenres)
    }, [choiseGenres])
-   async function booksUser() {
-      try {
-         const userBooks = await fetch(`${URL}/api/genres`)
-         const data = await userBooks.json()
-         setBooks(data)
-      } catch (error) {
-         console.log(error)
-      }
-   }
-   useEffect(() => {
-      booksUser()
-   }, [])
    const onChangeCheckBox = (id, checked, label, setCheckedFunc) => {
       setChoiseGenres((prev) => {
          if (checked) {
@@ -51,12 +39,14 @@ const Genres = ({ onChange }) => {
    }
    return (
       <>
-         <Genre>Жанры</Genre>
+         <Genre>
+            Жанры <Icontriangle />
+         </Genre>
          <Line />
          <SearchInput placeholder=" Я ищу..." />
          <FormStyles>
-            {books &&
-               books.map((genres) => {
+            {genres &&
+               genres.map((genres) => {
                   return (
                      <CheckBox
                         key={genres.id}
@@ -74,8 +64,8 @@ const Genres = ({ onChange }) => {
 export default Genres
 
 const FormStyles = styled('div')`
+   /* border: 1px solid red; */
    height: 278px;
-   width: 266px;
    margin-top: 19px;
    overflow-y: scroll;
    ::-webkit-scrollbar {
@@ -93,6 +83,10 @@ const Genre = styled('h1')`
    font-size: 16px;
    line-height: 120%;
    margin-bottom: 10px;
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: space-between;
+   align-items: center;
 `
 const Line = styled('div')`
    border-bottom: 1px solid gray;
