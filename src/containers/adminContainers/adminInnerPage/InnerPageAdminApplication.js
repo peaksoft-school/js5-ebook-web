@@ -21,7 +21,6 @@ export const InnerPageAdminApplication = () => {
    const { application, message } = useSelector(
       (state) => state.applicationsInnerPage
    )
-   console.log(message)
 
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
@@ -30,10 +29,9 @@ export const InnerPageAdminApplication = () => {
    const [rejectAplication, setRejectAplication] = useState(false)
    const [isModal, setIsModal] = useState(false)
    const [toAccept, setToAccept] = useState(false)
-   // const [message, setMessage] = useState('')
 
    function acceptHandler() {
-      setToAccept(toAccept)
+      setToAccept(!toAccept)
       dispatch(acceptApplication(id))
    }
 
@@ -42,17 +40,6 @@ export const InnerPageAdminApplication = () => {
       setIsModal(!isModal)
    }
 
-   // function onCloseRejectModal() {
-   //    setIsModal(!isModal)
-   //    setOpen(open)
-   //    setMessage()
-   // }
-   // function openSnackbar() {
-   //    setOpen(open)
-   // }
-   // function onCloseSnackbar() {
-   //    setOpen(!open)
-   // }
    const pathTranslate = {
       request: 'Заявки',
       [id]: application.bookName,

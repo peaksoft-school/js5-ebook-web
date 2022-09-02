@@ -13,7 +13,6 @@ const applicationsInnerPageSlices = createSlice({
          state.application = action.payload
       },
       acceptApplication(state, action) {
-         console.log(action)
          state.message = action.payload
       },
    },
