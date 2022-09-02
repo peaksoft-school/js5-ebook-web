@@ -7,6 +7,7 @@ export const injectStore = (fromStore) => {
 
 const appFetch = ({ url, method, body }) => {
    const { auth } = store.getState()
+   // console.log(auth)
    const requestOptions = {
       method: method || 'GET',
       headers: {

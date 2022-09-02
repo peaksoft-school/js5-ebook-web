@@ -1,11 +1,46 @@
 import appFetch from '../../../hooks/AppFetch'
+import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
+import { sortRequestApplic } from '../../../utils/helpers/helpers'
 
-export const applicationsActions = () => {
+export const applicationsActions = (request) => {
    return async (dispatch) => {
       const result = await appFetch({
-         url: '/api/admin/application/applications?page=1&size=8',
-         method: 'GET',
+         url: `/api/admin/application/applications${sortRequestApplic(
+            request
+         )}`,
+         // method: 'GET',
       })
-      console.log(result)
+      dispatch(
+         applicationSlicesActions.getApplications(
+            result.getApplications.content
+         )
+      )
+      dispatch(
+         applicationSlicesActions.getTotalElements(
+            result.getApplications.totalElements
+         )
+      )
+      dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
+      dispatch(
+         applicationSlicesActions.getTotalPages(
+            result.getApplications.totalPages
+         )
+      )
+   }
+}
+
+export const acceptApplication = (id) => {
+   return async () => {
+      try {
+         const result = await appFetch({
+            method: 'POST',
+            url: `/api/admin/application/books/${id}/accepted`,
+            body: id,
+         })
+         console.log(result)
+         return result
+      } catch (error) {
+         return error
+      }
    }
 }

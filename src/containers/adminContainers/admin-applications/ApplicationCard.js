@@ -1,17 +1,21 @@
 import { styled } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
+import { useDispatch } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
 import Modal from '../../../Components/UI/Modal'
 import { RejectRequest } from './RejectRequest'
 import AcceptRequest from './AcceptRequest'
 import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
+import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 
 const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
+   console.log(id)
+   const dispatch = useDispatch()
    const menuMeatBall = [
       {
-         id: 1,
+         id: 55,
          title: 'Принять',
          icon: <CheckMark />,
          onClick: acceptModal,
@@ -28,10 +32,12 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
    const [isModal, setIsModal] = useState(false)
    const [toAccept, setToAccept] = useState(false)
 
+   // useEffect(() => {
+   //    dispatch(acceptApplication(id))
+   // }, [toAccept])
    function acceptModal() {
-      setToAccept(!toAccept)
-
-      // POST
+      // setToAccept((prev) => !prev)
+      dispatch(acceptApplication(id))
    }
 
    function closeAcceptModal(e) {
@@ -72,7 +78,7 @@ const ApplicationCard = ({ id, img, date, name, price, onClick }) => {
             overflow="none"
             onClose={(e) => closeAcceptModal(e)}
          >
-            <AcceptRequest name={name} />
+            <AcceptRequest />
          </Modal>
          <Div>
             <Book src={img} alt="photo" />

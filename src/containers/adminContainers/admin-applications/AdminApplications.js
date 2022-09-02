@@ -1,55 +1,68 @@
 import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
-import { useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux/'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux/'
 import Button from '../../../Components/UI/Button/Button'
 import ApplicationCard from './ApplicationCard'
-import { books } from '../../../utils/constants/books'
-// import applicationActions from '../../../store/slices/applicationsSlices'
+import { applicationsActions } from '../../../store/slices/adminActions/applicationsActions'
 
 const AdminApplications = () => {
-   // const data = useSelector((state) => state.data)
-   // console.log(data)
-   // const dispatch = useDispatch()
+   const {
+      applications,
+      totalElements: allBooks,
+      unwatched,
+      totalPages,
+   } = useSelector((state) => state.applications)
+   const [requestObj, setRequestObj] = useState({ page: 1, size: 8 })
+   const [showSeeMore, setShowSeeMore] = useState(false)
+
+   const dispatch = useDispatch()
    const navigate = useNavigate()
-   const [allRequest, setAllLimits] = useState(0)
 
-   const [noSeeArr, setNoSeeArr] = useState(0)
-
-   const [requestBooks, setRequestBooks] = useState(books)
-
-   // useEffect(() => {
-   //    dispatch(applicationActions.getApplications())
-   // })
-   const getRequsetBooks = () => {
-      setRequestBooks()
-   }
+   useEffect(() => {
+      dispatch(applicationsActions(requestObj))
+      if (totalPages === requestObj.page) {
+         setShowSeeMore(false)
+      } else {
+         setShowSeeMore(true)
+      }
+   }, [requestObj])
 
    const deatailRequest = (id) => {
       navigate(`/request/${id}`)
    }
+   const getRequsetBooks = () => {
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            page: prev.page + 1,
+         }
+      })
+   }
    return (
       <Application>
          <TotalApplication>
-            <Total>Всего:{allRequest}</Total>
+            <Total>Всего:{allBooks}</Total>
             <Total>
-               Непросмотренные: <MinusView>{noSeeArr}</MinusView>
+               Непросмотренные: <MinusView>{unwatched}</MinusView>
             </Total>
          </TotalApplication>
          <Books>
-            {requestBooks.map((el) => (
-               <ApplicationCard
-                  key={el.id}
-                  id={el.id}
-                  img={el.image}
-                  date={el.date}
-                  total={el.total}
-                  name={el.name}
-                  price={el.price}
-                  onClick={() => deatailRequest(el.id)}
-               />
-            ))}
-            <SeeMore onClick={getRequsetBooks}>Смотреть больше</SeeMore>
+            {applications &&
+               applications.map((el) => (
+                  <ApplicationCard
+                     key={el.id}
+                     id={el.id}
+                     img={el.mainImage}
+                     date={el.publishedDate}
+                     name={el.name}
+                     price={el.price}
+                     onClick={() => deatailRequest(el.id)}
+                  />
+               ))}
+            {showSeeMore && (
+               <SeeMore onClick={getRequsetBooks}>Смотреть больше</SeeMore>
+            )}
          </Books>
       </Application>
    )
