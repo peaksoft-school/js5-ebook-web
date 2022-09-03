@@ -24,10 +24,12 @@ const ButtonStyle = styled(MuiButton)`
    color: #ffffff;
    line-height: 120%;
    display: flex;
-   justify-content: center;
+   justify-content: space-around;
    align-items: center;
    border-radius: 0px;
-
+   width: ${(props) => props.width || ''};
+   height: ${(props) => props.height || ''};
+   padding: ${(props) => props.padding || ''};
    background: ${(props) =>
       props.variant === 'default' ? '#1c1c1c' : '#f34901'};
    padding: ${(props) => (props.variant === 'default' ? '10px 24px ' : ' ')};

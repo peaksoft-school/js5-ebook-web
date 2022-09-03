@@ -7,6 +7,10 @@ import spinnerSlice from './slices/adminSlices/SpinnerSlice'
 import authSlices from './slices/authSlices'
 import globalValues from './slices/genres'
 import uiSlices from './slices/uiSlices'
+import { vendorbookInnerPageSlice } from './slices/vendorBookInnerPageSlice'
+import PromocodeSlices from './slices/promocodeSlices'
+import globalValues from './slices/globalSlices'
+
 
 const store = configureStore({
    reducer: {
@@ -16,7 +20,9 @@ const store = configureStore({
       applications: applicationsSlices.reducer,
       uiSlice: uiSlices.reducer,
       applicationsInnerPage: applicationsInnerPageSlices.reducer,
-      spinner: spinnerSlice.reducer,
+      vendorBookInnerPage: vendorbookInnerPageSlice.reducer,
+      promocodeStore: PromocodeSlices.reducer,
+
    },
 })
 

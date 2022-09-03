@@ -6,6 +6,8 @@ export default function adminLayout() {
    return (
       <Route path="/" element={<AdminLayout />}>
          <Route path="request" element={<AdminApplications />} />
+         <Route path="/books" element={<AdminBooks />} />
+         <Route path="/*" element={<div>not found</div>} />
       </Route>
    )
 }

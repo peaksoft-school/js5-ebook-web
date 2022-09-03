@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import Checkbox from '../../Components/UI/checkBox/CheckBox'
-import Button from '../../Components/UI/Button/Button'
+import Checkbox from '../../../Components/UI/checkBox/CheckBox'
+import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
-import InputText from '../../Components/UI/Inputs/InputText'
-import { addPaperBook } from '../../store/addBookActions'
-import bookAction from '../../store/slices/addBookSlice'
-import Selected from '../../Components/UI/Select'
+import InputText from '../../../Components/UI/Inputs/InputText'
+import { addPaperBook } from '../../../store/addBookActions'
+import bookAction from '../../../store/slices/addBookSlice'
+import Selected from '../../../Components/UI/Select'
 
 const languageSelect = [
    { name: 'kyrgyzstan', id: 1 },
