@@ -1,16 +1,19 @@
 import { styled } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import CheckBox from '../../Components/UI/checkBox/CheckBox'
 import SearchInput from '../../Components/UI/Inputs/SearchInput'
 import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconSort.svg'
+import { updateSortGenres } from '../../store/slices/globalSlices'
 
 const Genres = ({ onChange }) => {
-   const { genres } = useSelector((store) => store.globalValues)
+   const { genres, sortGenres } = useSelector((store) => store.globalValues)
    const [choiseGenres, setChoiseGenres] = useState({
       labels: [],
       ids: [],
    })
+   const inputSearchRef = useRef()
+   const dispatch = useDispatch()
    useEffect(() => {
       onChange(choiseGenres)
    }, [choiseGenres])
@@ -37,25 +40,39 @@ const Genres = ({ onChange }) => {
          }
       })
    }
+   const onChangeSearchInput = () => {
+      dispatch(updateSortGenres(inputSearchRef.current.value))
+   }
    return (
       <>
          <Genre>
             Жанры <Icontriangle />
          </Genre>
          <Line />
-         <SearchInput placeholder=" Я ищу..." />
+         <SearchInput
+            placeholder=" Я ищу..."
+            onChange={onChangeSearchInput}
+            ref={inputSearchRef}
+         />
          <FormStyles>
-            {genres &&
-               genres.map((genres) => {
-                  return (
-                     <CheckBox
-                        key={genres.id}
-                        label={genres.name}
-                        id={genres.id}
-                        onChange={onChangeCheckBox}
-                     />
-                  )
-               })}
+            {sortGenres.length !== 0
+               ? sortGenres.map((genres) => (
+                    <CheckBox
+                       key={genres.id}
+                       label={genres.name}
+                       id={genres.id}
+                       onChange={onChangeCheckBox}
+                    />
+                 ))
+               : genres &&
+                 genres.map((genres) => (
+                    <CheckBox
+                       key={genres.id}
+                       label={genres.name}
+                       id={genres.id}
+                       onChange={onChangeCheckBox}
+                    />
+                 ))}
          </FormStyles>
       </>
    )

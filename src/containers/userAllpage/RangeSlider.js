@@ -9,10 +9,22 @@ function valuetext(value) {
 
 export default function RangeSlider({ onChange }) {
    const [value, setValue] = React.useState([1200, 6000])
+   const [f, setF] = React.useState(true)
+   React.useEffect(() => {
+      if (f) {
+         setF(false)
+         return () => {}
+      }
+      const debounceRange = setTimeout(() => {
+         onChange(value[0], value[1])
+      }, 1000)
+      return () => {
+         clearTimeout(debounceRange)
+      }
+   }, [value])
 
    const handleChange = (event, newValue) => {
       setValue(newValue)
-      onChange(value[0], value[1])
    }
 
    const onChangeInputHandler = (index, value) => {
@@ -24,7 +36,6 @@ export default function RangeSlider({ onChange }) {
             return elem
          })
       })
-      onChange(value[0], value[1])
    }
 
    return (

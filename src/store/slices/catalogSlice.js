@@ -6,6 +6,8 @@ const initialState = {
    books: [],
    totalBooks: 0,
    totalPages: 0,
+   status: null,
+   error: null,
 }
 
 const сatalogSlices = createSlice({
@@ -25,6 +27,12 @@ const сatalogSlices = createSlice({
             }
          })
       },
+      rejected: (state, action) => {
+         state.error = action.payload
+      },
+      cleanError: (state) => {
+         state.error = null
+      },
    },
 })
 
@@ -33,19 +41,26 @@ export default сatalogSlices
 
 export const getBooks = (request) => {
    return async (dispatch) => {
-      const result = await appFetch({
-         url: `/api/books${sortRequestApplic(request)}`,
-      })
-      console.log(result)
-      dispatch(сatalogActions.getBooks(result))
+      try {
+         const result = await appFetch({
+            url: `/api/books${sortRequestApplic(request)}`,
+         })
+         dispatch(сatalogActions.getBooks(result))
+      } catch (error) {
+         dispatch(сatalogActions.rejected(error))
+      }
    }
 }
 
 export const updateBooks = (request) => {
    return async (dispatch) => {
-      const result = await appFetch({
-         url: `/api/books${sortRequestApplic(request)}`,
-      })
-      dispatch(сatalogActions.updateBooks(result))
+      try {
+         const result = await appFetch({
+            url: `/api/books${sortRequestApplic(request)}`,
+         })
+         dispatch(сatalogActions.updateBooks(result))
+      } catch (error) {
+         dispatch(сatalogActions.rejected(error))
+      }
    }
 }

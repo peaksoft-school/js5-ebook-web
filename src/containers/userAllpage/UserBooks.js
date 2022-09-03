@@ -10,57 +10,13 @@ import ShowChoice from './ShowChoice'
 import Sorting from './Sorting'
 import TotalBooks from './TotalBooks'
 import Button from '../../Components/UI/Button/Button'
-import { getBooks } from '../../store/slices/catalogSlice'
+import {
+   getBooks,
+   updateBooks,
+   сatalogActions,
+} from '../../store/slices/catalogSlice'
+import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
 // import BreadCrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
-// import { sortRequestApplic } from '../../utils/helpers/helpers'
-
-// const books = [
-//    {
-//       id: 1,
-//       mainImage:
-//          'https://ebookjava5.s3.eu-central-1.amazonaws.com/16611702063041024w-iRBldJ_jyLw.webp',
-//       name: 'Ыссык-Кол',
-//       author: 'Чынгыз Айтматов',
-//       price: 500,
-//       bookType: 'AUDIO_BOOK',
-//    },
-//    {
-//       id: 2,
-//       mainImage:
-//          'https://ebookjava5.s3.eu-central-1.amazonaws.com/16611702063041024w-iRBldJ_jyLw.webp',
-//       name: 'Ыссык-Кол',
-//       author: 'Чынгыз Айтматов',
-//       price: 500,
-//       bookType: 'AUDIO_BOOK',
-//    },
-//    {
-//       id: 3,
-//       mainImage:
-//          'https://ebookjava5.s3.eu-central-1.amazonaws.com/16611702063041024w-iRBldJ_jyLw.webp',
-//       name: 'Баткен',
-//       author: 'Чынгыз Айтматов',
-//       price: 450,
-//       bookType: 'ELECTRONIC_BOOK',
-//    },
-//    {
-//       id: 5,
-//       mainImage:
-//          'https://ebookjava5.s3.eu-central-1.amazonaws.com/16611702063041024w-iRBldJ_jyLw.webp',
-//       name: 'Талас',
-//       author: 'Чынгыз Айтматов',
-//       price: 495,
-//       bookType: 'PAPER_BOOK',
-//    },
-//    {
-//       id: 4,
-//       mainImage:
-//          'https://ebookjava5.s3.eu-central-1.amazonaws.com/16611702063041024w-iRBldJ_jyLw.webp',
-//       name: 'Баткен',
-//       author: 'Чынгыз Айтматов',
-//       price: 450,
-//       bookType: 'ELECTRONIC_BOOK',
-//    },
-// ]
 
 const UserBooks = () => {
    const [requestObj, setRequestObj] = React.useState({
@@ -74,10 +30,24 @@ const UserBooks = () => {
       page: '1',
       size: '12',
    })
-   const { books, totalBooks, totalPages } = useSelector((store) => store.books)
+   const { books, totalBooks, totalPages, error } = useSelector(
+      (store) => store.books
+   )
    const [showSeeMore, setShowSeeMore] = React.useState(false)
    const [showGenres, setShowGenres] = React.useState([])
    const dispatch = useDispatch()
+
+   React.useEffect(() => {
+      let errorTime = setTimeout(() => {}, 1000)
+      if (error) {
+         errorTime = setTimeout(() => {
+            dispatch(сatalogActions.cleanError())
+         }, 3000)
+      }
+      return () => {
+         clearTimeout(errorTime)
+      }
+   }, [error])
 
    React.useEffect(() => {
       if (
@@ -91,6 +61,19 @@ const UserBooks = () => {
    }, [requestObj.page, totalPages])
 
    React.useEffect(() => {
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            page: '1',
+         }
+      })
+   }, [totalPages])
+
+   React.useEffect(() => {
+      dispatch(updateBooks(requestObj))
+   }, [requestObj.page, requestObj.sortBy])
+
+   React.useEffect(() => {
       dispatch(getBooks(requestObj))
    }, [
       requestObj.genres,
@@ -98,7 +81,6 @@ const UserBooks = () => {
       requestObj.priceFrom,
       requestObj.priceTo,
       requestObj.languages,
-      requestObj.sortBy,
    ])
    const onChangePriceHandler = (from, to) => {
       setRequestObj((prev) => {
@@ -128,8 +110,26 @@ const UserBooks = () => {
          }
       })
    }
+   const onClickSeeMore = () => {
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            page: Number(prev.page) + 1,
+         }
+      })
+   }
+   const onCloseSnackbar = () => {
+      dispatch(сatalogActions.cleanError())
+   }
    return (
       <FilterBooks>
+         <GetSnackbar
+            open={error}
+            message={error}
+            variant="error"
+            horizontal="right"
+            handleClose={() => onCloseSnackbar()}
+         />
          <SortBooks>
             <HeaderBooks>
                <HeaderItem width="100%">
@@ -158,7 +158,9 @@ const UserBooks = () => {
             {books.map((elem) => {
                return <BooksCard key={elem.id} book={elem} />
             })}
-            {showSeeMore && <SeeMore>Смотреть больше</SeeMore>}
+            {showSeeMore && (
+               <SeeMore onClick={onClickSeeMore}>Смотреть больше</SeeMore>
+            )}
          </Books>
       </FilterBooks>
    )

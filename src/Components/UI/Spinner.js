@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 export default function Spinner() {
    return (
       <SpinnerBlock>
-         <CircularProgress color="secondary" />
+         <CircularProgress />
       </SpinnerBlock>
    )
 }
@@ -17,6 +17,7 @@ const SpinnerBlock = styled('div')`
    bottom: 0;
    z-index: 9990;
    display: flex;
+   background-color: rgba(0, 0, 0, 0.5);
    justify-content: center;
    align-items: center;
    padding: 20px 0;
