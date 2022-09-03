@@ -5,9 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import store from './store/index'
-import { injectStore } from './hooks/AppFetch'
-import './index.css'
-
+import { injectStore } from './hooks/appFetch'
 
 injectStore(store)
 

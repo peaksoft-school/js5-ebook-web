@@ -1,4 +1,4 @@
-import appFetch from '../../../hooks/AppFetch'
+import appFetch from '../../../hooks/appFetch'
 import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
 import { sortRequestApplic } from '../../../utils/helpers/helpers'
 

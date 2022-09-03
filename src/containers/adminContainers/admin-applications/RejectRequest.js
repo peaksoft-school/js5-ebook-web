@@ -2,11 +2,11 @@ import { styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
-import Snackbar from '../../../Components/UI/Snacbar'
 import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
 import { ReactComponent as IconAccept } from '../../../assets/icons/IconAccept.svg'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { applicationSlicesActions } from '../../../store/slices/adminSlices/applicationsSlices'
+import Snackbar from '../../../Components/UI/Snackbar'
 
 export const RejectRequest = ({ id, onClose }) => {
    const { rejectMessage } = useSelector((state) => state.applications)

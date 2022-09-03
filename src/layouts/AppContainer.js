@@ -52,16 +52,13 @@ const Item = styled.div`
    display: flex;
    flex-flow: column;
    height: auto;
-<<<<<<< HEAD
+   max-width: 100%;
    /* padding: 20px; */
    ${(props) =>
       props.maxWidth &&
       css`
          max-width: 900px;
       `}
-=======
-   max-width: 100%;
->>>>>>> d68ac5f012aa84e18b156d621b129769809b222f
    &:nth-child(2) {
       flex-grow: 0;
       flex-shrink: 0;
