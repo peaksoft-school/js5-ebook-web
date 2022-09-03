@@ -1,13 +1,25 @@
-import appFetch from '../hooks/appFetch'
-import bookAction from './slices/addBookSlice'
-import { appFileFetchService } from '../api/fileService'
+import appFetch from '../../hooks/AppFetch'
+import bookAction from '../slices/addBookSlice'
+import { appFileFetchService } from '../../api/fileService'
+import { getMainBooks } from './vendorMainPagesActions'
 
-export const addPaperBook = (inputValues, images) => {
+export const addPaperBook = (inputValues, images, bestseller) => {
    const valuesWithFile = {
-      ...inputValues,
-      ...images,
-      bestseller: true,
+      name: inputValues.name,
+      genreId: inputValues.genreId,
+      price: inputValues.price,
+      author: inputValues.author,
+      description: inputValues.description,
+      yearOfIssue: inputValues.yearOfIssue,
+      discount: inputValues.discount,
+      language: inputValues.language,
+      bestseller,
+      fragment: inputValues.fragment,
+      pageSize: inputValues.pageSize,
+      publishingHouse: inputValues.publishingHouse,
+      quantityOfBook: inputValues.quantityOfBook,
    }
+   console.log(valuesWithFile)
    return async (dispatch) => {
       try {
          if (images.mainImage) {
@@ -29,6 +41,7 @@ export const addPaperBook = (inputValues, images) => {
             body: valuesWithFile,
          })
          dispatch(bookAction.statusSuccess(result))
+         dispatch(getMainBooks())
       } catch (error) {
          dispatch(bookAction.statusError(error))
       }
@@ -37,9 +50,17 @@ export const addPaperBook = (inputValues, images) => {
 
 export const addAudioBook = (inputValues, images, audioValues) => {
    const valuesWithFile = {
-      ...inputValues,
-      ...images,
+      name: inputValues.name,
+      genreId: inputValues.genreId,
+      price: inputValues.price,
+      author: inputValues.author,
+      description: inputValues.description,
+      yearOfIssue: inputValues.yearOfIssue,
+      discount: inputValues.discount,
       bestseller: true,
+      fragment: inputValues.fragment,
+      pageSize: inputValues.pageSize,
+      publishingHouse: inputValues.publishingHouse,
    }
 
    return async (dispatch) => {
@@ -81,9 +102,18 @@ export const addAudioBook = (inputValues, images, audioValues) => {
 
 export const addElectronicBoook = (inputValues, images, pdf) => {
    const valuesWithFile = {
-      ...inputValues,
-      ...images,
+      name: inputValues.name,
+      genreId: inputValues.genreId,
+      price: inputValues.price,
+      author: inputValues.author,
+      description: inputValues.description,
+      // language: inputValues.language,
+      yearOfIssue: inputValues.yearOfIssue,
+      discount: inputValues.discount,
       bestseller: true,
+      fragment: inputValues.fragment,
+      pageSize: inputValues.pageSize,
+      publishingHouse: inputValues.publishingHouse,
    }
 
    return async (dispatch) => {
@@ -104,7 +134,7 @@ export const addElectronicBoook = (inputValues, images, pdf) => {
 
          if (pdf) {
             const imgFiles = await appFileFetchService(pdf)
-            valuesWithFile.thirdImage = imgFiles.link
+            valuesWithFile.electronicBook = imgFiles.link
          }
 
          const result = await appFetch({

@@ -14,6 +14,7 @@ const InputText = React.forwardRef(
          onBlur,
          onFocus,
          focusColor,
+         name,
          ...props
       },
       ref
@@ -32,7 +33,12 @@ const InputText = React.forwardRef(
       }
 
       return (
-         <InputContainer focus={isFocus} error={error} focusColor={focusColor}>
+         <InputContainer
+            borderColor={isFocus && name ? '#F34901' : ''}
+            focus={isFocus}
+            error={error}
+            focusColor={focusColor}
+         >
             <Input
                placeholder={placeholder}
                type={type || 'text'}

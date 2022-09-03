@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import appFetch from '../../hooks/appFetch'
+import appFetch from '../../hooks/AppFetch'
 
 const initialState = {
    promocode: '',

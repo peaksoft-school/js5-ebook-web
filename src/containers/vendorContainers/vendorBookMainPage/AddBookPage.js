@@ -1,22 +1,37 @@
 import { styled } from '@mui/material'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import ImagePicker from '../../../Components/UI/imagePicker/imagePicker'
 import PaperBook from './PaperBookForm'
 import RadioButton from '../../../Components/UI/RadioButton'
 import AudioBook from './AudioBookForm'
 import ElectronicBook from './ElectronicBookForm'
-
-const allImages = {
-   mainImage: '',
-   secondImage: '',
-   thirdImage: '',
-}
+import { setGenres } from '../../../store/slices/globalSlices'
+import Snackbar from '../../../Components/UI/Snackbar'
+import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
 
 const AddBookPage = () => {
-   const [images, setImages] = useState(allImages)
+   const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
+   const { bookType } = useSelector((store) => store.vendorMainPage)
+   const { deleteImage, error, status } = useSelector((store) => store.addbook)
+
+   const dispatch = useDispatch()
+
+   const [images, setImages] = useState({
+      mainImage: dataWithId ? dataWithId.mainImage : '',
+      secondImage: dataWithId ? dataWithId.secondImage : '',
+      thirdImage: dataWithId ? dataWithId.thirdImage : '',
+   })
    const [radio, setRadio] = useState('Бумажная')
-   const { deleteImage } = useSelector((state) => state.addbook)
+
+   useEffect(() => {
+      if (bookType) {
+         setRadio(bookType)
+      }
+   }, [bookType])
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
 
    const saveImageValue = (imageFile, e) => {
       const { name } = e.target
@@ -37,8 +52,29 @@ const AddBookPage = () => {
       return bookComponents
    }
 
+   const handleToClose = () => {}
+
    return (
       <ContainerDiv>
+         {error && (
+            <Snackbar
+               width="400px"
+               message={error || status}
+               severity=""
+               open={error}
+               handleClose={handleToClose}
+            />
+         )}
+         {status && (
+            <Snackbar
+               width="400px"
+               message={status}
+               severity=""
+               open={status}
+               handleClose={handleToClose}
+            />
+         )}
+         <SnackBarDate />
          <div>
             <ThreeImagesDiv>
                Загрузите 3 фото <strong>*</strong>
@@ -50,6 +86,7 @@ const AddBookPage = () => {
                         onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="mainImage"
+                        putUrl={images.mainImage}
                         id="e1"
                      />
                      <p>Главное фото</p>
@@ -59,6 +96,7 @@ const AddBookPage = () => {
                         onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="secondImage"
+                        putUrl={images.secondImage}
                         id="e2"
                      />
                      <p>2</p>
@@ -68,6 +106,7 @@ const AddBookPage = () => {
                         onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="thirdImage"
+                        putUrl={images.thirdImage}
                         id="e3"
                      />
                      <p>3</p>

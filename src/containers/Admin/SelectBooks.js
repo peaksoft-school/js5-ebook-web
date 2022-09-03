@@ -13,7 +13,7 @@ export default function SelectBooks({ genres, name, onClick, type }) {
    const open = Boolean(anChorEl)
    useEffect(() => {
       if (onClick) {
-         onClick(label.id, label.key)
+         onClick(label.id, label.key, label.text)
       }
    }, [label])
    const handleClickLabel = (e) => {
@@ -22,19 +22,20 @@ export default function SelectBooks({ genres, name, onClick, type }) {
    const onCloseMenu = () => {
       setAnchorEl(null)
    }
-   const onSelectItem = (id, name) => {
+   const onSelectItem = (id, name, text) => {
       setLabel((prev) => {
          return {
             ...prev,
             name,
             id,
+            text,
          }
       })
       onCloseMenu()
    }
    return (
       <SelectBook>
-         <SelectSpan>{name}:</SelectSpan>
+         {name && <SelectSpan>{name}:</SelectSpan>}
          <SelectLabel onClick={handleClickLabel}>{label.name} </SelectLabel>
          <PopUp open={open} anchorEl={anChorEl} onClose={onCloseMenu}>
             {genres &&
@@ -42,7 +43,9 @@ export default function SelectBooks({ genres, name, onClick, type }) {
                   return (
                      <PopUpItem
                         key={elem.id}
-                        onClick={() => onSelectItem(elem.id, elem.name)}
+                        onClick={() =>
+                           onSelectItem(elem.id, elem.name, elem.text)
+                        }
                      >
                         {elem.name}
                      </PopUpItem>

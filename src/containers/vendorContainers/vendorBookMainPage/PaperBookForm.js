@@ -1,18 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import Checkbox from '../../../Components/UI/checkBox/CheckBox'
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
-import { addPaperBook } from '../../../store/addBookActions'
+import { addPaperBook } from '../../../store/createActions/addBookActions'
 import bookAction from '../../../store/slices/addBookSlice'
 import Selected from '../../../Components/UI/Select'
+import SelectBooks from '../../Admin/SelectBooks'
+import { setGenres } from '../../../store/slices/globalSlices'
+import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
+import Snackbar from '../../../Components/UI/Snackbar'
 
 const languageSelect = [
-   { name: 'kyrgyzstan', id: 1 },
-   { name: 'Russian', id: 2 },
-   { name: 'English', id: 3 },
+   { name: 'KYRGYZ', id: 1 },
+   { name: 'RUSSIAN', id: 2 },
+   { name: 'ENGLISH', id: 3 },
 ]
 
 export const inputValuesForState = {
@@ -27,18 +31,31 @@ export const inputValuesForState = {
    quantityOfBook: '',
    discount: '',
 }
-const paperInputValues = {
-   ...inputValuesForState,
-   amount: '',
-}
 
 const PaperBookForm = ({ images }) => {
-   const [inputValues, setInputValues] = useState({
-      ...paperInputValues,
-      ...images,
-   })
    const dispatch = useDispatch()
    const jenre = useSelector((store) => store.addbook.jenreId)
+   const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
+   const [isChecked, setIsChecked] = useState()
+
+   const [inputValues, setInputValues] = useState({
+      name: dataWithId ? dataWithId.bookName : '',
+      author: dataWithId ? dataWithId.author : '',
+      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
+      description: dataWithId ? dataWithId.description : '',
+      fragment: dataWithId ? dataWithId.fragment : '',
+      pageSize: dataWithId ? dataWithId.pageSize : 0,
+      price: dataWithId ? dataWithId.price : 0,
+      genreId: dataWithId ? dataWithId.genreId : 0,
+      yearOfIssue: dataWithId ? dataWithId.yearOfIssue : 0,
+      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : 0,
+      language: dataWithId ? dataWithId.language : '',
+      discount: dataWithId ? dataWithId.discount : '',
+   })
+
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -48,7 +65,7 @@ const PaperBookForm = ({ images }) => {
       const validateValues =
          inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
-         inputValues.jenreId > +0 &&
+         inputValues.genreId > +0 &&
          inputValues.publishingHouse.length >= 1 &&
          inputValues.description.length >= 1 &&
          inputValues.fragment.length >= 1 &&
@@ -59,12 +76,12 @@ const PaperBookForm = ({ images }) => {
 
       return validateValues && images.mainImage
    }
+   const [open, setOpen] = useState(false)
 
    const clickSendFormValues = async () => {
       if (isFormValid()) {
-         dispatch(addPaperBook(inputValues, images))
+         dispatch(addPaperBook(inputValues, images, isChecked))
          dispatch(bookAction.deleteImage())
-
          setInputValues({
             name: '',
             author: '',
@@ -78,12 +95,32 @@ const PaperBookForm = ({ images }) => {
             discount: '',
             quantityOfBook: '',
          })
+      } else {
+         setOpen(!open)
       }
+   }
+
+   const updateForms = async () => {
+      if (isFormValid()) {
+         dispatch(putVendorBook(inputValues, images))
+      } else {
+         setOpen(!open)
+      }
+   }
+
+   const handleToClose = () => {
+      setOpen(false)
    }
 
    return (
       <>
-         {/* snackbar */}
+         <Snackbar
+            width="400px"
+            message="Пожалуйста, заполните все поля"
+            severity="error"
+            open={open}
+            handleClose={handleToClose}
+         />
          <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -116,6 +153,7 @@ const PaperBookForm = ({ images }) => {
                   }
                   title={jenre}
                />
+               <SelectBooks />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
                </LabelStyle>
@@ -136,11 +174,11 @@ const PaperBookForm = ({ images }) => {
                />
                <Textarea
                   onChange={handleChangeInput}
-                  value={inputValues.fragment}
                   name="fragment"
                   title="Фрагмент книги"
                   placeholder="Напишите фрагмент книги"
                   maxLength="9234"
+                  value={inputValues.fragment}
                />
             </InputDiv>
             <div>
@@ -180,7 +218,12 @@ const PaperBookForm = ({ images }) => {
                         type="number"
                      />
                      <Bestssler>
-                        <Checkbox label="Бестселлер" />
+                        <Checkbox
+                           label="Бестселлер"
+                           onChange={(e) => {
+                              setIsChecked(e.target.checked)
+                           }}
+                        />
                      </Bestssler>
                   </SelectDiv>
                   <SelectDiv>
@@ -224,9 +267,20 @@ const PaperBookForm = ({ images }) => {
             </div>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickSendFormValues}>
-               Отправить
-            </Button>
+            {!dataWithId ? (
+               <Button width="160px" onClick={clickSendFormValues}>
+                  Отправить
+               </Button>
+            ) : (
+               <Button
+                  width="160px"
+                  onClick={updateForms}
+                  background="black"
+                  variant="universal"
+               >
+                  PUT
+               </Button>
+            )}
          </ButtonDiv>
       </>
    )

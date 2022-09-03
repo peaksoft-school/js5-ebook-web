@@ -8,20 +8,10 @@ import InputText from '../../../Components/UI/Inputs/InputText'
 import CheckBox from '../../../Components/UI/checkBox/CheckBox'
 import bookAction from '../../../store/slices/addBookSlice'
 import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
-import { addAudioBook } from '../../../store/addBookActions'
+import { addAudioBook } from '../../../store/createActions/addBookActions'
 import Selected from '../../../Components/UI/Select'
-
-const audioBookInputValues = {
-   name: '',
-   author: '',
-   description: '',
-   yearOfIssue: '',
-   duration: '',
-   minute: '',
-   second: '',
-   price: '',
-   discount: '',
-}
+import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
+import Snackbar from '../../../Components/UI/Snackbar'
 
 const allAudioRecordingValues = {
    fragment: '',
@@ -29,16 +19,31 @@ const allAudioRecordingValues = {
 }
 
 const languageSelect = [
-   { name: 'kyrgyzstan', id: 1 },
-   { name: 'Russian', id: 2 },
-   { name: 'English', id: 3 },
+   { name: 'KYRGYZ', id: 1 },
+   { name: 'RUSSIAN', id: 2 },
+   { name: 'ENGLISH', id: 3 },
 ]
 
 const AudioBookForm = ({ images }) => {
-   const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
-   const [inputValues, setInputValues] = useState(audioBookInputValues)
    const jenre = useSelector((store) => store.addbook.jenreId)
+   const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
    const dispatch = useDispatch()
+   const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
+   const [open, setOpen] = useState(false)
+
+   const [inputValues, setInputValues] = useState({
+      name: dataWithId ? dataWithId.bookName : '',
+      author: dataWithId ? dataWithId.author : '',
+      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
+      description: dataWithId ? dataWithId.description : '',
+      fragment: dataWithId ? dataWithId.fragment : '',
+      pageSize: dataWithId ? dataWithId.pageSize : '',
+      price: dataWithId ? dataWithId.price : '',
+      yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
+      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
+      discount: dataWithId ? dataWithId.discount : '',
+   })
+
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
       setAudioValues({ ...audioValues, [name]: audio })
@@ -61,7 +66,7 @@ const AudioBookForm = ({ images }) => {
          inputValues.yearOfIssue.length >= 1 &&
          inputValues.price.length >= 1
 
-      return isInputsAreValid && images.mainImage && audioValues.fragment
+      return isInputsAreValid && images.mainImage
    }
    const clickSendFormValues = async () => {
       if (isFormValid()) {
@@ -81,11 +86,31 @@ const AudioBookForm = ({ images }) => {
             price: '',
             discount: '',
          })
+      } else {
+         setOpen(true)
       }
+   }
+
+   const updateForms = () => {
+      if (isFormValid()) {
+         dispatch(putVendorBook(inputValues, images, audioValues))
+      } else {
+         setOpen(true)
+      }
+   }
+   const handleToClose = () => {
+      setOpen(false)
    }
 
    return (
       <>
+         <Snackbar
+            width="400px"
+            message="Пожалуйста, заполните все поля"
+            severity="error"
+            open={open}
+            handleClose={handleToClose}
+         />
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -251,9 +276,20 @@ const AudioBookForm = ({ images }) => {
             </SelectWrapper>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickSendFormValues}>
-               Отправить
-            </Button>
+            {!dataWithId ? (
+               <Button width="160px" onClick={clickSendFormValues}>
+                  Отправить
+               </Button>
+            ) : (
+               <Button
+                  width="160px"
+                  onClick={updateForms}
+                  background="black"
+                  variant="universal"
+               >
+                  PUT
+               </Button>
+            )}
          </ButtonDiv>
       </>
    )

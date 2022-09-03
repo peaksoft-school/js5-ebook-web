@@ -55,6 +55,7 @@ const TextareaStyle = styled('textarea')`
 
    &:focus {
       background-color: white;
+      border: 1px solid #f34901;
    }
 `
 const Label = styled('label')`
