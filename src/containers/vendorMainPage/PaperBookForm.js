@@ -45,19 +45,18 @@ const PaperBookForm = ({ images }) => {
       setInputValues({ ...inputValues, [name]: value })
    }
    const isFormValid = () => {
-      const validateValues =
-         inputValues.name.length >= 1 &&
-         inputValues.author.length >= 1 &&
-         inputValues.jenreId > +0 &&
-         inputValues.publishingHouse.length >= 1 &&
-         inputValues.description.length >= 1 &&
-         inputValues.fragment.length >= 1 &&
-         inputValues.pageSize.length >= 1 &&
-         inputValues.price.length >= 1 &&
-         inputValues.discount.length >= 1 &&
-         inputValues.quantityOfBook.length >= 1
+      const validateValues = inputValues.name.length >= 1
+      // inputValues.author.length >= 1 &&
+      // inputValues.jenreId > +0 &&
+      // inputValues.publishingHouse.length >= 1 &&
+      // inputValues.description.length >= 1 &&
+      // inputValues.fragment.length >= 1 &&
+      // inputValues.pageSize.length >= 1 &&
+      // inputValues.price.length >= 1 &&
+      // inputValues.discount.length >= 1 &&
+      // inputValues.quantityOfBook.length >= 1
 
-      return validateValues && images.mainImage
+      return validateValues
    }
 
    const clickSendFormValues = async () => {

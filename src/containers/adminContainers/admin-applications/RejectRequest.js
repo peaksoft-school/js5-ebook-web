@@ -1,28 +1,42 @@
 import { styled } from '@mui/material'
-import { useState } from 'react'
-// import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router'
-import appFetch from '../../../hooks/AppFetch'
-// import { authSlicesActions } from '../../store/slices/authSlices'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import Snackbar from '../../../Components/UI/Snacbar'
+import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
+import { ReactComponent as IconAccept } from '../../../assets/icons/IconAccept.svg'
+import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
+import { applicationSlicesActions } from '../../../store/slices/adminSlices/applicationsSlices'
 
-export const RejectRequest = ({ onClose }) => {
-   // const dispatch = useDispatch()
-   const { id } = useParams()
+export const RejectRequest = ({ id, onClose }) => {
+   const { rejectMessage } = useSelector((state) => state.applications)
+   const dispatch = useDispatch()
+
    const [reasonReject, setReasonReject] = useState('')
 
    const reasonChangeHandler = (e) => {
       setReasonReject(e.target.value)
    }
    function sendReason() {
-      appFetch({
-         url: `/api/admin/application/books/${id}/rejected?description=${reasonReject}`,
-         method: 'POST',
-      }).then((response) => {
-         console.log(response)
-         onClose()
-      })
+      dispatch(rejectAplication({ id, reasonReject }))
+      onClose()
+   }
+   useEffect(() => {
+      let time = setTimeout(() => {}, [1])
+      if (rejectMessage) {
+         dispatch(uiSlicesSlicesActions.uiApplications())
+         time = setTimeout(() => {
+            onCloseSnackbar()
+            dispatch(applicationSlicesActions.cleanReject())
+         }, 3000)
+      }
+      return () => {
+         clearTimeout(time)
+      }
+   }, [rejectMessage])
+
+   function onCloseSnackbar() {
+      dispatch(uiSlicesSlicesActions.uiApplications())
    }
    return (
       <RejectModal onClick={(e) => e.stopPropagation()}>
@@ -32,6 +46,17 @@ export const RejectRequest = ({ onClose }) => {
             onChange={reasonChangeHandler}
             value={reasonReject}
          />
+         {rejectMessage && (
+            <Snackbar
+               width="460px"
+               height="155px"
+               open={dispatch(uiSlicesSlicesActions.uiApplications())}
+               handleClose={() => onCloseSnackbar()}
+               severity=""
+               message={rejectMessage.message}
+               icon={<IconAccept />}
+            />
+         )}
          <DivButton>
             <Button
                variant="default"

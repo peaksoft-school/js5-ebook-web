@@ -1,10 +1,11 @@
-import { useNavigate } from 'react-router'
+// import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux/'
 import Button from '../../../Components/UI/Button/Button'
-import ApplicationCard from './ApplicationCard'
+
 import { applicationsActions } from '../../../store/slices/adminActions/applicationsActions'
+import ApplicationCard from './ApplicationCard'
 
 const AdminApplications = () => {
    const {
@@ -13,24 +14,24 @@ const AdminApplications = () => {
       unwatched,
       totalPages,
    } = useSelector((state) => state.applications)
+
    const [requestObj, setRequestObj] = useState({ page: 1, size: 8 })
    const [showSeeMore, setShowSeeMore] = useState(false)
 
    const dispatch = useDispatch()
-   const navigate = useNavigate()
 
    useEffect(() => {
       dispatch(applicationsActions(requestObj))
+   }, [requestObj])
+
+   useEffect(() => {
       if (totalPages === requestObj.page) {
          setShowSeeMore(false)
       } else {
          setShowSeeMore(true)
       }
-   }, [requestObj])
+   }, [requestObj, totalPages])
 
-   const deatailRequest = (id) => {
-      navigate(`/request/${id}`)
-   }
    const getRequsetBooks = () => {
       setRequestObj((prev) => {
          return {
@@ -57,7 +58,7 @@ const AdminApplications = () => {
                      date={el.publishedDate}
                      name={el.name}
                      price={el.price}
-                     onClick={() => deatailRequest(el.id)}
+                     enabled={el.enabled}
                   />
                ))}
             {showSeeMore && (
@@ -85,7 +86,7 @@ const MinusView = styled('span')`
 const Books = styled('div')`
    padding-top: 22px;
    display: flex;
-   justify-content: space-between;
+   justify-content: flex-start;
    width: 954px;
    flex-wrap: wrap;
 `
@@ -108,6 +109,5 @@ const SeeMore = styled(Button)`
    font-weight: 400;
    font-size: 14px;
    margin-top: 50px;
-   /* margin-bottom: 50px; */
    color: gray;
 `

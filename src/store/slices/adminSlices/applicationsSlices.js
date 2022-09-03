@@ -7,7 +7,9 @@ const initialState = {
    totalElements: 0,
    totalPages: null,
    unwatched: null,
-   message: null,
+   acceptMessage: null,
+   rejectMessage: null,
+   getId: null,
 }
 
 const applicationsSlices = createSlice({
@@ -32,7 +34,21 @@ const applicationsSlices = createSlice({
          state.totalPages = action.payload
       },
       postAcceptApplication(state, action) {
-         state.message = action.payload.message
+         state.acceptMessage = action.payload
+      },
+      postRejectApplication(state, action) {
+         console.log(action.payload)
+         state.rejectMessage = action.payload
+      },
+      cleanAccept(state) {
+         state.acceptMessage = null
+      },
+      cleanReject(state) {
+         state.rejectMessage = null
+      },
+      getApplicationId(state, action) {
+         console.log(action.payload)
+         state.getId = action.payload
       },
    },
 })

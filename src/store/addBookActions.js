@@ -8,6 +8,7 @@ export const addPaperBook = (inputValues, images) => {
       ...images,
       bestseller: true,
    }
+   console.log(valuesWithFile)
    return async (dispatch) => {
       try {
          if (images.mainImage) {
