@@ -1,5 +1,6 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router'
 import { ReactComponent as Heart } from '../assets/icons/bookCard/heartBook.svg'
 import { ReactComponent as HeartOrange } from '../assets/icons/bookCard/heartBookOrange.svg'
 import { ReactComponent as AudioBook } from '../assets/icons/bookCard/audioBook.svg'
@@ -9,9 +10,11 @@ import { BookType } from '../utils/constants/constants'
 
 export const BooksCard = ({ book }) => {
    const [ShowBtn, setShowBtn] = React.useState(false)
+   const navigate = useNavigate()
    const [heartActive, setHeartActive] = React.useState(false)
    const [activeHeart, setActiveHeart] = React.useState(false)
-   const onClickIconBtn = () => {
+   const onClickIconBtn = (e) => {
+      e.stopPropagation()
       setHeartActive(!heartActive)
       setActiveHeart(!activeHeart)
    }
@@ -28,8 +31,15 @@ export const BooksCard = ({ book }) => {
          [BookType.ELECTRONIC_BOOK]: <PdfBook />,
       }
    }, [])
+   const onCLickBook = () => {
+      navigate(`${book.id}`)
+   }
    return (
-      <Card onMouseOver={onHoverCardHandler} onMouseOut={onOutCardHandler}>
+      <Card
+         onMouseOver={onHoverCardHandler}
+         onMouseOut={onOutCardHandler}
+         onClick={onCLickBook}
+      >
          <CartTypeIcon>{BookTypeBlock[book.bookType]}</CartTypeIcon>
          {!ShowBtn && activeHeart && (
             <CardIcon onClick={onClickIconBtn}>

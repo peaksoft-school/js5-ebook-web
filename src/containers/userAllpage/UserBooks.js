@@ -1,5 +1,5 @@
 import { styled } from '@mui/material'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import LanguageBooks from './LanguageBooks'
 import Genres from './Genres'
@@ -16,7 +16,11 @@ import {
    сatalogActions,
 } from '../../store/slices/catalogSlice'
 import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
-// import BreadCrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
+import BreadCrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
+
+const arr = {
+   allbooks: `каталог`,
+}
 
 const UserBooks = () => {
    const [requestObj, setRequestObj] = React.useState({
@@ -82,7 +86,7 @@ const UserBooks = () => {
       requestObj.priceTo,
       requestObj.languages,
    ])
-   const onChangePriceHandler = (from, to) => {
+   const onChangePriceHandler = useCallback((from, to) => {
       setRequestObj((prev) => {
          return {
             ...prev,
@@ -90,26 +94,54 @@ const UserBooks = () => {
             priceTo: to,
          }
       })
-   }
-   const onChangeGenreHandler = (choiseGenre) => {
+   }, [])
+
+   const onChangeGenreHandler = useCallback((choiseGenre) => {
       setRequestObj((prev) => {
          return {
             ...prev,
             genres: [...choiseGenre.ids],
          }
       })
-      setShowGenres(() => {
+      setShowGenres((prev) => {
+         const newArr = prev.filter((el) => el.type !== 'genre')
+         if (newArr) {
+            return [...newArr, ...choiseGenre.labels]
+         }
          return [...choiseGenre.labels]
       })
-   }
-   const onChangeHandler = (key, value) => {
+   }, [])
+
+   const onChangeHandler = useCallback((key, value, showRadio) => {
       setRequestObj((prev) => {
          return {
             ...prev,
             [key]: value,
          }
       })
-   }
+      if (showRadio) {
+         setShowGenres((prev) => {
+            const findEl = prev.find((el) => el.type === key)
+            if (!findEl) {
+               return [...prev, showRadio]
+            }
+            if (value === null && findEl) {
+               return prev.filter((el) => el.type !== key)
+            }
+            return prev.map((el) => {
+               if (el.type === key) {
+                  return showRadio
+               }
+               return el
+            })
+         })
+      }
+      if (value === null) {
+         setShowGenres((prev) => {
+            return prev.filter((el) => el.type !== key)
+         })
+      }
+   }, [])
    const onClickSeeMore = () => {
       setRequestObj((prev) => {
          return {
@@ -122,47 +154,50 @@ const UserBooks = () => {
       dispatch(сatalogActions.cleanError())
    }
    return (
-      <FilterBooks>
-         <GetSnackbar
-            open={error}
-            message={error}
-            variant="error"
-            horizontal="right"
-            handleClose={() => onCloseSnackbar()}
-         />
-         <SortBooks>
-            <HeaderBooks>
-               <HeaderItem width="100%">
-                  <TotalBooks totalBooks={totalBooks} />
-               </HeaderItem>
-            </HeaderBooks>
-            <Genres onChange={onChangeGenreHandler} />
-            <TypeBlock>
-               <TypeBooks onChange={onChangeHandler} />
-            </TypeBlock>
-            <PriceBooks onChange={onChangePriceHandler} />
-            <LanguageBooks onChange={onChangeHandler} />
-         </SortBooks>
-         <Books>
-            <HeaderBooks>
-               <HeaderItem width="80%">
-                  <ShowChoice
-                     arr={showGenres}
-                     onChange={onChangeGenreHandler}
-                  />
-               </HeaderItem>
-               <HeaderItem width="20%" right="Hello">
-                  <Sorting onChange={onChangeHandler} />
-               </HeaderItem>
-            </HeaderBooks>
-            {books.map((elem) => {
-               return <BooksCard key={elem.id} book={elem} />
-            })}
-            {showSeeMore && (
-               <SeeMore onClick={onClickSeeMore}>Смотреть больше</SeeMore>
-            )}
-         </Books>
-      </FilterBooks>
+      <>
+         <BreadCrumbs translate={arr} />
+         <FilterBooks>
+            <GetSnackbar
+               open={error}
+               message={error}
+               variant="error"
+               horizontal="right"
+               handleClose={() => onCloseSnackbar()}
+            />
+            <SortBooks>
+               <HeaderBooks>
+                  <HeaderItem width="100%">
+                     <TotalBooks totalBooks={totalBooks} />
+                  </HeaderItem>
+               </HeaderBooks>
+               <Genres onChange={onChangeGenreHandler} />
+               <TypeBlock>
+                  <TypeBooks onChange={onChangeHandler} />
+               </TypeBlock>
+               <PriceBooks onChange={onChangePriceHandler} />
+               <LanguageBooks onChange={onChangeHandler} />
+            </SortBooks>
+            <Books>
+               <HeaderBooks>
+                  <HeaderItem width="80%">
+                     <ShowChoice
+                        arr={showGenres}
+                        onChange={onChangeGenreHandler}
+                     />
+                  </HeaderItem>
+                  <HeaderItem width="20%" right="Hello">
+                     <Sorting onChange={onChangeHandler} />
+                  </HeaderItem>
+               </HeaderBooks>
+               {books.map((elem) => {
+                  return <BooksCard key={elem.id} book={elem} />
+               })}
+               {showSeeMore && (
+                  <SeeMore onClick={onClickSeeMore}>Смотреть больше</SeeMore>
+               )}
+            </Books>
+         </FilterBooks>
+      </>
    )
 }
 

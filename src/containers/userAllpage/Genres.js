@@ -28,6 +28,7 @@ const Genres = ({ onChange }) => {
                      label,
                      setCheckedFunc,
                      id,
+                     type: 'genre',
                   },
                ],
                ids: [...prev.ids, id],

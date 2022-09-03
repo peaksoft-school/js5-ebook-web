@@ -5,8 +5,63 @@ import { BookType } from '../../utils/constants/constants'
 import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconSort.svg'
 
 const TypeBooks = ({ onChange }) => {
-   const onChangeHandler = (e) => {
-      onChange('bookType', e.target.value)
+   const [arr, setArr] = React.useState([
+      {
+         id: 'bookType',
+         label: 'Бумажная книга',
+         value: BookType.PAPER_BOOK,
+         checked: false,
+      },
+      {
+         id: 'bookType',
+         label: 'Аудиокнига',
+         value: BookType.AUDIO_BOOK,
+         checked: false,
+      },
+      {
+         id: 'bookType',
+         label: 'Электронная книга',
+         value: BookType.ELECTRONIC_BOOK,
+         checked: false,
+      },
+   ])
+   React.useEffect(() => {
+      const findEl = arr.find((el) => el.checked === true)
+      if (findEl) {
+         onChange(findEl.id, findEl.value, {
+            label: findEl.label,
+            closeFunction: cleanRadio,
+            type: findEl.id,
+         })
+      } else {
+         onChange('bookType', null)
+      }
+   }, [arr])
+   const cleanRadio = () => {
+      setArr((prev) => {
+         return prev.map((el) => {
+            return {
+               ...el,
+               checked: false,
+            }
+         })
+      })
+   }
+   const onChangeHandler = (value) => {
+      setArr((prev) => {
+         return prev.map((el) => {
+            if (el.value === value) {
+               return {
+                  ...el,
+                  checked: true,
+               }
+            }
+            return {
+               ...el,
+               checked: false,
+            }
+         })
+      })
    }
    return (
       <TypeBlock>
@@ -14,22 +69,19 @@ const TypeBooks = ({ onChange }) => {
             Тип <Icontriangle />
          </Type>
          <Line />
-         <TypeStyles onChange={onChangeHandler}>
-            <RadioButton
-               id="bookType"
-               label="Бумажная книга"
-               value={BookType.PAPER_BOOK}
-            />
-            <RadioButton
-               id="bookType"
-               label="Аудиокнига"
-               value={BookType.AUDIO_BOOK}
-            />
-            <RadioButton
-               id="bookType"
-               label="Электронная книга"
-               value={BookType.ELECTRONIC_BOOK}
-            />
+         <TypeStyles>
+            {arr.map((el) => {
+               return (
+                  <RadioButton
+                     key={el.label}
+                     label={el.label}
+                     id={el.id}
+                     value={el.value}
+                     isSelect={el.checked}
+                     onChange={() => onChangeHandler(el.value)}
+                  />
+               )
+            })}
          </TypeStyles>
       </TypeBlock>
    )

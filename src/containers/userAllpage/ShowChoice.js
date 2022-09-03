@@ -10,6 +10,16 @@ const ShowChoice = ({ arr }) => {
       <ShowChoiceBlock>
          {arr &&
             arr.map((elem) => {
+               if (elem.type === 'bookType' || elem.type === 'languages') {
+                  return (
+                     <ChoiceItem key={elem.label}>
+                        {elem.label}
+                        <ChoiceBtn onClick={elem.closeFunction}>
+                           <KrestikIcon />
+                        </ChoiceBtn>
+                     </ChoiceItem>
+                  )
+               }
                return (
                   <ChoiceItem key={elem.label}>
                      {elem.label}
