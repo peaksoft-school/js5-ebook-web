@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
 import { ReactComponent as ApplicationOrange } from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.svg'
@@ -20,6 +21,7 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
+      navigate: 'layers',
    },
    {
       name: 'Продавцы',
@@ -27,6 +29,7 @@ const items = [
          0: <Vendor />,
          1: <VendorOrange />,
       },
+      navigate: 'vendors',
    },
    {
       name: 'Пользователи',
@@ -34,6 +37,7 @@ const items = [
          0: <User />,
          1: <UserOrange />,
       },
+      navigate: 'users',
    },
    {
       name: 'Книги',
@@ -41,10 +45,15 @@ const items = [
          0: <Books />,
          1: <BooksOrange />,
       },
+      navigate: 'books',
    },
 ]
 
-function SideDrawerMenu({ onClick }) {
+function SideDrawerMenu() {
+   const navigate = useNavigate()
+   const onClickItem = (nav) => {
+      navigate(`/${nav}`)
+   }
    return (
       <SideDrowerMenuContainer>
          <DrowerList>
@@ -52,7 +61,7 @@ function SideDrawerMenu({ onClick }) {
                return (
                   <DrowerItem
                      key={elem.name}
-                     onClick={onClick}
+                     onClick={() => onClickItem(elem.navigate)}
                      name={elem.name}
                      icon={elem.icon}
                   />
@@ -64,7 +73,7 @@ function SideDrawerMenu({ onClick }) {
 }
 export default SideDrawerMenu
 
-function DrowerItem({ name, icon }) {
+function DrowerItem({ name, icon, onClick }) {
    const [bool, setBool] = useState(false)
    const onHoverItem = () => {
       setBool(true)
@@ -74,7 +83,11 @@ function DrowerItem({ name, icon }) {
       setBool(false)
    }
    return (
-      <DrowerItemBlock onMouseOver={onHoverItem} onMouseOut={offHoverItem}>
+      <DrowerItemBlock
+         onMouseOver={onHoverItem}
+         onMouseOut={offHoverItem}
+         onClick={onClick}
+      >
          <span>{name}</span>
          <span>{bool ? icon[1] : icon[0]}</span>
       </DrowerItemBlock>

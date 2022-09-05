@@ -7,8 +7,8 @@ function CardItems({
    children,
    flexWrap,
    flexDirection,
-   marginRight,
    padding,
+   marginRight,
 }) {
    return (
       <CardItemsBlock
@@ -18,6 +18,7 @@ function CardItems({
          flexWrap={flexWrap}
          flexDirection={flexDirection}
          padding={padding}
+         marginRight={marginRight}
       >
          {children}
       </CardItemsBlock>

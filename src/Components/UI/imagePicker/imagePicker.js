@@ -2,10 +2,9 @@ import { useState, useRef, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import Icon from '../../../assets/icons/Vector.svg'
 
-function ImagePicker({ onChange, onDelete, file, id }) {
+function ImagePicker({ onChange, onDelete, file, id, name }) {
    const [icon, setIcon] = useState()
    const filesRef = useRef()
-
    useEffect(() => {
       if (file) {
          const name = URL.createObjectURL(file)
@@ -13,20 +12,25 @@ function ImagePicker({ onChange, onDelete, file, id }) {
       }
    }, [file])
 
-   const iconHandleChange = () => {
+   const iconHandleChange = (e) => {
       if (!filesRef.current.files[0]) {
          return
       }
       const name = URL.createObjectURL(filesRef.current.files[0])
       setIcon(name)
-      onChange(filesRef.current.files[0])
+      onChange(filesRef.current.files[0], e)
    }
-
    const deleteFileHandler = () => {
       filesRef.current.value = ''
       setIcon('')
       onDelete()
    }
+   useEffect(() => {
+      if (onDelete || !onDelete) {
+         setIcon('')
+         filesRef.current.value = ''
+      }
+   }, [onDelete])
 
    return (
       <ImageContainer primary={icon}>
@@ -34,6 +38,7 @@ function ImagePicker({ onChange, onDelete, file, id }) {
          <InputFile
             type="file"
             id={id}
+            name={name}
             ref={filesRef}
             onChange={iconHandleChange}
             accept="image/jpeg,image/png,image/gif"
@@ -42,9 +47,7 @@ function ImagePicker({ onChange, onDelete, file, id }) {
       </ImageContainer>
    )
 }
-
 export default ImagePicker
-
 const DeleteFile = styled.button`
    border: none;
    position: absolute;
@@ -62,7 +65,6 @@ const DeleteFile = styled.button`
       color: #f34901;
    }
 `
-
 const InputLabel = styled.label`
    /* border: 1px solid red; */
    display: block;
@@ -99,10 +101,10 @@ const InputLabel = styled.label`
          }
       `}
 `
-
 const ImageContainer = styled.div`
    height: 312px;
    width: 235px;
+   /* width: 18.35%; */
    background-color: #ececec;
    background-repeat: no-repeat;
    background-position: 50% 50%;
