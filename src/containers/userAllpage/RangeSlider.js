@@ -1,18 +1,18 @@
-import * as React from 'react'
+import { useState, useEffect } from 'react'
 import Slider from '@mui/material/Slider'
 import { styled } from '@mui/material'
 import InputText from '../../Components/UI/Inputs/InputText'
 
 function valuetext(value) {
-   return `${value}°C`
+   return `${value}`
 }
 
 export default function RangeSlider({ onChange }) {
-   const [value, setValue] = React.useState([1200, 6000])
-   const [f, setF] = React.useState(true)
-   React.useEffect(() => {
-      if (f) {
-         setF(false)
+   const [value, setValue] = useState([1200, 6000])
+   const [disableEffect, setDisableEffect] = useState(true)
+   useEffect(() => {
+      if (disableEffect) {
+         setDisableEffect(false)
          return () => {}
       }
       const debounceRange = setTimeout(() => {
@@ -57,9 +57,9 @@ export default function RangeSlider({ onChange }) {
             </PriceItem>
          </InputsPrice>
          <Slide
-            getAriaLabel={() => 'Temperature range'}
+            getAriaLabel={() => 'priceBook'}
             value={value}
-            min={100}
+            min={0}
             max={10000}
             onChange={handleChange}
             valueLabelDisplay="auto"

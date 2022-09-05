@@ -1,5 +1,5 @@
 import { styled } from '@mui/material'
-import React, { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import LanguageBooks from './LanguageBooks'
 import Genres from './Genres'
@@ -23,7 +23,7 @@ const arr = {
 }
 
 const UserBooks = () => {
-   const [requestObj, setRequestObj] = React.useState({
+   const [requestObj, setRequestObj] = useState({
       genres: [],
       bookType: null,
       priceFrom: null,
@@ -37,11 +37,11 @@ const UserBooks = () => {
    const { books, totalBooks, totalPages, error } = useSelector(
       (store) => store.books
    )
-   const [showSeeMore, setShowSeeMore] = React.useState(false)
-   const [showGenres, setShowGenres] = React.useState([])
+   const [showSeeMore, setShowSeeMore] = useState(false)
+   const [showGenres, setShowGenres] = useState([])
    const dispatch = useDispatch()
 
-   React.useEffect(() => {
+   useEffect(() => {
       let errorTime = setTimeout(() => {}, 1000)
       if (error) {
          errorTime = setTimeout(() => {
@@ -53,7 +53,7 @@ const UserBooks = () => {
       }
    }, [error])
 
-   React.useEffect(() => {
+   useEffect(() => {
       if (
          Number(totalPages) === Number(requestObj.page) ||
          Number(totalPages) === 0
@@ -64,20 +64,22 @@ const UserBooks = () => {
       }
    }, [requestObj.page, totalPages])
 
-   React.useEffect(() => {
-      setRequestObj((prev) => {
-         return {
-            ...prev,
-            page: '1',
-         }
-      })
+   useEffect(() => {
+      if (requestObj.page !== 1) {
+         setRequestObj((prev) => {
+            return {
+               ...prev,
+               page: '1',
+            }
+         })
+      }
    }, [totalPages])
 
-   React.useEffect(() => {
+   useEffect(() => {
       dispatch(updateBooks(requestObj))
    }, [requestObj.page, requestObj.sortBy])
 
-   React.useEffect(() => {
+   useEffect(() => {
       dispatch(getBooks(requestObj))
    }, [
       requestObj.genres,

@@ -45,11 +45,9 @@ export function updateSortGenres(value) {
 
 export function setBooks(request) {
    return async (dispatch) => {
-      console.log(request)
       const books = await appFetch({
          url: `/api/admin/books${sortRequestApplic(request)}`,
       })
-      console.log(books.content)
       dispatch(globalValuesAction.setBooks(books))
    }
 }

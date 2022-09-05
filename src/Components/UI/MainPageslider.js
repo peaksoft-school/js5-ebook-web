@@ -22,10 +22,7 @@ const PrevArrow = () => {
       </div>
    )
 }
-// const images = [
-//    'fjjfjf',
-//    ''
-// ]
+
 function MainPageSlider({ images }) {
 <<<<<<< HEAD
    // eslint-disable-next-line react/no-unstable-nested-components
