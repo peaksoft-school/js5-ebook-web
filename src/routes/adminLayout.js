@@ -6,7 +6,7 @@ import AdminBooks from '../containers/Admin/AdminBooks'
 export default function adminLayout() {
    return (
       <Route path="/" element={<AdminLayout />}>
-         <Route path="request" element={<AdminApplications />} />
+         <Route path="applications" element={<AdminApplications />} />
          <Route path="/books" element={<AdminBooks />} />
          <Route path="/*" element={<div>not found</div>} />
       </Route>

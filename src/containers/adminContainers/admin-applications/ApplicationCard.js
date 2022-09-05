@@ -16,8 +16,8 @@ import Snackbar from '../../../Components/UI/Snackbar'
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-
    const { acceptMessage } = useSelector((state) => state.applications)
+   const [isModal, setIsModal] = useState(false)
 
    const menuMeatBall = [
       {
@@ -34,23 +34,21 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
       },
    ]
 
-   const [isModal, setIsModal] = useState(false)
-
    function acceptModal() {
       dispatch(acceptApplication(id))
    }
 
    useEffect(() => {
-      let time = setTimeout(() => {}, [1])
+      let timerId = null
       if (acceptMessage) {
-         dispatch(uiSlicesSlicesActions.uiApplications())
-         time = setTimeout(() => {
+         dispatch(uiSlicesSlicesActions.showSnackbar())
+         timerId = setTimeout(() => {
             onCloseSnackbar()
             dispatch(applicationSlicesActions.cleanAccept())
          }, 3000)
       }
       return () => {
-         clearTimeout(time)
+         clearTimeout(timerId)
       }
    }, [acceptMessage])
 
@@ -59,19 +57,19 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    }
 
    function onCloseRejectModal(e) {
-      e.stopPropagation(e)
+      e.stopPropagation()
       setIsModal(!isModal)
    }
 
    function onCloseSnackbar() {
-      dispatch(uiSlicesSlicesActions.uiApplications())
+      dispatch(uiSlicesSlicesActions.hideSnackbar())
    }
 
-   const deatailRequest = () => {
-      navigate(`/request/${id}`)
+   const navigateToDetailsPage = () => {
+      navigate(`/applications/${id}`)
    }
    return (
-      <BookItems primary={enabled} id={id} onClick={deatailRequest}>
+      <BookItems primary={enabled} id={id} onClick={navigateToDetailsPage}>
          <MeatBall onClick={(e) => e.stopPropagation()}>
             <MeatBalls options={menuMeatBall} />
          </MeatBall>
@@ -79,9 +77,9 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
             <Snackbar
                width="460px"
                height="155px"
-               open={dispatch(uiSlicesSlicesActions.uiApplications())}
+               open={dispatch(uiSlicesSlicesActions.showSnackbar())}
                severity=""
-               handleClose={() => onCloseSnackbar()}
+               handleClose={(e) => onCloseSnackbar(e)}
                message={acceptMessage.message}
                icon={<IconAccept />}
             />
@@ -94,7 +92,7 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
             overflow="none"
             onClose={(e) => onCloseRejectModal(e)}
          >
-            <RejectRequest id={id} onClose={(e) => onCloseRejectModal(e)} />
+            <RejectRequest id={id} />
          </Modal>
          <Div>
             <Book src={img} alt="photo" />
@@ -122,7 +120,7 @@ const BookItems = styled('div')`
    align-items: flex-end;
    justify-content: space-evenly;
    font-family: 'Open Sans';
-   margin-top: 20px;
+   margin-top: 22px;
    padding-top: 20px;
 `
 const MeatBall = styled('div')`
@@ -141,12 +139,13 @@ const NameBook = styled('p')`
    font-weight: 600;
    width: 194px;
 `
-const PriceDate = styled('p')`
+const PriceDate = styled('div')`
    width: 169px;
    display: flex;
    justify-content: space-between;
    align-items: center;
-   margin-top: -20px;
+   margin-top: -15px;
+   padding-bottom: 20px;
 `
 const Date = styled('p')`
    font-size: 14px;

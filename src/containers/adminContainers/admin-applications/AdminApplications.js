@@ -1,5 +1,7 @@
 // import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
+import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux/'
 import Button from '../../../Components/UI/Button/Button'
@@ -32,7 +34,7 @@ const AdminApplications = () => {
       }
    }, [requestObj, totalPages])
 
-   const getRequsetBooks = () => {
+   const getMoreApplications = () => {
       setRequestObj((prev) => {
          return {
             ...prev,
@@ -40,6 +42,7 @@ const AdminApplications = () => {
          }
       })
    }
+
    return (
       <Application>
          <TotalApplication>
@@ -50,19 +53,29 @@ const AdminApplications = () => {
          </TotalApplication>
          <Books>
             {applications &&
-               applications.map((el) => (
+               applications?.map((el) => (
                   <ApplicationCard
                      key={el.id}
                      id={el.id}
                      img={el.mainImage}
-                     date={el.publishedDate}
+                     date={
+                        el.publishedDate === null
+                           ? ''
+                           : format(
+                                new Date(el.publishedDate),
+                                'dd MMMM yyyy',
+                                {
+                                   locale: ru,
+                                }
+                             )
+                     }
                      name={el.name}
                      price={el.price}
                      enabled={el.enabled}
                   />
                ))}
             {showSeeMore && (
-               <SeeMore onClick={getRequsetBooks}>Смотреть больше</SeeMore>
+               <SeeMore onClick={getMoreApplications}>Смотреть больше</SeeMore>
             )}
          </Books>
       </Application>
@@ -86,7 +99,7 @@ const MinusView = styled('span')`
 const Books = styled('div')`
    padding-top: 22px;
    display: flex;
-   justify-content: flex-start;
+   justify-content: space-between;
    width: 954px;
    flex-wrap: wrap;
 `

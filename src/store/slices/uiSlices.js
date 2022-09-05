@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-   snakbar: false,
+   snackbar: false,
 }
 const uiSlices = createSlice({
    name: 'uiSlice',
    initialState,
    reducers: {
-      uiApplications(state) {
-         state.snakbar = !state.snakbar
+      showSnackbar(state) {
+         state.snackbar = true
+      },
+      hideSnackbar(state) {
+         state.snackbar = false
       },
    },
 })

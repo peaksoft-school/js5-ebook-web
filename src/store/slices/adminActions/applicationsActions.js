@@ -58,6 +58,7 @@ export const rejectAplication = ({ id, reasonReject }) => {
             url: `/api/admin/application/books/${id}/rejected?description=${reasonReject}`,
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
+         console.log(result)
          return result
       } catch (error) {
          return error

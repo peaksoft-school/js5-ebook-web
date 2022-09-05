@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 // eslint-disable-next-line import/no-named-as-default
 import { addBookSlice } from './slices/addBookSlice'
-import { applicationsInnerPageSlices } from './slices/adminSlices/applicationInnerPagesSlices'
 import applicationsSlices from './slices/adminSlices/applicationsSlices'
 import authSlices from './slices/authSlices'
 import uiSlices from './slices/uiSlices'
@@ -16,7 +15,6 @@ const store = configureStore({
       addbook: addBookSlice.reducer,
       applications: applicationsSlices.reducer,
       uiSlice: uiSlices.reducer,
-      applicationsInnerPage: applicationsInnerPageSlices.reducer,
       vendorBookInnerPage: vendorbookInnerPageSlice.reducer,
       promocodeStore: PromocodeSlices.reducer,
    },

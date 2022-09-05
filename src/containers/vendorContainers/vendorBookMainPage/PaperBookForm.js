@@ -10,7 +10,7 @@ import bookAction from '../../../store/slices/addBookSlice'
 import Selected from '../../../Components/UI/Select'
 
 const languageSelect = [
-   { name: 'kyrgyzstan', id: 1 },
+   { name: 'KYRGYZ', id: 1 },
    { name: 'Russian', id: 2 },
    { name: 'English', id: 3 },
 ]
@@ -80,6 +80,7 @@ const PaperBookForm = ({ images }) => {
       }
    }
 
+   console.log(inputValues)
    return (
       <>
          {/* snackbar */}

@@ -8,7 +8,7 @@ import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { applicationSlicesActions } from '../../../store/slices/adminSlices/applicationsSlices'
 import Snackbar from '../../../Components/UI/Snackbar'
 
-export const RejectRequest = ({ id, onClose }) => {
+export const RejectRequest = ({ id }) => {
    const { rejectMessage } = useSelector((state) => state.applications)
    const dispatch = useDispatch()
 
@@ -18,13 +18,14 @@ export const RejectRequest = ({ id, onClose }) => {
       setReasonReject(e.target.value)
    }
    function sendReason() {
-      dispatch(rejectAplication({ id, reasonReject }))
-      onClose()
+      if (reasonReject.trim().length !== 0) {
+         dispatch(rejectAplication({ id, reasonReject }))
+      }
    }
    useEffect(() => {
       let time = setTimeout(() => {}, [1])
       if (rejectMessage) {
-         dispatch(uiSlicesSlicesActions.uiApplications())
+         dispatch(uiSlicesSlicesActions.showSnackbar())
          time = setTimeout(() => {
             onCloseSnackbar()
             dispatch(applicationSlicesActions.cleanReject())
@@ -36,7 +37,7 @@ export const RejectRequest = ({ id, onClose }) => {
    }, [rejectMessage])
 
    function onCloseSnackbar() {
-      dispatch(uiSlicesSlicesActions.uiApplications())
+      dispatch(uiSlicesSlicesActions.hideSnackbar())
    }
    return (
       <RejectModal onClick={(e) => e.stopPropagation()}>
@@ -50,7 +51,7 @@ export const RejectRequest = ({ id, onClose }) => {
             <Snackbar
                width="460px"
                height="155px"
-               open={dispatch(uiSlicesSlicesActions.uiApplications())}
+               open={dispatch(uiSlicesSlicesActions.showSnackbar())}
                handleClose={() => onCloseSnackbar()}
                severity=""
                message={rejectMessage.message}

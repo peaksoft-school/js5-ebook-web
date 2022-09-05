@@ -33,7 +33,6 @@ function Snackbar({
                onClose={handleClose}
                sx={{ width: '100%' }}
             >
-               {/* <img src={icon} alt="icon" /> */}
                <Icon>{icon}</Icon>
                <StyledMessage>{message}</StyledMessage>
                {children}
