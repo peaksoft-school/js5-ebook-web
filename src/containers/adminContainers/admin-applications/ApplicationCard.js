@@ -17,7 +17,6 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const navigate = useNavigate()
    const { acceptMessage } = useSelector((state) => state.applications)
    const isSnackbarOpen = useSelector((state) => state.uiSlice.snackbar)
-   const isSnackbarClose = useSelector((state) => state.uiSlice.snackbar)
    const { rejectMessage } = useSelector((state) => state.applications)
 
    const [showRejectModal, setShowRejectModal] = useState(false)
@@ -120,7 +119,7 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
             <Snackbar
                width="460px"
                height="155px"
-               open={isSnackbarClose}
+               open={isSnackbarOpen}
                handleClose={() => onCloseSnackbar()}
                severity=""
                message={rejectMessage.message}
