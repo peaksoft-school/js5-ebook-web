@@ -1,58 +1,36 @@
-import styled from '@emotion/styled'
-import React from 'react'
-import Button from '../../Components/UI/Button/Button'
-import InputText from '../../Components/UI/Inputs/InputText'
+import styled from 'styled-components'
 import MainPageSlider from '../../Components/UI/MainPageslider'
 import { books } from './bookImage'
-import { BestComponent } from './BestComponent'
-import { LatestPublic } from './LatestPublic'
-import { AudioBooks } from './AudioBooks'
-import { ReactComponent as MainPageIcon } from '../../assets/icons/mainPage/mainPageIcon.svg'
 
-function MainPage() {
+export const ElectronicBooks = () => {
    return (
-      <StyledMainPage>
-         <StyledSliderCont>
-            <MainPageIconBlock />
-            <MainPageSlider images={books} variant="mainSlider" />
-         </StyledSliderCont>
-
-         <BestComponent />
-
-         <LatestPublic />
-
-         <AudioBooks />
-
-         <BestComponent />
-
-         <StyledMainFooter>
-            <StyledMailingCont>
-               <p>Подписаться на рассылку</p>
+      <StyledBestSlider>
+         <StyledTitle>
+            <StyledBestText>Электронные книги</StyledBestText>
+            <StyledNavLink href="/">Смотреть все</StyledNavLink>
+         </StyledTitle>
+         <StyledBookSliderBlock>
+            <StyledBookTitle>
+               <StyledBookName>Тонкое искусство пофигизма</StyledBookName>
+               <StyledBookDescription>
+                  Современное общество пропагандирует культ успеха: будь умнее,
+                  богаче, продуктивнее— будь лучше всех. Соцсети изобилуют
+                  историями натему, как какой-томалец придумал. Соцсети
+                  изобилуют историями натему, как какой-томалец придумал
+                  приложение…
+               </StyledBookDescription>
                <div>
-                  <InputText placeholder="Напишите ваш E-mail" />
-                  <Button variant="universal" background="black" width="137px">
-                     Отправить
-                  </Button>
+                  <StyledNavLink href="/">Подробнее</StyledNavLink>
+                  <StyledBookPrice>234 с</StyledBookPrice>
                </div>
-            </StyledMailingCont>
-            <StyledSocialMedia>
-               <p>Instagram</p>
-               <p>Facebook</p>
-               <p>Bконтакте</p>
-            </StyledSocialMedia>
-         </StyledMainFooter>
-      </StyledMainPage>
+            </StyledBookTitle>
+            <StyledBookSlider>
+               <MainPageSlider images={books} />
+            </StyledBookSlider>
+         </StyledBookSliderBlock>
+      </StyledBestSlider>
    )
 }
-
-export default MainPage
-
-const MainPageIconBlock = styled(MainPageIcon)`
-   /* border: 1px solid red; */
-   position: absolute;
-   top: 1px;
-   left: -7px;
-`
 
 export const StyledMainPage = styled.div`
    width: 100%;
@@ -61,10 +39,9 @@ export const StyledMainPage = styled.div`
 `
 export const StyledSliderCont = styled.div`
    background: #1c1c1c;
-   padding: 90px 0;
+   padding: 97px 304px 155px 304px;
    display: flex;
    justify-content: center;
-   position: relative;
 `
 export const StyledBestSlider = styled.div`
    /* border: 1px solid red; */
