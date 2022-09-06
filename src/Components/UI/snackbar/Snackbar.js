@@ -17,13 +17,17 @@ function Snackbar({
    message,
    children,
    icon,
+   horizontal,
 }) {
    return (
       <Stack onClick={(e) => e.stopPropagation()}>
          <StyledSnackbar
             open={open}
-            // autoHideDuration={100000}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            autoHideDuration={3000}
+            anchorOrigin={{
+               vertical: 'top',
+               horizontal: horizontal || 'center',
+            }}
             onClose={handleClose}
             width={width}
             height={height}

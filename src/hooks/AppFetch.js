@@ -5,6 +5,7 @@ let store
 export const injectStore = (fromStore) => {
    store = fromStore
 }
+
 const appFetch = ({ url, method, body }) => {
    const { token } = store.getState().auth.user
 

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components'
-// import Header from './Admin/Header/Header'
 
 function Container({ header, main, footer, sidebar, primary }) {
    return (
@@ -49,6 +48,7 @@ const Item = styled.div`
    min-width: 240px;
    flex-grow: 1;
    flex-shrink: 0;
+   max-width: 100%;
    display: flex;
    flex-flow: column;
    height: auto;
@@ -66,6 +66,7 @@ const Item = styled.div`
    }
 `
 const AppContainer = styled.div`
+   /* border: 1px solid red; */
    padding: 0 20px;
    display: flex;
    flex-flow: row nowrap;

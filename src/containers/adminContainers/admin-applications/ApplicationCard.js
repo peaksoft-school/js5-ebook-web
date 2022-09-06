@@ -10,7 +10,7 @@ import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 import { applicationSlicesActions } from '../../../store/slices/adminSlices/applicationsSlices'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
-import Snackbar from '../../../Components/UI/Snackbar'
+import Snackbar from '../../../Components/UI/snackbar/Snackbar'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
