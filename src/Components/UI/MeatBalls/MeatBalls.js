@@ -10,7 +10,7 @@ const Meatballs = ({ onClick, options, height, width }) => {
    }
 
    const clickCloseHandler = (option) => {
-      // setState(false)
+      setState(false)
       onClick(option)
    }
 

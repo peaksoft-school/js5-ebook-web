@@ -50,6 +50,7 @@ const InputText = React.forwardRef(
                id={id}
                pattern={pattern}
                error={error}
+               name={name}
                {...props}
             />
          </InputContainer>

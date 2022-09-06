@@ -1,8 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import vendorHeart from '../../../assets/icons/bookCard/heartBook.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
+import SelectBooks from '../../Admin/SelectBooks'
+import Snackbar from '../../../Components/UI/Snackbar'
+import HeaderMainPage from './HeaderMainPage'
+import {
+   getMainBooks,
+   getMainBooksWithId,
+} from '../../../store/createActions/vendorMainPagesActions'
 import {
    BooksContainer,
    BooksContainer2,
@@ -22,13 +31,15 @@ import {
    Span,
    WrapperDiv,
 } from './VendorMainPageStyle'
-import SelectBooks from '../../Admin/SelectBooks'
-import Snackbar from '../../../Components/UI/Snackbar'
-import { getMainBooks } from '../../../store/createActions/vendorMainPagesActions'
+import PopUp from '../../../Components/UI/popup'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
+   const { status } = useSelector((state) => state.vendorMainPage)
    const dispatch = useDispatch()
+   const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
+   console.log(bookError, bookSuccsess)
+   const [getById, setGetById] = useState()
 
    const bookType = [
       { name: 'Все', id: 1, text: 'ALL' },
@@ -48,16 +59,31 @@ const VendorMainPage = () => {
       dispatch(getMainBooks(selectId))
    }, [selectId])
 
-   const [getBiId, setGetById] = useState()
+   useEffect(() => {
+      if (getById) {
+         dispatch(getMainBooksWithId(getById))
+      }
+   }, [getById])
+
+   const getFormatedDate = (date) => {
+      return date
+         ? format(new Date(date), 'dd MMMM yyyy', {
+              locale: ru,
+           })
+         : ''
+   }
 
    return (
       <WrapperDiv>
-         <Snackbar
-            width="460px"
-            message="this page is empty"
-            severity="error"
-            open={vendorBooks.length === 0}
-         />
+         {status && (
+            <Snackbar
+               width="460px"
+               message="this page is empty"
+               severity="error"
+               open={vendorBooks.length === 0}
+            />
+         )}
+         <HeaderMainPage />
          <HeaderText>
             <Span>Всего {vendorBooks.length} книг</Span>
             <SelectBooksDiv>
@@ -76,15 +102,21 @@ const VendorMainPage = () => {
                            </ImgFavorite>
                            <span>В корзине ({book.basket})</span>
                         </BookSHeader>
-                        <CopyLink key={book.id} to={`/${book.id}`}>
+                        <CopyLink to={`/${book.id}`}>
                            <Img src={book.mainImage} />
                            <div>
                               <NameBook>{book.name}</NameBook>
                               <FooterDiv>
                                  <DateSpan>
-                                    {book.dateOfRegistration.map((elem) => (
-                                       <span key={elem}>{elem}</span>
-                                    ))}
+                                    {book.dateOfRegistration ? (
+                                       <span>
+                                          {getFormatedDate(
+                                             book.dateOfRegistration
+                                          )}
+                                       </span>
+                                    ) : (
+                                       ''
+                                    )}
                                  </DateSpan>
                                  <Price>{book.price}сом</Price>
                               </FooterDiv>
@@ -92,7 +124,8 @@ const VendorMainPage = () => {
                         </CopyLink>
                      </BooksWrapper>
                      <MeatBallsDiv onClick={() => setGetById(book.id)}>
-                        <UpdateBooks id={getBiId} />
+                        <UpdateBooks id={getById} />
+                        <PopUp>dsdsdsd</PopUp>
                      </MeatBallsDiv>
                   </BooksContainer>
                </BooksContainer2>

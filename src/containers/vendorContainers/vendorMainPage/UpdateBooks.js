@@ -1,11 +1,10 @@
 import { styled } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
+import Button from '../../../Components/UI/Button/Button'
 import Meatballs from '../../../Components/UI/MeatBalls/MeatBalls'
-import {
-   getMainBooksDelete,
-   getMainBooksWithId,
-} from '../../../store/createActions/vendorMainPagesActions'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import { getMainBooksDelete } from '../../../store/createActions/vendorMainPagesActions'
 
 const option = [
    {
@@ -19,21 +18,23 @@ const option = [
       onClick: () => {},
    },
 ]
-
 export default function UpdateBooks({ id }) {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const clickHandle = (data) => {
       if (data.id === 1) {
-         dispatch(getMainBooksWithId(id))
          navigate('/addbook')
       }
       if (data.id === 2) {
          dispatch(getMainBooksDelete(id))
       }
    }
+   const clickHand = () => {
+      dispatch(snackbarActions())
+   }
    return (
-      <DivMeatballs onClick={(e) => e.stopPropagation(e)}>
+      <DivMeatballs>
+         <Button onClick={clickHand}>TEST</Button>
          <Meatballs height="96px" onClick={clickHandle} options={option} />
       </DivMeatballs>
    )

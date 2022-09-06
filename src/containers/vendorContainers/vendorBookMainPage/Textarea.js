@@ -34,7 +34,7 @@ const TextArea = styled('div')`
 const TextareaStyle = styled('textarea')`
    width: 100%;
    height: 199px;
-   /* color: #c4c4c4; */
+   border: 1px solid #969696;
    margin-top: 6px;
    font-family: 'Open Sans';
    font-weight: 400;

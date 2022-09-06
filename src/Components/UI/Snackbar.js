@@ -1,10 +1,10 @@
-import { forwardRef } from 'react'
+import * as React from 'react'
 import styled from '@emotion/styled'
 import Stack from '@mui/material/Stack'
 import MuiSnackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 
-const Alert = forwardRef(function Alert(props, ref) {
+const Alert = React.forwardRef(function Alert(props, ref) {
    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
@@ -12,25 +12,28 @@ function Snackbar({
    width,
    height,
    open,
-   handleClose,
    severity,
    message,
    children,
+   onClose,
+   handleClose,
    icon,
 }) {
    return (
       <Stack>
          <StyledSnackbar
             open={open}
-            autoHideDuration={3000}
+            autoHideDuration={1000}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            onClose={handleClose}
+            onClick={handleClose}
+            onClose={() => onClose(false)}
             width={width}
             height={height}
          >
             <StyledAlert
                severity={severity}
-               onClose={handleClose}
+               onClose={() => onClose(false)}
+               onClick={handleClose}
                sx={{ width: '100%' }}
             >
                {/* <img src={icon} alt="icon" /> */}

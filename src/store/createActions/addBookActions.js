@@ -2,6 +2,7 @@ import appFetch from '../../hooks/AppFetch'
 import bookAction from '../slices/addBookSlice'
 import { appFileFetchService } from '../../api/fileService'
 import { getMainBooks } from './vendorMainPagesActions'
+import snackbarAction from '../slices/snackbarSlice'
 
 export const addPaperBook = (inputValues, images, bestseller) => {
    const valuesWithFile = {
@@ -19,7 +20,6 @@ export const addPaperBook = (inputValues, images, bestseller) => {
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
-   console.log(valuesWithFile)
    return async (dispatch) => {
       try {
          if (images.mainImage) {
@@ -41,28 +41,20 @@ export const addPaperBook = (inputValues, images, bestseller) => {
             body: valuesWithFile,
          })
          dispatch(bookAction.statusSuccess(result))
+         dispatch(snackbarAction.snackbarSuccess(result.message))
          dispatch(getMainBooks())
       } catch (error) {
          dispatch(bookAction.statusError(error))
+         dispatch(snackbarAction.snackbarFalse(error))
       }
    }
 }
 
-export const addAudioBook = (inputValues, images, audioValues) => {
+export const addAudioBook = (inputValues, images, audioValues, duration) => {
    const valuesWithFile = {
-      name: inputValues.name,
-      genreId: inputValues.genreId,
-      price: inputValues.price,
-      author: inputValues.author,
-      description: inputValues.description,
-      yearOfIssue: inputValues.yearOfIssue,
-      discount: inputValues.discount,
-      bestseller: true,
-      fragment: inputValues.fragment,
-      pageSize: inputValues.pageSize,
-      publishingHouse: inputValues.publishingHouse,
+      ...inputValues,
+      duration,
    }
-
    return async (dispatch) => {
       try {
          if (images.mainImage) {
@@ -93,9 +85,11 @@ export const addAudioBook = (inputValues, images, audioValues) => {
             method: 'POST',
             body: valuesWithFile,
          })
+         dispatch(snackbarAction.snackbarSuccess(result.message))
          dispatch(bookAction.statusSuccess(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
+         dispatch(snackbarAction.snackbarFalse(error))
       }
    }
 }
@@ -107,7 +101,6 @@ export const addElectronicBoook = (inputValues, images, pdf) => {
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
-      // language: inputValues.language,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
       bestseller: true,
@@ -142,9 +135,11 @@ export const addElectronicBoook = (inputValues, images, pdf) => {
             method: 'POST',
             body: valuesWithFile,
          })
+         dispatch(snackbarAction.snackbarSuccess(result.message))
          dispatch(bookAction.statusSuccess(result))
       } catch (error) {
          dispatch(bookAction.statusError(error))
+         dispatch(snackbarAction.snackbarFalse(error))
       }
    }
 }

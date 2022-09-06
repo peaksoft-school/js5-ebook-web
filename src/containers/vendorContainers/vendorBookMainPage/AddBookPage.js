@@ -7,16 +7,17 @@ import RadioButton from '../../../Components/UI/RadioButton'
 import AudioBook from './AudioBookForm'
 import ElectronicBook from './ElectronicBookForm'
 import { setGenres } from '../../../store/slices/globalSlices'
-import Snackbar from '../../../Components/UI/Snackbar'
 import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
 
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
    const { bookType } = useSelector((store) => store.vendorMainPage)
-   const { deleteImage, error, status } = useSelector((store) => store.addbook)
+   const { deleteImage } = useSelector((store) => store.addbook)
+   const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
 
    const dispatch = useDispatch()
-
    const [images, setImages] = useState({
       mainImage: dataWithId ? dataWithId.mainImage : '',
       secondImage: dataWithId ? dataWithId.secondImage : '',
@@ -29,6 +30,9 @@ const AddBookPage = () => {
          setRadio(bookType)
       }
    }, [bookType])
+   useEffect(() => {
+      dispatch(snackbarActions())
+   }, [bookError, bookSuccsess])
    useEffect(() => {
       dispatch(setGenres())
    }, [])
@@ -52,29 +56,14 @@ const AddBookPage = () => {
       return bookComponents
    }
 
-   const handleToClose = () => {}
-
    return (
       <ContainerDiv>
-         {error && (
-            <Snackbar
-               width="400px"
-               message={error || status}
-               severity=""
-               open={error}
-               handleClose={handleToClose}
-            />
-         )}
-         {status && (
-            <Snackbar
-               width="400px"
-               message={status}
-               severity=""
-               open={status}
-               handleClose={handleToClose}
-            />
-         )}
-         <SnackBarDate />
+         <HeaderMainPage />
+         <SnackBarDate
+            snack={bookError || bookSuccsess}
+            message={bookError || bookSuccsess}
+            variant={bookSuccsess ? 'success' : 'error'}
+         />
          <div>
             <ThreeImagesDiv>
                Загрузите 3 фото <strong>*</strong>
@@ -177,7 +166,7 @@ export default AddBookPage
 
 const ContainerDiv = styled('div')`
    width: 100%;
-   margin: 150px auto;
+   margin: auto;
 
    & strong {
       color: red;

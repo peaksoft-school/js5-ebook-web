@@ -13,11 +13,11 @@ const Promocode = () => {
          <StyledPromoBtnBlock>
             <Button
                onClick={handleOpenPromoModal}
-               variant="universal"
+               variant=""
                color="#f34901"
                border="1px solid"
                background="none"
-               width="177px"
+               width="197px"
                height="42px"
                padding="10px 16px"
             >
@@ -40,7 +40,7 @@ const Promocode = () => {
 export default Promocode
 
 const StyledPromoBtnBlock = styled.div`
-   width: 213px;
+   width: 230px;
    height: 42px;
    display: flex;
    justify-content: space-between;

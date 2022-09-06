@@ -5,6 +5,7 @@ import { vendorbookInnerPageSlice } from './slices/vendorBookInnerPageSlice'
 import PromocodeSlices from './slices/promocodeSlices'
 import globalValues from './slices/globalSlices'
 import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
+import { snackbarSlice } from './slices/snackbarSlice'
 
 const store = configureStore({
    reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
       vendorBookInnerPage: vendorbookInnerPageSlice.reducer,
       vendorMainPage: vendorMainPageSlice.reducer,
       promocodeStore: PromocodeSlices.reducer,
+      snackbar: snackbarSlice.reducer,
    },
 })
 

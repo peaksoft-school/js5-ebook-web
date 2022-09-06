@@ -14,6 +14,7 @@ export const Img = styled('img')`
    width: 197px;
    height: 297px;
    cursor: pointer;
+   margin-bottom: 6px;
 `
 export const CopyLink = styled(Link)`
    text-decoration: none;
@@ -38,7 +39,7 @@ export const BooksContainer2 = styled('div')`
    border: 1px solid red;
    display: flex;
    justify-content: center;
-   background: #ededed;
+   background: rgba(243, 73, 1, 0.08);
 `
 export const MeatBallsDiv = styled('div')`
    margin-top: 16px;
@@ -47,6 +48,8 @@ export const FooterDiv = styled('div')`
    display: flex;
    align-items: center;
    justify-content: space-between;
+   margin-bottom: 6px;
+   margin-top: 3px;
 `
 export const HeaderText = styled('div')`
    display: flex;
@@ -55,8 +58,8 @@ export const HeaderText = styled('div')`
 `
 export const Price = styled('span')`
    color: #ff4c00;
-   font-size: 20px;
-   font-weight: 800;
+   font-size: 16px;
+   font-weight: 600;
 `
 export const WrapperDiv = styled('div')`
    width: 1240px;
@@ -67,13 +70,19 @@ export const WrapperDiv = styled('div')`
    }
 `
 export const DateSpan = styled('span')`
-   width: 70px;
+   font-size: 14px;
+   width: 110px;
    display: flex;
    justify-content: space-between;
    color: #8a8a8a;
 `
-export const NameBook = styled('h2')`
+export const NameBook = styled('span')`
    color: #222222;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 600;
+   font-size: 20px;
+   line-height: 120%;
 `
 export const ImgFavorite = styled('span')`
    display: flex;

@@ -9,7 +9,7 @@ const initialState = {
    isValid: true,
    bookType: null,
    status: null,
-   error: null,
+   boolean: null,
 }
 export const vendorMainPageSlice = createSlice({
    name: 'vendorMainPage',
@@ -26,11 +26,12 @@ export const vendorMainPageSlice = createSlice({
 
       // status VendormainPage
       success(state) {
-         state.status = 'fulfilled'
+         state.status = 'success'
+         state.boolean = true
       },
       errorResult(state, action) {
          state.status = 'rejected'
-         state.error = action.payload
+         state.boolean = action.payload
       },
 
       // type books withId

@@ -3,15 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
    deleteImage: false,
    status: null,
-   error: null,
-   jenreId: [
-      { name: 'Художественнная лит...', id: 1 },
-      { name: 'Общество', id: 4 },
-      { name: 'Книги для детей ', id: 2 },
-      { name: 'Наука и техника', id: 3 },
-      { name: 'Деловая литература', id: 5 },
-      { name: 'Красота. Здоровье.Спорт ', id: 6 },
-   ],
+   message: '',
 }
 export const addBookSlice = createSlice({
    name: 'addbook',
@@ -20,15 +12,14 @@ export const addBookSlice = createSlice({
       deleteImage(state) {
          state.deleteImage = !state.deleteImage
       },
-      statusSuccess(state, action) {
-         state.status = 'succsess'
-         state.user = action.payload
+      statusSuccess(state) {
+         state.status = 'success'
+         state.message = 'Ваш запрос был успешно отправлен!'
       },
-      statusError(state, action) {
-         state.error = action.payload
+      statusError(state) {
+         state.status = 'error'
+         state.message = 'Что то пошла не так!'
       },
-
-      // vendorMainPage
    },
 })
 

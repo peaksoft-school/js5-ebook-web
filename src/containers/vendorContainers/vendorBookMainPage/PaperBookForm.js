@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 import Checkbox from '../../../Components/UI/checkBox/CheckBox'
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import { addPaperBook } from '../../../store/createActions/addBookActions'
 import bookAction from '../../../store/slices/addBookSlice'
-import Selected from '../../../Components/UI/Select'
 import SelectBooks from '../../Admin/SelectBooks'
-import { setGenres } from '../../../store/slices/globalSlices'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
-import Snackbar from '../../../Components/UI/Snackbar'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
 
 const languageSelect = [
    { name: 'KYRGYZ', id: 1 },
@@ -19,43 +19,29 @@ const languageSelect = [
    { name: 'ENGLISH', id: 3 },
 ]
 
-export const inputValuesForState = {
-   name: '',
-   author: '',
-   publishingHouse: '',
-   description: '',
-   fragment: '',
-   pageSize: '',
-   price: '',
-   yearOfIssue: '',
-   quantityOfBook: '',
-   discount: '',
-}
-
 const PaperBookForm = ({ images }) => {
    const dispatch = useDispatch()
-   const jenre = useSelector((store) => store.addbook.jenreId)
+   const navigate = useNavigate()
+   const genre = useSelector((store) => store.globalValues.genres)
+   const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
+   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const [isChecked, setIsChecked] = useState()
-
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
       author: dataWithId ? dataWithId.author : '',
       publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
       description: dataWithId ? dataWithId.description : '',
       fragment: dataWithId ? dataWithId.fragment : '',
-      pageSize: dataWithId ? dataWithId.pageSize : 0,
-      price: dataWithId ? dataWithId.price : 0,
-      genreId: dataWithId ? dataWithId.genreId : 0,
-      yearOfIssue: dataWithId ? dataWithId.yearOfIssue : 0,
-      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : 0,
+      pageSize: dataWithId ? dataWithId.pageSize : '',
+      price: dataWithId ? dataWithId.price : '',
+      genreId: dataWithId ? dataWithId.genreId : '',
+      yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
+      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
       language: dataWithId ? dataWithId.language : '',
       discount: dataWithId ? dataWithId.discount : '',
+      genre: dataWithId ? dataWithId.genre : '',
    })
-
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -76,7 +62,6 @@ const PaperBookForm = ({ images }) => {
 
       return validateValues && images.mainImage
    }
-   const [open, setOpen] = useState(false)
 
    const clickSendFormValues = async () => {
       if (isFormValid()) {
@@ -96,30 +81,30 @@ const PaperBookForm = ({ images }) => {
             quantityOfBook: '',
          })
       } else {
-         setOpen(!open)
+         dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-
+   const { bookType, bookId } = dataWithId !== null ? dataWithId : ''
    const updateForms = async () => {
       if (isFormValid()) {
-         dispatch(putVendorBook(inputValues, images))
+         dispatch(putVendorBook(inputValues, images, bookType, bookId))
       } else {
-         setOpen(!open)
+         dispatch(snackbarActions({ bron: 'exit' }))
       }
-   }
-
-   const handleToClose = () => {
-      setOpen(false)
+      if (!bookSuccsess) {
+         setTimeout(() => {
+            navigate('/')
+         }, 3000)
+      }
    }
 
    return (
       <>
-         <Snackbar
+         <SnackBarDate
             width="400px"
             message="Пожалуйста, заполните все поля"
             severity="error"
-            open={open}
-            handleClose={handleToClose}
+            snack={stateSnackbar}
          />
          <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
@@ -146,14 +131,19 @@ const PaperBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <Selected
-                  variant
-                  onChange={(genreId) =>
+               <SelectBooks
+                  border
+                  padding="12px 10px 12px 19px"
+                  width="100%"
+                  hover
+                  defaultName="Литература, роман, стихи..."
+                  fontWeight
+                  color="#969696"
+                  onClick={(genreId) =>
                      setInputValues({ ...inputValues, genreId })
                   }
-                  title={jenre}
+                  genres={genre}
                />
-               <SelectBooks />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
                </LabelStyle>
@@ -187,11 +177,19 @@ const PaperBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <Selected
-                        onChange={(language) =>
+                     <SelectBooks
+                        border
+                        padding="12px 10px 12px 19px"
+                        width="100%"
+                        defaultName="язык"
+                        fontWeight="400"
+                        color="#969696"
+                        hover
+                        nameText=""
+                        onClick={(_, notext, notest, language) =>
                            setInputValues({ ...inputValues, language })
                         }
-                        title={languageSelect}
+                        genres={languageSelect}
                      />
                      <LabelStyle htmlFor="pageSize">
                         Объем <strong>*</strong>
@@ -268,18 +266,22 @@ const PaperBookForm = ({ images }) => {
          </InputWrapper>
          <ButtonDiv>
             {!dataWithId ? (
-               <Button width="160px" onClick={clickSendFormValues}>
+               <Button width="137px" onClick={clickSendFormValues}>
                   Отправить
                </Button>
             ) : (
-               <Button
-                  width="160px"
-                  onClick={updateForms}
-                  background="black"
-                  variant="universal"
-               >
-                  PUT
-               </Button>
+               <PutDiv>
+                  <Button
+                     width="137px"
+                     background="#2f4f4f"
+                     onClick={() => navigate('/')}
+                  >
+                     Назад
+                  </Button>
+                  <Button width="137px" onClick={updateForms}>
+                     Сохранить
+                  </Button>
+               </PutDiv>
             )}
          </ButtonDiv>
       </>
@@ -316,6 +318,7 @@ export const SelectWrapper = styled('div')`
 export const ButtonDiv = styled('div')`
    width: 96%;
    margin-top: 104px;
+   margin-bottom: 70px;
    display: flex;
    align-items: flex-end;
    justify-content: flex-end;
@@ -332,4 +335,9 @@ export const LabelStyle = styled('label')`
    font-family: 'Open Sans';
    font-weight: 400;
    line-height: 20.8px;
+`
+export const PutDiv = styled('div')`
+   display: flex;
+   justify-content: space-between;
+   width: 300px;
 `

@@ -10,7 +10,8 @@ const SnackBarDate = ({ snack, variant, message }) => {
          severity=""
          message={message || 'Заполняйте поля!'}
          icon={variant === 'success' ? <OkSnackBar /> : <Error />}
-         width="400px"
+         width="460px"
+         height="132px"
       />
    )
 }
