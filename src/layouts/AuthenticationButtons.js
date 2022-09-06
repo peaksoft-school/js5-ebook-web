@@ -63,14 +63,14 @@ function AuthenticationButtons() {
       </>
    ) : (
       <>
-         <ModalSignUp
+         <Modal
             open={isShowModal}
             width="500px"
             justifyContent="flex-start"
             onClose={closeModal}
          >
             <SignUp activeBtn={activeBtn} />
-         </ModalSignUp>
+         </Modal>
          <Button
             variant="default"
             border="1px solid #000"
@@ -102,12 +102,6 @@ function AuthenticationButtons() {
 }
 
 export default AuthenticationButtons
-
-const ModalSignUp = styled(Modal)`
-   & > div {
-      border: 1px solid red;
-   }
-`
 
 const PofileSpan = styled('span')`
    margin-left: 8px;

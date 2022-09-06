@@ -1,4 +1,5 @@
 import { useState } from 'react'
+// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router'
 
@@ -21,7 +22,8 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
-      navigate: 'layers',
+      link: 'request',
+      navigate: 'request',
    },
    {
       name: 'Продавцы',
@@ -29,6 +31,7 @@ const items = [
          0: <Vendor />,
          1: <VendorOrange />,
       },
+      link: 'request',
       navigate: 'vendors',
    },
    {
@@ -37,6 +40,7 @@ const items = [
          0: <User />,
          1: <UserOrange />,
       },
+      link: 'request',
       navigate: 'users',
    },
    {
@@ -45,6 +49,7 @@ const items = [
          0: <Books />,
          1: <BooksOrange />,
       },
+      link: 'books',
       navigate: 'books',
    },
 ]
