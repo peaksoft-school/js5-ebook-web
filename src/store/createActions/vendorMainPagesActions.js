@@ -72,7 +72,7 @@ export const putVendorBook = (inputValues, images, bookType, bookId) => {
    }
    return async (dispatch) => {
       try {
-         let urlBookType = `/api/book/update/paperBook4/${bookId}`
+         let urlBookType = `/api/book/update/paperBook/${bookId}`
          if (bookType === 'ELECTRONIC_BOOK') {
             urlBookType = `/api/book/update/electronicBook/${bookId}`
          }
