@@ -37,7 +37,6 @@ const applicationsSlices = createSlice({
          state.acceptMessage = action.payload
       },
       postRejectApplication(state, action) {
-         console.log(action.payload)
          state.rejectMessage = action.payload
       },
       cleanAccept(state) {
@@ -47,7 +46,6 @@ const applicationsSlices = createSlice({
          state.rejectMessage = null
       },
       getApplicationId(state, action) {
-         console.log(action.payload)
          state.getId = action.payload
       },
    },

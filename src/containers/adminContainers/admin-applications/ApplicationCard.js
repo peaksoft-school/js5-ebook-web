@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
 import { ReactComponent as IconAccept } from '../../../assets/icons/IconAccept.svg'
-import Modal from '../../../Components/UI/Modal'
-import { RejectRequest } from './RejectRequest'
+import { RejectApplicationModal } from './RejectApplicationModal'
 import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 import { applicationSlicesActions } from '../../../store/slices/adminSlices/applicationsSlices'
@@ -17,8 +16,11 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { acceptMessage } = useSelector((state) => state.applications)
-   const [isModal, setIsModal] = useState(false)
+   const isSnackbarOpen = useSelector((state) => state.uiSlice.snackbar)
+   const isSnackbarClose = useSelector((state) => state.uiSlice.snackbar)
+   const { rejectMessage } = useSelector((state) => state.applications)
 
+   const [showRejectModal, setShowRejectModal] = useState(false)
    const menuMeatBall = [
       {
          id: 55,
@@ -45,20 +47,33 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
          timerId = setTimeout(() => {
             onCloseSnackbar()
             dispatch(applicationSlicesActions.cleanAccept())
-         }, 3000)
+         }, 10000)
       }
       return () => {
          clearTimeout(timerId)
       }
    }, [acceptMessage])
 
+   useEffect(() => {
+      let time = setTimeout(() => {}, [1])
+      if (rejectMessage) {
+         dispatch(uiSlicesSlicesActions.showSnackbar())
+         time = setTimeout(() => {
+            onCloseSnackbar()
+            dispatch(applicationSlicesActions.cleanReject())
+         }, 3000)
+      }
+      return () => {
+         clearTimeout(time)
+      }
+   }, [rejectMessage])
+
    function rejectModal() {
-      setIsModal(!isModal)
+      setShowRejectModal(true)
    }
 
-   function onCloseRejectModal(e) {
-      e.stopPropagation()
-      setIsModal(!isModal)
+   function onCloseRejectModal() {
+      setShowRejectModal(false)
    }
 
    function onCloseSnackbar() {
@@ -68,6 +83,7 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const navigateToDetailsPage = () => {
       navigate(`/applications/${id}`)
    }
+
    return (
       <BookItems primary={enabled} id={id} onClick={navigateToDetailsPage}>
          <MeatBall onClick={(e) => e.stopPropagation()}>
@@ -77,23 +93,20 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
             <Snackbar
                width="460px"
                height="155px"
-               open={dispatch(uiSlicesSlicesActions.showSnackbar())}
+               open={isSnackbarOpen}
+               handleClose={() => onCloseSnackbar()}
                severity=""
-               handleClose={(e) => onCloseSnackbar(e)}
                message={acceptMessage.message}
                icon={<IconAccept />}
             />
          )}
-         <Modal
-            open={isModal}
-            variant="mini"
-            width="523px"
-            height="247px"
-            overflow="none"
-            onClose={(e) => onCloseRejectModal(e)}
-         >
-            <RejectRequest id={id} />
-         </Modal>
+
+         <RejectApplicationModal
+            id={id}
+            open={showRejectModal}
+            onClose={() => onCloseRejectModal()}
+         />
+
          <Div>
             <Book src={img} alt="photo" />
             <NameBook>{name}</NameBook>
@@ -103,6 +116,17 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
                <Price>{price}</Price>
             </PriceDate>
          </Div>
+         {rejectMessage && (
+            <Snackbar
+               width="460px"
+               height="155px"
+               open={isSnackbarClose}
+               handleClose={() => onCloseSnackbar()}
+               severity=""
+               message={rejectMessage.message}
+               icon={<IconAccept />}
+            />
+         )}
       </BookItems>
    )
 }

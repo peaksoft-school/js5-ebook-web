@@ -7,9 +7,7 @@ export const applicationsActions = (request) => {
    return async (dispatch) => {
       try {
          const result = await appFetch({
-            url: `/api/admin/application/applications${sortRequestApplic(
-               request
-            )}`,
+            url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
          dispatch(
             applicationSlicesActions.getApplications(
@@ -39,7 +37,7 @@ export const acceptApplication = (id) => {
       try {
          const result = await appFetch({
             method: 'POST',
-            url: `/api/admin/application/books/${id}/accepted`,
+            url: `/api/admin/applications/books/${id}/accepted`,
             body: id,
          })
          dispatch(applicationSlicesActions.postAcceptApplication(result))
@@ -55,10 +53,9 @@ export const rejectAplication = ({ id, reasonReject }) => {
       try {
          const result = await appFetch({
             method: 'POST',
-            url: `/api/admin/application/books/${id}/rejected?description=${reasonReject}`,
+            url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
-         console.log(result)
          return result
       } catch (error) {
          return error

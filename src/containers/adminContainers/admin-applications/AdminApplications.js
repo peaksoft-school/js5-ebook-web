@@ -16,7 +16,6 @@ const AdminApplications = () => {
       unwatched,
       totalPages,
    } = useSelector((state) => state.applications)
-
    const [requestObj, setRequestObj] = useState({ page: 1, size: 8 })
    const [showSeeMore, setShowSeeMore] = useState(false)
 
@@ -42,7 +41,13 @@ const AdminApplications = () => {
          }
       })
    }
-
+   const getFormatedDate = (date) => {
+      return date
+         ? format(new Date(date), 'dd MMMM yyyy', {
+              locale: ru,
+           })
+         : ''
+   }
    return (
       <Application>
          <TotalApplication>
@@ -58,17 +63,7 @@ const AdminApplications = () => {
                      key={el.id}
                      id={el.id}
                      img={el.mainImage}
-                     date={
-                        el.publishedDate === null
-                           ? ''
-                           : format(
-                                new Date(el.publishedDate),
-                                'dd MMMM yyyy',
-                                {
-                                   locale: ru,
-                                }
-                             )
-                     }
+                     date={getFormatedDate(el.publishedDate)}
                      name={el.name}
                      price={el.price}
                      enabled={el.enabled}
