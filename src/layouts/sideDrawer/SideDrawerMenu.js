@@ -22,8 +22,8 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
-      link: 'request',
-      navigate: 'request',
+      link: 'applications',
+      navigate: 'applications',
    },
    {
       name: 'Продавцы',

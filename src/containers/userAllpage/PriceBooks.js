@@ -1,6 +1,5 @@
 import React from 'react'
 import { styled } from '@mui/material'
-// import InputText from '../../Components/UI/Inputs/InputText'
 import RangeSlider from './RangeSlider'
 import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconSort.svg'
 
@@ -32,12 +31,3 @@ const Line = styled('div')`
    border-bottom: 1px solid gray;
    margin-bottom: 14px;
 `
-// const InputsPrice = styled('div')`
-//    display: flex;
-//    justify-content: space-between;
-// `
-// const PriceItem = styled('div')`
-//    /* border: 1px solid red; */
-//    padding: 10px 10px;
-//    width: 50%;
-// `
