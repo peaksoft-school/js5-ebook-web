@@ -24,10 +24,11 @@ const ButtonStyle = styled(MuiButton)`
    color: #ffffff;
    line-height: 120%;
    display: flex;
-   justify-content: center;
+   justify-content: space-around;
    align-items: center;
    border-radius: 0px;
-
+   height: ${(props) => props.height || ''};
+   padding: ${(props) => props.padding || ''};
    background: ${(props) =>
       props.variant === 'default' ? '#1c1c1c' : '#f34901'};
    padding: ${(props) => (props.variant === 'default' ? '10px 24px ' : ' ')};
@@ -44,11 +45,12 @@ const ButtonStyle = styled(MuiButton)`
    color: ${(props) => (props.color ? props.color : '')};
    border: ${(props) => (props.border ? props.border : '')};
    border-radius: ${(props) => (props.borderradius ? props.borderradius : '')};
-   width: ${(props) => props.width || '100%'};
    padding: ${(props) => props.padding || '10px 24px'};
    font-size: ${(props) => props.fontSize || '16px'};
    font-family: ${(props) => props.fontFamily || 'Open Sans'};
    margin-right: ${(props) => (props.marginright ? props.marginright : '0px')};
+   height: ${(props) => props.height || ''};
+   padding: ${(props) => props.padding || ''};
    margin-top: ${(props) => props.margintop || '0px'};
    width: ${(props) => props.width || '100%'};
 `

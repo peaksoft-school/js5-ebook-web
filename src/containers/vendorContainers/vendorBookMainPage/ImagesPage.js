@@ -1,7 +1,7 @@
 import { styled } from '@mui/material'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import ImagePicker from '../../Components/UI/imagePicker/imagePicker'
+import ImagePicker from '../../../Components/UI/imagePicker/imagePicker'
 import { WrapImages } from './AddBookPage'
 
 const allImages = {

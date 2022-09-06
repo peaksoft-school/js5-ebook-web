@@ -6,10 +6,22 @@ export const APP_ROLES = {
    USER: 'USER',
    VENDOR: 'VENDOR',
    ADMIN: 'ADMIN',
+   GUEST: 'GUEST',
 }
 
 export const BookType = {
    PAPER_BOOK: 'PAPER_BOOK',
    AUDIO_BOOK: 'AUDIO_BOOK',
    ELECTRONIC_BOOK: 'ELECTRONIC_BOOK',
+}
+
+export const Languages = {
+   KYRGYZ: 'KYRGYZ',
+   RUSSIAN: 'RUSSIAN',
+   ENGLISH: 'ENGLISH',
+}
+
+export const SortBy = {
+   BESTSELLER: 'BESTSELLER',
+   NEW: 'NEW',
 }
