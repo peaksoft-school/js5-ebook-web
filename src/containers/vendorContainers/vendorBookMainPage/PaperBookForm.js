@@ -42,6 +42,7 @@ const PaperBookForm = ({ images }) => {
       discount: dataWithId ? dataWithId.discount : '',
       genre: dataWithId ? dataWithId.genre : '',
    })
+   console.log(inputValues)
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target

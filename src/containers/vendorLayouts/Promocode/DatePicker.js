@@ -52,7 +52,7 @@ export default function BasicDatePicker({ onChange }) {
 
    return (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-         <DatePickerBlock
+         <DatePicker
             value={value}
             format="mm/dd/yy"
             onChange={onChangeDateHandler}
@@ -68,20 +68,12 @@ export default function BasicDatePicker({ onChange }) {
    )
 }
 
-const DatePickerBlock = styled(DatePicker)`
-   transform: translate(223.667px, 145.667px);
-   border: 1px solid red;
-`
-
 const TextDate = styled(TextField)`
-   /* width: 30px; */
    & > div {
-      /* border: 1px solid red; */
       border-radius: 0%;
       width: 100%;
    }
    & > div > input {
-      /* border: 1px solid red; */
       padding: 10px 20px;
    }
 `

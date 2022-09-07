@@ -17,7 +17,11 @@ export const vendorMainPageSlice = createSlice({
    reducers: {
       // save book
       saveBook(state, action) {
-         state.vendorBooks = action.payload
+         if (action.payload) {
+            state.vendorBooks = action.payload.content
+         } else {
+            state.vendorBooks = ''
+         }
       },
 
       updateValid(state) {

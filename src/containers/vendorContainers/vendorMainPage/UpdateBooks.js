@@ -1,9 +1,7 @@
 import { styled } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import Button from '../../../Components/UI/Button/Button'
 import Meatballs from '../../../Components/UI/MeatBalls/MeatBalls'
-import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import { getMainBooksDelete } from '../../../store/createActions/vendorMainPagesActions'
 
 const option = [
@@ -29,12 +27,8 @@ export default function UpdateBooks({ id }) {
          dispatch(getMainBooksDelete(id))
       }
    }
-   const clickHand = () => {
-      dispatch(snackbarActions())
-   }
    return (
       <DivMeatballs>
-         <Button onClick={clickHand}>TEST</Button>
          <Meatballs height="96px" onClick={clickHandle} options={option} />
       </DivMeatballs>
    )

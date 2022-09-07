@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { format } from 'date-fns'
-import { ru } from 'date-fns/locale'
+// import { format } from 'date-fns'
+// import { ru } from 'date-fns/locale'
 import vendorHeart from '../../../assets/icons/bookCard/heartBook.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
@@ -31,7 +31,6 @@ import {
    Span,
    WrapperDiv,
 } from './VendorMainPageStyle'
-import PopUp from '../../../Components/UI/popup'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
@@ -65,13 +64,13 @@ const VendorMainPage = () => {
       }
    }, [getById])
 
-   const getFormatedDate = (date) => {
-      return date
-         ? format(new Date(date), 'dd MMMM yyyy', {
-              locale: ru,
-           })
-         : ''
-   }
+   // const getFormatedDate = (date) => {
+   //    return date
+   //       ? format(new Date(date), 'dd MMMM yyyy', {
+   //            locale: ru,
+   //         })
+   //       : ''
+   // }
 
    return (
       <WrapperDiv>
@@ -105,18 +104,20 @@ const VendorMainPage = () => {
                         <CopyLink to={`/${book.id}`}>
                            <Img src={book.mainImage} />
                            <div>
+                              {/* {getFormatedDate(book.dateOfRegistration)} */}
                               <NameBook>{book.name}</NameBook>
                               <FooterDiv>
                                  <DateSpan>
-                                    {book.dateOfRegistration ? (
-                                       <span>
-                                          {getFormatedDate(
-                                             book.dateOfRegistration
-                                          )}
-                                       </span>
-                                    ) : (
-                                       ''
-                                    )}
+                                    {book.bookStatus}
+                                    {/* {book.dateOfRegistration ? (
+                                          <span>
+                                             {getFormatedDate(
+                                                book.dateOfRegistration
+                                             )}
+                                          </span>
+                                       ) : (
+                                          ''
+                                       )} */}
                                  </DateSpan>
                                  <Price>{book.price}сом</Price>
                               </FooterDiv>
@@ -125,7 +126,6 @@ const VendorMainPage = () => {
                      </BooksWrapper>
                      <MeatBallsDiv onClick={() => setGetById(book.id)}>
                         <UpdateBooks id={getById} />
-                        <PopUp>dsdsdsd</PopUp>
                      </MeatBallsDiv>
                   </BooksContainer>
                </BooksContainer2>

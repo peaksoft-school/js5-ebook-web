@@ -21,9 +21,13 @@ function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
       if (!filesRef.current.files[0]) {
          return
       }
-      if (filesRef.current.files[0].size < 15000) {
-         const name = URL.createObjectURL(filesRef.current.files[0])
-         setIcon(name)
+      const name = filesRef.current.files[0]
+      const image = new Image()
+      image.src = name
+      console.log(image.naturalWidth, image.naturalHeight)
+      if (image.height > -1) {
+         const file = URL.createObjectURL(name)
+         setIcon(file)
       }
       onChange(filesRef.current.files[0], e)
    }

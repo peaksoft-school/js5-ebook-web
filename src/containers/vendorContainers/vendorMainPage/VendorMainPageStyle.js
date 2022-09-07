@@ -34,6 +34,7 @@ export const BooksWrapper = styled('div')`
 export const BooksContainer = styled('div')`
    display: flex;
    width: 280px;
+   /* border: 2px solid red; */
 `
 export const BooksContainer2 = styled('div')`
    border: 1px solid red;

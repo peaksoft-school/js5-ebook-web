@@ -20,6 +20,7 @@ export const addPaperBook = (inputValues, images, bestseller) => {
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
+   console.log(valuesWithFile)
    return async (dispatch) => {
       try {
          if (images.mainImage) {

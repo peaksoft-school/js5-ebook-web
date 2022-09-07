@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
 import warningIcon from '../../../assets/icons/warning.svg'
+import CreatePromocode from '../../vendorLayouts/Promocode/CreatePromocode'
 
 const Promocode = () => {
    const [isOpenPromoModal, setIsOpenPromoModal] = useState(false)
@@ -26,11 +27,15 @@ const Promocode = () => {
             <Modal
                open={isOpenPromoModal}
                onClose={handleClosePromoModal}
-               variant="mini"
-               justifyContent="space-around"
-               width="523px"
-               height="258px"
-            />
+               // variant=""
+               // justifyContent="space-around"
+               justifyContent="flex-start"
+
+               // width="523px"
+               // height="258px"
+            >
+               <CreatePromocode />
+            </Modal>
             <img src={warningIcon} alt="icon" />
          </StyledPromoBtnBlock>
       </div>
