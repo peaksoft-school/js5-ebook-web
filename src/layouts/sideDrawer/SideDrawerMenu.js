@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 // import { link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLocation, useNavigate } from 'react-router'
 
@@ -22,8 +23,8 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
-      // link: 'request',
-      navigate: 'request',
+      link: 'applications',
+      navigate: 'applications',
    },
    {
       name: 'Продавцы',
@@ -31,7 +32,8 @@ const items = [
          0: <Vendor />,
          1: <VendorOrange />,
       },
-      // link: 'request',
+
+      link: 'request',
       navigate: 'vendors',
    },
    {
@@ -40,7 +42,9 @@ const items = [
          0: <User />,
          1: <UserOrange />,
       },
-      // link: 'request',
+
+      link: 'request',
+
       navigate: 'users',
    },
    {
@@ -49,7 +53,8 @@ const items = [
          0: <Books />,
          1: <BooksOrange />,
       },
-      // link: 'books',
+
+      link: 'books',
       navigate: 'books',
    },
 ]

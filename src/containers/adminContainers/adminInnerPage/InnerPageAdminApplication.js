@@ -1,47 +1,79 @@
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import New from '../../../assets/icons/new.svg'
-import { TabInnerPage } from '../../../Components/TabInnerPage'
+import { TabInnerPage } from './TabInnerPage'
 import About from './About'
 import BookFragment from './BookFragment'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
-import Snackbar from '../../../Components/UI/Snackbar'
+import Snackbar from '../../../Components/UI/snackbar/Snackbar'
 import {
+   acceptApplicationInnerPage,
    applicationInnerPageAction,
-   acceptApplication,
 } from '../../../store/slices/applicationInnerPageActions'
 import { ReactComponent as IconAccept } from '../../../assets/icons/IconSnackbar.svg'
+import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
+import { RejectApplicationModal } from './RejectApplicationModal'
+
+import { applicationsInnerPageSlicesAction } from '../../../store/slices/applicationInnerPagesSlices'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
-   const { application, message } = useSelector(
-      (state) => state.applicationsInnerPage
-   )
+   const { application } = useSelector((state) => state.applicationsInnerPage)
+   const { acceptMessage } = useSelector((state) => state.applicationsInnerPage)
+
+   const isSnackbarOpen = useSelector((state) => state.uiSlice.snackbar)
+   const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
+   const { rejectMessage } = useSelector((state) => state.applicationsInnerPage)
 
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
    }, [])
+   useEffect(() => {
+      let timerId = null
+      if (acceptMessage) {
+         dispatch(uiSlicesSlicesActions.showSnackbar())
+         timerId = setTimeout(() => {
+            onCloseSnackbar()
+            dispatch(applicationsInnerPageSlicesAction.cleanAccept())
+         }, 10000)
+      }
+      return () => {
+         clearTimeout(timerId)
+      }
+   }, [acceptMessage])
 
-   const [rejectAplication, setRejectAplication] = useState(false)
-   const [isModal, setIsModal] = useState(false)
-   const [toAccept, setToAccept] = useState(false)
-
-   function acceptHandler() {
-      setToAccept(!toAccept)
-      dispatch(acceptApplication(id))
+   useEffect(() => {
+      let timerId = null
+      if (rejectMessage) {
+         dispatch(uiSlicesSlicesActions.showSnackbar())
+         timerId = setTimeout(() => {
+            onCloseSnackbar()
+            dispatch(applicationsInnerPageSlicesAction.cleanReject())
+         }, 3000)
+      }
+      return () => {
+         clearTimeout(timerId)
+      }
+   }, [rejectMessage])
+   function acceptModal() {
+      dispatch(acceptApplicationInnerPage(id))
    }
-
    function rejectModal() {
-      setRejectAplication(!rejectAplication)
-      setIsModal(!isModal)
+      dispatch(uiSlicesSlicesActions.showRejectModal())
+   }
+   function onCloseRejectModal() {
+      dispatch(uiSlicesSlicesActions.hideRejectModal())
+   }
+   function onCloseSnackbar() {
+      dispatch(uiSlicesSlicesActions.hideSnackbar())
    }
 
    const pathTranslate = {
-      request: 'Заявки',
+      applications: 'Заявки',
       [id]: application.bookName,
    }
 
@@ -100,7 +132,7 @@ export const InnerPageAdminApplication = () => {
                      </Button>
 
                      <Button
-                        onClick={() => acceptHandler()}
+                        onClick={() => acceptModal()}
                         variant="universal"
                         border="1px solid"
                         background="#f34901"
@@ -109,14 +141,30 @@ export const InnerPageAdminApplication = () => {
                         Принять
                      </Button>
 
-                     {!toAccept && (
+                     {acceptMessage && (
                         <Snackbar
-                           severity=""
-                           open={!toAccept}
-                           handleClose={toAccept}
                            width="460px"
                            height="155px"
-                           message={message.message}
+                           open={isSnackbarOpen}
+                           handleClose={() => onCloseSnackbar()}
+                           severity=""
+                           message={acceptMessage.message}
+                           icon={<IconAccept />}
+                        />
+                     )}
+                     <RejectApplicationModal
+                        id={id}
+                        open={isRejectModalOpen}
+                        onClose={() => onCloseRejectModal()}
+                     />
+                     {rejectMessage && (
+                        <Snackbar
+                           width="460px"
+                           height="155px"
+                           open={isSnackbarOpen}
+                           handleClose={() => onCloseSnackbar()}
+                           severity=""
+                           message={rejectMessage.message}
                            icon={<IconAccept />}
                         />
                      )}
@@ -128,15 +176,17 @@ export const InnerPageAdminApplication = () => {
                   about={<About about={application.description} />}
                   bookFragment={
                      <BookFragment
-                        audioBookFragment={application.audioBookFragment}
+                        fragment={
+                           application.fragment || application.audioBookFragment
+                        }
                      />
                   }
                />
-               <FragmentDiv>
+               <ThirdImage>
                   {application.thirdImage && (
                      <img src={application.thirdImage} alt="book" />
                   )}
-               </FragmentDiv>
+               </ThirdImage>
             </FragmentRequest>
          </StyledMain>
       </>
@@ -149,6 +199,7 @@ const InfoContainer = styled('div')`
 const FragmentRequest = styled('div')`
    display: flex;
    justify-content: space-between;
+   margin-top: 185px;
 `
 const ImageDiv = styled('div')`
    display: flex;
@@ -163,7 +214,7 @@ const StyledBookImage2 = styled.div`
       margin: 0px 0px 20px 20px;
    }
 `
-const FragmentDiv = styled('div')`
+const ThirdImage = styled('div')`
    & img {
       width: 320px;
       height: 480px;
@@ -231,8 +282,12 @@ const StyledBookImageCont = styled.div`
    justify-content: space-between;
    width: 531px;
    margin-right: 20px;
+   position: relative;
 `
 const Img = styled('img')`
    width: 206px;
    height: 206px;
+   position: absolute;
+   left: 230px;
+   top: 250px;
 `

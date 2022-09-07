@@ -1,4 +1,4 @@
-import appFetch from '../hooks/AppFetch'
+import appFetch from '../hooks/appFetch'
 import bookAction from './slices/addBookSlice'
 import { appFileFetchService } from '../api/fileService'
 
@@ -8,6 +8,7 @@ export const addPaperBook = (inputValues, images) => {
       ...images,
       bestseller: true,
    }
+
    return async (dispatch) => {
       try {
          if (images.mainImage) {

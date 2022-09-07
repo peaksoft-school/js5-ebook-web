@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
    application: {},
-   message: {},
+   acceptMessage: null,
+   rejectMessage: null,
 }
 
 const applicationsInnerPageSlices = createSlice({
@@ -12,8 +13,17 @@ const applicationsInnerPageSlices = createSlice({
       getInnerPage(state, action) {
          state.application = action.payload
       },
-      acceptApplication(state, action) {
-         state.message = action.payload
+      postAcceptApplication(state, action) {
+         state.acceptMessage = action.payload
+      },
+      postRejectApplication(state, action) {
+         state.rejectMessage = action.payload
+      },
+      cleanAccept(state) {
+         state.acceptMessage = null
+      },
+      cleanReject(state) {
+         state.rejectMessage = null
       },
    },
 })

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import appFetch from '../../hooks/AppFetch'
+import appFetch from '../../hooks/appFetch'
 import { EBOOK_AUTH_INFO, APP_ROLES } from '../../utils/constants/constants'
 import {
    getFromLocaleStorage,
@@ -26,6 +26,12 @@ const authSlices = createSlice({
    name: 'authSlices',
    initialState,
    reducers: {
+      reject: (state) => {
+         state.status = 'rejected'
+      },
+      fulfilled: (state) => {
+         state.status = 'fulfilled'
+      },
       pending: (state) => {
          state.status = 'pending'
       },
