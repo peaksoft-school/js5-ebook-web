@@ -8,6 +8,7 @@ export const addPaperBook = (inputValues, images) => {
       ...images,
       bestseller: true,
    }
+
    return async (dispatch) => {
       try {
          if (images.mainImage) {

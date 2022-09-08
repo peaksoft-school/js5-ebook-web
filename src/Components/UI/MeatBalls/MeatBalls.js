@@ -1,8 +1,10 @@
 import styled from 'styled-components'
-import { useState } from 'react'
-import MeadBalls from '../../../assets/icons/MeatBalls/MeatBalls.jpg'
 
-const Meatballs = ({ options }) => {
+import { useState } from 'react'
+
+import MeadBalls from '../../../assets/icons/MeatBalls/MeatBall.svg'
+
+const MeatBalls = ({ options }) => {
    const [state, setState] = useState(false)
 
    const clickHandler = () => {
@@ -16,7 +18,7 @@ const Meatballs = ({ options }) => {
 
    return (
       <DivBlock>
-         <Img onClick={clickHandler} src={MeadBalls} />
+         <Img onClick={() => clickHandler()} src={MeadBalls} />
          {state && (
             <DivMeatBalls>
                {options.map((option) => {
@@ -26,7 +28,7 @@ const Meatballs = ({ options }) => {
                         onClick={() => clickCloseHandler(option)}
                      >
                         <Div>{option.icon}</Div>
-                        {option.title}
+                        <DivOprions>{option.title}</DivOprions>
                      </OptionMeadBalls>
                   )
                })}
@@ -36,8 +38,8 @@ const Meatballs = ({ options }) => {
    )
 }
 
-export default Meatballs
-
+export default MeatBalls
+const DivOprions = styled('div')``
 const DivBlock = styled.div`
    display: flex;
    flex-direction: column;
@@ -48,16 +50,17 @@ const DivBlock = styled.div`
 const Img = styled.img`
    width: 3.75px;
    height: 16px;
+   margin-left: 30px;
+   margin-top: 11px;
 `
 
 const DivMeatBalls = styled.div`
    display: flex;
    flex-direction: column;
    justify-content: center;
-   border: 1px solid #c4c4c4;
    position: absolute;
    top: 100%;
-   left: 0;
+   right: 0;
    background-color: white;
    padding: 30px;
 `
