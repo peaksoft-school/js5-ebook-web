@@ -6,6 +6,7 @@ const initialState = {
    genres: '',
    books: '',
    sortGenres: '',
+   deleteMessage: '',
 }
 
 const globalValues = createSlice({
@@ -26,6 +27,9 @@ const globalValues = createSlice({
                name: el.search,
             }
          })
+      },
+      getDeleteMessage: (state, action) => {
+         state.deleteMessage = action.payload
       },
    },
 })
@@ -58,5 +62,14 @@ export function setGenres() {
          url: '/api/genres',
       })
       dispatch(globalValuesAction.setGenres(genres))
+   }
+}
+export function deleteBookAction(id) {
+   return async (dispatch) => {
+      const books = await appFetch({
+         url: `/api/book/delete/${id}`,
+         method: 'DELETE',
+      })
+      dispatch(globalValuesAction.getDeleteMessage(books))
    }
 }

@@ -1,7 +1,17 @@
+import { styled } from '@mui/material'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import Button from '../../Components/UI/Button/Button'
 import Modal from '../../Components/UI/Modal'
+import { deleteBookAction } from '../../store/slices/globalSlices'
 
 const DeleteBooks = ({ id, open, onClose }) => {
+   const dispatch = useDispatch()
+
+   function deleteBook() {
+      dispatch(deleteBookAction(id))
+      onClose()
+   }
    return (
       <Modal
          open={open}
@@ -11,14 +21,26 @@ const DeleteBooks = ({ id, open, onClose }) => {
          height="161px"
          overflow="none"
       >
+         <Message>Вы уверены, что хотите удалить книгу?</Message>
          <DivButton>
             <Button
                variant="default"
                width="137px"
                height="42px"
-               onClick={() => sendReason()}
+               background="none"
+               color="gray"
+               onClick={() => onClose()}
             >
-               Отправить
+               Отменить
+            </Button>
+
+            <Button
+               variant="default"
+               width="137px"
+               height="42px"
+               onClick={() => deleteBook()}
+            >
+               Удалить
             </Button>
          </DivButton>
       </Modal>
@@ -26,9 +48,21 @@ const DeleteBooks = ({ id, open, onClose }) => {
 }
 
 export default DeleteBooks
+
 const DivButton = styled('div')`
    display: flex;
-   justify-content: end;
-   margin-top: 18px;
+   justify-content: space-evenly;
+   margin-top: 23px;
    margin-bottom: 20px;
+   width: 100%;
+`
+const Message = styled('p')`
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 18px;
+   line-height: 130%;
+   text-align: center;
+   color: #000000;
+   padding-top: 20px;
 `

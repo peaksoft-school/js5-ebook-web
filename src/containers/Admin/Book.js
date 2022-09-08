@@ -3,6 +3,7 @@
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import MeatBalls from '../../Components/UI/MeatBalls/MeatBalls'
 import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBook.svg'
 import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
@@ -10,10 +11,12 @@ import { BookType } from '../../utils/constants/constants'
 import { ReactComponent as Edit } from '../../assets/icons/Edit.svg'
 import { ReactComponent as Delete } from '../../assets/icons/Delete.svg'
 import DeleteBooks from './DeleteBooks'
+import Snackbar from '../../Components/UI/snackbar/Snackbar'
+import { ReactComponent as IconAccept } from '../../assets/icons/IconAccept.svg'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
-   // const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { deleteMessage } = useSelector((state) => state.globalValues)
    const [showRejectModal, setShowRejectModal] = useState(false)
    const menuMeatBall = [
       {
@@ -68,17 +71,17 @@ const Book = ({ id, img, date, name, price, bookType }) => {
                <Price>{price}</Price>
             </PriceDate>
          </Div>
-         {/* {rejectMessage && (
+         {deleteMessage && (
             <Snackbar
                width="460px"
                height="155px"
                open={isSnackbarOpen}
                handleClose={() => onCloseSnackbar()}
                severity=""
-               message={rejectMessage.message}
+               message={deleteMessage.message}
                icon={<IconAccept />}
             />
-         )} */}
+         )}
       </BookItems>
    )
 }
