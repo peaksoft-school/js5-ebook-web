@@ -1,0 +1,149 @@
+// import { Snackbar } from '@mui/material'
+
+import { styled } from '@mui/material'
+import { useNavigate } from 'react-router'
+import React, { useState } from 'react'
+import MeatBalls from '../../Components/UI/MeatBalls/MeatBalls'
+import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBook.svg'
+import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
+import { BookType } from '../../utils/constants/constants'
+import { ReactComponent as Edit } from '../../assets/icons/Edit.svg'
+import { ReactComponent as Delete } from '../../assets/icons/Delete.svg'
+import DeleteBooks from './DeleteBooks'
+
+const Book = ({ id, img, date, name, price, bookType }) => {
+   // const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const [showRejectModal, setShowRejectModal] = useState(false)
+   const menuMeatBall = [
+      {
+         id: 55,
+         title: 'Редактировать',
+         icon: <Edit />,
+         onClick: editBook,
+      },
+      {
+         id: 2,
+         title: 'Удалить',
+         icon: <Delete />,
+         onClick: deleteBook,
+      },
+   ]
+
+   function editBook() {
+      navigate('/books/addBook')
+   }
+   function deleteBook() {
+      setShowRejectModal(true)
+   }
+   function onCloseDeleteModal() {
+      setShowRejectModal(false)
+   }
+
+   const BookTypeBlock = React.useMemo(() => {
+      return {
+         [BookType.PAPER_BOOK]: '',
+         [BookType.AUDIO_BOOK]: <AudioBook />,
+         [BookType.ELECTRONIC_BOOK]: <PdfBook />,
+      }
+   }, [])
+   return (
+      <BookItems>
+         <MeatBall onClick={(e) => e.stopPropagation()}>
+            <MeatBalls options={menuMeatBall} />
+         </MeatBall>
+
+         <DeleteBooks
+            id={id}
+            open={showRejectModal}
+            onClose={() => onCloseDeleteModal()}
+         />
+         <CartTypeIcon>{BookTypeBlock[bookType]}</CartTypeIcon>
+         <Div>
+            <BookImage src={img} alt="photo" />
+            <NameBook>{name}</NameBook>
+
+            <PriceDate>
+               <Date>{date}</Date>
+               <Price>{price}</Price>
+            </PriceDate>
+         </Div>
+         {/* {rejectMessage && (
+            <Snackbar
+               width="460px"
+               height="155px"
+               open={isSnackbarOpen}
+               handleClose={() => onCloseSnackbar()}
+               severity=""
+               message={rejectMessage.message}
+               icon={<IconAccept />}
+            />
+         )} */}
+      </BookItems>
+   )
+}
+
+export default Book
+
+const BookItems = styled('div')`
+   width: 225px;
+   height: 380px;
+   border: ${(props) => (!props.primary ? '0.5px solid #ff4c00' : '')};
+   background: ${(props) =>
+      !props.primary ? 'rgba(255, 76, 0, 0.08)' : '#ededed'};
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   justify-content: space-evenly;
+   font-family: 'Open Sans';
+   margin-top: 22px;
+   padding-top: 20px;
+`
+const MeatBall = styled('div')`
+   display: flex;
+   justify-content: center;
+   width: 60px;
+   cursor: pointer;
+`
+const BookImage = styled('img')`
+   width: 170px;
+   height: 260px;
+   cursor: pointer;
+`
+const NameBook = styled('p')`
+   font-size: 14px;
+   font-weight: 600;
+   width: 194px;
+`
+const PriceDate = styled('div')`
+   width: 169px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-top: -15px;
+   padding-bottom: 20px;
+`
+const Date = styled('p')`
+   font-size: 14px;
+   font-weight: 400;
+   color: #8a8a8a;
+`
+const Price = styled('p')`
+   font-size: 16px;
+   font-weight: 600;
+   color: #ff4c00;
+`
+const Div = styled('div')`
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   width: 197px;
+`
+const CartTypeIcon = styled('div')`
+   /* border: 1px solid red; */
+   position: absolute;
+   top: 0;
+   left: 0;
+   margin-top: 20px;
+   margin-left: 20px;
+`

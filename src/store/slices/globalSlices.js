@@ -48,7 +48,7 @@ export function setBooks(request) {
       const books = await appFetch({
          url: `/api/admin/books${sortRequestApplic(request)}`,
       })
-      dispatch(globalValuesAction.setBooks(books))
+      dispatch(globalValuesAction.setBooks(books.content))
    }
 }
 

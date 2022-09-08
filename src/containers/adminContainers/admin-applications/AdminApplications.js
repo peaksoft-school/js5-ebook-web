@@ -58,7 +58,7 @@ const AdminApplications = () => {
          </TotalApplication>
          <Books>
             {applications &&
-               applications?.map((el) => (
+               applications.map((el) => (
                   <ApplicationCard
                      key={el.id}
                      id={el.id}

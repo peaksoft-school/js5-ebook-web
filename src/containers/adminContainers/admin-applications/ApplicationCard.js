@@ -20,6 +20,7 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const { rejectMessage } = useSelector((state) => state.applications)
 
    const [showRejectModal, setShowRejectModal] = useState(false)
+
    const menuMeatBall = [
       {
          id: 55,

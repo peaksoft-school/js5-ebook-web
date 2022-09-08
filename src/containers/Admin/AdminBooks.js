@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { ru } from 'date-fns/locale'
+import { format } from 'date-fns'
 import styled from '@emotion/styled'
 import { BookType } from '../../utils/constants/constants'
 import SelectBooks from './SelectBooks'
 import { setBooks, setGenres } from '../../store/slices/globalSlices'
+import Book from './Book'
 
 const arr = [
    {
@@ -25,7 +28,9 @@ const arr = [
 ]
 
 export default function AdminBooks() {
-   const { genres: booktypes } = useSelector((store) => store.globalValues)
+   const { genres: booktypes, books } = useSelector(
+      (store) => store.globalValues
+   )
    const dispatch = useDispatch()
    const [requestObj, setRequestObj] = useState({
       genres: [],
@@ -58,6 +63,13 @@ export default function AdminBooks() {
          }
       })
    }
+   const getFormatedDate = (date) => {
+      return date
+         ? format(new Date(date), 'dd MMMM yyyy', {
+              locale: ru,
+           })
+         : ''
+   }
    return (
       <AdminBooksBlock>
          <SelectBlock>
@@ -74,17 +86,36 @@ export default function AdminBooks() {
                onClick={onClickSelect}
             />
          </SelectBlock>
+         <Books>
+            {books &&
+               books.map((book) => (
+                  <Book
+                     key={book.id}
+                     id={book.id}
+                     img={book.mainImage}
+                     date={getFormatedDate(book.publishedDate)}
+                     name={book.name}
+                     price={book.price}
+                     bookType={book.bookType}
+                  />
+               ))}
+         </Books>
       </AdminBooksBlock>
    )
 }
 
 const SelectBlock = styled('div')`
-   /* border: 1px solid red; */
    display: flex;
    justify-content: flex-start;
    width: 550px;
 `
 
 const AdminBooksBlock = styled('div')`
-   border: 1px solid red;
+   width: 100%;
+`
+const Books = styled('div')`
+   display: flex;
+   justify-content: space-between;
+   flex-wrap: wrap;
+   margin-right: -40px;
 `

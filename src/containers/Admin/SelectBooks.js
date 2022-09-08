@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { MenuItem } from '@mui/material'
+// import { useDispatch } from 'react-redux'
 import PopUp from '../../Components/UI/popup'
+// import { adminBooksActions } from '../../store/slices/adminActions/adminBooksActions'
 
 export default function SelectBooks({ genres, name, onClick, type }) {
+   // const dispatch = useDispatch()
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
       name: 'все',
@@ -32,6 +35,7 @@ export default function SelectBooks({ genres, name, onClick, type }) {
       })
       onCloseMenu()
    }
+
    return (
       <SelectBook>
          <SelectSpan>{name}:</SelectSpan>
@@ -55,6 +59,7 @@ export default function SelectBooks({ genres, name, onClick, type }) {
 const PopUpItem = styled(MenuItem)`
    padding: 10px;
 `
+
 const SelectLabel = styled('div')`
    /* border: 1px solid red; */
    font-family: 'Open Sans';
