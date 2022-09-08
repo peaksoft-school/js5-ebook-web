@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Checkbox from '../../../Components/UI/checkBox/CheckBox'
+import InputText from '../../../Components/UI/Inputs/InputText'
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
-import InputText from '../../../Components/UI/Inputs/InputText'
 import { addPaperBook } from '../../../store/createActions/addBookActions'
 import bookAction from '../../../store/slices/addBookSlice'
 import SelectBooks from '../../Admin/SelectBooks'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
-import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import { setGenres } from '../../../store/slices/globalSlices'
 
 const languageSelect = [
    { name: 'KYRGYZ', id: 1 },
@@ -42,7 +43,6 @@ const PaperBookForm = ({ images }) => {
       discount: dataWithId ? dataWithId.discount : '',
       genre: dataWithId ? dataWithId.genre : '',
    })
-   console.log(inputValues)
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -61,11 +61,18 @@ const PaperBookForm = ({ images }) => {
          inputValues.discount.length >= 1 &&
          inputValues.quantityOfBook.length >= 1
 
-      return validateValues && images.mainImage
+      return validateValues
+   }
+   const validLength = () => {
+      const validNumbers =
+         inputValues.yearOfIssue.length > 4 ||
+         inputValues.yearOfIssue < 0 ||
+         inputValues.yearOfIssue > 2022
+      return validNumbers
    }
 
    const clickSendFormValues = async () => {
-      if (isFormValid()) {
+      if (isFormValid() && !validLength()) {
          dispatch(addPaperBook(inputValues, images, isChecked))
          dispatch(bookAction.deleteImage())
          setInputValues({
@@ -92,20 +99,23 @@ const PaperBookForm = ({ images }) => {
       } else {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
-      if (!bookSuccsess) {
+      if (bookSuccsess) {
          setTimeout(() => {
             navigate('/')
          }, 3000)
       }
    }
 
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
+
    return (
       <>
-         <SnackBarDate
-            width="400px"
+         <GetSnackbar
+            open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
-            severity="error"
-            snack={stateSnackbar}
+            variant="error"
          />
          <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
@@ -156,6 +166,7 @@ const PaperBookForm = ({ images }) => {
                   id="publishingHouse"
                />
                <Textarea
+                  inputValues={inputValues}
                   onChange={handleChangeInput}
                   value={inputValues.description}
                   name="description"
@@ -238,6 +249,7 @@ const PaperBookForm = ({ images }) => {
                         type="number"
                         name="yearOfIssue"
                      />
+                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                      <LabelStyle htmlFor="quantityOfBook">
                         Кол-во <strong>*</strong>
                      </LabelStyle>
@@ -249,10 +261,9 @@ const PaperBookForm = ({ images }) => {
                         placeholder="шт"
                         name="quantityOfBook"
                      />
-                     <LabelStyle htmlFor="discount">
-                        Скидка <strong>*</strong>
-                     </LabelStyle>
+                     <LabelStyle htmlFor="discount">Скидка</LabelStyle>
                      <InputText
+                        onkeypress="if(this.value.length&gt;4) return false"
                         id="discount"
                         onChange={handleChangeInput}
                         value={inputValues.discount}
@@ -341,4 +352,8 @@ export const PutDiv = styled('div')`
    display: flex;
    justify-content: space-between;
    width: 300px;
+`
+export const ValidSpan = styled('span')`
+   color: red;
+   font-size: 14px;
 `

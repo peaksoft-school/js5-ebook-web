@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import BasicDatePicker from './DatePicker'
-import SnackBarDate from './SnackBarDate'
 import {
    createPromocode,
    promocodeActions,
@@ -17,14 +16,15 @@ export default function CreatePromocode() {
       dataOut: '',
       percent: 0,
    })
-   const [snackbar, setSnackbar] = React.useState(false)
-   const { promocode: success, error: errorPromo } = useSelector(
-      (store) => store.promocodeStore
-   )
+   const {
+      promocode: success,
+      error: errorPromo,
+      snackbar,
+   } = useSelector((store) => store.promocodeStore)
+
    const dispatch = useDispatch()
    React.useEffect(() => {
       const time = setTimeout(() => {
-         setSnackbar(false)
          dispatch(promocodeActions.clean())
       }, [3000])
       return () => {
@@ -47,7 +47,7 @@ export default function CreatePromocode() {
          promocode.dataOut === '' ||
          promocode.percent === 0
       ) {
-         setSnackbar(true)
+         dispatch(promocodeActions.snackbar())
          return
       }
       const promo = {
@@ -59,12 +59,7 @@ export default function CreatePromocode() {
       dispatch(createPromocode(promo))
    }
    return (
-      <>
-         <SnackBarDate
-            snack={snackbar || Boolean(success) || Boolean(errorPromo)}
-            message={success || errorPromo || ''}
-            variant={success ? 'success' : ''}
-         />
+      <div>
          <PromoCodeBlock onSubmit={onSubmitPromocode}>
             <PromoCodeItem>
                <Label htmlFor="value" width="100%">
@@ -113,7 +108,7 @@ export default function CreatePromocode() {
                <PromoSubmit type="submit">Создать</PromoSubmit>
             </PromoCodeItem>
          </PromoCodeBlock>
-      </>
+      </div>
    )
 }
 

@@ -64,11 +64,9 @@ export default function SelectBooks({
       </SelectBook>
    )
 }
-
 const PopUpItem = styled(MenuItem)`
    padding: 10px;
 `
-
 const SelectLabel = styled('div')`
    font-family: 'Open Sans';
    font-style: normal;
@@ -86,7 +84,6 @@ const SelectLabel = styled('div')`
       border: ${(props) => (props.hover ? '1px solid red' : '')};
    }
 `
-
 const SelectSpan = styled('span')`
    color: #b5b5b5;
    font-family: 'Open Sans';
@@ -96,7 +93,6 @@ const SelectSpan = styled('span')`
    line-height: 130%;
    padding-right: 10px;
 `
-
 const SelectBook = styled('div')`
    /* border: 1px solid red; */
    display: flex;

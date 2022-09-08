@@ -8,12 +8,18 @@ import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import CheckBox from '../../../Components/UI/checkBox/CheckBox'
 import bookAction from '../../../store/slices/addBookSlice'
-import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
+import {
+   ButtonDiv,
+   InputDiv,
+   InputWrapper,
+   LabelStyle,
+   ValidSpan,
+} from './PaperBookForm'
 import { addAudioBook } from '../../../store/createActions/addBookActions'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import SelectBooks from '../../Admin/SelectBooks'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
-import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 
 const languageSelect = [
    { name: 'KYRGYZ', id: 1 },
@@ -73,6 +79,13 @@ const AudioBookForm = ({ images }) => {
 
       return isInputsAreValid && images.mainImage
    }
+   const validLength = () => {
+      const validNumbers =
+         inputValues.yearOfIssue.length > 4 ||
+         inputValues.yearOfIssue < 0 ||
+         inputValues.yearOfIssue > 2022
+      return validNumbers
+   }
    const clickSendFormValues = async () => {
       if (isFormValid()) {
          dispatch(addAudioBook(inputValues, images, audioValues, durationTimer))
@@ -110,11 +123,10 @@ const AudioBookForm = ({ images }) => {
 
    return (
       <>
-         <SnackBarDate
-            width="400px"
+         <GetSnackbar
+            open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
-            severity="error"
-            snack={stateSnackbar}
+            variant="error"
          />
          <InputWrapper>
             <InputDiv>
@@ -194,13 +206,13 @@ const AudioBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="гг"
                         value={inputValues.yearOfIssue}
+                        type="number"
                      />
+                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                   </PriceDiv>
                </SelectDiv>
                <LabelStyleTime htmlFor="duration">
-                  <LabelStyle>
-                     Длительность <strong>*</strong>
-                  </LabelStyle>
+                  <LabelStyle>Длительность</LabelStyle>
                </LabelStyleTime>
                <SelectDiv>
                   <InnerSelectDIv>
@@ -211,6 +223,7 @@ const AudioBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="ч"
                         value={duration.duration}
+                        type="number"
                      />
                   </InnerSelectDIv>
                   <TimeInputs>
@@ -220,6 +233,7 @@ const AudioBookForm = ({ images }) => {
                         placeholder="мин"
                         name="minute"
                         value={duration.minute}
+                        type="number"
                      />
                   </TimeInputs>
                   <TimeInputs>
@@ -229,6 +243,7 @@ const AudioBookForm = ({ images }) => {
                         name="second"
                         placeholder="сек"
                         value={duration.second}
+                        type="number"
                      />
                   </TimeInputs>
                </SelectDiv>
@@ -247,12 +262,11 @@ const AudioBookForm = ({ images }) => {
                         name="price"
                         onChange={handleChangeInput}
                         value={inputValues.price}
+                        type="number"
                      />
                   </PriceDiv>
                   <PriceDiv>
-                     <LabelStyle htmlFor="discount">
-                        Скидка <strong>*</strong>
-                     </LabelStyle>
+                     <LabelStyle htmlFor="discount">Скидка</LabelStyle>
                      <InputText
                         id="discount"
                         onChange={handleChangeInput}
@@ -260,6 +274,7 @@ const AudioBookForm = ({ images }) => {
                         name="discount"
                         placeholder="%"
                         value={inputValues.discount}
+                        type="number"
                      />
                   </PriceDiv>
                </SelectDiv>

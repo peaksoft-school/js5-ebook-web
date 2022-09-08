@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { format } from 'date-fns'
-// import { ru } from 'date-fns/locale'
+import { Snackbar, styled } from '@mui/material'
 import vendorHeart from '../../../assets/icons/bookCard/heartBook.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
 import SelectBooks from '../../Admin/SelectBooks'
-import Snackbar from '../../../Components/UI/Snackbar'
 import HeaderMainPage from './HeaderMainPage'
-import {
-   getMainBooks,
-   getMainBooksWithId,
-} from '../../../store/createActions/vendorMainPagesActions'
+import strel from '../../../assets/icons/strel.svg'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import { getMainBooks } from '../../../store/createActions/vendorMainPagesActions'
 import {
    BooksContainer,
-   BooksContainer2,
    BookSHeader,
    BooksWrapper,
    ContainerDiv,
@@ -23,21 +20,23 @@ import {
    FooterDiv,
    HeaderText,
    Img,
+   ImgesCont,
    ImgFavorite,
    MeatBallsDiv,
    NameBook,
    Price,
    SelectBooksDiv,
+   SelectCopy,
    Span,
    WrapperDiv,
 } from './VendorMainPageStyle'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
+   const { totalElements } = useSelector((state) => state.vendorMainPage)
    const { status } = useSelector((state) => state.vendorMainPage)
    const dispatch = useDispatch()
    const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
-   console.log(bookError, bookSuccsess)
    const [getById, setGetById] = useState()
 
    const bookType = [
@@ -49,28 +48,24 @@ const VendorMainPage = () => {
       { name: 'В обработке', id: 6, text: 'IN_THE_PROCESS' },
       { name: 'Отклоненные', id: 7, text: 'REJECTED' },
    ]
+
+   const moreProducts = 8
+   const [next, setNext] = useState(moreProducts)
+   const handleMoreImage = () => {
+      setNext(next + moreProducts)
+   }
    const [selectId, setSelectId] = useState()
    const clickSelectBook = (data, _, typeData) => {
       setSelectId(typeData)
    }
 
    useEffect(() => {
-      dispatch(getMainBooks(selectId))
-   }, [selectId])
+      dispatch(getMainBooks(selectId, next))
+   }, [selectId, next, bookSuccsess])
 
    useEffect(() => {
-      if (getById) {
-         dispatch(getMainBooksWithId(getById))
-      }
-   }, [getById])
-
-   // const getFormatedDate = (date) => {
-   //    return date
-   //       ? format(new Date(date), 'dd MMMM yyyy', {
-   //            locale: ru,
-   //         })
-   //       : ''
-   // }
+      dispatch(snackbarActions())
+   }, [bookError, bookSuccsess])
 
    return (
       <WrapperDiv>
@@ -82,17 +77,30 @@ const VendorMainPage = () => {
                open={vendorBooks.length === 0}
             />
          )}
+         <GetSnackbar
+            open={bookError || bookSuccsess}
+            message={bookSuccsess ? 'Пользователь успешно удален!' : bookError}
+            variant={bookError ? 'error' : 'success'}
+         />
          <HeaderMainPage />
          <HeaderText>
-            <Span>Всего {vendorBooks.length} книг</Span>
+            <Span>Всего {totalElements} книг</Span>
             <SelectBooksDiv>
                <SelectBooks genres={bookType} onClick={clickSelectBook} />
+               <SelectCopy>
+                  <ImgesCont src={strel} />
+               </SelectCopy>
             </SelectBooksDiv>
          </HeaderText>
          <hr />
          <ContainerDiv>
             {vendorBooks.map((book) => (
-               <BooksContainer2 key={book.id}>
+               <Books
+                  key={book.id}
+                  reject={book.bookStatus === 'REJECTED'}
+                  primary={book.bookStatus === 'IN_PROCESSING'}
+                  accepted={book.bookStatus === 'ACCEPTED'}
+               >
                   <BooksContainer>
                      <BooksWrapper>
                         <BookSHeader>
@@ -104,21 +112,9 @@ const VendorMainPage = () => {
                         <CopyLink to={`/${book.id}`}>
                            <Img src={book.mainImage} />
                            <div>
-                              {/* {getFormatedDate(book.dateOfRegistration)} */}
                               <NameBook>{book.name}</NameBook>
                               <FooterDiv>
-                                 <DateSpan>
-                                    {book.bookStatus}
-                                    {/* {book.dateOfRegistration ? (
-                                          <span>
-                                             {getFormatedDate(
-                                                book.dateOfRegistration
-                                             )}
-                                          </span>
-                                       ) : (
-                                          ''
-                                       )} */}
-                                 </DateSpan>
+                                 <DateSpan>{book.dateOfRegistration}</DateSpan>
                                  <Price>{book.price}сом</Price>
                               </FooterDiv>
                            </div>
@@ -128,18 +124,35 @@ const VendorMainPage = () => {
                         <UpdateBooks id={getById} />
                      </MeatBallsDiv>
                   </BooksContainer>
-               </BooksContainer2>
+               </Books>
             ))}
          </ContainerDiv>
-         <Button
-            fullWidth
-            variant="universal"
-            border="1px solid grey"
-            color="grey"
-         >
-            Смотреть больше
-         </Button>
+         {next < totalElements && (
+            <Button
+               colorhover="white"
+               fullWidth
+               variant="universal"
+               border="1px solid grey"
+               color="grey"
+               onClick={handleMoreImage}
+            >
+               Смотреть больше
+            </Button>
+         )}
       </WrapperDiv>
    )
 }
 export default VendorMainPage
+
+const Books = styled('div')`
+   border: ${(props) => (props.primary ? 'none' : '')};
+   background-color: ${(props) => (props.primary ? '#EDEDED' : '')};
+
+   background-color: ${(props) =>
+      props.reject ? 'rgba(220, 220, 220, 0.61)' : ''};
+   opacity: ${(props) => (props.reject ? '0.4' : '')};
+
+   background-color: ${(props) =>
+      props.accepted ? 'rgba(243, 73, 1, 0.08)' : ''};
+   border: ${(props) => (props.accepted ? '1px solid #F34901' : '')};
+`

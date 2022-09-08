@@ -26,6 +26,12 @@ const authSlices = createSlice({
    name: 'authSlices',
    initialState,
    reducers: {
+      reject: (state) => {
+         state.status = 'rejected'
+      },
+      fulfilled: (state) => {
+         state.status = 'fulfilled'
+      },
       pending: (state) => {
          state.status = 'pending'
       },

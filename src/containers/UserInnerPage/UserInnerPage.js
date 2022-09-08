@@ -36,7 +36,7 @@ export const UserInnerPage = () => {
    }
 
    const pathTranslate = {
-      books: 'Главная',
+      allbooks: 'Главная',
       [bookId]: book.bookName,
    }
 

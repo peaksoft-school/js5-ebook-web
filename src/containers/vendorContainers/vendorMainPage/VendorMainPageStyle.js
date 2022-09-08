@@ -15,6 +15,10 @@ export const Img = styled('img')`
    height: 297px;
    cursor: pointer;
    margin-bottom: 6px;
+   background-color: aliceblue;
+`
+export const ImgesCont = styled('img')`
+   width: 16px;
 `
 export const CopyLink = styled(Link)`
    text-decoration: none;
@@ -34,16 +38,14 @@ export const BooksWrapper = styled('div')`
 export const BooksContainer = styled('div')`
    display: flex;
    width: 280px;
-   /* border: 2px solid red; */
+   padding: 0px 0px 0px 9px;
+   position: relative;
 `
-export const BooksContainer2 = styled('div')`
-   border: 1px solid red;
-   display: flex;
-   justify-content: center;
-   background: rgba(243, 73, 1, 0.08);
-`
+
 export const MeatBallsDiv = styled('div')`
    margin-top: 16px;
+   position: absolute;
+   right: 22px;
 `
 export const FooterDiv = styled('div')`
    display: flex;
@@ -95,4 +97,12 @@ export const ImgFavorite = styled('span')`
 export const Span = styled('span')`
    color: #969696;
 `
-export const SelectBooksDiv = styled('div')``
+export const SelectBooksDiv = styled('div')`
+   display: flex;
+   justify-content: space-around;
+`
+export const SelectCopy = styled('div')`
+   width: 32px;
+   display: flex;
+   flex-direction: row-reverse;
+`

@@ -1,15 +1,15 @@
 import { styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import PaperBookForm from './PaperBookForm'
 import ImagePicker from '../../../Components/UI/imagePicker/imagePicker'
-import PaperBook from './PaperBookForm'
 import RadioButton from '../../../Components/UI/RadioButton'
-import AudioBook from './AudioBookForm'
-import ElectronicBook from './ElectronicBookForm'
 import { setGenres } from '../../../store/slices/globalSlices'
-import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
+import AudioBookForm from './AudioBookForm'
+import ElectronicBookForm from './ElectronicBookForm'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
@@ -45,13 +45,13 @@ const AddBookPage = () => {
    const getBookFormsByType = () => {
       let bookComponents
       if (radio === 'Бумажная') {
-         bookComponents = <PaperBook images={images} />
+         bookComponents = <PaperBookForm images={images} />
       }
       if (radio === 'Аудиокнига') {
-         bookComponents = <AudioBook images={images} />
+         bookComponents = <AudioBookForm images={images} />
       }
       if (radio === 'Электронная книга') {
-         bookComponents = <ElectronicBook images={images} />
+         bookComponents = <ElectronicBookForm images={images} />
       }
       return bookComponents
    }
@@ -59,10 +59,10 @@ const AddBookPage = () => {
    return (
       <ContainerDiv>
          <HeaderMainPage />
-         <SnackBarDate
-            snack={bookError || bookSuccsess}
+         <GetSnackbar
+            open={bookError || bookSuccsess}
             message={bookError || bookSuccsess}
-            variant={bookSuccsess ? 'success' : 'error'}
+            variant={bookError ? 'error' : 'success'}
          />
          <div>
             <ThreeImagesDiv>

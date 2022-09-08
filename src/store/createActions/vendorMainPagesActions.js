@@ -1,14 +1,15 @@
 import { appFileFetchService } from '../../api/fileService'
 import appFetch from '../../hooks/AppFetch'
-import bookAction from '../slices/addBookSlice'
 import snackbarAction from '../slices/snackbarSlice'
 import vendorMainPageAction from '../slices/vendorMainPageSlice'
 
-export const getMainBooks = (slectedText) => {
+export const getMainBooks = (slectedText, next) => {
    return async (dispatch) => {
       try {
          const getData = await appFetch({
-            url: `/api/vendors/2/books?aboutBooks=${slectedText || 'ALL'}`,
+            url: `/api/vendors/18/books?aboutBooks=${
+               slectedText || 'ALL'
+            }&page=1&size=${next}`,
          })
          dispatch(vendorMainPageAction.saveBook(getData))
          dispatch(vendorMainPageAction.success())
@@ -42,9 +43,9 @@ export const getMainBooksDelete = (id) => {
             url: `/api/book/delete/${id}`,
             method: 'DELETE',
          })
-         dispatch(snackbarAction.snackbarSuccess(getData))
+         dispatch(vendorMainPageAction.errorResult(getData))
       } catch (error) {
-         dispatch(vendorMainPageAction.errorResult(error))
+         dispatch(snackbarAction.snackbarSuccess())
          dispatch(snackbarAction.snackbarFalse())
       }
    }
@@ -96,11 +97,9 @@ export const putVendorBook = (inputValues, images, bookType, bookId) => {
             url: urlBookType,
             body: mydata,
          })
-         dispatch(snackbarAction.snackbarFalse())
-         dispatch(bookAction.statusSuccess(putData))
+         dispatch(snackbarAction.snackbarSuccess(putData))
       } catch (error) {
-         dispatch(snackbarAction.snackbarSuccess(error))
-         dispatch(bookAction.statusError(error))
+         dispatch(snackbarAction.snackbarFalse(error))
       }
    }
 }

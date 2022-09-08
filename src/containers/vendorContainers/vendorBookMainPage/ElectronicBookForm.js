@@ -17,11 +17,12 @@ import {
    PutDiv,
    SelectDiv,
    SelectWrapper,
+   ValidSpan,
 } from './PaperBookForm'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import SelectBooks from '../../Admin/SelectBooks'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
-import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 
 const languageSelect = [
    { name: 'KYRGYZ', id: 1 },
@@ -74,9 +75,16 @@ const ElectronicBookForm = ({ images }) => {
          withIdValues.discount.length >= 1
       return validateValues && images.mainImage && pdfValue
    }
+   const validLength = () => {
+      const validNumbers =
+         withIdValues.yearOfIssue.length > 4 ||
+         withIdValues.yearOfIssue < 0 ||
+         withIdValues.yearOfIssue > 2022
+      return validNumbers
+   }
 
    const clickSendFormValues = async () => {
-      if (isFormValid()) {
+      if (isFormValid() && !validLength()) {
          dispatch(addElectronicBoook(withIdValues, images, pdfValue))
          dispatch(bookAction.deleteImage())
 
@@ -115,11 +123,10 @@ const ElectronicBookForm = ({ images }) => {
 
    return (
       <>
-         <SnackBarDate
-            width="400px"
+         <GetSnackbar
+            open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
-            severity="error"
-            snack={stateSnackbar}
+            variant="error"
          />
          <InputWrapper>
             <InputDiv>
@@ -241,9 +248,11 @@ const ElectronicBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="гг"
                         name="yearOfIssue"
+                        type="number"
                      />
+                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                      <CheckBoxDiv>
-                        <CheckBox label="besteller" />
+                        <CheckBox label="Бестселлер" />
                      </CheckBoxDiv>
                      <LabelStyle htmlFor="discount">
                         Скидка <strong>*</strong>

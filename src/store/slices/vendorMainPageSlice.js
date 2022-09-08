@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
    vendorBooks: [],
+   totalElements: 0,
    paperBooks: null,
    audioBooks: null,
    electronicBooks: null,
@@ -17,6 +18,7 @@ export const vendorMainPageSlice = createSlice({
    reducers: {
       // save book
       saveBook(state, action) {
+         state.totalElements = action.payload.totalElements
          if (action.payload) {
             state.vendorBooks = action.payload.content
          } else {
