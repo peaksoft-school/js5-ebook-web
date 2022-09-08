@@ -1,193 +1,265 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 import Button from '../../Components/UI/Button/Button'
 import InputText from '../../Components/UI/Inputs/InputText'
 import Validation from '../../hooks/Validation'
 import PaswordInput from '../../Components/UI/Inputs/PaswordInput'
 import {
+   deleteUserProfile,
    getUserprofile,
    putUserPfrofile,
 } from '../../store/slices/userProfileSlice'
+// import SnackBarDate from '../vendorLayouts/Promocode/SnackBarDate'
+import Modal from '../../Components/UI/Modal'
 // import { signUpClient } from '../../store/slices/authSlices'
 
-export const UserProfile = ({ activeBtn }) => {
+export const UserProfile = () => {
    const dispatch = useDispatch()
-   const id = useSelector((i) => i.auth.user.id)
-   const { dataUser } = useSelector((i) => i.userProfile)
-   const [name, setName] = useState()
-   // const [password, setPassword] = useState()
-   // const [newPassword, setNewPassword] = useState()
-   const [email, setEmail] = useState()
-   const [isShowUp, setIsShowUp] = useState(activeBtn)
-   // const [errorValue, setErrorValue] = useState('')
-   // const [isValidError, setIsValidError] = useState(false)
-   const UserNameHandler = () => {
-      setName()
+   const navigate = useNavigate()
+   const { id: userId } = useSelector((store) => store.auth.user)
+   const { dataUser, message } = useSelector((store) => store.userProfile)
+   console.log(message)
+   const [errorValue, setErrorValue] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   console.log(dataUser)
+   const showModal = () => {
+      setIsModal(true)
    }
-   const UserEmailHandler = (e) => {
-      setEmail(e.target.value)
+   const onCloseModal = () => {
+      setIsModal(false)
    }
-   console.log(email)
-   // const UserPasswordHandler = () => {
-   //    setPassword()
-   // }
-   // const UserNewPasswordHandler = () => {
-   //    setNewPassword()
-   // }
-   useEffect(() => {
-      dispatch(getUserprofile(id))
-      setName(dataUser.name)
-   }, [])
-   useEffect(() => {
-      setName(dataUser.name)
-   }, [dataUser.name])
 
-   useEffect(() => {
-      dispatch(getUserprofile(id))
-      setEmail(dataUser.email)
-   }, [])
-
-   useEffect(() => {
-      setEmail(dataUser.email)
-   }, [dataUser.email])
-
-   const signUpClickHandler = () => {
-      setIsShowUp(false)
-      const newUser = {
-         name,
-         email,
-         password,
-         newPassword,
-      }
-      dispatch(putUserPfrofile(newUser))
+   const UsersCardNavHandler = () => {
+      navigate('/')
    }
-   const { value: password, inputChange: onChangePassword } = Validation(
-      (value) => {
-         if (value.length <= 5) {
-            return true
-         }
-         return false
-      }
-   )
+   const deleteHandler = () => {
+      dispatch(deleteUserProfile(userId))
+      navigate('/')
+   }
 
    const {
-      inputChange: onChangeNewPassword,
-      value: newPassword,
-      setValue: setPassword,
+      value: name,
+      setValue: setName,
+      inputChange: UserNameHandler,
+      isValidValue: isNameValue,
+      onBlurHandler: onBlurNameHandler,
    } = Validation((value) => {
       if (value.length <= 5) {
          return true
       }
       return false
    })
+
+   const {
+      value: email,
+      inputChange: UserEmailHandler,
+      setValue: setEmail,
+      isValidValue: isEmailValue,
+      onBlurHandler: onBlurEmailHandler,
+   } = Validation((value) => {
+      if (value.length < 5 || !value.includes('@')) {
+         return true
+      }
+      return false
+   })
+   const {
+      value: password,
+      inputChange: onChangePassword,
+      isValidValue: isPasswordValue,
+      onBlurHandler: onBlurPasswordHandler,
+   } = Validation((value) => {
+      if (value?.length <= 5) {
+         return true
+      }
+      return false
+   })
+
+   const {
+      value: newPassword,
+      inputChange: onChangeNewPassword,
+      isValidValue: isLastPasswordValue,
+      onBlurHandler: onBlurLastPasswordHandler,
+   } = Validation((value) => {
+      if (value?.length <= 5) {
+         return true
+      }
+      return false
+   })
+   const {
+      value: newPassword2,
+      inputChange: onChangeNewPassword2,
+      isValidValue: isLastPasswordValue2,
+      onBlurHandler: onBlurLastPasswordHandler2,
+   } = Validation((value) => {
+      if (value?.length <= 5) {
+         return true
+      }
+      return false
+   })
+
    useEffect(() => {
-      setPassword('Hello world')
+      dispatch(getUserprofile(userId))
    }, [])
-   console.log(newPassword)
-   const { isValidValue: isNameValue, onBlurHandler: onBlurNameHandler } =
-      Validation((value) => {
-         if (value.length <= 5) {
-            return true
-         }
-         return false
-      })
-   const { isValidValue: isEmailValue, onBlurHandler: onBlurEmailHandler } =
-      Validation((value) => {
-         if (value.length <= 5 || !value.includes('@')) {
-            return true
-         }
-         return false
-      })
+   useEffect(() => {
+      if (dataUser) {
+         setName(dataUser.name)
+         setEmail(dataUser.email)
+      }
+   }, [dataUser])
+
    const onClientSubmit = (e) => {
       e.preventDefault()
-      // if (newPassword !== password) {
-      //    setErrorValue('Пароли не совпадают')
-      //    setIsValidError(true)
-      //    return
-      // }
-      // setErrorValue('')
-      // setIsValidError(false)
-      // if (
-      //    name === '' ||
-      //    email === '' ||
-      //    password === '' ||
-      // ) {
-      //    onBlurNameHandler()
-      //    onBlurEmailHandler()
-      //    onBlurPasswordHandler()
-      //    onBlurLastPasswordHandler()
-      //    return
-      // }
-      // const user = {
-      //    firstName: name,
-      //    email,
-      //    password,
-      // }
-      // dispatch(signUpClient(user))
+      if (newPassword !== newPassword2) {
+         setErrorValue('Пароли не совпадают!')
+         return
+      }
+      if (email === '' || name === '' || password === '') {
+         onBlurNameHandler()
+         onBlurEmailHandler()
+         onBlurPasswordHandler()
+         setErrorValue('')
+         return
+      }
+      setErrorValue('')
+      const newUser = {
+         name,
+         email,
+         password,
+         newPassword,
+         newPassword2,
+      }
+      dispatch(putUserPfrofile(newUser))
    }
    return (
-      <DivCont onSubmit={onClientSubmit}>
-         <StyledText>
-            <h3>Личная информация</h3>
-            <h3>Изменить пароль</h3>
-         </StyledText>
-         <StyledContainer>
-            <div>
-               <StyledInput>
-                  <LabelStyled>Мое имя</LabelStyled>
-                  <InputText
-                     value={name}
-                     placeholder="Напишите ваше имя"
-                     onChange={UserNameHandler}
-                     error={isNameValue}
-                     onBlur={onBlurNameHandler}
-                  />
-               </StyledInput>
-               <StyledInput>
-                  <LabelStyled>Email</LabelStyled>
-                  <InputText
-                     value={email}
-                     placeholder="Напишите ваш Email"
-                     onChange={UserEmailHandler}
-                     error={isEmailValue}
-                     onBlur={onBlurEmailHandler}
-                  />
-               </StyledInput>
-            </div>
-            <StyledPasswordInput>
-               <StyledPasInput>
-                  <LabelStyled htmlFor="name">Текущий пароль</LabelStyled>
-                  <PaswordInput
-                     placeholder="Напишите текущий пароль"
-                     value={password}
-                     onChange={onChangePassword}
-                  />
-               </StyledPasInput>
-               <StyledPasInput>
-                  <LabelStyled htmlFor="name">Новый пароль</LabelStyled>
-                  <PaswordInput
-                     placeholder="Напишите ваш новый пароль"
-                     value={newPassword}
-                     onChange={onChangeNewPassword}
-                  />
-               </StyledPasInput>
-               <StyledPasInput>
-                  <LabelStyled htmlFor="name">Подтвердите пароль</LabelStyled>
-                  <PaswordInput placeholder="Подтвердите пароль" />
-               </StyledPasInput>
-            </StyledPasswordInput>
-            {/* <span>{isValidError && errorValue}</span> */}
-         </StyledContainer>
-         <DivStyledButton>
-            <StyledButton>Удалить профиль?</StyledButton>
-            <StyledButton onClick={signUpClickHandler} activeBtn={isShowUp}>
-               Сохранить
-            </StyledButton>
-         </DivStyledButton>
-      </DivCont>
+      <>
+         <Modal
+            open={isModal}
+            justifyContent="flex-start"
+            onClose={onCloseModal}
+         >
+            <ModalBlock>
+               <ModalHeader>Вы хотите удалить ?</ModalHeader>
+               <StyledButton
+                  variant="default"
+                  width="50%"
+                  onClick={onCloseModal}
+               >
+                  отменить
+               </StyledButton>
+               <StyledButton
+                  variant="default"
+                  width="50%"
+                  onClick={deleteHandler}
+               >
+                  да
+               </StyledButton>
+            </ModalBlock>
+         </Modal>
+         <DivCont onSubmit={onClientSubmit}>
+            <StyledText>
+               <h3>Личная информация</h3>
+               <h3>Изменить пароль</h3>
+            </StyledText>
+            <StyledContainer>
+               <div>
+                  <StyledInput>
+                     <LabelStyled htmlFor="name">Мое имя</LabelStyled>
+                     <InputText
+                        id="name"
+                        value={name}
+                        placeholder="Напишите ваше имя"
+                        onChange={UserNameHandler}
+                        error={isNameValue}
+                        onBlur={onBlurNameHandler}
+                     />
+                  </StyledInput>
+                  <StyledInput>
+                     <LabelStyled htmlFor="email">Email</LabelStyled>
+                     <InputText
+                        id="email"
+                        type="email"
+                        value={email}
+                        placeholder="Напишите ваш Email"
+                        onChange={UserEmailHandler}
+                        error={isEmailValue}
+                        onBlur={onBlurEmailHandler}
+                     />
+                  </StyledInput>
+                  <DivStyledButton>
+                     <StyledButton1 onClick={showModal}>
+                        Удалить профиль?
+                     </StyledButton1>
+                  </DivStyledButton>
+               </div>
+               <StyledPasswordInput>
+                  <StyledPasInput>
+                     <LabelStyled htmlFor="password">
+                        Текущий пароль
+                     </LabelStyled>
+                     <PaswordInput
+                        id="password"
+                        placeholder="Напишите текущий пароль"
+                        value={password}
+                        onChange={onChangePassword}
+                        error={isPasswordValue}
+                        onBlur={onBlurPasswordHandler}
+                     />
+                  </StyledPasInput>
+                  <StyledPasInput>
+                     <LabelStyled htmlFor="newPassword">
+                        Новый пароль
+                     </LabelStyled>
+                     <PaswordInput
+                        id="newPassword"
+                        placeholder="Напишите ваш новый пароль"
+                        value={newPassword}
+                        onChange={onChangeNewPassword}
+                        error={isLastPasswordValue}
+                        onBlur={onBlurLastPasswordHandler}
+                     />
+                  </StyledPasInput>
+                  <StyledPasInput>
+                     <LabelStyled htmlFor="newPassword2">
+                        Подтвердите пароль
+                     </LabelStyled>
+                     <PaswordInput
+                        id="newPassword2"
+                        value={newPassword2}
+                        onChange={onChangeNewPassword2}
+                        placeholder="Подтвердите пароль"
+                        error={isLastPasswordValue2}
+                        onBlur={onBlurLastPasswordHandler2}
+                     />
+                  </StyledPasInput>
+                  <DivStyledButton1>
+                     <StyledButton onClick={UsersCardNavHandler}>
+                        Отменить
+                     </StyledButton>
+                     <StyledButton type="submit">Сохранить</StyledButton>
+                  </DivStyledButton1>
+               </StyledPasswordInput>
+               {errorValue && <span>{errorValue}</span>}
+            </StyledContainer>
+         </DivCont>
+      </>
    )
 }
+
+const ModalHeader = styled('h2')`
+   /* border: 1px solid red; */
+   width: 100%;
+   text-align: center;
+   margin-bottom: 50px;
+`
+
+const ModalBlock = styled('div')`
+   /* border: 1px solid red; */
+   display: flex;
+   justify-content: center;
+   flex-flow: row wrap;
+`
 
 const StyledInput = styled('div')`
    width: 514px;
@@ -201,23 +273,45 @@ const StyledContainer = styled.div`
    /* border: 1px solid black; */
 `
 const StyledButton = styled(Button)`
-   width: 100%;
+   /* width: 100%; */
+   font-size: 16px;
+   /* height: 21px; */
+   color: #ffffff;
+   border: 1px solid blue;
+   /* display: flex;
+   justify-content: flex-end; */
+   background-color: transparent;
+   width: 135px;
+   height: 42px;
+   background-color: #1c1c1c;
+   /* padding: 10px 20px; */
+   margin-right: 10px;
+   &:hover {
+      background-color: #1c1c1c;
+   }
+`
+const StyledButton1 = styled(Button)`
+   /* width: 100%; */
    font-size: 16px;
    height: 21px;
    color: #f10000;
+   padding: 0;
+   display: flex;
+   justify-content: flex-start;
    background-color: transparent;
    &:hover {
       background-color: transparent;
    }
 `
-const DivCont = styled.div`
+const DivCont = styled.form`
    width: 100%;
 `
 const DivStyledButton = styled.div`
-   width: 20%;
+   width: 100%;
    padding: 0;
-   border: 1px solid red;
-   margin-top: 80px;
+   margin-top: 10%;
+   display: flex;
+   justify-content: flex-start;
 `
 const StyledPasswordInput = styled.div`
    display: flex;
@@ -236,10 +330,27 @@ const StyledText = styled.div`
    & > h3 {
       font-weight: 600;
       font-size: 18px;
+      font-family: 'Open Sans';
+      font-style: normal;
+      line-height: 130%;
    }
 `
 const LabelStyled = styled.label`
    color: #969696;
    font-size: 16px;
    font-weight: 600;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 130%;
+`
+const DivStyledButton1 = styled.div`
+   width: 100%;
+   display: flex;
+   justify-content: flex-end;
+   align-items: flex-end;
+   /* margin-left: 100px; */
+   /* border: 2px solid red; */
+   padding-top: 10%;
 `
