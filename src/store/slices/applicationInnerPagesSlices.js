@@ -19,12 +19,6 @@ const applicationsInnerPageSlices = createSlice({
       postRejectApplication(state, action) {
          state.rejectMessage = action.payload
       },
-      cleanAccept(state) {
-         state.acceptMessage = null
-      },
-      cleanReject(state) {
-         state.rejectMessage = null
-      },
    },
 })
 export const applicationsInnerPageSlicesAction =

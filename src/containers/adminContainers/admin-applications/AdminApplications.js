@@ -1,4 +1,3 @@
-// import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -9,7 +8,7 @@ import Button from '../../../Components/UI/Button/Button'
 
 import {
    applicationsActions,
-   startApplicationsActions,
+   seeMoreGetApplicationsActions,
 } from '../../../store/slices/adminActions/applicationsActions'
 import ApplicationCard from './ApplicationCard'
 
@@ -27,7 +26,7 @@ const AdminApplications = () => {
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(startApplicationsActions(requestObj))
+      dispatch(applicationsActions(requestObj))
    }, [])
 
    useEffect(() => {
@@ -35,14 +34,16 @@ const AdminApplications = () => {
          setupdate(false)
          return
       }
-      dispatch(applicationsActions(requestObj))
+      dispatch(seeMoreGetApplicationsActions(requestObj))
    }, [requestObj])
 
    useEffect(() => {
-      if (totalPages === requestObj.page) {
-         setShowSeeMore(false)
-      } else {
-         setShowSeeMore(true)
+      if (totalPages) {
+         if (totalPages === requestObj.page || totalPages === 0) {
+            setShowSeeMore(false)
+         } else {
+            setShowSeeMore(true)
+         }
       }
    }, [requestObj, totalPages])
 
@@ -71,7 +72,7 @@ const AdminApplications = () => {
          </TotalApplication>
          <Books>
             {applications &&
-               applications?.map((el) => (
+               applications.map((el) => (
                   <ApplicationCard
                      key={el.id}
                      id={el.id}

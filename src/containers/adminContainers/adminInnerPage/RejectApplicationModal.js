@@ -14,11 +14,19 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
       setReasonReject(e.target.value)
    }
    function sendReason() {
-      if (reasonReject.trim().length !== 0) {
-         dispatch(rejectAplicationInnerPage({ id, reasonReject }))
+      const fetch = async () => {
+         try {
+            const response = await dispatch(
+               rejectAplicationInnerPage({ id, reasonReject })
+            ).unwrap()
+            setReasonReject('')
+            onClose()
+            return response
+         } catch (error) {
+            return error
+         }
       }
-      setReasonReject('')
-      onClose()
+      fetch()
    }
 
    return (

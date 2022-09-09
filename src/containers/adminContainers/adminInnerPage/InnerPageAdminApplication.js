@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
@@ -8,57 +7,18 @@ import { TabInnerPage } from './TabInnerPage'
 import About from './About'
 import BookFragment from './BookFragment'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
-import Snackbar from '../../../Components/UI/snackbar/Snackbar'
-import {
-   acceptApplicationInnerPage,
-   applicationInnerPageAction,
-} from '../../../store/slices/applicationInnerPageActions'
-import { ReactComponent as IconAccept } from '../../../assets/icons/IconSnackbar.svg'
+import { acceptApplicationInnerPage } from '../../../store/slices/applicationInnerPageActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { RejectApplicationModal } from './RejectApplicationModal'
-
-import { applicationsInnerPageSlicesAction } from '../../../store/slices/applicationInnerPagesSlices'
+import { Toast } from '../../../Components/UI/snackbar/SnackBarToast'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
    const { application } = useSelector((state) => state.applicationsInnerPage)
-   const { acceptMessage } = useSelector((state) => state.applicationsInnerPage)
 
-   const isSnackbarOpen = useSelector((state) => state.uiSlice.snackbar)
    const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
-   const { rejectMessage } = useSelector((state) => state.applicationsInnerPage)
 
-   useEffect(() => {
-      dispatch(applicationInnerPageAction(id))
-   }, [])
-   useEffect(() => {
-      let timerId = null
-      if (acceptMessage) {
-         dispatch(uiSlicesSlicesActions.showSnackbar())
-         timerId = setTimeout(() => {
-            onCloseSnackbar()
-            dispatch(applicationsInnerPageSlicesAction.cleanAccept())
-         }, 10000)
-      }
-      return () => {
-         clearTimeout(timerId)
-      }
-   }, [acceptMessage])
-
-   useEffect(() => {
-      let timerId = null
-      if (rejectMessage) {
-         dispatch(uiSlicesSlicesActions.showSnackbar())
-         timerId = setTimeout(() => {
-            onCloseSnackbar()
-            dispatch(applicationsInnerPageSlicesAction.cleanReject())
-         }, 3000)
-      }
-      return () => {
-         clearTimeout(timerId)
-      }
-   }, [rejectMessage])
    function acceptModal() {
       dispatch(acceptApplicationInnerPage(id))
    }
@@ -68,9 +28,6 @@ export const InnerPageAdminApplication = () => {
    function onCloseRejectModal() {
       dispatch(uiSlicesSlicesActions.hideRejectModal())
    }
-   function onCloseSnackbar() {
-      dispatch(uiSlicesSlicesActions.hideSnackbar())
-   }
 
    const pathTranslate = {
       applications: 'Заявки',
@@ -79,6 +36,8 @@ export const InnerPageAdminApplication = () => {
 
    return (
       <>
+         <Toast />
+
          <Breadcrumbs translate={pathTranslate} />
          <StyledMain>
             <ImageDiv>
@@ -141,33 +100,11 @@ export const InnerPageAdminApplication = () => {
                         Принять
                      </Button>
 
-                     {acceptMessage && (
-                        <Snackbar
-                           width="460px"
-                           height="155px"
-                           open={isSnackbarOpen}
-                           handleClose={() => onCloseSnackbar()}
-                           severity=""
-                           message={acceptMessage.message}
-                           icon={<IconAccept />}
-                        />
-                     )}
                      <RejectApplicationModal
                         id={id}
                         open={isRejectModalOpen}
                         onClose={() => onCloseRejectModal()}
                      />
-                     {rejectMessage && (
-                        <Snackbar
-                           width="460px"
-                           height="155px"
-                           open={isSnackbarOpen}
-                           handleClose={() => onCloseSnackbar()}
-                           severity=""
-                           message={rejectMessage.message}
-                           icon={<IconAccept />}
-                        />
-                     )}
                   </StyledBtnCont>
                </InfoContainer>
             </ImageDiv>

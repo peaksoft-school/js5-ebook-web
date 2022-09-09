@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import appFetch from '../../hooks/appFetch'
 import { applicationsInnerPageSlicesAction } from './applicationInnerPagesSlices'
 
@@ -21,8 +22,10 @@ export const acceptApplicationInnerPage = (id) => {
          dispatch(
             applicationsInnerPageSlicesAction.postAcceptApplication(result)
          )
+         toast.success(result.message)
          return result
       } catch (error) {
+         toast.error('Не удалось принять!')
          return error
       }
    }
@@ -39,8 +42,10 @@ export const rejectAplicationInnerPage = ({ id, reasonReject }) => {
          dispatch(
             applicationsInnerPageSlicesAction.postRejectApplication(result)
          )
+         toast.success(result.message)
          return result
       } catch (error) {
+         toast.error('Не удалось отклонить!')
          return error
       }
    }

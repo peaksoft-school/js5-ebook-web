@@ -13,14 +13,22 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
    const reasonChangeHandler = (e) => {
       setReasonReject(e.target.value)
    }
-   function sendReason() {
-      if (reasonReject.trim().length !== 0) {
-         dispatch(rejectAplication({ id, reasonReject }))
-      }
-      setReasonReject('')
-      onClose()
-   }
 
+   function sendReason() {
+      const fetch = async () => {
+         try {
+            const response = await dispatch(
+               rejectAplication({ id, reasonReject })
+            ).unwrap()
+            setReasonReject('')
+            onClose()
+            return response
+         } catch (error) {
+            return error
+         }
+      }
+      fetch()
+   }
    return (
       <Modal
          open={open}

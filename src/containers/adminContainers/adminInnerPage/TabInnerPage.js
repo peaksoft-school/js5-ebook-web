@@ -1,10 +1,12 @@
 import * as React from 'react'
 import { styled } from '@mui/material'
-import Tabs from '@mui/material/Tabs'
+import TabContext from '@mui/lab/TabContext'
+import TabPanel from '@mui/lab/TabPanel'
 import Tab from '@mui/material/Tab'
+import { TabList } from '@mui/lab'
 
 export function TabInnerPage({ about, bookFragment }) {
-   const [selectedTab, setSelectedTab] = React.useState(0)
+   const [selectedTab, setSelectedTab] = React.useState('1')
 
    const handleChange = (event, newValue) => {
       setSelectedTab(newValue)
@@ -12,19 +14,26 @@ export function TabInnerPage({ about, bookFragment }) {
    return (
       <div>
          <div>
-            <MuiTabs value={selectedTab} onChange={handleChange}>
-               <MuiTab label="О книге" />
-               <MuiTab label="Читать фрагмент" />
-            </MuiTabs>
+            <TabContext value={selectedTab}>
+               <TabListStyle onChange={handleChange}>
+                  <MuiTab label="О книге" value="1" />
+                  <MuiTab label="Читать фрагмент" value="2" />
+               </TabListStyle>
+               <MuiTabs value="1">{1 && about}</MuiTabs>
+               <MuiTabs value="2">{2 && bookFragment}</MuiTabs>
+            </TabContext>
          </div>
-         {selectedTab === 0 && about}
-         {selectedTab === 1 && bookFragment}
       </div>
    )
 }
-const MuiTabs = styled(Tabs)`
+const MuiTabs = styled(TabPanel)`
+   padding: 0px;
+`
+const TabListStyle = styled(TabList)`
    .MuiTabs-indicator {
-      background: none;
+      height: 0px;
+      padding: 0px;
+      margin: 0%;
    }
 `
 const MuiTab = styled(Tab)`
