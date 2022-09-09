@@ -9,8 +9,17 @@ const DeleteBooks = ({ id, open, onClose }) => {
    const dispatch = useDispatch()
 
    function deleteBook() {
-      dispatch(deleteBookAction(id))
-      onClose()
+      const fetch = async () => {
+         try {
+            const response = await dispatch(deleteBookAction(id)).unwrap()
+            onClose()
+            return response
+         } catch (error) {
+            return error
+         }
+      }
+
+      fetch()
    }
    return (
       <Modal

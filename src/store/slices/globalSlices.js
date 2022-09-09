@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import toast from 'react-hot-toast'
 import appFetch from '../../hooks/appFetch'
 import { sortRequestApplic } from '../../utils/helpers/helpers'
 
@@ -66,10 +67,17 @@ export function setGenres() {
 }
 export function deleteBookAction(id) {
    return async (dispatch) => {
-      const books = await appFetch({
-         url: `/api/book/delete/${id}`,
-         method: 'DELETE',
-      })
-      dispatch(globalValuesAction.getDeleteMessage(books))
+      try {
+         const books = await appFetch({
+            url: `/api/book/delete/${id}`,
+            method: 'DELETE',
+         })
+         dispatch(globalValuesAction.getDeleteMessage(books))
+         toast.success(books.message)
+         return books
+      } catch (error) {
+         toast.error('Не удалось удалить!')
+         return error
+      }
    }
 }

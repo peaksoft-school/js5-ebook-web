@@ -1,5 +1,3 @@
-// import { Snackbar } from '@mui/material'
-
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import React, { useState } from 'react'
@@ -13,10 +11,11 @@ import { ReactComponent as Delete } from '../../assets/icons/Delete.svg'
 import DeleteBooks from './DeleteBooks'
 import Snackbar from '../../Components/UI/snackbar/Snackbar'
 import { ReactComponent as IconAccept } from '../../assets/icons/IconAccept.svg'
+import { Toast } from '../../Components/UI/snackbar/SnackBarToast'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
    const navigate = useNavigate()
-   const { deleteMessage } = useSelector((state) => state.globalValues)
+   // const { deleteMessage } = useSelector((state) => state.globalValues)
    const [showRejectModal, setShowRejectModal] = useState(false)
    const menuMeatBall = [
       {
@@ -52,6 +51,7 @@ const Book = ({ id, img, date, name, price, bookType }) => {
    }, [])
    return (
       <BookItems>
+         <Toast />
          <MeatBall onClick={(e) => e.stopPropagation()}>
             <MeatBalls options={menuMeatBall} />
          </MeatBall>
