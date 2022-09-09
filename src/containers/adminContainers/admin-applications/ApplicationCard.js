@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
-
 import { RejectApplicationModal } from './RejectApplicationModal'
 import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
