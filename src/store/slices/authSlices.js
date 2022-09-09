@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import appFetch from '../../hooks/appFetch'
+import appFetch from '../../hooks/AppFetch'
 import { EBOOK_AUTH_INFO, APP_ROLES } from '../../utils/constants/constants'
 import {
    getFromLocaleStorage,

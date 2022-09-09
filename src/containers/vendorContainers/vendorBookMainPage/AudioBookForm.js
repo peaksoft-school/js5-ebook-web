@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { styled } from '@mui/material'
+import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import FileUploadButton from '../../../Components/UI/uploadaudio/FileUploadButton'
 import Button from '../../../Components/UI/Button/Button'
@@ -7,38 +8,54 @@ import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import CheckBox from '../../../Components/UI/checkBox/CheckBox'
 import bookAction from '../../../store/slices/addBookSlice'
-import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
-import { addAudioBook } from '../../../store/addBookActions'
-import Selected from '../../../Components/UI/Select'
-
-const audioBookInputValues = {
-   name: '',
-   author: '',
-   description: '',
-   yearOfIssue: '',
-   duration: '',
-   minute: '',
-   second: '',
-   price: '',
-   discount: '',
-}
-
-const allAudioRecordingValues = {
-   fragment: '',
-   audioBook: '',
-}
+import {
+   ButtonDiv,
+   InputDiv,
+   InputWrapper,
+   LabelStyle,
+   ValidSpan,
+} from './PaperBookForm'
+import { addAudioBook } from '../../../store/createActions/addBookActions'
+import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
+import SelectBooks from '../../Admin/SelectBooks'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 
 const languageSelect = [
-   { name: 'kyrgyzstan', id: 1 },
-   { name: 'Russian', id: 2 },
-   { name: 'English', id: 3 },
+   { name: 'KYRGYZ', id: 1 },
+   { name: 'RUSSIAN', id: 2 },
+   { name: 'ENGLISH', id: 3 },
 ]
 
 const AudioBookForm = ({ images }) => {
-   const [audioValues, setAudioValues] = useState(allAudioRecordingValues)
-   const [inputValues, setInputValues] = useState(audioBookInputValues)
-   const jenre = useSelector((store) => store.addbook.jenreId)
+   const genre = useSelector((store) => store.globalValues.genres)
+   const { stateSnackbar } = useSelector((store) => store.snackbar)
+   const { bookSuccsess } = useSelector((store) => store.snackbar)
+   const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
    const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const [audioValues, setAudioValues] = useState({
+      fragment: dataWithId ? dataWithId.fragment : '',
+      audioBook: dataWithId ? dataWithId.audioBook : '',
+   })
+   const [duration, setDuration] = useState({
+      duration: '',
+      minute: '',
+      second: '',
+   })
+   const durationTimer = `${duration.duration}:${duration.minute}:${duration.second}`
+
+   const [inputValues, setInputValues] = useState({
+      name: dataWithId ? dataWithId.bookName : '',
+      author: dataWithId ? dataWithId.author : '',
+      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
+      description: dataWithId ? dataWithId.description : '',
+      price: dataWithId ? dataWithId.price : '',
+      yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
+      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
+      discount: dataWithId ? dataWithId.discount : '',
+   })
+
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
       setAudioValues({ ...audioValues, [name]: audio })
@@ -47,6 +64,7 @@ const AudioBookForm = ({ images }) => {
    const handleChangeInput = (e) => {
       const { name, value } = e.target
       setInputValues({ ...inputValues, [name]: value })
+      setDuration({ ...duration, [name]: value })
    }
 
    const isFormValid = () => {
@@ -56,17 +74,22 @@ const AudioBookForm = ({ images }) => {
          inputValues.genreId > 0 &&
          inputValues.description.length >= 1 &&
          inputValues.duration.length >= 1 &&
-         inputValues.minute.length >= 1 &&
-         inputValues.second.length >= 1 &&
          inputValues.yearOfIssue.length >= 1 &&
          inputValues.price.length >= 1
 
-      return isInputsAreValid && images.mainImage && audioValues.fragment
+      return isInputsAreValid && images.mainImage
+   }
+   const validLength = () => {
+      const validNumbers =
+         inputValues.yearOfIssue.length > 4 ||
+         inputValues.yearOfIssue < 0 ||
+         inputValues.yearOfIssue > 2022
+      return validNumbers
    }
    const clickSendFormValues = async () => {
       if (isFormValid()) {
+         dispatch(addAudioBook(inputValues, images, audioValues, durationTimer))
          dispatch(bookAction.deleteImage())
-         dispatch(addAudioBook(inputValues, images, audioValues))
 
          setInputValues({
             name: '',
@@ -77,15 +100,34 @@ const AudioBookForm = ({ images }) => {
             duration: '',
             minute: '',
             second: '',
-            size: '',
             price: '',
             discount: '',
          })
+      } else {
+         dispatch(snackbarActions({ bron: 'exit' }))
+      }
+   }
+
+   const updateForms = () => {
+      if (isFormValid()) {
+         dispatch(putVendorBook(inputValues, images, audioValues))
+      } else {
+         dispatch(snackbarActions({ bron: 'exit' }))
+      }
+      if (!bookSuccsess) {
+         setTimeout(() => {
+            navigate('/')
+         }, 3000)
       }
    }
 
    return (
       <>
+         <GetSnackbar
+            open={stateSnackbar}
+            message="Пожалуйста, заполните все поля"
+            variant="error"
+         />
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -111,12 +153,18 @@ const AudioBookForm = ({ images }) => {
                <LabelStyle htmlFor="genreId">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <Selected
-                  variant
-                  onChange={(genreId) =>
+               <SelectBooks
+                  border
+                  padding="12px 10px 10px 19px"
+                  width="100%"
+                  hover
+                  defaultName="Литература, роман, стихи..."
+                  fontWeight
+                  color="#969696"
+                  onClick={(genreId) =>
                      setInputValues({ ...inputValues, genreId })
                   }
-                  title={jenre}
+                  genres={genre}
                />
                <Textarea
                   title="О книге"
@@ -133,11 +181,18 @@ const AudioBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <Selected
-                        onChange={(language) =>
+                     <SelectBooks
+                        border
+                        padding="12px 10px 12px 19px"
+                        width="100%"
+                        defaultName="язык"
+                        fontWeight="400"
+                        color="#969696"
+                        hover
+                        onClick={(_, data, language) =>
                            setInputValues({ ...inputValues, language })
                         }
-                        title={languageSelect}
+                        genres={languageSelect}
                      />
                   </PriceDiv>
                   <PriceDiv>
@@ -151,13 +206,13 @@ const AudioBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="гг"
                         value={inputValues.yearOfIssue}
+                        type="number"
                      />
+                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                   </PriceDiv>
                </SelectDiv>
                <LabelStyleTime htmlFor="duration">
-                  <LabelStyle>
-                     Длительность <strong>*</strong>
-                  </LabelStyle>
+                  <LabelStyle>Длительность</LabelStyle>
                </LabelStyleTime>
                <SelectDiv>
                   <InnerSelectDIv>
@@ -167,7 +222,8 @@ const AudioBookForm = ({ images }) => {
                         onChange={handleChangeInput}
                         textAlign="end"
                         placeholder="ч"
-                        value={inputValues.duration}
+                        value={duration.duration}
+                        type="number"
                      />
                   </InnerSelectDIv>
                   <TimeInputs>
@@ -176,7 +232,8 @@ const AudioBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="мин"
                         name="minute"
-                        value={inputValues.minute}
+                        value={duration.minute}
+                        type="number"
                      />
                   </TimeInputs>
                   <TimeInputs>
@@ -185,7 +242,8 @@ const AudioBookForm = ({ images }) => {
                         textAlign="end"
                         name="second"
                         placeholder="сек"
-                        value={inputValues.second}
+                        value={duration.second}
+                        type="number"
                      />
                   </TimeInputs>
                </SelectDiv>
@@ -204,12 +262,11 @@ const AudioBookForm = ({ images }) => {
                         name="price"
                         onChange={handleChangeInput}
                         value={inputValues.price}
+                        type="number"
                      />
                   </PriceDiv>
                   <PriceDiv>
-                     <LabelStyle htmlFor="discount">
-                        Скидка <strong>*</strong>
-                     </LabelStyle>
+                     <LabelStyle htmlFor="discount">Скидка</LabelStyle>
                      <InputText
                         id="discount"
                         onChange={handleChangeInput}
@@ -217,6 +274,7 @@ const AudioBookForm = ({ images }) => {
                         name="discount"
                         placeholder="%"
                         value={inputValues.discount}
+                        type="number"
                      />
                   </PriceDiv>
                </SelectDiv>
@@ -251,9 +309,24 @@ const AudioBookForm = ({ images }) => {
             </SelectWrapper>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickSendFormValues}>
-               Отправить
-            </Button>
+            {!dataWithId ? (
+               <Button width="137px" onClick={clickSendFormValues}>
+                  Отправить
+               </Button>
+            ) : (
+               <PutDiv>
+                  <Button
+                     width="137px"
+                     background="#2f4f4f"
+                     onClick={() => navigate('/')}
+                  >
+                     Назад
+                  </Button>
+                  <Button width="137px" onClick={updateForms}>
+                     Сохранить
+                  </Button>
+               </PutDiv>
+            )}
          </ButtonDiv>
       </>
    )
@@ -304,4 +377,9 @@ const InnerUplFile = styled('div')`
 const CheckBoxDiv = styled('div')`
    margin-top: 2.6vh;
    margin-bottom: -1vh;
+`
+export const PutDiv = styled('div')`
+   display: flex;
+   justify-content: space-between;
+   width: 300px;
 `

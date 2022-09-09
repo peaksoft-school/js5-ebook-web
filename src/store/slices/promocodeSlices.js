@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import appFetch from '../../hooks/appFetch'
+import appFetch from '../../hooks/AppFetch'
 
 const initialState = {
    promocode: '',
    status: null,
    error: null,
+   snackbar: false,
 }
 
 const promocodeSlices = createSlice({
@@ -17,9 +18,13 @@ const promocodeSlices = createSlice({
       error: (state, action) => {
          state.error = action.payload
       },
+      snackbar: (state) => {
+         state.snackbar = true
+      },
       clean: (state) => {
          state.promocode = ''
          state.error = ''
+         state.snackbar = false
       },
    },
 })

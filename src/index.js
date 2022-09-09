@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import store from './store/index'
-import { injectStore } from './hooks/appFetch'
+import { injectStore } from './hooks/AppFetch'
 import './index.css'
 
 injectStore(store)

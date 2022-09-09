@@ -18,6 +18,14 @@ export const InputContainer = styled.div`
          border: 1px solid red;
          background-color: #fff5f5;
       `}
+   input[type='number'] {
+      -moz-appearance: textfield;
+   }
+
+   input::-webkit-outer-spin-button,
+   input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+   }
 `
 
 export const Input = styled.input`
