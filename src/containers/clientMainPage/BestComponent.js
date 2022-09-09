@@ -1,34 +1,45 @@
+import React from 'react'
 import styled from 'styled-components'
+// import { useNavigate } from 'react-router'
+import { Link, useLocation } from 'react-router-dom'
 import MainPageSlider from '../../Components/UI/MainPageslider'
-import { books } from './bookImage'
 
-export const BestComponent = () => {
+export const BestComponent = ({ variant, books }) => {
+   const [book, setBook] = React.useState()
+   const location = useLocation()
+   // const navigate = useNavigate()
+   // const location = useLocation()
+   // console.log(location)
+   const onClickCard = (book) => {
+      setBook(book)
+   }
    return (
       <StyledBestSlider>
          <StyledTitle>
-            <StyledBestText>Бестселлеры</StyledBestText>
-            <StyledNavLink href="/">Смотреть все</StyledNavLink>
+            <StyledBestText>{variant}</StyledBestText>
+            <Link to="/catalog">Смотреть все</Link>
          </StyledTitle>
          <StyledBookSliderBlock>
             <StyledBookTitle>
-               <StyledBookName>Тонкое искусство пофигизма</StyledBookName>
+               <StyledBookName>{book?.name}</StyledBookName>
                <StyledBookDescription>
-                  Современное общество пропагандирует культ успеха: будь умнее,
-                  богаче, продуктивнее — будь лучше всех. Соцсети изобилуют
-                  историями на тему, как какой-то малец придумал. Соцсети
-                  изобилуют историями на тему, как какой-то малец придумал
+                  {book?.description}
                </StyledBookDescription>
                <TableBlock>
                   <TableItem width="50%">
-                     <StyledNavLink href="/">Подробнее</StyledNavLink>
+                     <Link to={`${location.pathname}/${book?.id}`}>
+                        Подробнее
+                     </Link>
                   </TableItem>
                   <TableItem width="50%" align="right">
-                     <StyledBookPrice>234 c</StyledBookPrice>
+                     <StyledBookPrice>{book?.price} c</StyledBookPrice>
                   </TableItem>
                </TableBlock>
             </StyledBookTitle>
             <StyledBookSlider>
-               <MainPageSlider images={books} />
+               {books && (
+                  <MainPageSlider images={books} onClick={onClickCard} />
+               )}
             </StyledBookSlider>
          </StyledBookSliderBlock>
       </StyledBestSlider>
@@ -50,6 +61,15 @@ const TableItem = styled.div`
    display: flex;
    justify-content: ${(props) =>
       props.align === 'right' ? 'flex-end' : 'flex-start'};
+   & > a {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 120%;
+      text-decoration-line: underline;
+      color: #ff4c00;
+   }
 `
 
 const StyledBestSlider = styled.div`
@@ -63,6 +83,15 @@ const StyledTitle = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: center;
+   & > a {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 120%;
+      text-decoration-line: underline;
+      color: #ff4c00;
+   }
    & p {
       font-family: 'Open Sans';
       font-style: normal;
@@ -85,16 +114,16 @@ const StyledBookDescription = styled.p`
    font-size: 16px;
    line-height: 130%;
 `
-const StyledNavLink = styled.a`
-   /* border: 1px solid red; */
-   font-family: 'Open Sans';
-   font-style: normal;
-   font-weight: 400;
-   font-size: 14px;
-   line-height: 120%;
-   text-decoration-line: underline;
-   color: #ff4c00;
-`
+// const StyledNavLink = styled('a')`
+//    /* border: 1px solid red; */
+//    font-family: 'Open Sans';
+//    font-style: normal;
+//    font-weight: 400;
+//    font-size: 14px;
+//    line-height: 120%;
+//    text-decoration-line: underline;
+//    color: #ff4c00;
+// `
 const StyledBookPrice = styled.span`
    /* border: 1px solid red; */
    font-family: 'Open Sans';

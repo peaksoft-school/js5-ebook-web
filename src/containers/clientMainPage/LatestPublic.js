@@ -1,43 +1,88 @@
+/* eslint-disable max-len */
 import styled from 'styled-components'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
 // import { books } from './bookImage'
 
-export const LatestPublic = () => {
+export const LatestPublic = ({ books }) => {
+   const [book, setBook] = React.useState()
+   const [booksStyled, setBooksStyled] = React.useState(null)
+   const location = useLocation()
+   const navigate = useNavigate()
+   useEffect(() => {
+      if (books) {
+         setBook(books[books.length - 1])
+         setBooksStyled(() => {
+            return books.map((el) => {
+               return {
+                  id: el.id,
+                  active: false,
+               }
+            })
+         })
+      }
+   }, [books])
+   const onClickItem = (id) => {
+      setBook(() => {
+         return books.find((el) => el.id === id)
+      })
+      setBooksStyled((prev) => {
+         return prev.map((el) => {
+            if (el.id === id) {
+               return {
+                  ...el,
+                  active: true,
+               }
+            }
+            return {
+               ...el,
+               active: false,
+            }
+         })
+      })
+   }
+   const onClickBook = (bookId) => {
+      navigate(`${location.pathname}/${bookId}`)
+   }
    return (
       <StyledLatestPublCont>
          <StyledTitle>
             <StyledLatestPublText>Последние публикации</StyledLatestPublText>
-            <StyledNavLink href="/">Смотреть все</StyledNavLink>
+            <LinkBlock>
+               <Link to="/catalog">Смотреть все</Link>
+            </LinkBlock>
          </StyledTitle>
          <StyledBookSliderBlock>
             <StyledGenresBlock>
-               <StyledGenresText>Бизнес-литература</StyledGenresText>
-               <StyledGenresText>Детские книги</StyledGenresText>
-               <StyledGenresText>Хобби и досуг</StyledGenresText>
-               <StyledGenresText>Публицистика</StyledGenresText>
-               <StyledGenresText>Учебная литература</StyledGenresText>
-               <StyledGenresText>Поэзия</StyledGenresText>
+               {books?.map((el) => {
+                  let findEl = null
+                  if (booksStyled) {
+                     findEl = booksStyled?.find((elem) => elem.id === el.id)
+                  }
+                  return (
+                     <StyledGenresText
+                        active={findEl?.active}
+                        key={el.id}
+                        onClick={() => onClickItem(el.id)}
+                     >
+                        <GenresSpan>{el.genre}</GenresSpan>
+                     </StyledGenresText>
+                  )
+               })}
             </StyledGenresBlock>
             <ImageBlock>
                <ImageLine />
-               <StyledBookImage>
-                  <Image
-                     src="https://img3.labirint.ru/rc/d943b98184660c6b520981a20bd8421d/363x561q80/books55/548551/cover.jpg?1563945229"
-                     alt="book"
-                  />
+               <StyledBookImage onClick={() => onClickBook(book.id)}>
+                  <Image src={book?.image} alt={book?.name} />
                </StyledBookImage>
             </ImageBlock>
             <StyledBookDescriptionBlock>
-               <StyledLatestBookName>История книги</StyledLatestBookName>
-               <StyledLatestBookDesc>
-                  Предлагаемый перевод является первой попыткой обращения
-                  ктворчеству Павла Орозия— римского христианского историка
-                  начала V века, сподвижника исовременника знаменитого Августина
-                  Блаженн...
-               </StyledLatestBookDesc>
-               <div>
-                  <StyledNavLink href="/">Подробнее</StyledNavLink>
-                  <StyledBookPrice>456 с</StyledBookPrice>
-               </div>
+               <StyledLatestBookName>{book?.name}</StyledLatestBookName>
+               <StyledLatestBookDesc>{book?.description}</StyledLatestBookDesc>
+               <LinkBlock>
+                  <Link to={`${location.pathname}/${book?.id}`}>Подробнее</Link>
+                  <StyledBookPrice>{book?.price} с</StyledBookPrice>
+               </LinkBlock>
             </StyledBookDescriptionBlock>
          </StyledBookSliderBlock>
       </StyledLatestPublCont>
@@ -59,7 +104,7 @@ const ImageLine = styled('div')`
       position: absolute;
       border: 1px solid #e24604;
       height: 100%;
-      top: -30px;
+      top: -20px;
       bottom: 0;
       left: 0;
       z-index: 1;
@@ -96,6 +141,7 @@ const ImageBlock = styled('div')`
 
 const Image = styled('img')`
    width: 100%;
+   height: 100%;
    object-fit: cover;
    position: relative;
    z-index: 10;
@@ -117,14 +163,17 @@ const StyledTitle = styled.div`
    }
 `
 
-const StyledNavLink = styled.a`
-   font-family: 'Open Sans';
-   font-style: normal;
-   font-weight: 400;
-   font-size: 14px;
-   line-height: 120%;
-   text-decoration-line: underline;
-   color: #ff4c00;
+const LinkBlock = styled.div`
+   /* border: 1px solid red; */
+   & > a {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 120%;
+      text-decoration-line: underline;
+      color: #ff4c00;
+   }
 `
 const StyledBookPrice = styled.p`
    font-family: 'Open Sans';
@@ -143,8 +192,8 @@ const StyledBookSliderBlock = styled.div`
    align-items: center;
 `
 const StyledLatestPublCont = styled.div`
-   border: 1px solid red;
-   padding: 100px 20px;
+   /* border: 1px solid red; */
+   padding: 90px 20px;
    background: #1c1c1c;
    display: flex;
    flex-direction: column;
@@ -164,24 +213,40 @@ const StyledGenresBlock = styled.div`
    /* height: 246px; */
    overflow: hidden;
 `
+const GenresSpan = styled('span')`
+   /* border: 1px solid red; */
+   position: relative;
+   z-index: 10;
+   padding-left: 15px;
+   background-color: #1c1c1c;
+`
 const StyledGenresText = styled.p`
    margin: 0;
    padding: 10px 0;
    /* border: 1px solid red; */
+   width: 250px;
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 400;
    font-size: 16px;
    line-height: 130%;
+   display: flex;
    color: #969696;
+   cursor: pointer;
+   transition: ease-in-out 0.5s;
+   position: relative;
 `
 const StyledBookImage = styled.div`
    /* border: 1px solid red; */
    width: 282px;
+   height: 445px;
    transition: transform 1s ease 0s;
    transform: rotate(10deg);
    position: relative;
    z-index: 20;
+   &:hover {
+      transform: rotate(0deg);
+   }
 `
 const StyledBookDescriptionBlock = styled.div`
    /* border: 1px solid red; */

@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
+import { useNavigate } from 'react-router'
 import 'slick-carousel/slick/slick-theme.css'
 import { ReactComponent as NextIcon } from '../../assets/icons/slider/next.svg'
 import { ReactComponent as PrevIcon } from '../../assets/icons/slider/prev.svg'
@@ -22,8 +23,46 @@ const PrevArrow = ({ onClick, variant }) => {
    )
 }
 
-function MainPageSlider({ images, variant }) {
+const BookInfo = ({ item }) => {
+   const navigate = useNavigate()
+   const onClickCard = () => {
+      navigate(`/main/${item.id}`)
+   }
+   return (
+      <>
+         <SliceImageBlock onClick={onClickCard}>
+            <Image src={item.image} alt={item.name} />
+         </SliceImageBlock>
+         <BookInfoBlock>
+            <BookInfoItem>
+               <Title>{item.name}</Title>
+            </BookInfoItem>
+            <BookInfoItem width="80%">
+               <Author>{item.author}</Author>
+            </BookInfoItem>
+            <BookInfoItem width="20%">
+               <Price>{item.price}</Price>
+            </BookInfoItem>
+         </BookInfoBlock>
+      </>
+   )
+}
+
+function MainPageSlider({ images, variant, onClick }) {
    const [imageIndex, setImageIndex] = useState(0)
+   const navigate = useNavigate()
+
+   useEffect(() => {
+      if (onClick) {
+         const findEl = images.find((el, idx) => idx === imageIndex)
+         onClick(findEl)
+      }
+   }, [imageIndex])
+
+   const onClickImageBlock = (id) => {
+      navigate(`/main/${id}`)
+   }
+
    const mainSettings = {
       dots: false,
       infinite: true,
@@ -31,7 +70,7 @@ function MainPageSlider({ images, variant }) {
       speed: 900,
       autoplay: false,
       autoplaySpeed: 3000,
-      slidesToShow: 3,
+      slidesToShow: images.length > 3 ? 3 : 1,
       tabindex: -1,
       centerMode: true,
       centerPadding: 0,
@@ -41,8 +80,7 @@ function MainPageSlider({ images, variant }) {
    }
    const settings = {
       autoplay: false,
-      infinite: true,
-      slidesToShow: 3,
+      slidesToShow: images.length > 3 ? 3 : 1,
       speed: 900,
       slidesToScroll: 1,
       centerMode: false,
@@ -56,7 +94,7 @@ function MainPageSlider({ images, variant }) {
          value = 0
       }
       return value
-   })
+   }, [])
    return (
       <div>
          {variant === 'mainSlider' ? (
@@ -67,20 +105,7 @@ function MainPageSlider({ images, variant }) {
                         key={item.id}
                         className={idx === imageIndex ? 'activeSlide' : 'slide'}
                      >
-                        <SliceImageBlock>
-                           <Image src={item.image} alt={item} />
-                        </SliceImageBlock>
-                        <BookInfoBlock>
-                           <BookInfoItem>
-                              <Title>{item.name}</Title>
-                           </BookInfoItem>
-                           <BookInfoItem width="80%">
-                              <Author>{item.author}</Author>
-                           </BookInfoItem>
-                           <BookInfoItem width="20%">
-                              <Price>{item.price}</Price>
-                           </BookInfoItem>
-                        </BookInfoBlock>
+                        <BookInfo item={item} />
                      </div>
                   ))}
                </Slider>
@@ -91,7 +116,9 @@ function MainPageSlider({ images, variant }) {
                   if (idx === nextIdx(imageIndex, array.length - 1)) {
                      return (
                         <SliderItem key={item.id} className="slider1">
-                           <ImageBlock>
+                           <ImageBlock
+                              onClick={() => onClickImageBlock(item.id)}
+                           >
                               <Image src={item.image} alt="book" />
                            </ImageBlock>
                         </SliderItem>
@@ -102,7 +129,7 @@ function MainPageSlider({ images, variant }) {
                         key={item.id}
                         className={idx === imageIndex ? 'activeSlide' : 'slide'}
                      >
-                        <ImageBlock>
+                        <ImageBlock onClick={() => onClickImageBlock(item.id)}>
                            <Image src={item.image} alt="book" />
                         </ImageBlock>
                      </SliderItem>

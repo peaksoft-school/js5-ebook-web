@@ -1,67 +1,64 @@
+/* eslint-disable no-lone-blocks */
+/* eslint-disable max-len */
 import styled, { css } from 'styled-components'
+import React from 'react'
+import { useNavigate, useLocation } from 'react-router'
+import { Link } from 'react-router-dom'
 
-export const AudioBooks = () => {
+const BookCard = ({ audioBook, className }) => {
+   const navigate = useNavigate()
+   const location = useLocation()
+   const onClickCard = () => {
+      navigate(`${location.pathname}/${audioBook.id}`)
+   }
+   return (
+      <StyledBookCard className={className}>
+         <ImageBlock className="imageBlock" onClick={onClickCard}>
+            <Image src={audioBook.image} alt={audioBook.name} />
+         </ImageBlock>
+         <InfoBook>
+            <StyledBookCardName>{audioBook.name}</StyledBookCardName>
+            <StyledBookCardAuthor>{audioBook.author}</StyledBookCardAuthor>
+            <StyledBookCardTitle>
+               <StyledBookCardTime>
+                  {audioBook.duration[0]} ч. {audioBook.duration[1]} мин.
+                  {audioBook.duration[2]}
+                  сек.
+               </StyledBookCardTime>
+               <StyledBookPrice>{audioBook.price} с</StyledBookPrice>
+            </StyledBookCardTitle>
+         </InfoBook>
+      </StyledBookCard>
+   )
+}
+
+export const AudioBooks = ({ books }) => {
+   console.log(books)
    return (
       <StyledAudioBooksCont>
          <StyledTitle>
             <StyledBestText>Аудиокниги</StyledBestText>
-            <StyledNavLink href="/">Смотреть все</StyledNavLink>
+            <StyledNavLink>
+               <Link to="/catalog">Смотреть все</Link>
+            </StyledNavLink>
          </StyledTitle>
          <StyledBookCardCont>
-            <StyledBookCard className="first">
-               <ImageBlock className="imageBlock">
-                  <Image
-                     src="https://cv9.litres.ru/pub/c/audiokniga/cover_415/37402792-dzhen-sinsero-ni-sy-vostochnaya-mudrost-kotoraya-glasit-bud-uvere-37402792.jpg"
-                     alt="book"
+            {books?.map((elem, idx) => {
+               let className = 'third'
+               if (idx === 0) {
+                  className = 'first'
+               }
+               if (idx === 1) {
+                  className = 'second'
+               }
+               return (
+                  <BookCard
+                     key={elem.id}
+                     className={className}
+                     audioBook={elem}
                   />
-               </ImageBlock>
-               <InfoBook>
-                  <StyledBookCardName>НИ СЫ</StyledBookCardName>
-                  <StyledBookCardAuthor>Джен Синсеро</StyledBookCardAuthor>
-                  <StyledBookCardTitle>
-                     <StyledBookCardTime>
-                        19 ч. 44 мин. 19 сек.
-                     </StyledBookCardTime>
-                     <StyledBookPrice>234 с</StyledBookPrice>
-                  </StyledBookCardTitle>
-               </InfoBook>
-            </StyledBookCard>
-            <StyledBookCard className="second">
-               <ImageBlock className="imageBlock">
-                  <Image
-                     src="https://img-gorod.ru/28/363/2836344_detail.jpg"
-                     alt="book"
-                  />
-               </ImageBlock>
-               <InfoBook>
-                  <StyledBookCardName>Зеленый свет</StyledBookCardName>
-                  <StyledBookCardAuthor>Мэттью Макконахи</StyledBookCardAuthor>
-                  <StyledBookCardTitle>
-                     <StyledBookCardTime>
-                        19 ч. 44 мин. 19 сек.
-                     </StyledBookCardTime>
-                     <StyledBookPrice>234 с</StyledBookPrice>
-                  </StyledBookCardTitle>
-               </InfoBook>
-            </StyledBookCard>
-            <StyledBookCard className="third">
-               <ImageBlock className="imageBlockThird">
-                  <Image
-                     src="https://cm.author.today/content/2021/11/23/48cb14773d40404c8200e22fb14fc4af.jpg"
-                     alt="book"
-                  />
-               </ImageBlock>
-               <InfoBook>
-                  <StyledBookCardName>НИ СЫ</StyledBookCardName>
-                  <StyledBookCardAuthor>Джен Синсеро</StyledBookCardAuthor>
-                  <StyledBookCardTitle>
-                     <StyledBookCardTime>
-                        19 ч. 44 мин. 19 сек.
-                     </StyledBookCardTime>
-                     <StyledBookPrice>234 с</StyledBookPrice>
-                  </StyledBookCardTitle>
-               </InfoBook>
-            </StyledBookCard>
+               )
+            })}
          </StyledBookCardCont>
       </StyledAudioBooksCont>
    )
@@ -81,6 +78,7 @@ const ImageBlock = styled('div')`
 
 const Image = styled('img')`
    width: 100%;
+   height: 100%;
    object-fit: cover;
 `
 
@@ -107,14 +105,16 @@ const StyledBestText = styled.p`
    /* margin: 0; */
 `
 
-const StyledNavLink = styled.a`
-   font-family: 'Open Sans';
-   font-style: normal;
-   font-weight: 400;
-   font-size: 14px;
-   line-height: 120%;
-   text-decoration-line: underline;
-   color: #ff4c00;
+const StyledNavLink = styled.div`
+   & > a {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 120%;
+      text-decoration-line: underline;
+      color: #ff4c00;
+   }
 `
 const StyledBookPrice = styled.p`
    font-family: 'Open Sans';
@@ -140,7 +140,7 @@ const StyledBookCardCont = styled.div`
    width: 100%;
    height: 747px;
    display: flex;
-   justify-content: space-between;
+   justify-content: space-evenly;
    flex-flow: row nowrap;
    /* justify-content: flex-start; */
    align-content: flex-start;
@@ -203,3 +203,61 @@ const StyledBookCardTime = styled.span`
    line-height: 130%;
    color: #8c8c8c;
 `
+{
+   /* <StyledBookCard className="first">
+               <ImageBlock className="imageBlock">
+                  <Image
+                     src="https://cv9.litres.ru/pub/c/audiokniga/cover_415/37402792-dzhen-sinsero-ni-sy-vostochnaya-mudrost-kotoraya-glasit-bud-uvere-37402792.jpg"
+                     alt="book"
+                  />
+               </ImageBlock>
+               <InfoBook>
+                  <StyledBookCardName>НИ СЫ</StyledBookCardName>
+                  <StyledBookCardAuthor>Джен Синсеро</StyledBookCardAuthor>
+                  <StyledBookCardTitle>
+                     <StyledBookCardTime>
+                        19 ч. 44 мин. 19 сек.
+                     </StyledBookCardTime>
+                     <StyledBookPrice>234 с</StyledBookPrice>
+                  </StyledBookCardTitle>
+               </InfoBook>
+            </StyledBookCard>
+
+            <StyledBookCard className="second">
+               <ImageBlock className="imageBlock">
+                  <Image
+                     src="https://img-gorod.ru/28/363/2836344_detail.jpg"
+                     alt="book"
+                  />
+               </ImageBlock>
+               <InfoBook>
+                  <StyledBookCardName>Зеленый свет</StyledBookCardName>
+                  <StyledBookCardAuthor>Мэттью Макконахи</StyledBookCardAuthor>
+                  <StyledBookCardTitle>
+                     <StyledBookCardTime>
+                        19 ч. 44 мин. 19 сек.
+                     </StyledBookCardTime>
+                     <StyledBookPrice>234 с</StyledBookPrice>
+                  </StyledBookCardTitle>
+               </InfoBook>
+            </StyledBookCard>
+
+            <StyledBookCard className="third">
+               <ImageBlock className="imageBlockThird">
+                  <Image
+                     src="https://cm.author.today/content/2021/11/23/48cb14773d40404c8200e22fb14fc4af.jpg"
+                     alt="book"
+                  />
+               </ImageBlock>
+               <InfoBook>
+                  <StyledBookCardName>НИ СЫ</StyledBookCardName>
+                  <StyledBookCardAuthor>Джен Синсеро</StyledBookCardAuthor>
+                  <StyledBookCardTitle>
+                     <StyledBookCardTime>
+                        19 ч. 44 мин. 19 сек.
+                     </StyledBookCardTime>
+                     <StyledBookPrice>234 с</StyledBookPrice>
+                  </StyledBookCardTitle>
+               </InfoBook>
+            </StyledBookCard> */
+}

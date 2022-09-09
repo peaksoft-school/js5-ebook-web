@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
@@ -20,7 +20,7 @@ const DataValues = [
 ]
 
 export const UserInnerPage = () => {
-   const [text, setText] = useState('')
+   // const [text, setText] = useState('')
    const { bookId } = useParams()
    const book = useSelector((state) => state.addbook.getUserInnerBook)
    const dispatch = useDispatch()
@@ -28,10 +28,10 @@ export const UserInnerPage = () => {
       dispatch(getUserInnerPageBook(bookId))
    }, [])
    const sendText = () => {
-      console.log(text)
+      // console.log(text)
    }
-   const saveValue = (e) => {
-      setText(e)
+   const saveValue = () => {
+      // setText(e
    }
 
    const pathTranslate = {
