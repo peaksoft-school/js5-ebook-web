@@ -1,6 +1,6 @@
+import styled from '@emotion/styled'
 import Box from '@mui/material/Box'
 import MuiModal from '@mui/material/Modal'
-import styled from '@emotion/styled'
 
 export default function Modal({
    children,
@@ -10,6 +10,7 @@ export default function Modal({
    width,
    height,
    justifyContent,
+   ...props
 }) {
    return (
       <MuiModal
@@ -23,6 +24,7 @@ export default function Modal({
             width={width}
             height={height}
             justifyContent={justifyContent}
+            {...props}
          >
             {children}
          </StyledBox>
@@ -44,7 +46,7 @@ const StyledBox = styled(Box)`
    justify-content: ${(props) => props.justifyContent || 'center'};
    flex-direction: column;
    align-items: center;
-   overflow: auto;
+   overflow: ${(props) => props.overflow || 'auto'};
    ::-webkit-scrollbar {
       width: 5px;
    }

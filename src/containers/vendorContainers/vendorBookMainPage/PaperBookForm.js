@@ -1,44 +1,48 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import Checkbox from '../../Components/UI/checkBox/CheckBox'
-import Button from '../../Components/UI/Button/Button'
+import { useNavigate } from 'react-router'
+import Checkbox from '../../../Components/UI/checkBox/CheckBox'
+import InputText from '../../../Components/UI/Inputs/InputText'
+import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
-import InputText from '../../Components/UI/Inputs/InputText'
-import { addPaperBook } from '../../store/addBookActions'
-import bookAction from '../../store/slices/addBookSlice'
-import Selected from '../../Components/UI/Select'
+import { addPaperBook } from '../../../store/createActions/addBookActions'
+import bookAction from '../../../store/slices/addBookSlice'
+import SelectBooks from '../../adminContainers/Admin/SelectBooks'
+import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import { setGenres } from '../../../store/slices/globalSlices'
 
 const languageSelect = [
-   { name: 'kyrgyzstan', id: 1 },
-   { name: 'Russian', id: 2 },
-   { name: 'English', id: 3 },
+   { name: 'KYRGYZ', id: 1 },
+   { name: 'RUSSIAN', id: 2 },
+   { name: 'ENGLISH', id: 3 },
 ]
 
-export const inputValuesForState = {
-   name: '',
-   author: '',
-   publishingHouse: '',
-   description: '',
-   fragment: '',
-   pageSize: '',
-   price: '',
-   yearOfIssue: '',
-   quantityOfBook: '',
-   discount: '',
-}
-const paperInputValues = {
-   ...inputValuesForState,
-   amount: '',
-}
-
 const PaperBookForm = ({ images }) => {
-   const [inputValues, setInputValues] = useState({
-      ...paperInputValues,
-      ...images,
-   })
    const dispatch = useDispatch()
-   const jenre = useSelector((store) => store.addbook.jenreId)
+   const navigate = useNavigate()
+   const genre = useSelector((store) => store.globalValues.genres)
+   const { stateSnackbar } = useSelector((store) => store.snackbar)
+   const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
+   const { bookSuccsess } = useSelector((store) => store.snackbar)
+   const [isChecked, setIsChecked] = useState()
+   const [inputValues, setInputValues] = useState({
+      name: dataWithId ? dataWithId.bookName : '',
+      author: dataWithId ? dataWithId.author : '',
+      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
+      description: dataWithId ? dataWithId.description : '',
+      fragment: dataWithId ? dataWithId.fragment : '',
+      pageSize: dataWithId ? dataWithId.pageSize : '',
+      price: dataWithId ? dataWithId.price : '',
+      genreId: dataWithId ? dataWithId.genreId : '',
+      yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
+      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
+      language: dataWithId ? dataWithId.language : '',
+      discount: dataWithId ? dataWithId.discount : '',
+      genre: dataWithId ? dataWithId.genre : '',
+   })
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -48,7 +52,7 @@ const PaperBookForm = ({ images }) => {
       const validateValues =
          inputValues.name.length >= 1 &&
          inputValues.author.length >= 1 &&
-         inputValues.jenreId > +0 &&
+         inputValues.genreId > +0 &&
          inputValues.publishingHouse.length >= 1 &&
          inputValues.description.length >= 1 &&
          inputValues.fragment.length >= 1 &&
@@ -57,14 +61,20 @@ const PaperBookForm = ({ images }) => {
          inputValues.discount.length >= 1 &&
          inputValues.quantityOfBook.length >= 1
 
-      return validateValues && images.mainImage
+      return validateValues
+   }
+   const validLength = () => {
+      const validNumbers =
+         inputValues.yearOfIssue.length > 4 ||
+         inputValues.yearOfIssue < 0 ||
+         inputValues.yearOfIssue > 2022
+      return validNumbers
    }
 
    const clickSendFormValues = async () => {
-      if (isFormValid()) {
-         dispatch(addPaperBook(inputValues, images))
+      if (isFormValid() && !validLength()) {
+         dispatch(addPaperBook(inputValues, images, isChecked))
          dispatch(bookAction.deleteImage())
-
          setInputValues({
             name: '',
             author: '',
@@ -78,12 +88,35 @@ const PaperBookForm = ({ images }) => {
             discount: '',
             quantityOfBook: '',
          })
+      } else {
+         dispatch(snackbarActions({ bron: 'exit' }))
+      }
+   }
+   const { bookType, bookId } = dataWithId !== null ? dataWithId : ''
+   const updateForms = async () => {
+      if (isFormValid()) {
+         dispatch(putVendorBook(inputValues, images, bookType, bookId))
+      } else {
+         dispatch(snackbarActions({ bron: 'exit' }))
+      }
+      if (bookSuccsess) {
+         setTimeout(() => {
+            navigate('/')
+         }, 3000)
       }
    }
 
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
+
    return (
       <>
-         {/* snackbar */}
+         <GetSnackbar
+            open={stateSnackbar}
+            message="Пожалуйста, заполните все поля"
+            variant="error"
+         />
          <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -109,12 +142,18 @@ const PaperBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <Selected
-                  variant
-                  onChange={(genreId) =>
+               <SelectBooks
+                  border
+                  padding="12px 10px 12px 19px"
+                  width="100%"
+                  hover
+                  defaultName="Литература, роман, стихи..."
+                  fontWeight
+                  color="#969696"
+                  onClick={(genreId) =>
                      setInputValues({ ...inputValues, genreId })
                   }
-                  title={jenre}
+                  genres={genre}
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
@@ -127,6 +166,7 @@ const PaperBookForm = ({ images }) => {
                   id="publishingHouse"
                />
                <Textarea
+                  inputValues={inputValues}
                   onChange={handleChangeInput}
                   value={inputValues.description}
                   name="description"
@@ -136,11 +176,11 @@ const PaperBookForm = ({ images }) => {
                />
                <Textarea
                   onChange={handleChangeInput}
-                  value={inputValues.fragment}
                   name="fragment"
                   title="Фрагмент книги"
                   placeholder="Напишите фрагмент книги"
                   maxLength="9234"
+                  value={inputValues.fragment}
                />
             </InputDiv>
             <div>
@@ -149,11 +189,19 @@ const PaperBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <Selected
-                        onChange={(language) =>
+                     <SelectBooks
+                        border
+                        padding="12px 10px 12px 19px"
+                        width="100%"
+                        defaultName="язык"
+                        fontWeight="400"
+                        color="#969696"
+                        hover
+                        nameText=""
+                        onClick={(_, notext, notest, language) =>
                            setInputValues({ ...inputValues, language })
                         }
-                        title={languageSelect}
+                        genres={languageSelect}
                      />
                      <LabelStyle htmlFor="pageSize">
                         Объем <strong>*</strong>
@@ -180,7 +228,12 @@ const PaperBookForm = ({ images }) => {
                         type="number"
                      />
                      <Bestssler>
-                        <Checkbox label="Бестселлер" />
+                        <Checkbox
+                           label="Бестселлер"
+                           onChange={(e) => {
+                              setIsChecked(e.target.checked)
+                           }}
+                        />
                      </Bestssler>
                   </SelectDiv>
                   <SelectDiv>
@@ -196,6 +249,7 @@ const PaperBookForm = ({ images }) => {
                         type="number"
                         name="yearOfIssue"
                      />
+                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                      <LabelStyle htmlFor="quantityOfBook">
                         Кол-во <strong>*</strong>
                      </LabelStyle>
@@ -207,10 +261,9 @@ const PaperBookForm = ({ images }) => {
                         placeholder="шт"
                         name="quantityOfBook"
                      />
-                     <LabelStyle htmlFor="discount">
-                        Скидка <strong>*</strong>
-                     </LabelStyle>
+                     <LabelStyle htmlFor="discount">Скидка</LabelStyle>
                      <InputText
+                        onkeypress="if(this.value.length&gt;4) return false"
                         id="discount"
                         onChange={handleChangeInput}
                         value={inputValues.discount}
@@ -224,9 +277,24 @@ const PaperBookForm = ({ images }) => {
             </div>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickSendFormValues}>
-               Отправить
-            </Button>
+            {!dataWithId ? (
+               <Button width="137px" onClick={clickSendFormValues}>
+                  Отправить
+               </Button>
+            ) : (
+               <PutDiv>
+                  <Button
+                     width="137px"
+                     background="#2f4f4f"
+                     onClick={() => navigate('/')}
+                  >
+                     Назад
+                  </Button>
+                  <Button width="137px" onClick={updateForms}>
+                     Сохранить
+                  </Button>
+               </PutDiv>
+            )}
          </ButtonDiv>
       </>
    )
@@ -262,6 +330,7 @@ export const SelectWrapper = styled('div')`
 export const ButtonDiv = styled('div')`
    width: 96%;
    margin-top: 104px;
+   margin-bottom: 70px;
    display: flex;
    align-items: flex-end;
    justify-content: flex-end;
@@ -278,4 +347,13 @@ export const LabelStyle = styled('label')`
    font-family: 'Open Sans';
    font-weight: 400;
    line-height: 20.8px;
+`
+export const PutDiv = styled('div')`
+   display: flex;
+   justify-content: space-between;
+   width: 300px;
+`
+export const ValidSpan = styled('span')`
+   color: red;
+   font-size: 14px;
 `

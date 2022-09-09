@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+// import { link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
 import { ReactComponent as ApplicationOrange } from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.svg'
@@ -21,7 +23,8 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
-      navigate: 'layers',
+      link: 'applications',
+      navigate: 'applications',
    },
    {
       name: 'Продавцы',
@@ -29,6 +32,8 @@ const items = [
          0: <Vendor />,
          1: <VendorOrange />,
       },
+
+      link: 'request',
       navigate: 'vendors',
    },
    {
@@ -37,6 +42,9 @@ const items = [
          0: <User />,
          1: <UserOrange />,
       },
+
+      link: 'request',
+
       navigate: 'users',
    },
    {
@@ -45,11 +53,15 @@ const items = [
          0: <Books />,
          1: <BooksOrange />,
       },
+
+      link: 'books',
       navigate: 'books',
    },
 ]
 
 function SideDrawerMenu() {
+   const location = useLocation()
+   // console.log(location.pathname)
    const navigate = useNavigate()
    const onClickItem = (nav) => {
       navigate(`/${nav}`)
@@ -64,6 +76,8 @@ function SideDrawerMenu() {
                      onClick={() => onClickItem(elem.navigate)}
                      name={elem.name}
                      icon={elem.icon}
+                     navigate={elem.navigate}
+                     active={location.pathname}
                   />
                )
             })}
@@ -73,8 +87,15 @@ function SideDrawerMenu() {
 }
 export default SideDrawerMenu
 
-function DrowerItem({ name, icon, onClick }) {
+function DrowerItem({ name, icon, onClick, navigate, active }) {
    const [bool, setBool] = useState(false)
+   useEffect(() => {
+      if (`/${navigate}` === active) {
+         onHoverItem()
+      } else {
+         offHoverItem()
+      }
+   }, [active])
    const onHoverItem = () => {
       setBool(true)
    }

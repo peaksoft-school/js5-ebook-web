@@ -54,11 +54,9 @@ export default function SelectBooks({ genres, name, onClick, type }) {
       </SelectBook>
    )
 }
-
 const PopUpItem = styled(MenuItem)`
    padding: 10px;
 `
-
 const SelectLabel = styled('div')`
    /* border: 1px solid red; */
    font-family: 'Open Sans';
@@ -68,7 +66,6 @@ const SelectLabel = styled('div')`
    line-height: 120%;
    cursor: pointer;
 `
-
 const SelectSpan = styled('span')`
    /* border: 1px solid red; */
    color: #b5b5b5;
@@ -79,7 +76,6 @@ const SelectSpan = styled('span')`
    line-height: 130%;
    padding-right: 10px;
 `
-
 const SelectBook = styled('div')`
    /* border: 1px solid red; */
    display: flex;

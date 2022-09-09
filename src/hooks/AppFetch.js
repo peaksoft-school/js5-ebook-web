@@ -5,6 +5,7 @@ let store
 export const injectStore = (fromStore) => {
    store = fromStore
 }
+
 const appFetch = ({ url, method, body }) => {
    const { token } = store.getState().auth.user
 
@@ -14,7 +15,6 @@ const appFetch = ({ url, method, body }) => {
          'Content-Type': 'application/json; charset=utf-8',
       },
    }
-
    if (token) {
       requestOptions.headers.Authorization = `Bearer ${token}`
    }

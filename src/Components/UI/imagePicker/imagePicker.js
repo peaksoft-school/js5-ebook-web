@@ -1,42 +1,55 @@
 import { useState, useRef, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components'
 import Icon from '../../../assets/icons/Vector.svg'
 
-function ImagePicker({ onChange, onDelete, file, id, name }) {
+function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
+   const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
+
    const [icon, setIcon] = useState()
+   const [putIcon, setPutIcon] = useState()
+   const [img, setImg] = useState(true)
    const filesRef = useRef()
 
    useEffect(() => {
-      if (file) {
-         const name = URL.createObjectURL(file)
-         setIcon(name)
+      if (dataWithId && img) {
+         setPutIcon(putUrl)
       }
-   }, [file])
+   })
 
    const iconHandleChange = (e) => {
       if (!filesRef.current.files[0]) {
          return
       }
-      const name = URL.createObjectURL(filesRef.current.files[0])
-      setIcon(name)
+      const name = filesRef.current.files[0]
+      const image = new Image()
+      image.src = name
+      console.log(image.naturalWidth, image.naturalHeight)
+      if (image.height > -1) {
+         const file = URL.createObjectURL(name)
+         setIcon(file)
+      }
       onChange(filesRef.current.files[0], e)
    }
 
    const deleteFileHandler = () => {
       filesRef.current.value = ''
       setIcon('')
-      onDelete()
+      setPutIcon('')
+      setImg(false)
+      // onDelete()
    }
    useEffect(() => {
       if (onDelete || !onDelete) {
          setIcon('')
          filesRef.current.value = ''
+         setPutIcon('')
       }
    }, [onDelete])
 
    return (
-      <ImageContainer primary={icon}>
-         <InputLabel htmlFor={id} primary={icon} />
+      <ImageContainer primary={icon || putIcon}>
+         <InputLabel htmlFor={id} primary={icon || putIcon} />
          <InputFile
             type="file"
             id={id}

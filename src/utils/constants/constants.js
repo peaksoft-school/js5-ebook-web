@@ -24,3 +24,13 @@ export const FilterBooks = {
    IN_THE_PROCESS: 'IN_THE_PROCESS',
    REJECTED: 'REJECTED',
 }
+export const Languages = {
+   KYRGYZ: 'KYRGYZ',
+   RUSSIAN: 'RUSSIAN',
+   ENGLISH: 'ENGLISH',
+}
+
+export const SortBy = {
+   BESTSELLER: 'BESTSELLER',
+   NEW: 'NEW',
+}

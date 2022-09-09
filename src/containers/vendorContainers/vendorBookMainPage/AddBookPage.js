@@ -1,22 +1,41 @@
 import { styled } from '@mui/material'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import ImagePicker from '../../Components/UI/imagePicker/imagePicker'
-import PaperBook from './PaperBookForm'
-import RadioButton from '../../Components/UI/RadioButton'
-import AudioBook from './AudioBookForm'
-import ElectronicBook from './ElectronicBookForm'
-
-const allImages = {
-   mainImage: '',
-   secondImage: '',
-   thirdImage: '',
-}
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import PaperBookForm from './PaperBookForm'
+import ImagePicker from '../../../Components/UI/imagePicker/imagePicker'
+import RadioButton from '../../../Components/UI/RadioButton'
+import { setGenres } from '../../../store/slices/globalSlices'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
+import AudioBookForm from './AudioBookForm'
+import ElectronicBookForm from './ElectronicBookForm'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 
 const AddBookPage = () => {
-   const [images, setImages] = useState(allImages)
+   const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
+   const { bookType } = useSelector((store) => store.vendorMainPage)
+   const { deleteImage } = useSelector((store) => store.addbook)
+   const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
+
+   const dispatch = useDispatch()
+   const [images, setImages] = useState({
+      mainImage: dataWithId ? dataWithId.mainImage : '',
+      secondImage: dataWithId ? dataWithId.secondImage : '',
+      thirdImage: dataWithId ? dataWithId.thirdImage : '',
+   })
    const [radio, setRadio] = useState('Бумажная')
-   const { deleteImage } = useSelector((state) => state.addbook)
+
+   useEffect(() => {
+      if (bookType) {
+         setRadio(bookType)
+      }
+   }, [bookType])
+   useEffect(() => {
+      dispatch(snackbarActions())
+   }, [bookError, bookSuccsess])
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
 
    const saveImageValue = (imageFile, e) => {
       const { name } = e.target
@@ -26,19 +45,25 @@ const AddBookPage = () => {
    const getBookFormsByType = () => {
       let bookComponents
       if (radio === 'Бумажная') {
-         bookComponents = <PaperBook images={images} />
+         bookComponents = <PaperBookForm images={images} />
       }
       if (radio === 'Аудиокнига') {
-         bookComponents = <AudioBook images={images} />
+         bookComponents = <AudioBookForm images={images} />
       }
       if (radio === 'Электронная книга') {
-         bookComponents = <ElectronicBook images={images} />
+         bookComponents = <ElectronicBookForm images={images} />
       }
       return bookComponents
    }
 
    return (
       <ContainerDiv>
+         <HeaderMainPage />
+         <GetSnackbar
+            open={bookError || bookSuccsess}
+            message={bookError || bookSuccsess}
+            variant={bookError ? 'error' : 'success'}
+         />
          <div>
             <ThreeImagesDiv>
                Загрузите 3 фото <strong>*</strong>
@@ -50,6 +75,7 @@ const AddBookPage = () => {
                         onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="mainImage"
+                        putUrl={images.mainImage}
                         id="e1"
                      />
                      <p>Главное фото</p>
@@ -59,6 +85,7 @@ const AddBookPage = () => {
                         onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="secondImage"
+                        putUrl={images.secondImage}
                         id="e2"
                      />
                      <p>2</p>
@@ -68,6 +95,7 @@ const AddBookPage = () => {
                         onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="thirdImage"
+                        putUrl={images.thirdImage}
                         id="e3"
                      />
                      <p>3</p>
@@ -138,7 +166,7 @@ export default AddBookPage
 
 const ContainerDiv = styled('div')`
    width: 100%;
-   margin: 150px auto;
+   margin: auto;
 
    & strong {
       color: red;
