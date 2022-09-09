@@ -5,7 +5,7 @@ function Container({ header, main, footer, sidebar, primary }) {
    return (
       <>
          <AppContainer primary={primary}>
-            <Item>
+            <Item maxWidth={sidebar}>
                <Header>{header}</Header>
                <Main>{main}</Main>
             </Item>
@@ -52,7 +52,12 @@ const Item = styled.div`
    display: flex;
    flex-flow: column;
    height: auto;
-   max-width: 100%;
+   max-width: 1280px;
+   ${(props) =>
+      props.maxWidth &&
+      css`
+         max-width: 900px;
+      `}
    &:nth-child(2) {
       flex-grow: 0;
       flex-shrink: 0;

@@ -3,6 +3,7 @@ import { addBookSlice } from './slices/addBookSlice'
 import authSlices from './slices/authSlices'
 import PromocodeSlices from './slices/promocodeSlices'
 import globalValues from './slices/globalSlices'
+import { getAdminVendorsSlice } from './slices/getAdminVendorsSlice'
 
 const store = configureStore({
    reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
       globalValues: globalValues.reducer,
       addbook: addBookSlice.reducer,
       promocodeStore: PromocodeSlices.reducer,
+      adminVendors: getAdminVendorsSlice.reducer,
    },
 })
 
