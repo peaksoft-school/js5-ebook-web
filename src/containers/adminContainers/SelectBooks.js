@@ -3,17 +3,24 @@ import styled from '@emotion/styled'
 import { MenuItem } from '@mui/material'
 import PopUp from '../../Components/UI/popup'
 
-export default function SelectBooks({ genres, name, onClick, type }) {
+export default function SelectBooks({
+   genres,
+   name,
+   defaultName,
+   onClick,
+   type,
+   ...props
+}) {
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
-      name: 'все',
+      name: defaultName || 'все',
       id: null,
       key: type,
    })
    const open = Boolean(anChorEl)
    useEffect(() => {
       if (onClick) {
-         onClick(label.id, label.key)
+         onClick(label.id, label.key, label.text, label.name)
       }
    }, [label])
    const handleClickLabel = (e) => {
@@ -22,27 +29,32 @@ export default function SelectBooks({ genres, name, onClick, type }) {
    const onCloseMenu = () => {
       setAnchorEl(null)
    }
-   const onSelectItem = (id, name) => {
+   const onSelectItem = (id, name, text) => {
       setLabel((prev) => {
          return {
             ...prev,
             name,
             id,
+            text,
          }
       })
       onCloseMenu()
    }
    return (
       <SelectBook>
-         <SelectSpan>{name}:</SelectSpan>
-         <SelectLabel onClick={handleClickLabel}>{label.name} </SelectLabel>
+         {name && <SelectSpan>{name}:</SelectSpan>}
+         <SelectLabel {...props} onClick={handleClickLabel}>
+            {label.name}{' '}
+         </SelectLabel>
          <PopUp open={open} anchorEl={anChorEl} onClose={onCloseMenu}>
             {genres &&
                genres.map((elem) => {
                   return (
                      <PopUpItem
                         key={elem.id}
-                        onClick={() => onSelectItem(elem.id, elem.name)}
+                        onClick={() =>
+                           onSelectItem(elem.id, elem.name, elem.text)
+                        }
                      >
                         {elem.name}
                      </PopUpItem>
@@ -56,16 +68,23 @@ const PopUpItem = styled(MenuItem)`
    padding: 10px;
 `
 const SelectLabel = styled('div')`
-   /* border: 1px solid red; */
    font-family: 'Open Sans';
    font-style: normal;
-   font-weight: 600;
+   /* font-weight: 600; */
    font-size: 16px;
    line-height: 120%;
    cursor: pointer;
+
+   border: ${(props) => (props.border ? '1px solid #969696' : '')};
+   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '600')};
+   padding: ${(props) => (props.padding ? props.padding : '')};
+   color: ${(props) => (props.color ? props.color : '')};
+   width: ${(props) => (props.width ? props.width : '')};
+   &:hover {
+      border: ${(props) => (props.hover ? '1px solid red' : '')};
+   }
 `
 const SelectSpan = styled('span')`
-   /* border: 1px solid red; */
    color: #b5b5b5;
    font-family: 'Open Sans';
    font-style: normal;

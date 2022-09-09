@@ -1,25 +1,20 @@
 import { styled } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
-import { ReactComponent as IconAccept } from '../../../assets/icons/IconAccept.svg'
-import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { RejectApplicationModal } from './RejectApplicationModal'
+import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
-import { applicationSlicesActions } from '../../../store/slices/adminSlices/applicationsSlices'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
-import Snackbar from '../../../Components/UI/snackbar/Snackbar'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { acceptMessage } = useSelector((state) => state.applications)
-   const isSnackbarOpen = useSelector((state) => state.uiSlice.snackbar)
-   const { rejectMessage } = useSelector((state) => state.applications)
 
-   const [showRejectModal, setShowRejectModal] = useState(false)
+   const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
+
    const menuMeatBall = [
       {
          id: 55,
@@ -39,44 +34,12 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
       dispatch(acceptApplication(id))
    }
 
-   useEffect(() => {
-      let timerId = null
-      if (acceptMessage) {
-         dispatch(uiSlicesSlicesActions.showSnackbar())
-         timerId = setTimeout(() => {
-            onCloseSnackbar()
-            dispatch(applicationSlicesActions.cleanAccept())
-         }, 10000)
-      }
-      return () => {
-         clearTimeout(timerId)
-      }
-   }, [acceptMessage])
-
-   useEffect(() => {
-      let time = setTimeout(() => {}, [1])
-      if (rejectMessage) {
-         dispatch(uiSlicesSlicesActions.showSnackbar())
-         time = setTimeout(() => {
-            onCloseSnackbar()
-            dispatch(applicationSlicesActions.cleanReject())
-         }, 3000)
-      }
-      return () => {
-         clearTimeout(time)
-      }
-   }, [rejectMessage])
-
    function rejectModal() {
-      setShowRejectModal(true)
+      dispatch(uiSlicesSlicesActions.showRejectModal())
    }
 
    function onCloseRejectModal() {
-      setShowRejectModal(false)
-   }
-
-   function onCloseSnackbar() {
-      dispatch(uiSlicesSlicesActions.hideSnackbar())
+      dispatch(uiSlicesSlicesActions.hideRejectModal())
    }
 
    const navigateToDetailsPage = () => {
@@ -88,21 +51,10 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
          <MeatBall onClick={(e) => e.stopPropagation()}>
             <MeatBalls options={menuMeatBall} />
          </MeatBall>
-         {acceptMessage && (
-            <Snackbar
-               width="460px"
-               height="155px"
-               open={isSnackbarOpen}
-               handleClose={() => onCloseSnackbar()}
-               severity=""
-               message={acceptMessage.message}
-               icon={<IconAccept />}
-            />
-         )}
 
          <RejectApplicationModal
             id={id}
-            open={showRejectModal}
+            open={isRejectModalOpen}
             onClose={() => onCloseRejectModal()}
          />
 
@@ -115,17 +67,6 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
                <Price>{price}</Price>
             </PriceDate>
          </Div>
-         {rejectMessage && (
-            <Snackbar
-               width="460px"
-               height="155px"
-               open={isSnackbarOpen}
-               handleClose={() => onCloseSnackbar()}
-               severity=""
-               message={rejectMessage.message}
-               icon={<IconAccept />}
-            />
-         )}
       </BookItems>
    )
 }

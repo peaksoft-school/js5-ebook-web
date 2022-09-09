@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { addBookSlice } from './slices/addBookSlice'
+import applicationsInnerPageSlices from './slices/applicationInnerPagesSlices'
 import applicationsSlices from './slices/adminSlices/applicationsSlices'
 import authSlices from './slices/authSlices'
 import uiSlices from './slices/uiSlices'
@@ -15,6 +16,7 @@ const store = configureStore({
       auth: authSlices.reducer,
       globalValues: globalValues.reducer,
       addbook: addBookSlice.reducer,
+      applicationsInnerPage: applicationsInnerPageSlices.reducer,
       applications: applicationsSlices.reducer,
       uiSlice: uiSlices.reducer,
       books: сatalogSlices.reducer,

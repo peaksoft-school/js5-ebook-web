@@ -1,31 +1,53 @@
-import appFetch from '../../../hooks/AppFetch'
+import toast from 'react-hot-toast'
+import appFetch from '../../../hooks/appFetch'
 import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
 import { sortRequestApplic } from '../../../utils/helpers/helpers'
 
 export const applicationsActions = (request) => {
-   // eslint-disable-next-line consistent-return
    return async (dispatch) => {
       try {
          const result = await appFetch({
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
          dispatch(
-            applicationSlicesActions.getApplications(
+            applicationSlicesActions.seeMoreGetApplications(
                result.getApplications.content
-            )
-         )
-
-         dispatch(
+            ),
             applicationSlicesActions.getTotalElements(
                result.getApplications.totalElements
-            )
-         )
-         dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
-         dispatch(
+            ),
+            applicationSlicesActions.getUnwatched(result.unwatched),
             applicationSlicesActions.getTotalPages(
                result.getApplications.totalPages
             )
          )
+         return result
+      } catch (error) {
+         return error
+      }
+   }
+}
+
+export const seeMoreGetApplicationsActions = (request) => {
+   return async (dispatch) => {
+      try {
+         const result = await appFetch({
+            url: `/api/admin/applications${sortRequestApplic(request)}`,
+         })
+
+         dispatch(
+            applicationSlicesActions.seeMoreGetApplications(
+               result.getApplications.content
+            ),
+            applicationSlicesActions.getTotalElements(
+               result.getApplications.totalElements
+            ),
+            applicationSlicesActions.getUnwatched(result.unwatched),
+            applicationSlicesActions.getTotalPages(
+               result.getApplications.totalPages
+            )
+         )
+         return result
       } catch (error) {
          return error
       }
@@ -41,8 +63,10 @@ export const acceptApplication = (id) => {
             body: id,
          })
          dispatch(applicationSlicesActions.postAcceptApplication(result))
+         toast.success(result.message)
          return result
       } catch (error) {
+         toast.error('Не удалось принять!')
          return error
       }
    }
@@ -56,8 +80,10 @@ export const rejectAplication = ({ id, reasonReject }) => {
             url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
+         toast.success(result.message)
          return result
       } catch (error) {
+         toast.error('Не удалось отклонить!')
          return error
       }
    }

@@ -1,12 +1,15 @@
-// import { useNavigate } from 'react-router'
 import { styled } from '@mui/material'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux/'
+
 import Button from '../../../Components/UI/Button/Button'
 
-import { applicationsActions } from '../../../store/slices/adminActions/applicationsActions'
+import {
+   applicationsActions,
+   seeMoreGetApplicationsActions,
+} from '../../../store/slices/adminActions/applicationsActions'
 import ApplicationCard from './ApplicationCard'
 
 const AdminApplications = () => {
@@ -16,20 +19,31 @@ const AdminApplications = () => {
       unwatched,
       totalPages,
    } = useSelector((state) => state.applications)
+
+   const [update, setupdate] = useState(true)
    const [requestObj, setRequestObj] = useState({ page: 1, size: 8 })
    const [showSeeMore, setShowSeeMore] = useState(false)
-
    const dispatch = useDispatch()
 
    useEffect(() => {
       dispatch(applicationsActions(requestObj))
+   }, [])
+
+   useEffect(() => {
+      if (update) {
+         setupdate(false)
+         return
+      }
+      dispatch(seeMoreGetApplicationsActions(requestObj))
    }, [requestObj])
 
    useEffect(() => {
-      if (totalPages === requestObj.page) {
-         setShowSeeMore(false)
-      } else {
-         setShowSeeMore(true)
+      if (totalPages) {
+         if (totalPages === requestObj.page || totalPages === 0) {
+            setShowSeeMore(false)
+         } else {
+            setShowSeeMore(true)
+         }
       }
    }, [requestObj, totalPages])
 
@@ -58,7 +72,7 @@ const AdminApplications = () => {
          </TotalApplication>
          <Books>
             {applications &&
-               applications?.map((el) => (
+               applications.map((el) => (
                   <ApplicationCard
                      key={el.id}
                      id={el.id}
