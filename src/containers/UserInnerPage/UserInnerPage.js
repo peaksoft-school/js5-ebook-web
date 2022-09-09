@@ -9,8 +9,9 @@ import BookFragment from './BookFragment'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
-import { getUserInnerPageBook } from '../../store/getBookActions'
+// import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
+import { getMainBooksWithId } from '../../store/createActions/vendorMainPagesActions'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -25,7 +26,7 @@ export const UserInnerPage = () => {
    const book = useSelector((state) => state.addbook.getUserInnerBook)
    const dispatch = useDispatch()
    useEffect(() => {
-      dispatch(getUserInnerPageBook(bookId))
+      dispatch(getMainBooksWithId(bookId))
    }, [])
    const sendText = () => {
       // console.log(text)

@@ -38,4 +38,5 @@ const appFetch = ({ url, method, body }) => {
    })
    return promise
 }
+
 export default appFetch
