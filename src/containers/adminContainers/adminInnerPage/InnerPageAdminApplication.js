@@ -10,7 +10,6 @@ import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 import { acceptApplicationInnerPage } from '../../../store/slices/applicationInnerPageActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { RejectApplicationModal } from './RejectApplicationModal'
-import { Toast } from '../../../Components/UI/snackbar/SnackBarToast'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
@@ -36,8 +35,6 @@ export const InnerPageAdminApplication = () => {
 
    return (
       <>
-         <Toast />
-
          <Breadcrumbs translate={pathTranslate} />
          <StyledMain>
             <ImageDiv>

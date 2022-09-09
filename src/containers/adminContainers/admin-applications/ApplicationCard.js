@@ -8,7 +8,6 @@ import { RejectApplicationModal } from './RejectApplicationModal'
 import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
-import { Toast } from '../../../Components/UI/snackbar/SnackBarToast'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
@@ -49,7 +48,6 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
 
    return (
       <BookItems primary={enabled} id={id} onClick={navigateToDetailsPage}>
-         <Toast />
          <MeatBall onClick={(e) => e.stopPropagation()}>
             <MeatBalls options={menuMeatBall} />
          </MeatBall>
