@@ -27,7 +27,7 @@ const MainFooter = () => {
 export default MainFooter
 
 const StyledMainFooter = styled.div`
-   padding: 150px 0px;
+   padding: 60px 0px;
    display: flex;
    flex-direction: column;
    justify-content: space-between;

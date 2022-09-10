@@ -1,6 +1,6 @@
 /* eslint-disable no-lone-blocks */
 /* eslint-disable max-len */
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -33,7 +33,16 @@ const BookCard = ({ audioBook, className }) => {
 }
 
 export const AudioBooks = ({ books }) => {
-   console.log(books)
+   const [third, setThird] = React.useState(false)
+   React.useEffect(() => {
+      if (books) {
+         if (books.length === 3) {
+            setThird(true)
+         } else {
+            setThird(false)
+         }
+      }
+   }, [books])
    return (
       <StyledAudioBooksCont>
          <StyledTitle>
@@ -42,24 +51,26 @@ export const AudioBooks = ({ books }) => {
                <Link to="/catalog">Смотреть все</Link>
             </StyledNavLink>
          </StyledTitle>
-         <StyledBookCardCont>
-            {books?.map((elem, idx) => {
-               let className = 'third'
-               if (idx === 0) {
-                  className = 'first'
-               }
-               if (idx === 1) {
-                  className = 'second'
-               }
-               return (
-                  <BookCard
-                     key={elem.id}
-                     className={className}
-                     audioBook={elem}
-                  />
-               )
-            })}
-         </StyledBookCardCont>
+         {books && (
+            <StyledBookCardCont primary={third}>
+               {books.map((elem, idx) => {
+                  let className = 'third'
+                  if (idx === 0) {
+                     className = 'second'
+                  }
+                  if (idx === 1) {
+                     className = 'first'
+                  }
+                  return (
+                     <BookCard
+                        key={elem.id}
+                        className={className}
+                        audioBook={elem}
+                     />
+                  )
+               })}
+            </StyledBookCardCont>
+         )}
       </StyledAudioBooksCont>
    )
 }
@@ -122,7 +133,7 @@ const StyledBookPrice = styled.p`
    font-weight: 600;
    font-size: 16px;
    line-height: 130%;
-   color: #ff4c00;
+   color: #8c8c8c;
 `
 
 const StyledAudioBooksCont = styled.div`
@@ -140,11 +151,13 @@ const StyledBookCardCont = styled.div`
    width: 100%;
    height: 747px;
    display: flex;
-   justify-content: space-evenly;
+   justify-content: ${(props) =>
+      props.primary ? 'space-between' : 'space-evenly'};
    flex-flow: row nowrap;
    /* justify-content: flex-start; */
    align-content: flex-start;
    .first {
+      order: -1;
       align-self: flex-end;
    }
    .second {
@@ -159,8 +172,8 @@ const StyledBookCardCont = styled.div`
    .third {
       align-self: flex-start;
       width: 344px;
-      .imageBlockThird {
-         width: 100%;
+      .imageBlock {
+         width: 344px;
          height: 305px;
          /* border: 1px solid red; */
       }
@@ -171,7 +184,6 @@ const StyledBookCard = styled.div`
    width: 309px;
    display: flex;
    flex-direction: column;
-   /* ${(props) => props.second && css``} */
 `
 const StyledBookCardName = styled.p`
    margin: 0;

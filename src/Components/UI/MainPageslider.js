@@ -144,6 +144,7 @@ export default MainPageSlider
 
 const Slider2 = styled(Slider)`
    /* border: 1px solid red; */
+   height: 543px;
    .activeSlide {
       /* border: 1px solid blue; */
       transform: scale(1);

@@ -95,7 +95,7 @@ const ImageLine = styled('div')`
    left: 0;
    right: 0;
    top: 0;
-   bottom: -15px;
+   bottom: 0px;
    z-index: 1;
    /* border: 1px solid red; */
    &:before {
@@ -103,8 +103,8 @@ const ImageLine = styled('div')`
       display: block;
       position: absolute;
       border: 1px solid #e24604;
-      height: 100%;
-      top: -20px;
+      height: 108%;
+      top: 0px;
       bottom: 0;
       left: 0;
       z-index: 1;
@@ -114,10 +114,10 @@ const ImageLine = styled('div')`
       display: block;
       position: absolute;
       border: 1px solid #e24604;
-      height: 100%;
-      top: 0;
+      height: 108%;
+      top: -8%;
       right: 0;
-      bottom: -30px;
+      bottom: 0px;
       z-index: 1;
    }
 `

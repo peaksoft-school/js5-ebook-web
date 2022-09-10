@@ -7,7 +7,9 @@ import { LatestPublic } from './LatestPublic'
 import { AudioBooks } from './AudioBooks'
 import { ReactComponent as MainPageIcon } from '../../assets/icons/mainPage/mainPageIcon.svg'
 import appFetch from '../../hooks/appFetch'
+import MainFooter from './MainFooter'
 // import appFetch from '../../hooks/appFetch'
+// import { ReactComponent as MeatIcon } from '../../assets/icons/bookCard/audioBook.svg'
 
 function MainPage() {
    const [favoritBooks, setFavoritBooks] = React.useState()
@@ -70,6 +72,7 @@ function MainPage() {
    React.useEffect(() => {
       getBooks()
    }, [])
+
    return (
       <StyledMainPage>
          <StyledSliderCont>
@@ -86,6 +89,7 @@ function MainPage() {
          <AudioBooks books={audioBooks} />
 
          <BestComponent variant="Электронные книги" books={eletronics} />
+         <MainFooter />
       </StyledMainPage>
    )
 }
@@ -106,7 +110,9 @@ const StyledMainPage = styled.div`
 `
 const StyledSliderCont = styled.div`
    background: #1c1c1c;
+   height: 720px;
    padding: 60px 0;
+   overflow: hidden;
    display: flex;
    justify-content: center;
    position: relative;

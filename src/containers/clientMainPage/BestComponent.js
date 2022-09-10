@@ -164,7 +164,6 @@ const StyledBookName = styled.p`
 const StyledBookSlider = styled.div`
    /* border: 1px solid red; */
    width: 700px;
-   height: 543px;
 `
 export const StyledBookImage = styled.div`
    width: 342px;
