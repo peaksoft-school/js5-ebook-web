@@ -11,7 +11,7 @@ import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
 // import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
-import { getMainBooksWithId } from '../../store/createActions/vendorMainPagesActions'
+import { getBook } from '../../store/slices/userInnerPageSlices'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -23,10 +23,11 @@ const DataValues = [
 export const UserInnerPage = () => {
    // const [text, setText] = useState('')
    const { bookId } = useParams()
-   const book = useSelector((state) => state.addbook.getUserInnerBook)
+   const { book } = useSelector((store) => store.userBook)
    const dispatch = useDispatch()
+   console.log(book)
    useEffect(() => {
-      dispatch(getMainBooksWithId(bookId))
+      dispatch(getBook(bookId))
    }, [])
    const sendText = () => {
       // console.log(text)
@@ -37,81 +38,85 @@ export const UserInnerPage = () => {
 
    const pathTranslate = {
       allbooks: 'Главная',
-      [bookId]: book.bookName,
+      [bookId]: book?.bookName,
    }
 
    return (
       <>
-         <Breadcrumbs translate={pathTranslate} />
-         <StyledMain>
-            <StyledContainer>
-               <StyledBookImageCont>
-                  <StyledBookImage src={book.mainImage} />
-                  <StyledBookImage2>
-                     {book.secondImage && (
-                        <img src={book.secondImage} alt="book" />
-                     )}
-                  </StyledBookImage2>
-               </StyledBookImageCont>
-               {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
-               <div>
-                  <StyledBookName>{book.bookName}</StyledBookName>
+         {book && <Breadcrumbs translate={pathTranslate} />}
+         {book && (
+            <StyledMain>
+               <StyledContainer>
+                  <StyledBookImageCont>
+                     <StyledBookImage src={book.mainImage} />
+                     <StyledBookImage2>
+                        {book.secondImage && (
+                           <img src={book.secondImage} alt="book" />
+                        )}
+                     </StyledBookImage2>
+                  </StyledBookImageCont>
+                  {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
                   <div>
-                     <StyledPrice>{book.price}</StyledPrice>
+                     <StyledBookName>{book.bookName}</StyledBookName>
+                     <div>
+                        <StyledPrice>{book.price}</StyledPrice>
+                     </div>
+                     <StyledInfo>
+                        <div>
+                           <StyledInfoTitle>Автор</StyledInfoTitle>
+                           <StyledInfoTitle>Жанр</StyledInfoTitle>
+                           <StyledInfoTitle>Язык</StyledInfoTitle>
+                           <StyledInfoTitle>Издательство</StyledInfoTitle>
+                           <StyledInfoTitle>Год выпуска</StyledInfoTitle>
+                           <StyledInfoTitle>Обьем</StyledInfoTitle>
+                        </div>
+                        <div>
+                           <StyledInfoText>{book.author}</StyledInfoText>
+                           <StyledInfoText>{book.genre}</StyledInfoText>
+                           <StyledInfoText>{book.language}</StyledInfoText>
+                           <StyledInfoText>
+                              {book.publishingHouse}
+                           </StyledInfoText>
+                           <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
+                           <StyledInfoText>{book.duration}</StyledInfoText>
+                        </div>
+                     </StyledInfo>
+
+                     <StyledBtnCont>
+                        <Button
+                           variant="universal"
+                           color="#f34901"
+                           border="1px solid"
+                           background="none"
+                           width="224px"
+                        >
+                           В избранное
+                        </Button>
+                        <Button width="224px">Добавить в корзину</Button>
+                     </StyledBtnCont>
+                     <DivStyledMessage>
+                        <Message
+                           saveText={saveValue}
+                           onClick={sendText}
+                           spanValues={DataValues}
+                        />
+                     </DivStyledMessage>
                   </div>
-                  <StyledInfo>
-                     <div>
-                        <StyledInfoTitle>Автор</StyledInfoTitle>
-                        <StyledInfoTitle>Жанр</StyledInfoTitle>
-                        <StyledInfoTitle>Язык</StyledInfoTitle>
-                        <StyledInfoTitle>Издательство</StyledInfoTitle>
-                        <StyledInfoTitle>Год выпуска</StyledInfoTitle>
-                        <StyledInfoTitle>Обьем</StyledInfoTitle>
-                     </div>
-                     <div>
-                        <StyledInfoText>{book.author}</StyledInfoText>
-                        <StyledInfoText>{book.genre}</StyledInfoText>
-                        <StyledInfoText>{book.language}</StyledInfoText>
-                        <StyledInfoText>{book.publishingHouse}</StyledInfoText>
-                        <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
-                        <StyledInfoText>{book.duration}</StyledInfoText>
-                     </div>
-                  </StyledInfo>
+               </StyledContainer>
 
-                  <StyledBtnCont>
-                     <Button
-                        variant="universal"
-                        color="#f34901"
-                        border="1px solid"
-                        background="none"
-                        width="224px"
-                     >
-                        В избранное
-                     </Button>
-                     <Button width="224px">Добавить в корзину</Button>
-                  </StyledBtnCont>
-                  <DivStyledMessage>
-                     <Message
-                        saveText={saveValue}
-                        onClick={sendText}
-                        spanValues={DataValues}
-                     />
-                  </DivStyledMessage>
-               </div>
-            </StyledContainer>
-
-            <StyledimageThirdImage>
-               <TabInnerPage
-                  about={<About book={book} />}
-                  bookFragment={<BookFragment book={book} />}
-               />
-               <div>
-                  {book.thirdImage && (
-                     <StyleThirdImage src={book.thirdImage} alt="book" />
-                  )}
-               </div>
-            </StyledimageThirdImage>
-         </StyledMain>
+               <StyledimageThirdImage>
+                  <TabInnerPage
+                     about={<About book={book} />}
+                     bookFragment={<BookFragment book={book} />}
+                  />
+                  <div>
+                     {book.thirdImage && (
+                        <StyleThirdImage src={book.thirdImage} alt="book" />
+                     )}
+                  </div>
+               </StyledimageThirdImage>
+            </StyledMain>
+         )}
       </>
    )
 }
