@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import Divider from '@mui/material/Divider'
 import { getAdminVendorBooks } from '../../../store/slices/getAdminVendorsSlice'
 import bookLikeIcon from '../../../assets/icons/bookLike.svg'
-import Meatballs from '../../../Components/UI/MeatBalls/MeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
 import SelectBooks from '../Admin/SelectBooks'
 import { FilterBooks } from '../../../utils/constants/constants'
 import Button from '../../../Components/UI/Button/Button'
@@ -98,13 +98,23 @@ const AdminVendorBooks = () => {
       })
    }
 
+   const menuMeatBall = [
+      {
+         text: 'Удалить',
+      },
+   ]
+
    return (
       <div>
          {isShowSpinner && <Spinner />}
          <StyledSelectBlock>
             <StyledAmount>Всего {totalElements} книг</StyledAmount>
             <div>
-               <SelectBooks onClick={onClickSelect} genres={selectTitle} />
+               <SelectBooks
+                  onClick={onClickSelect}
+                  genres={selectTitle}
+                  variant
+               />
             </div>
          </StyledSelectBlock>
          <Divider />
@@ -117,7 +127,7 @@ const AdminVendorBooks = () => {
                            <img src={bookLikeIcon} alt="icon" />
                            <StyledText>({item.favorite})</StyledText>
                            <StyledText>В корзине ({item.basket})</StyledText>
-                           <StyledMealls />
+                           <PopUpMeatBalls options={menuMeatBall} />
                         </StyledHeader>
                         <StyledImageBlock>
                            <StyledImage src={item.mainImage} alt="book" />
@@ -160,8 +170,8 @@ const StyledSelectBlock = styled.div`
 const StyledBookSBlock = styled.div`
    width: 100%;
    display: flex;
-   justify-content: space-between;
    flex-wrap: wrap;
+   padding: 30px 0;
 `
 const StyledAmount = styled.p`
    font-family: 'Open Sans';
@@ -175,7 +185,8 @@ const StyledWrap = styled.div`
    width: 208px;
    background: #efefef;
    padding: 14px 34px;
-   margin: 30px 0;
+   margin-bottom: 30px;
+   margin-right: 17px;
 `
 const StyledHeader = styled.div`
    width: 100%;
@@ -200,12 +211,14 @@ const StyledPrice = styled.span`
    color: #ff4c00;
 `
 const StyledImageBlock = styled.div`
-   height: 250px;
-   padding: 14px 0 13px 0;
+   /* border: 1px solid red; */
+   height: 200px;
+   margin: 14px 0 13px 0;
 `
 const StyledImage = styled.img`
    width: 100%;
-   object-fit: contain;
+   height: 100%;
+   object-fit: cover;
 `
 const StyledBookInfo = styled.div`
    width: 100%;
@@ -221,9 +234,9 @@ const StyledBookName = styled.span`
    text-transform: uppercase;
    color: #222222;
 `
-const StyledMealls = styled(Meatballs)`
-   align-self: flex-end;
-`
+// const StyledMealls = styled(Meatballs)`
+//    align-self: flex-end;
+// `
 const StyledBtnBlock = styled.div`
    width: 100%;
    padding: 50px 0;

@@ -4,11 +4,11 @@ import { MenuItem } from '@mui/material'
 import PopUp from '../../../Components/UI/popup'
 import arrow from '../../../assets/icons/selectArrow.svg'
 
-export default function SelectBooks({ genres, name, onClick, type }) {
+export default function SelectBooks({ genres, name, onClick, type, variant }) {
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
       name: 'Все',
-      id: 'ALL',
+      id: variant ? 'ALL' : null,
       key: type,
    })
    const open = Boolean(anChorEl)
