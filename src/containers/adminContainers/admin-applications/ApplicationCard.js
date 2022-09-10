@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
 import { RejectApplicationModal } from './RejectApplicationModal'
-import MeatBalls from '../../../Components/UI/MeatBalls/MeatBalls'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
@@ -18,13 +18,13 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const menuMeatBall = [
       {
          id: 55,
-         title: 'Принять',
+         text: 'Принять',
          icon: <CheckMark />,
          onClick: acceptModal,
       },
       {
          id: 2,
-         title: 'Отклонить',
+         text: 'Отклонить',
          icon: <Reject />,
          onClick: rejectModal,
       },
@@ -49,7 +49,7 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    return (
       <BookItems primary={enabled} id={id} onClick={navigateToDetailsPage}>
          <MeatBall onClick={(e) => e.stopPropagation()}>
-            <MeatBalls options={menuMeatBall} />
+            <PopUpMeatBalls options={menuMeatBall} />
          </MeatBall>
 
          <RejectApplicationModal
@@ -59,7 +59,9 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
          />
 
          <Div>
-            <Book src={img} alt="photo" />
+            <Img>
+               <Book src={img} alt="photo" />
+            </Img>
             <NameBook>{name}</NameBook>
 
             <PriceDate>
@@ -86,15 +88,25 @@ const BookItems = styled('div')`
    font-family: 'Open Sans';
    margin-top: 22px;
    padding-top: 20px;
+   margin-right: 10px;
 `
 const MeatBall = styled('div')`
    display: flex;
    justify-content: center;
    width: 60px;
+   margin-right: -16px;
+   margin-top: 5px;
    cursor: pointer;
 `
 const Book = styled('img')`
-   width: 170px;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   cursor: pointer;
+`
+const Img = styled('div')`
+   margin-top: 5px;
+   width: 172px;
    height: 260px;
    cursor: pointer;
 `
