@@ -1,13 +1,17 @@
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 import Button from '../../../Components/UI/Button/Button'
 import New from '../../../assets/icons/new.svg'
 import { TabInnerPage } from './TabInnerPage'
 import About from '../../../Components/About'
 import BookFragment from '../../../Components/BookFragment'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
-import { acceptApplicationInnerPage } from '../../../store/slices/applicationInnerPageActions'
+import {
+   acceptApplicationInnerPage,
+   applicationInnerPageAction,
+} from '../../../store/slices/adminActions/applicationInnerPageActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { RejectApplicationModal } from './RejectApplicationModal'
 
@@ -18,6 +22,9 @@ export const InnerPageAdminApplication = () => {
 
    const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
 
+   useEffect(() => {
+      dispatch(applicationInnerPageAction(id))
+   })
    function acceptModal() {
       dispatch(acceptApplicationInnerPage(id))
    }
@@ -180,7 +187,7 @@ const StyledInfoTitle = styled.p`
    color: #222222;
 `
 const StyledBookImage = styled.img`
-   width: 315px;
+   width: 357px;
    margin-bottom: 185px;
    margin-right: -8px;
 `

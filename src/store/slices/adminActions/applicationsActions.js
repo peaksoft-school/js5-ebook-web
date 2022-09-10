@@ -10,13 +10,17 @@ export const applicationsActions = (request) => {
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
          dispatch(
-            applicationSlicesActions.seeMoreGetApplications(
+            applicationSlicesActions.getApplications(
                result.getApplications.content
-            ),
+            )
+         )
+         dispatch(
             applicationSlicesActions.getTotalElements(
                result.getApplications.totalElements
-            ),
-            applicationSlicesActions.getUnwatched(result.unwatched),
+            )
+         )
+         dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
+         dispatch(
             applicationSlicesActions.getTotalPages(
                result.getApplications.totalPages
             )
@@ -36,13 +40,17 @@ export const seeMoreGetApplicationsActions = (request) => {
          })
 
          dispatch(
-            applicationSlicesActions.seeMoreGetApplications(
+            applicationSlicesActions.getApplications(
                result.getApplications.content
-            ),
+            )
+         )
+         dispatch(
             applicationSlicesActions.getTotalElements(
                result.getApplications.totalElements
-            ),
-            applicationSlicesActions.getUnwatched(result.unwatched),
+            )
+         )
+         dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
+         dispatch(
             applicationSlicesActions.getTotalPages(
                result.getApplications.totalPages
             )
