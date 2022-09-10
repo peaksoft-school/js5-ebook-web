@@ -115,7 +115,7 @@ const AdminBooksBlock = styled('div')`
 `
 const Books = styled('div')`
    display: flex;
-   justify-content: space-between;
+   justify-content: flex-start;
    flex-wrap: wrap;
    margin-right: -40px;
 `

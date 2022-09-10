@@ -1,28 +1,27 @@
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import React, { useState } from 'react'
-import MeatBalls from '../../Components/UI/MeatBalls/MeatBalls'
 import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBook.svg'
 import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
 import { BookType } from '../../utils/constants/constants'
 import { ReactComponent as Edit } from '../../assets/icons/Edit.svg'
 import { ReactComponent as Delete } from '../../assets/icons/Delete.svg'
 import DeleteBooks from './DeleteBooks'
+import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopupMeatBalls'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
    const navigate = useNavigate()
-   // const { deleteMessage } = useSelector((state) => state.globalValues)
    const [showRejectModal, setShowRejectModal] = useState(false)
    const menuMeatBall = [
       {
          id: 55,
-         title: 'Редактировать',
+         text: 'Редактировать',
          icon: <Edit />,
          onClick: editBook,
       },
       {
          id: 2,
-         title: 'Удалить',
+         text: 'Удалить',
          icon: <Delete />,
          onClick: deleteBook,
       },
@@ -48,7 +47,7 @@ const Book = ({ id, img, date, name, price, bookType }) => {
    return (
       <BookItems>
          <MeatBall onClick={(e) => e.stopPropagation()}>
-            <MeatBalls options={menuMeatBall} />
+            <PopUpMeatBalls options={menuMeatBall} />
          </MeatBall>
 
          <DeleteBooks
@@ -58,7 +57,9 @@ const Book = ({ id, img, date, name, price, bookType }) => {
          />
          <CartTypeIcon>{BookTypeBlock[bookType]}</CartTypeIcon>
          <Div>
-            <BookImage src={img} alt="photo" />
+            <Img>
+               <BookImage src={img} alt="photo" />
+            </Img>
             <NameBook>{name}</NameBook>
 
             <PriceDate>
@@ -84,17 +85,26 @@ const BookItems = styled('div')`
    justify-content: space-evenly;
    font-family: 'Open Sans';
    margin-top: 22px;
-   padding-top: 20px;
+   margin-right: 10px;
 `
 const MeatBall = styled('div')`
    display: flex;
    justify-content: center;
    width: 60px;
+   margin-right: -16px;
+   margin-top: 25px;
    cursor: pointer;
 `
-const BookImage = styled('img')`
+const Img = styled('div')`
+   margin-top: 5px;
    width: 170px;
    height: 260px;
+`
+const BookImage = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+
    cursor: pointer;
 `
 const NameBook = styled('p')`
