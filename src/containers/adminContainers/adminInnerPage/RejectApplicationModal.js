@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
-import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
+import { rejectAplicationInnerPage } from '../../../store/slices/applicationInnerPageActions'
 
 export const RejectApplicationModal = ({ id, open, onClose }) => {
    const dispatch = useDispatch()
@@ -13,12 +13,11 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
    const reasonChangeHandler = (e) => {
       setReasonReject(e.target.value)
    }
-
    function sendReason() {
       const fetch = async () => {
          try {
             const response = await dispatch(
-               rejectAplication({ id, reasonReject })
+               rejectAplicationInnerPage({ id, reasonReject })
             ).unwrap()
             setReasonReject('')
             onClose()
@@ -29,6 +28,7 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
       }
       fetch()
    }
+
    return (
       <Modal
          open={open}

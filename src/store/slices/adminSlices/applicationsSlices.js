@@ -17,6 +17,26 @@ const applicationsSlices = createSlice({
    initialState,
    reducers: {
       getApplications(state, action) {
+         state.applications = action.payload
+      },
+      // getApplications(state, action) {
+      //    const updatedApplications = []
+
+      //    action.payload.array.forEach((newApplicationn) => {
+      //       const isNew = state.applications.find(
+      //          (oldApplication) =>
+      //             oldApplication.id === newApplicationn.id &&
+      //             oldApplication.enabled !== newApplicationn.enabled
+      //       )
+      //       if (!isNew) {
+      //          updatedApplications.push(newApplicationn)
+      //       }
+      //    })
+
+      //    state.applications = updatedApplications
+      // },bul ishtebedi
+
+      seeMoreGetApplications(state, action) {
          action.payload.forEach((element) => {
             const prev = state.applications.find((el) => el.id === element.id)
             if (!prev) {
@@ -24,13 +44,13 @@ const applicationsSlices = createSlice({
             }
          })
       },
-      getTotalElements(state, action) {
+      setTotalElements(state, action) {
          state.totalElements = action.payload
       },
-      getUnwatched(state, action) {
+      setUnwatched(state, action) {
          state.unwatched = action.payload
       },
-      getTotalPages(state, action) {
+      setTotalPages(state, action) {
          state.totalPages = action.payload
       },
       postAcceptApplication(state, action) {
@@ -38,12 +58,6 @@ const applicationsSlices = createSlice({
       },
       postRejectApplication(state, action) {
          state.rejectMessage = action.payload
-      },
-      cleanAccept(state) {
-         state.acceptMessage = null
-      },
-      cleanReject(state) {
-         state.rejectMessage = null
       },
       getApplicationId(state, action) {
          state.getId = action.payload

@@ -72,6 +72,7 @@ export function deleteBookAction(id) {
             url: `/api/book/delete/${id}`,
             method: 'DELETE',
          })
+         console.log(books)
          dispatch(globalValuesAction.getDeleteMessage(books))
          toast.success(books.message)
          return books
