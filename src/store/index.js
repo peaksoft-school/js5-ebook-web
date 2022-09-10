@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { addBookSlice } from './slices/addBookSlice'
-import applicationsInnerPageSlices from './slices/applicationInnerPagesSlices'
+import applicationsInnerPageSlices from './slices/adminSlices/applicationInnerPagesSlices'
 import applicationsSlices from './slices/adminSlices/applicationsSlices'
 import authSlices from './slices/authSlices'
 import uiSlices from './slices/uiSlices'

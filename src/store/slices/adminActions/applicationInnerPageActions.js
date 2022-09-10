@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast'
-import appFetch from '../../hooks/appFetch'
-import { applicationsInnerPageSlicesAction } from './applicationInnerPagesSlices'
+import appFetch from '../../../hooks/appFetch'
+import { applicationsInnerPageSlicesAction } from '../adminSlices/applicationInnerPagesSlices'
 
 export const applicationInnerPageAction = (id) => {
    return async (dispatch) => {
