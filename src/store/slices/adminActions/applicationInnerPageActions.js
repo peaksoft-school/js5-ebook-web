@@ -31,7 +31,12 @@ export const acceptApplicationInnerPage = (id) => {
    }
 }
 
-export const rejectAplicationInnerPage = ({ id, reasonReject }) => {
+export const rejectAplicationInnerPage = ({
+   id,
+   reasonReject,
+   onClose,
+   setReasonReject,
+}) => {
    return async (dispatch) => {
       try {
          const result = await appFetch({
@@ -43,6 +48,8 @@ export const rejectAplicationInnerPage = ({ id, reasonReject }) => {
             applicationsInnerPageSlicesAction.postRejectApplication(result)
          )
          toast.success(result.message)
+         setReasonReject('')
+         onClose()
          return result
       } catch (error) {
          toast.error('Не удалось отклонить!')

@@ -19,12 +19,11 @@ export const InnerPageAdminApplication = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
    const { application } = useSelector((state) => state.applicationsInnerPage)
-
    const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
 
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
-   })
+   }, [])
    function acceptModal() {
       dispatch(acceptApplicationInnerPage(id))
    }
