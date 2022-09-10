@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import 'slick-carousel/slick/slick-theme.css'
 import { ReactComponent as NextIcon } from '../../assets/icons/slider/next.svg'
 import { ReactComponent as PrevIcon } from '../../assets/icons/slider/prev.svg'
@@ -25,13 +25,14 @@ const PrevArrow = ({ onClick, variant }) => {
 
 const BookInfo = ({ item }) => {
    const navigate = useNavigate()
+   const location = useLocation()
    const onClickCard = () => {
-      navigate(`/main/${item.id}`)
+      navigate(`${location.pathname}/catalog/${item.bookId}`)
    }
    return (
       <>
          <SliceImageBlock onClick={onClickCard}>
-            <Image src={item.image} alt={item.name} />
+            <Image src={item.mainImage} alt={item.name} />
          </SliceImageBlock>
          <BookInfoBlock>
             <BookInfoItem>
@@ -51,6 +52,7 @@ const BookInfo = ({ item }) => {
 function MainPageSlider({ images, variant, onClick }) {
    const [imageIndex, setImageIndex] = useState(0)
    const navigate = useNavigate()
+   const location = useLocation()
 
    useEffect(() => {
       if (onClick) {
@@ -60,7 +62,7 @@ function MainPageSlider({ images, variant, onClick }) {
    }, [imageIndex])
 
    const onClickImageBlock = (id) => {
-      navigate(`/main/${id}`)
+      navigate(`${location.pathname}/catalog/${id}`)
    }
 
    const mainSettings = {
@@ -102,7 +104,7 @@ function MainPageSlider({ images, variant, onClick }) {
                <Slider {...mainSettings}>
                   {images.map((item, idx) => (
                      <div
-                        key={item.id}
+                        key={item.bookId}
                         className={idx === imageIndex ? 'activeSlide' : 'slide'}
                      >
                         <BookInfo item={item} />
@@ -115,22 +117,24 @@ function MainPageSlider({ images, variant, onClick }) {
                {images.map((item, idx, array) => {
                   if (idx === nextIdx(imageIndex, array.length - 1)) {
                      return (
-                        <SliderItem key={item.id} className="slider1">
+                        <SliderItem key={item.bookId} className="slider1">
                            <ImageBlock
-                              onClick={() => onClickImageBlock(item.id)}
+                              onClick={() => onClickImageBlock(item.bookId)}
                            >
-                              <Image src={item.image} alt="book" />
+                              <Image src={item.mainImage} alt="book" />
                            </ImageBlock>
                         </SliderItem>
                      )
                   }
                   return (
                      <SliderItem
-                        key={item.id}
+                        key={item.bookId}
                         className={idx === imageIndex ? 'activeSlide' : 'slide'}
                      >
-                        <ImageBlock onClick={() => onClickImageBlock(item.id)}>
-                           <Image src={item.image} alt="book" />
+                        <ImageBlock
+                           onClick={() => onClickImageBlock(item.bookId)}
+                        >
+                           <Image src={item.mainImage} alt="book" />
                         </ImageBlock>
                      </SliderItem>
                   )

@@ -15,7 +15,7 @@ export const LatestPublic = ({ books }) => {
          setBooksStyled(() => {
             return books.map((el) => {
                return {
-                  id: el.id,
+                  id: el.bookId,
                   active: false,
                }
             })
@@ -24,11 +24,11 @@ export const LatestPublic = ({ books }) => {
    }, [books])
    const onClickItem = (id) => {
       setBook(() => {
-         return books.find((el) => el.id === id)
+         return books.find((el) => el.bookId === id)
       })
       setBooksStyled((prev) => {
          return prev.map((el) => {
-            if (el.id === id) {
+            if (el.bookId === id) {
                return {
                   ...el,
                   active: true,
@@ -42,7 +42,7 @@ export const LatestPublic = ({ books }) => {
       })
    }
    const onClickBook = (bookId) => {
-      navigate(`${location.pathname}/${bookId}`)
+      navigate(`${location.pathname}/catalog/${bookId}`)
    }
    return (
       <StyledLatestPublCont>
@@ -57,13 +57,15 @@ export const LatestPublic = ({ books }) => {
                {books?.map((el) => {
                   let findEl = null
                   if (booksStyled) {
-                     findEl = booksStyled?.find((elem) => elem.id === el.id)
+                     findEl = booksStyled?.find(
+                        (elem) => elem.bookId === el.bookId
+                     )
                   }
                   return (
                      <StyledGenresText
                         active={findEl?.active}
-                        key={el.id}
-                        onClick={() => onClickItem(el.id)}
+                        key={el.bookId}
+                        onClick={() => onClickItem(el.bookId)}
                      >
                         <GenresSpan>{el.genre}</GenresSpan>
                      </StyledGenresText>
@@ -72,8 +74,8 @@ export const LatestPublic = ({ books }) => {
             </StyledGenresBlock>
             <ImageBlock>
                <ImageLine />
-               <StyledBookImage onClick={() => onClickBook(book.id)}>
-                  <Image src={book?.image} alt={book?.name} />
+               <StyledBookImage onClick={() => onClickBook(book.bookId)}>
+                  <Image src={book?.mainImage} alt={book?.name} />
                </StyledBookImage>
             </ImageBlock>
             <StyledBookDescriptionBlock>
@@ -208,9 +210,6 @@ const StyledLatestPublText = styled.p`
    color: #f8f8f8;
 `
 const StyledGenresBlock = styled.div`
-   /* border: 1px solid red; */
-   /* width: 159px; */
-   /* height: 246px; */
    overflow: hidden;
 `
 const GenresSpan = styled('span')`
@@ -241,11 +240,41 @@ const StyledBookImage = styled.div`
    width: 282px;
    height: 445px;
    transition: transform 1s ease 0s;
-   transform: rotate(10deg);
+   /* transform: rotate(10deg); */
    position: relative;
+   /* background: blue; */
    z-index: 20;
+   animation-name: animationRotate;
+   animation-duration: 10s;
+   animation-iteration-count: infinite;
+   overflow: hidden;
+   cursor: pointer;
    &:hover {
+      transition: transform 0.5s;
       transform: rotate(0deg);
+      /* animation-name: none; */
+   }
+   @keyframes animationRotate {
+      0% {
+         transform: rotate(0) scale(1);
+         /* border-radius: 0; */
+      }
+      25% {
+         transform: rotate(-15deg) scale(1.1);
+         /* border-radius: 30px; */
+      }
+      50% {
+         transform: rotate(0) scale(1);
+         /* border-radius: 0; */
+      }
+      75% {
+         transform: rotate(15deg) scale(1.1);
+         /* border-radius: 30px; */
+      }
+      100% {
+         transform: rotate(0) scale(1);
+         /* border-radius: 0; */
+      }
    }
 `
 const StyledBookDescriptionBlock = styled.div`

@@ -9,22 +9,24 @@ const BookCard = ({ audioBook, className }) => {
    const navigate = useNavigate()
    const location = useLocation()
    const onClickCard = () => {
-      navigate(`${location.pathname}/${audioBook.id}`)
+      navigate(`${location.pathname}/catalog/${audioBook.bookId}`)
    }
    return (
       <StyledBookCard className={className}>
          <ImageBlock className="imageBlock" onClick={onClickCard}>
-            <Image src={audioBook.image} alt={audioBook.name} />
+            <Image src={audioBook.mainImage} alt={audioBook.name} />
          </ImageBlock>
          <InfoBook>
             <StyledBookCardName>{audioBook.name}</StyledBookCardName>
             <StyledBookCardAuthor>{audioBook.author}</StyledBookCardAuthor>
             <StyledBookCardTitle>
-               <StyledBookCardTime>
-                  {audioBook.duration[0]} ч. {audioBook.duration[1]} мин.
-                  {audioBook.duration[2]}
-                  сек.
-               </StyledBookCardTime>
+               {audioBook.duration && (
+                  <StyledBookCardTime>
+                     {audioBook.duration[0]} ч. {audioBook.duration[1]} мин.
+                     {audioBook.duration[2]}
+                     сек.
+                  </StyledBookCardTime>
+               )}
                <StyledBookPrice>{audioBook.price} с</StyledBookPrice>
             </StyledBookCardTitle>
          </InfoBook>
@@ -36,10 +38,8 @@ export const AudioBooks = ({ books }) => {
    const [third, setThird] = React.useState(false)
    React.useEffect(() => {
       if (books) {
-         if (books.length === 3) {
+         if (books.length >= 3) {
             setThird(true)
-         } else {
-            setThird(false)
          }
       }
    }, [books])
@@ -61,9 +61,12 @@ export const AudioBooks = ({ books }) => {
                   if (idx === 1) {
                      className = 'first'
                   }
+                  if (idx > 2) {
+                     return false
+                  }
                   return (
                      <BookCard
-                        key={elem.id}
+                        key={elem.bookId}
                         className={className}
                         audioBook={elem}
                      />

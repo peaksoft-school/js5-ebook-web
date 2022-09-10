@@ -9,9 +9,8 @@ export default function clientLayout() {
       <Route path="/" element={<ClientLayout />}>
          <Route path="/" element={<Navigate to="/main" replace />} />
          <Route path="/main" element={<MainPage />} />
-         <Route path="/main/:bookId" element={<UserInnerPage />} />
-         <Route path="/catalog" element={<UserBooks />} />
-         <Route path="/catalog/:bookId" element={<UserInnerPage />} />
+         <Route path="/main/catalog" element={<UserBooks />} />
+         <Route path="/main/catalog/:bookId" element={<UserInnerPage />} />
       </Route>
    )
 }

@@ -1,4 +1,5 @@
 import { styled } from '@mui/material'
+import { useSearchParams } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import LanguageBooks from './LanguageBooks'
@@ -17,9 +18,11 @@ import {
 } from '../../store/slices/catalogSlice'
 import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
 import BreadCrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
+import { sortRequestApplic } from '../../utils/helpers/helpers'
 
 const arr = {
-   allbooks: `каталог`,
+   main: 'Главная',
+   catalog: `каталог`,
 }
 
 const UserBooks = () => {
@@ -40,6 +43,8 @@ const UserBooks = () => {
    const [showSeeMore, setShowSeeMore] = useState(false)
    const [showGenres, setShowGenres] = useState([])
    const dispatch = useDispatch()
+   const [searchParams, setSearchParams] = useSearchParams({})
+   console.log(searchParams.toString())
 
    useEffect(() => {
       let errorTime = setTimeout(() => {}, 1000)
@@ -77,10 +82,12 @@ const UserBooks = () => {
 
    useEffect(() => {
       dispatch(updateBooks(requestObj))
+      setSearchParams(sortRequestApplic(requestObj))
    }, [requestObj.page, requestObj.sortBy])
 
    useEffect(() => {
       dispatch(getBooks(requestObj))
+      setSearchParams(sortRequestApplic(requestObj))
    }, [
       requestObj.genres,
       requestObj.bookType,
@@ -155,6 +162,9 @@ const UserBooks = () => {
    const onCloseSnackbar = () => {
       dispatch(сatalogActions.cleanError())
    }
+   useEffect(() => {
+      window.scrollTo(0, 0)
+   }, [])
    return (
       <>
          <BreadCrumbs translate={arr} />

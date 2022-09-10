@@ -25,9 +25,9 @@ export const UserInnerPage = () => {
    const { bookId } = useParams()
    const { book } = useSelector((store) => store.userBook)
    const dispatch = useDispatch()
-   console.log(book)
    useEffect(() => {
       dispatch(getBook(bookId))
+      window.scrollTo(0, 0)
    }, [])
    const sendText = () => {
       // console.log(text)
@@ -37,7 +37,8 @@ export const UserInnerPage = () => {
    }
 
    const pathTranslate = {
-      allbooks: 'Главная',
+      main: 'Главная',
+      catalog: 'Каталог',
       [bookId]: book?.bookName,
    }
 
@@ -48,10 +49,12 @@ export const UserInnerPage = () => {
             <StyledMain>
                <StyledContainer>
                   <StyledBookImageCont>
-                     <StyledBookImage src={book.mainImage} />
+                     <ImageBlock>
+                        <Image src={book.mainImage} />
+                     </ImageBlock>
                      <StyledBookImage2>
                         {book.secondImage && (
-                           <img src={book.secondImage} alt="book" />
+                           <Image src={book.secondImage} alt="book" />
                         )}
                      </StyledBookImage2>
                   </StyledBookImageCont>
@@ -109,17 +112,30 @@ export const UserInnerPage = () => {
                      about={<About book={book} />}
                      bookFragment={<BookFragment book={book} />}
                   />
-                  <div>
+                  <StyleThirdImage>
                      {book.thirdImage && (
-                        <StyleThirdImage src={book.thirdImage} alt="book" />
+                        <Image src={book.thirdImage} alt="book" />
                      )}
-                  </div>
+                  </StyleThirdImage>
                </StyledimageThirdImage>
             </StyledMain>
          )}
       </>
    )
 }
+
+const ImageBlock = styled('div')`
+   /* border: 1px solid red; */
+   width: 357px;
+   height: 571px;
+   margin-right: 20px;
+   overflow: hidden;
+`
+const Image = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+`
 
 const StyledContainer = styled.div`
    display: flex;
@@ -134,12 +150,13 @@ const StyledimageThirdImage = styled.div`
 `
 
 const StyledBookImage2 = styled.div`
+   /* border: 1px solid red; */
+   overflow: hidden;
    display: flex;
    flex-direction: column;
    align-items: center;
-   & img {
-      width: 100%;
-   }
+   width: 201px;
+   height: 321px;
 `
 const StyledBookName = styled.h3`
    width: 504px;
@@ -167,10 +184,6 @@ const StyledInfoTitle = styled.p`
    line-height: 130%;
    color: #222222;
 `
-const StyledBookImage = styled.img`
-   width: 357px;
-   /* margin-bottom: 185px; */
-`
 const StyledMain = styled.div`
    padding-top: 72px;
 `
@@ -196,21 +209,23 @@ const StyledPrice = styled.p`
    color: #f34901;
 `
 const StyledBookImageCont = styled.div`
+   /* border: 1px solid red; */
    display: flex;
-   width: 531px;
+   /* width: 531px; */
 `
 const DivStyledMessage = styled.div`
    margin-top: 30px;
 `
-const StyleThirdImage = styled.img`
+const StyleThirdImage = styled.div`
    width: 443px;
    height: 574px;
    margin-bottom: 109px;
 `
 const ImageStyled = styled.img`
+   /* border: 1px solid red; */
    width: 206px;
    height: 206px;
    border-radius: 20px;
-   margin-top: 250px;
-   margin-left: -42%;
+   margin-top: 290px;
+   margin-left: -48%;
 `

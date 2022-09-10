@@ -11,10 +11,12 @@ import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
 import { snackbarSlice } from './slices/snackbarSlice'
 import сatalogSlices from './slices/catalogSlice'
 import userInnerPageSlices from './slices/userInnerPageSlices'
+import mainPageSlices from './slices/mainPageSlices'
 
 const store = configureStore({
    reducer: {
       auth: authSlices.reducer,
+      mainPage: mainPageSlices.reducer,
       globalValues: globalValues.reducer,
       addbook: addBookSlice.reducer,
       applicationsInnerPage: applicationsInnerPageSlices.reducer,
