@@ -49,7 +49,7 @@ export const LatestPublic = ({ books }) => {
          <StyledTitle>
             <StyledLatestPublText>Последние публикации</StyledLatestPublText>
             <LinkBlock>
-               <Link to="/catalog">Смотреть все</Link>
+               <Link to={`${location.pathname}/catalog`}>Смотреть все</Link>
             </LinkBlock>
          </StyledTitle>
          <StyledBookSliderBlock>
@@ -82,7 +82,9 @@ export const LatestPublic = ({ books }) => {
                <StyledLatestBookName>{book?.name}</StyledLatestBookName>
                <StyledLatestBookDesc>{book?.description}</StyledLatestBookDesc>
                <LinkBlock>
-                  <Link to={`${location.pathname}/${book?.id}`}>Подробнее</Link>
+                  <Link to={`${location.pathname}/catalog/${book?.bookId}`}>
+                     Подробнее
+                  </Link>
                   <StyledBookPrice>{book?.price} с</StyledBookPrice>
                </LinkBlock>
             </StyledBookDescriptionBlock>

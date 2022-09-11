@@ -44,7 +44,9 @@ export const UserInnerPage = () => {
 
    return (
       <>
-         {book && <Breadcrumbs translate={pathTranslate} />}
+         <BreadcrumbsBlock>
+            {book && <Breadcrumbs translate={pathTranslate} />}
+         </BreadcrumbsBlock>
          {book && (
             <StyledMain>
                <StyledContainer>
@@ -123,6 +125,11 @@ export const UserInnerPage = () => {
       </>
    )
 }
+
+const BreadcrumbsBlock = styled('div')`
+   /* border: 1px solid red; */
+   padding-top: 20px;
+`
 
 const ImageBlock = styled('div')`
    /* border: 1px solid red; */

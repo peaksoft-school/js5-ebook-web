@@ -7,9 +7,6 @@ import MainPageSlider from '../../Components/UI/MainPageslider'
 export const BestComponent = ({ variant, books }) => {
    const [book, setBook] = React.useState()
    const location = useLocation()
-   // const navigate = useNavigate()
-   // const location = useLocation()
-   // console.log(location)
    const onClickCard = (book) => {
       setBook(book)
    }
@@ -17,7 +14,7 @@ export const BestComponent = ({ variant, books }) => {
       <StyledBestSlider>
          <StyledTitle>
             <StyledBestText>{variant}</StyledBestText>
-            <Link to="/catalog">Смотреть все</Link>
+            <Link to={`${location.pathname}/catalog`}>Смотреть все</Link>
          </StyledTitle>
          <StyledBookSliderBlock>
             <StyledBookTitle>
@@ -27,7 +24,7 @@ export const BestComponent = ({ variant, books }) => {
                </StyledBookDescription>
                <TableBlock>
                   <TableItem width="50%">
-                     <Link to={`${location.pathname}/${book?.id}`}>
+                     <Link to={`${location.pathname}/catalog/${book?.bookId}`}>
                         Подробнее
                      </Link>
                   </TableItem>

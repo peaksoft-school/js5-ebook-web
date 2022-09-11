@@ -81,13 +81,13 @@ const UserBooks = () => {
    }, [totalPages])
 
    useEffect(() => {
-      dispatch(updateBooks(requestObj))
       setSearchParams(sortRequestApplic(requestObj))
+      dispatch(updateBooks(requestObj))
    }, [requestObj.page, requestObj.sortBy])
 
    useEffect(() => {
-      dispatch(getBooks(requestObj))
       setSearchParams(sortRequestApplic(requestObj))
+      dispatch(getBooks(requestObj))
    }, [
       requestObj.genres,
       requestObj.bookType,
@@ -167,7 +167,9 @@ const UserBooks = () => {
    }, [])
    return (
       <>
-         <BreadCrumbs translate={arr} />
+         <BreadCrumbsBlock>
+            <BreadCrumbs translate={arr} />
+         </BreadCrumbsBlock>
          <FilterBooks>
             <GetSnackbar
                open={error}
@@ -214,6 +216,11 @@ const UserBooks = () => {
 }
 
 export default UserBooks
+
+const BreadCrumbsBlock = styled('div')`
+   /* border: 1px solid red; */
+   padding-top: 20px;
+`
 
 const HeaderItem = styled('div')`
    width: ${(props) => props.width || '100%'};

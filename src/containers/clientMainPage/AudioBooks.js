@@ -36,6 +36,7 @@ const BookCard = ({ audioBook, className }) => {
 
 export const AudioBooks = ({ books }) => {
    const [third, setThird] = React.useState(false)
+   const location = useLocation()
    React.useEffect(() => {
       if (books) {
          if (books.length >= 3) {
@@ -48,7 +49,7 @@ export const AudioBooks = ({ books }) => {
          <StyledTitle>
             <StyledBestText>Аудиокниги</StyledBestText>
             <StyledNavLink>
-               <Link to="/catalog">Смотреть все</Link>
+               <Link to={`${location.pathname}/catalog`}>Смотреть все</Link>
             </StyledNavLink>
          </StyledTitle>
          {books && (
