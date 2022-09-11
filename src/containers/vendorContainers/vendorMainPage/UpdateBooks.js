@@ -14,13 +14,13 @@ export default function UpdateBooks({ id }) {
       {
          text: 'Редактировать',
          id: 1,
-         icon: <Edite />,
+         icon: <Delete />,
          onClick: (id) => editeBook(id),
       },
       {
          text: 'Удалить',
          id: 2,
-         icon: <Delete />,
+         icon: <Edite />,
          onClick: (id) => deleteBook(id),
       },
    ]

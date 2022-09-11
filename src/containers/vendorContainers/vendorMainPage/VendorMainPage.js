@@ -18,6 +18,7 @@ import {
    DateSpan,
    FooterDiv,
    HeaderText,
+   ImageBlock,
    Img,
    ImgesCont,
    ImgFavorite,
@@ -47,7 +48,7 @@ const VendorMainPage = () => {
       { name: 'В корзине', id: 3, text: 'IN_THE_BASKET' },
       { name: 'Проданы', id: 4, text: 'SOLD_OUT' },
       { name: 'Со скидками', id: 5, text: 'WITH_DISCOUNTS' },
-      { name: 'В обработке', id: 6, text: 'IN_THE_PROCESS' },
+      { name: 'В обработке', id: 6, text: 'IN_PROCESSING' },
       { name: 'Отклоненные', id: 7, text: 'REJECTED' },
    ]
 
@@ -114,7 +115,9 @@ const VendorMainPage = () => {
                                 <span>В корзине ({book.basket})</span>
                              </BookSHeader>
                              <CopyLink to={`/${book.id}`}>
-                                <Img src={book.mainImage} />
+                                <ImageBlock>
+                                   <Img src={book.mainImage} />
+                                </ImageBlock>
                                 <div>
                                    <NameBook>{book.name}</NameBook>
                                    <FooterDiv>
@@ -152,14 +155,14 @@ const VendorMainPage = () => {
 export default VendorMainPage
 
 const Books = styled('div')`
-   border: ${(props) => (props.primary ? 'none' : '')};
-   background-color: ${(props) => (props.primary ? '#EDEDED' : '')};
+   border: ${(props) => (props.primary ? '1px solid #F34901' : '')};
+   background-color: ${(props) =>
+      props.primary ? 'rgba(243, 73, 1, 0.08)' : ''};
 
    background-color: ${(props) =>
       props.reject ? 'rgba(220, 220, 220, 0.61)' : ''};
    opacity: ${(props) => (props.reject ? '0.5' : '')};
 
-   background-color: ${(props) =>
-      props.accepted ? 'rgba(243, 73, 1, 0.08)' : ''};
-   border: ${(props) => (props.accepted ? '1px solid #F34901' : '')};
+   background-color: ${(props) => (props.accepted ? '#EDEDED' : '')};
+   border: ${(props) => (props.accepted ? 'none' : '')};
 `
