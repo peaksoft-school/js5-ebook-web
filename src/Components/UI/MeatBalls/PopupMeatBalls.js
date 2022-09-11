@@ -33,7 +33,7 @@ const PopUpMeatBalls = ({ options, prop }) => {
                         onClick={(e) => {
                            e.stopPropagation()
                            closeHandler()
-                           i.onClick()
+                           i.onClick(i.id)
                         }}
                      >
                         <Icon>{i.icon}</Icon>
