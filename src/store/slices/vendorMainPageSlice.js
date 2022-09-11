@@ -25,6 +25,12 @@ export const vendorMainPageSlice = createSlice({
             state.vendorBooks = ''
          }
       },
+      clearSaveBook(state) {
+         state.paperBooks = ''
+         state.audioBooks = ''
+         state.electronicBooks = ''
+         state.allBooks = ''
+      },
 
       updateValid(state) {
          state.isValid = !state.isValid

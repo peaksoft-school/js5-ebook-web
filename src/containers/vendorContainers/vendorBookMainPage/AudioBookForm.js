@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,16 +18,19 @@ import {
 import { addAudioBook } from '../../../store/createActions/addBookActions'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import SelectBooks from '../../adminContainers/Admin/SelectBooks'
+import { editeAudioBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import SelectInput from './SelectInput'
 
 const languageSelect = [
-   { name: 'KYRGYZ', id: 1 },
-   { name: 'RUSSIAN', id: 2 },
-   { name: 'ENGLISH', id: 3 },
+   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
+   { name: 'Русский', text: 'RUSSIAN', id: 2 },
+   { name: 'Английский', text: 'ENGLISH', id: 3 },
 ]
 
 const AudioBookForm = ({ images }) => {
+   const [navigation, setNavigation] = useState(false)
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const { bookSuccsess } = useSelector((store) => store.snackbar)
@@ -107,19 +110,20 @@ const AudioBookForm = ({ images }) => {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-
+   const { bookId } = dataWithId !== null ? dataWithId : ''
    const updateForms = () => {
-      if (isFormValid()) {
-         dispatch(putVendorBook(inputValues, images, audioValues))
-      } else {
-         dispatch(snackbarActions({ bron: 'exit' }))
-      }
-      if (!bookSuccsess) {
-         setTimeout(() => {
+      dispatch(editeAudioBook(inputValues, images, bookId, audioValues))
+      setNavigation(true)
+   }
+   useEffect(() => {
+      let navigateToMainPage
+      if (bookSuccsess && navigation) {
+         navigateToMainPage = setTimeout(() => {
             navigate('/')
          }, 3000)
       }
-   }
+      return () => clearTimeout(navigateToMainPage)
+   }, [bookSuccsess])
 
    return (
       <>
@@ -153,13 +157,14 @@ const AudioBookForm = ({ images }) => {
                <LabelStyle htmlFor="genreId">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectBooks
+               <SelectInput
                   border
                   padding="12px 10px 10px 19px"
                   width="100%"
                   hover
                   defaultName="Литература, роман, стихи..."
                   fontWeight
+                  height="400px"
                   color="#969696"
                   onClick={(genreId) =>
                      setInputValues({ ...inputValues, genreId })
@@ -181,7 +186,7 @@ const AudioBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectBooks
+                     <SelectInput
                         border
                         padding="12px 10px 12px 19px"
                         width="100%"

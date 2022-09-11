@@ -5,7 +5,7 @@ import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
 import warningIcon from '../../../assets/icons/warning.svg'
 import CreatePromocode from '../../vendorLayouts/Promocode/CreatePromocode'
-import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 
 const Promocode = () => {
    const {
@@ -20,10 +20,10 @@ const Promocode = () => {
    return (
       <div>
          <StyledPromoBtnBlock>
-            <SnackBarDate
-               snack={snackbar || Boolean(success) || Boolean(errorPromo)}
+            <GetSnackbar
+               open={snackbar || Boolean(success) || Boolean(errorPromo)}
                message={success || errorPromo || ''}
-               variant={success ? 'success' : ''}
+               variant={success ? 'success' : 'error'}
             />
             <Button
                onClick={handleOpenPromoModal}
