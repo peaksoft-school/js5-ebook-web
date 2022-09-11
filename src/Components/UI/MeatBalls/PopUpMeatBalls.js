@@ -4,13 +4,11 @@ import styled from 'styled-components'
 import MeadIcon from '../../../assets/icons/MeatBalls/MeatBall.svg'
 import PopUp from '../popup'
 
-const PopUpMeatBalls = ({ options, prop }) => {
+const PopUpMeatBalls = ({ options }) => {
    const [position, setPosition] = useState(null)
    const [openPopup, setOpenPopup] = useState(false)
    const toggleHandler = (e) => {
-      if (!prop) {
-         e.stopPropagation()
-      }
+      e.stopPropagation()
       setPosition(e.currentTarget)
       setOpenPopup((prev) => !prev)
    }
@@ -24,11 +22,10 @@ const PopUpMeatBalls = ({ options, prop }) => {
          </ImageBlock>
          <PopUp open={openPopup} onClose={closeHandler} anchorEl={position}>
             <WrapperMeatballs>
-               {options.map((i, index) => {
+               {options.map((i) => {
                   return (
                      <MenuItem
-                        // eslint-disable-next-line react/no-array-index-key
-                        key={index}
+                        key={i.id}
                         onClick={(e) => {
                            e.stopPropagation()
                            closeHandler()
@@ -48,13 +45,13 @@ const PopUpMeatBalls = ({ options, prop }) => {
 export default PopUpMeatBalls
 
 const Icon = styled('span')`
-   /* border: 1px solid red; */
    display: inline-block;
    margin-right: 10px;
 `
 
 const ImageBlock = styled('div')`
-   /* border: 1px solid red; */
+   display: flex;
+   align-items: center;
    width: 20px;
    height: 20px;
 `
@@ -62,9 +59,8 @@ const WrapperMeatballs = styled.div`
    padding: 3px;
 `
 const Img = styled.img`
-   /* border: 1px solid red; */
    width: 100%;
+   cursor: pointer;
    height: 100%;
    cursor: pointer;
-   /* height: 5px; */
 `

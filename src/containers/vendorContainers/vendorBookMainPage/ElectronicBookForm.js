@@ -19,6 +19,8 @@ import {
    SelectWrapper,
    ValidSpan,
 } from './PaperBookForm'
+import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
+import SelectBooks from '../../adminContainers/Admin/SelectBooks'
 import { editeElectronicBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'

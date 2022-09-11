@@ -1,6 +1,8 @@
 import { Navigate, Route } from 'react-router'
+import AdminBooks from '../containers/adminContainers/Admin/AdminBooks'
+import AdminVendorInnerPage from '../containers/adminContainers/adminVendors/AdminVendorInnerPage'
+import AdminVendors from '../containers/adminContainers/adminVendors/AdminVendors'
 import { InnerPageAdminApplication } from '../containers/adminContainers/adminInnerPage/InnerPageAdminApplication'
-import AdminBooks from '../containers/adminContainers/AdminBooks'
 import AdminLayout from '../layouts/AdminLayout'
 import AdminApplications from '../containers/adminContainers/admin-applications/AdminApplications'
 
@@ -14,6 +16,8 @@ export default function adminLayout() {
             element={<InnerPageAdminApplication />}
          />
          <Route path="/books" element={<AdminBooks />} />
+         <Route path="/vendors" element={<AdminVendors />} />
+         <Route path="/vendor/:vendorId" element={<AdminVendorInnerPage />} />
          <Route path="/*" element={<div>not found</div>} />
       </Route>
    )
