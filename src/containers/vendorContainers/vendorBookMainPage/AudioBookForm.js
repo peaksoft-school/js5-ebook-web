@@ -104,6 +104,11 @@ const AudioBookForm = ({ images }) => {
             price: '',
             discount: '',
          })
+         setDuration({
+            duration: '',
+            minute: '',
+            second: '',
+         })
       } else {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
