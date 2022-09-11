@@ -7,10 +7,10 @@ import VendorMainPage from '../containers/vendorContainers/vendorMainPage/Vendor
 export default function vendorLayout() {
    return (
       <Route path="/" element={<VendorLayout />}>
+         <Route path="/" element={<VendorMainPage />} />
          <Route path="/:bookId" element={<InnerPage />} />
          <Route path="/addbook" element={<AddBookPage />} />
          <Route path="addbook/:bookId" element={<InnerPage />} />
-         <Route path="/" element={<VendorMainPage />} />
       </Route>
    )
 }

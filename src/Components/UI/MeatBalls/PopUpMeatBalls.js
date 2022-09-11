@@ -11,7 +11,6 @@ const PopUpMeatBalls = ({ options, prop }) => {
       if (!prop) {
          e.stopPropagation()
       }
-
       setPosition(e.currentTarget)
       setOpenPopup((prev) => !prev)
    }
@@ -33,7 +32,7 @@ const PopUpMeatBalls = ({ options, prop }) => {
                         onClick={(e) => {
                            e.stopPropagation()
                            closeHandler()
-                           i.onClick()
+                           i.onClick(i.id)
                         }}
                      >
                         <Icon>{i.icon}</Icon>
@@ -58,11 +57,14 @@ const ImageBlock = styled('div')`
    /* border: 1px solid red; */
    width: 20px;
    height: 20px;
-   display: flex;
 `
 const WrapperMeatballs = styled.div`
    padding: 3px;
 `
 const Img = styled.img`
+   /* border: 1px solid red; */
+   width: 100%;
+   height: 100%;
    cursor: pointer;
+   /* height: 5px; */
 `

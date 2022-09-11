@@ -1,35 +1,48 @@
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import Meatballs from '../../../Components/UI/MeatBalls/MeatBalls'
+import { styled } from '@mui/material'
+import { ReactComponent as Edite } from '../../../assets/icons/mainEdite/Edite.svg'
+import { ReactComponent as Delete } from '../../../assets/icons/mainEdite/Delete.svg'
 import {
    getMainBooksDelete,
    getMainBooksWithId,
 } from '../../../store/createActions/vendorMainPagesActions'
 
-const option = [
-   {
-      title: 'Редактировать',
-      id: 1,
-   },
-   {
-      title: 'Удалить',
-      id: 2,
-   },
-]
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
 
 export default function UpdateBooks({ id }) {
+   const option = [
+      {
+         text: 'Редактировать',
+         id: 1,
+         icon: <Delete />,
+         onClick: (id) => editeBook(id),
+      },
+      {
+         text: 'Удалить',
+         id: 2,
+         icon: <Edite />,
+         onClick: (id) => deleteBook(id),
+      },
+   ]
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const deleteBook = (data) => {
-      if (data.id === 1) {
+   const editeBook = () => {
+      if (id) {
          dispatch(getMainBooksWithId(id))
          setTimeout(() => {
             navigate('/addbook')
          }, 1000)
       }
-      if (data.id === 2) {
-         dispatch(getMainBooksDelete(id))
-      }
    }
-   return <Meatballs height="106px" onClick={deleteBook} options={option} />
+   const deleteBook = () => {
+      dispatch(getMainBooksDelete(id))
+   }
+
+   return (
+      <MeatbalsDiv>
+         <PopUpMeatBalls options={option} prop="prop" />
+      </MeatbalsDiv>
+   )
 }
+const MeatbalsDiv = styled('div')``

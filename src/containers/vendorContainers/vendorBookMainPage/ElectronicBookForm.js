@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,21 +19,21 @@ import {
    SelectWrapper,
    ValidSpan,
 } from './PaperBookForm'
-import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
-import SelectBooks from '../../Admin/SelectBooks'
+import { editeElectronicBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import SelectInput from './SelectInput'
 
 const languageSelect = [
-   { name: 'KYRGYZ', id: 1 },
-   { name: 'RUSSIAN', id: 2 },
-   { name: 'ENGLISH', id: 3 },
+   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
+   { name: 'Русский', text: 'RUSSIAN', id: 2 },
+   { name: 'Английский', text: 'ENGLISH', id: 3 },
 ]
 
 const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
    const { stateSnackbar } = useSelector((store) => store.snackbar)
-   const { bookSuccsess, bookError } = useSelector((store) => store.snackbar)
+   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const genre = useSelector((store) => store.globalValues.genres)
    const dataWithId = useSelector(
       (store) => store.vendorMainPage.electronicBooks
@@ -61,6 +61,7 @@ const ElectronicBookForm = ({ images }) => {
       const valueEvent = e.target
       setWithIdValues({ ...withIdValues, [valueEvent.name]: valueEvent.value })
    }
+   const [navigation, setNavigation] = useState(false)
 
    const isFormValid = () => {
       const validateValues =
@@ -71,8 +72,7 @@ const ElectronicBookForm = ({ images }) => {
          withIdValues.description.length >= 1 &&
          withIdValues.fragment.length >= 1 &&
          withIdValues.pageSize.length >= 1 &&
-         withIdValues.price.length >= 1 &&
-         withIdValues.discount.length >= 1
+         withIdValues.price.length >= 1
       return validateValues && images.mainImage && pdfValue
    }
    const validLength = () => {
@@ -107,19 +107,22 @@ const ElectronicBookForm = ({ images }) => {
       }
    }
 
+   const { bookId } = dataWithId !== null ? dataWithId : ''
    const updateForms = () => {
-      if (isFormValid()) {
-         dispatch(putVendorBook(withIdValues, images))
-      }
       if (!isFormValid()) {
-         dispatch(snackbarActions({ bron: 'exit' }))
+         dispatch(editeElectronicBook(withIdValues, images, bookId, pdfValue))
+         setNavigation(true)
       }
-      if (bookSuccsess || bookError) {
-         setTimeout(() => {
+   }
+   useEffect(() => {
+      let navigateToMainPage
+      if (bookSuccsess && navigation) {
+         navigateToMainPage = setTimeout(() => {
             navigate('/')
          }, 3000)
       }
-   }
+      return () => clearTimeout(navigateToMainPage)
+   }, [bookSuccsess])
 
    return (
       <>
@@ -153,7 +156,7 @@ const ElectronicBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectBooks
+               <SelectInput
                   border
                   padding="12px 10px 12px 19px"
                   width="100%"
@@ -161,6 +164,7 @@ const ElectronicBookForm = ({ images }) => {
                   defaultName="Литература, роман, стихи..."
                   fontWeight
                   color="#969696"
+                  height="400px"
                   onClick={(genreId) =>
                      setWithIdValues({ ...withIdValues, genreId })
                   }
@@ -199,7 +203,7 @@ const ElectronicBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectBooks
+                     <SelectInput
                         border
                         padding="12px 10px 12px 19px"
                         width="100%"
