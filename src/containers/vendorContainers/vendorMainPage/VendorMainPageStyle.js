@@ -2,7 +2,6 @@ import { styled } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 export const ImageBlock = styled('div')`
-   /* border: 1px solid red; */
    width: 197px;
    height: 297px;
 `
@@ -17,12 +16,13 @@ export const ContainerDiv = styled('div')`
    margin-bottom: 20px;
 `
 export const Img = styled('img')`
-   width: 100%;
-   height: 100%;
    cursor: pointer;
    object-fit: cover;
    margin-bottom: 6px;
    background-color: aliceblue;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 `
 export const ImgesCont = styled('img')`
    width: 16px;

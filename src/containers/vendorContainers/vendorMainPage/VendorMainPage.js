@@ -18,6 +18,7 @@ import {
    DateSpan,
    FooterDiv,
    HeaderText,
+   ImageBlock,
    Img,
    ImgesCont,
    ImgFavorite,
@@ -27,7 +28,6 @@ import {
    SelectBooksDiv,
    SelectCopy,
    Span,
-   ImageBlock,
    WrapperDiv,
 } from './VendorMainPageStyle'
 import SelectInput from '../vendorBookMainPage/SelectInput'
@@ -155,14 +155,14 @@ const VendorMainPage = () => {
 export default VendorMainPage
 
 const Books = styled('div')`
-   border: ${(props) => (props.primary ? 'none' : '')};
-   background-color: ${(props) => (props.primary ? '#EDEDED' : '')};
+   border: ${(props) => (props.primary ? '1px solid #F34901' : '')};
+   background-color: ${(props) =>
+      props.primary ? 'rgba(243, 73, 1, 0.08)' : ''};
 
    background-color: ${(props) =>
       props.reject ? 'rgba(220, 220, 220, 0.61)' : ''};
    opacity: ${(props) => (props.reject ? '0.5' : '')};
 
-   background-color: ${(props) =>
-      props.accepted ? 'rgba(243, 73, 1, 0.08)' : ''};
-   border: ${(props) => (props.accepted ? '1px solid #F34901' : '')};
+   background-color: ${(props) => (props.accepted ? '#EDEDED' : '')};
+   border: ${(props) => (props.accepted ? 'none' : '')};
 `
