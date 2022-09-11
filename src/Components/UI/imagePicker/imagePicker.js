@@ -25,7 +25,7 @@ function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
          return
       }
       const name = filesRef.current.files[0]
-      if (filesRef.current.files[0].size >= 700000) {
+      if (filesRef.current.files[0].size >= 1000000) {
          onChange(-1, e)
          return
       }
