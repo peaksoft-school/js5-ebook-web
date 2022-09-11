@@ -15,6 +15,9 @@ function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
       if (dataWithId && img) {
          setPutIcon(putUrl)
       }
+      if (!dataWithId) {
+         setPutIcon('')
+      }
    })
 
    const iconHandleChange = (e) => {
@@ -22,13 +25,12 @@ function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
          return
       }
       const name = filesRef.current.files[0]
-      const image = new Image()
-      image.src = name
-      console.log(image.naturalWidth, image.naturalHeight)
-      if (image.height > -1) {
-         const file = URL.createObjectURL(name)
-         setIcon(file)
+      if (filesRef.current.files[0].size >= 700000) {
+         onChange(-1, e)
+         return
       }
+      const file = URL.createObjectURL(name)
+      setIcon(file)
       onChange(filesRef.current.files[0], e)
    }
 
@@ -37,7 +39,6 @@ function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
       setIcon('')
       setPutIcon('')
       setImg(false)
-      // onDelete()
    }
    useEffect(() => {
       if (onDelete || !onDelete) {

@@ -24,13 +24,15 @@ export const CopyLink = styled(Link)`
    text-decoration: none;
 `
 export const BookSHeader = styled('div')`
-   width: 154px;
+   width: 144px;
    display: flex;
    justify-content: space-between;
    padding: 19px 0px 16px 0px;
    align-items: center;
-   color: black;
+   color: #8a8a8a;
    margin-top: -10px;
+   font-size: 14px;
+   line-height: 16.8px;
 `
 export const BooksWrapper = styled('div')`
    padding: 10px 30px 10px 40px;
@@ -43,9 +45,12 @@ export const BooksContainer = styled('div')`
 `
 
 export const MeatBallsDiv = styled('div')`
-   margin-top: 16px;
+   margin-top: 9px;
    position: absolute;
-   right: 22px;
+   right: 0px;
+   top: 6px;
+   z-index: 1;
+   opacity: 10;
 `
 export const FooterDiv = styled('div')`
    display: flex;
@@ -84,14 +89,14 @@ export const NameBook = styled('span')`
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 600;
-   font-size: 20px;
+   font-size: 18px;
    line-height: 120%;
 `
 export const ImgFavorite = styled('span')`
    display: flex;
    align-items: center;
    color: grey;
-   width: 44px;
+   width: 38px;
    justify-content: space-between;
 `
 export const Span = styled('span')`
