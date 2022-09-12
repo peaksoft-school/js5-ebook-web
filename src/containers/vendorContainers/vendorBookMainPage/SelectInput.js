@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { MenuItem } from '@mui/material'
-import PopUp from '../../Components/UI/popup'
-import arrow from '../../assets/icons/selectArrow.svg'
+import PopUp from '../../../Components/UI/popup'
 
-export default function SelectBooks({
+export default function SelectInput({
    genres,
    name,
    defaultName,
@@ -45,9 +44,14 @@ export default function SelectBooks({
       <SelectBook>
          {name && <SelectSpan>{name}:</SelectSpan>}
          <SelectLabel {...props} onClick={handleClickLabel}>
-            {label.name} <img src={arrow} alt="icon" />
+            {label.name}{' '}
          </SelectLabel>
-         <PopUp open={open} anchorEl={anChorEl} onClose={onCloseMenu}>
+         <PopUp
+            height={props.height}
+            open={open}
+            anchorEl={anChorEl}
+            onClose={onCloseMenu}
+         >
             {genres &&
                genres.map((elem) => {
                   return (

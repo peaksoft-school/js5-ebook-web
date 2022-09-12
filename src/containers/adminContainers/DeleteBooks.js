@@ -11,7 +11,9 @@ const DeleteBooks = ({ id, open, onClose }) => {
    function deleteBook() {
       const fetch = async () => {
          try {
-            const response = await dispatch(deleteBookAction(id)).unwrap()
+            const response = await dispatch(
+               deleteBookAction(id, onClose)
+            ).unwrap()
             onClose()
             return response
          } catch (error) {

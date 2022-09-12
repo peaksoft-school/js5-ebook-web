@@ -107,7 +107,7 @@ const MinusView = styled('span')`
 const Books = styled('div')`
    padding-top: 22px;
    display: flex;
-   justify-content: space-between;
+   justify-content: flex-start;
    width: 954px;
    flex-wrap: wrap;
 `

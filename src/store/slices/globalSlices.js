@@ -65,7 +65,7 @@ export function setGenres() {
       dispatch(globalValuesAction.setGenres(genres))
    }
 }
-export function deleteBookAction(id) {
+export function deleteBookAction(id, onClose) {
    return async (dispatch) => {
       try {
          const books = await appFetch({
@@ -73,6 +73,7 @@ export function deleteBookAction(id) {
             method: 'DELETE',
          })
          dispatch(globalValuesAction.getDeleteMessage(books))
+         onClose()
          toast.success(books.message)
          return books
       } catch (error) {

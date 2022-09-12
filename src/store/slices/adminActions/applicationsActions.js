@@ -43,7 +43,7 @@ export const seeMoreGetApplicationsActions = (request) => {
          })
 
          dispatch(
-            applicationSlicesActions.seeMoreGetApplications(
+            applicationSlicesActions.getApplications(
                result.getApplications.content
             )
          )
@@ -87,7 +87,12 @@ export const acceptApplication = (id) => {
    }
 }
 
-export const rejectAplication = ({ id, reasonReject }) => {
+export const rejectAplication = ({
+   id,
+   reasonReject,
+   onClose,
+   setReasonReject,
+}) => {
    return async (dispatch) => {
       try {
          const result = await appFetch({
@@ -96,6 +101,8 @@ export const rejectAplication = ({ id, reasonReject }) => {
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
          toast.success(result.message)
+         setReasonReject('')
+         onClose()
          return result
       } catch (error) {
          toast.error('Не удалось отклонить!')

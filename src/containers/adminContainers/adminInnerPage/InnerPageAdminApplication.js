@@ -8,12 +8,12 @@ import { TabInnerPage } from './TabInnerPage'
 import About from '../../../Components/About'
 import BookFragment from '../../../Components/BookFragment'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
-import {
-   acceptApplicationInnerPage,
-   applicationInnerPageAction,
-} from '../../../store/slices/applicationInnerPageActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { RejectApplicationModal } from './RejectApplicationModal'
+import {
+   applicationInnerPageAction,
+   acceptApplicationInnerPage,
+} from '../../../store/slices/adminActions/applicationInnerPageActions'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
@@ -186,7 +186,7 @@ const StyledInfoTitle = styled.p`
    color: #222222;
 `
 const StyledBookImage = styled.img`
-   width: 315px;
+   width: 357px;
    margin-bottom: 185px;
    margin-right: -8px;
 `

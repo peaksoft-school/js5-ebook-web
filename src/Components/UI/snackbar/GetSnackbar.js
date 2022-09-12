@@ -29,7 +29,7 @@ const GetSnackbar = ({
       <Snackbar
          open={open}
          severity=""
-         message={message || 'Заполняйте поля!'}
+         message={message}
          width="400px"
          handleClose={handleClose}
          horizontal={horizontal}

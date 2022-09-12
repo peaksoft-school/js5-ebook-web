@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
-import { BookType } from '../../utils/constants/constants'
+import { BookType } from '../../../utils/constants/constants'
 import SelectBooks from './SelectBooks'
-import { setBooks, setGenres } from '../../store/slices/globalSlices'
+import { setBooks, setGenres } from '../../../store/slices/globalSlices'
 
 const arr = [
    {

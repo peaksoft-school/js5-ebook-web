@@ -8,19 +8,21 @@ import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import { addPaperBook } from '../../../store/createActions/addBookActions'
 import bookAction from '../../../store/slices/addBookSlice'
-import SelectBooks from '../../Admin/SelectBooks'
+import SelectBooks from '../../adminContainers/Admin/SelectBooks'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import { setGenres } from '../../../store/slices/globalSlices'
+import SelectInput from './SelectInput'
 
 const languageSelect = [
-   { name: 'KYRGYZ', id: 1 },
-   { name: 'RUSSIAN', id: 2 },
-   { name: 'ENGLISH', id: 3 },
+   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
+   { name: 'Русский', text: 'RUSSIAN', id: 2 },
+   { name: 'Английский', text: 'ENGLISH', id: 3 },
 ]
 
 const PaperBookForm = ({ images }) => {
+   const [navigation, setNavigation] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const genre = useSelector((store) => store.globalValues.genres)
@@ -58,11 +60,11 @@ const PaperBookForm = ({ images }) => {
          inputValues.fragment.length >= 1 &&
          inputValues.pageSize.length >= 1 &&
          inputValues.price.length >= 1 &&
-         inputValues.discount.length >= 1 &&
          inputValues.quantityOfBook.length >= 1
 
       return validateValues
    }
+
    const validLength = () => {
       const validNumbers =
          inputValues.yearOfIssue.length > 4 ||
@@ -94,17 +96,18 @@ const PaperBookForm = ({ images }) => {
    }
    const { bookType, bookId } = dataWithId !== null ? dataWithId : ''
    const updateForms = async () => {
-      if (isFormValid()) {
-         dispatch(putVendorBook(inputValues, images, bookType, bookId))
-      } else {
-         dispatch(snackbarActions({ bron: 'exit' }))
-      }
-      if (bookSuccsess) {
-         setTimeout(() => {
+      dispatch(putVendorBook(inputValues, images, bookType, bookId))
+      setNavigation(true)
+   }
+   useEffect(() => {
+      let navigateToMainPage
+      if (bookSuccsess && navigation) {
+         navigateToMainPage = setTimeout(() => {
             navigate('/')
          }, 3000)
       }
-   }
+      return () => clearTimeout(navigateToMainPage)
+   }, [bookSuccsess])
 
    useEffect(() => {
       dispatch(setGenres())
@@ -142,7 +145,7 @@ const PaperBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectBooks
+               <SelectInput
                   border
                   padding="12px 10px 12px 19px"
                   width="100%"
@@ -150,6 +153,7 @@ const PaperBookForm = ({ images }) => {
                   defaultName="Литература, роман, стихи..."
                   fontWeight
                   color="#969696"
+                  height="400px"
                   onClick={(genreId) =>
                      setInputValues({ ...inputValues, genreId })
                   }
@@ -189,7 +193,7 @@ const PaperBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectBooks
+                     <SelectInput
                         border
                         padding="12px 10px 12px 19px"
                         width="100%"
@@ -198,7 +202,7 @@ const PaperBookForm = ({ images }) => {
                         color="#969696"
                         hover
                         nameText=""
-                        onClick={(_, notext, notest, language) =>
+                        onClick={(_, notext, language) =>
                            setInputValues({ ...inputValues, language })
                         }
                         genres={languageSelect}

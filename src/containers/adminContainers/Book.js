@@ -5,9 +5,9 @@ import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBo
 import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
 import { BookType } from '../../utils/constants/constants'
 import { ReactComponent as Edit } from '../../assets/icons/Edit.svg'
-import { ReactComponent as Delete } from '../../assets/icons/Delete.svg'
+import { ReactComponent as Delete } from '../../assets/icons/delete.svg'
 import DeleteBooks from './DeleteBooks'
-import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopupMeatBalls'
+import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopUpMeatBalls'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
    const navigate = useNavigate()
@@ -76,9 +76,8 @@ export default Book
 const BookItems = styled('div')`
    width: 225px;
    height: 380px;
-   border: ${(props) => (!props.primary ? '0.5px solid #ff4c00' : '')};
-   background: ${(props) =>
-      !props.primary ? 'rgba(255, 76, 0, 0.08)' : '#ededed'};
+   border: #ededed;
+   background: #ededed;
    display: flex;
    flex-direction: column;
    align-items: flex-end;

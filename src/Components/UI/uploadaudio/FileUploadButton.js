@@ -1,8 +1,10 @@
 import styled from '@emotion/styled'
-import { CircularProgress } from '@mui/material'
-import { useState } from 'react'
+import { CircularProgress, Snackbar } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import Vector from '../../../assets/upaudioicons/Vector.png'
 import VectorOk from '../../../assets/upaudioicons/VectorOk.png'
+// import GetSnackbar from '../snackbar/GetSnackbar'
 
 const FileUploadButton = ({
    onChange,
@@ -14,10 +16,22 @@ const FileUploadButton = ({
    name,
    ...props
 }) => {
+   const deleteFile = useSelector((store) => store.addbook.deleteImage)
    const [fileState, setFileState] = useState('default')
    const [pdfFile, setPdfFile] = useState([])
    const [audioFile, setAudioFile] = useState([])
+   const [isValid, setIsValid] = useState(false)
+   useEffect(() => {
+      const valid = setTimeout(() => {
+         setIsValid(false)
+      }, 3000)
+      return () => clearInterval(valid)
+   }, [isValid])
    const saveFilesHandler = (e) => {
+      if (e.target.files[0].size > 1000000) {
+         setIsValid(true)
+         return
+      }
       const files = e.target.files[0]
       onChange(files, e)
       if (files.type === 'application/pdf') {
@@ -32,11 +46,25 @@ const FileUploadButton = ({
          setFileState('success')
       }
    }
+   useEffect(() => {
+      setFileState('default')
+   }, [deleteFile])
    let fileButton
    if (fileState === 'default') {
       fileButton = (
          <ContainerDiv>
-            <DefaultContainer {...props}>
+            <Snackbar
+               open={isValid}
+               message="File size must be > 1MB"
+               severity="error"
+               sx={{ height: '184%', horizontal: 'right' }}
+               anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                  width: '40px',
+               }}
+            />
+            <DefaultContainer den={!isValid} {...props}>
                <ImgVector src={Vector} />
                {children}
                <input
@@ -46,6 +74,7 @@ const FileUploadButton = ({
                   type="file"
                   onChange={saveFilesHandler}
                />
+               {/* {!isValid && <span>fjkjkd</span>} */}
             </DefaultContainer>
          </ContainerDiv>
       )

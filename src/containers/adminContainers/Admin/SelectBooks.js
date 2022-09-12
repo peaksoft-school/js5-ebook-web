@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { MenuItem } from '@mui/material'
-import PopUp from '../../Components/UI/popup'
+import PopUp from '../../../Components/UI/popup'
+import arrow from '../../../assets/icons/selectArrow.svg'
 
-export default function SelectBooks({ genres, name, onClick, type }) {
+export default function SelectBooks({ genres, name, onClick, type, variant }) {
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
-      name: 'все',
-      id: null,
+      name: 'Все',
+      id: variant ? 'ALL' : null,
       key: type,
    })
    const open = Boolean(anChorEl)
    useEffect(() => {
       if (onClick) {
-         onClick(label.id, label.key)
+         onClick(label.id, 'aboutBooks', label.name)
       }
    }, [label])
    const handleClickLabel = (e) => {
@@ -35,8 +36,9 @@ export default function SelectBooks({ genres, name, onClick, type }) {
 
    return (
       <SelectBook>
-         <SelectSpan>{name}:</SelectSpan>
+         <SelectSpan>{name}</SelectSpan>
          <SelectLabel onClick={handleClickLabel}>{label.name} </SelectLabel>
+         <img src={arrow} alt="icon" />
          <PopUp open={open} anchorEl={anChorEl} onClose={onCloseMenu}>
             {genres &&
                genres.map((elem) => {
