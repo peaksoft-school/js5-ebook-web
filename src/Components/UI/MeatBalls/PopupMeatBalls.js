@@ -4,13 +4,11 @@ import styled from 'styled-components'
 import MeadIcon from '../../../assets/icons/MeatBalls/MeatBall.svg'
 import PopUp from '../popup'
 
-const PopUpMeatBalls = ({ options, prop }) => {
+const PopUpMeatBalls = ({ options }) => {
    const [position, setPosition] = useState(null)
    const [openPopup, setOpenPopup] = useState(false)
    const toggleHandler = (e) => {
-      if (!prop) {
-         e.stopPropagation()
-      }
+      e.stopPropagation()
       setPosition(e.currentTarget)
       setOpenPopup((prev) => !prev)
    }
@@ -32,7 +30,7 @@ const PopUpMeatBalls = ({ options, prop }) => {
                         onClick={(e) => {
                            e.stopPropagation()
                            closeHandler()
-                           i.onClick(i.id)
+                           i.onClick()
                         }}
                      >
                         <Icon>{i.icon}</Icon>
