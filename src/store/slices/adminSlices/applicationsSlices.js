@@ -17,6 +17,10 @@ const applicationsSlices = createSlice({
    initialState,
    reducers: {
       getApplications(state, action) {
+         state.applications = action.payload
+      },
+
+      seeMoreGetApplications(state, action) {
          action.payload.forEach((element) => {
             const prev = state.applications.find((el) => el.id === element.id)
             if (!prev) {
@@ -38,12 +42,6 @@ const applicationsSlices = createSlice({
       },
       postRejectApplication(state, action) {
          state.rejectMessage = action.payload
-      },
-      cleanAccept(state) {
-         state.acceptMessage = null
-      },
-      cleanReject(state) {
-         state.rejectMessage = null
       },
       getApplicationId(state, action) {
          state.getId = action.payload

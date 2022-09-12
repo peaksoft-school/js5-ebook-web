@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-
 import { useState } from 'react'
 
 import MeadBalls from '../../../assets/icons/MeatBalls/MeatBall.svg'
 
-const MeatBalls = ({ options }) => {
+const MeatBalls = ({ options, onClick, height }) => {
    const [state, setState] = useState(false)
 
    const clickHandler = () => {
@@ -13,14 +12,15 @@ const MeatBalls = ({ options }) => {
 
    const clickCloseHandler = (option) => {
       setState(false)
-      option.onClick(option)
+      onClick(option)
+      options.onClick(option.id)
    }
 
    return (
       <DivBlock>
          <Img onClick={() => clickHandler()} src={MeadBalls} />
          {state && (
-            <DivMeatBalls>
+            <DivMeatBalls height={height} width={options.width}>
                {options.map((option) => {
                   return (
                      <OptionMeadBalls
@@ -45,13 +45,14 @@ const DivBlock = styled.div`
    flex-direction: column;
    position: relative;
    z-index: 10;
+   cursor: pointer;
+   width: 14px;
 `
 
 const Img = styled.img`
    width: 3.75px;
    height: 16px;
    margin-left: 30px;
-   margin-top: 11px;
 `
 
 const DivMeatBalls = styled.div`
@@ -62,6 +63,8 @@ const DivMeatBalls = styled.div`
    top: 100%;
    right: 0;
    background-color: white;
+   height: ${(props) => props.height || '10px 20px'};
+   width: ${(props) => props.width || '10px 20px'};
    padding: 30px;
 `
 

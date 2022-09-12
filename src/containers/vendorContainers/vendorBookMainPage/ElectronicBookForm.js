@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
+import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import bookAction from '../../../store/slices/addBookSlice'
 import FileUploadButton from '../../../Components/UI/uploadaudio/FileUploadButton'
@@ -7,72 +8,89 @@ import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import CheckBox from '../../../Components/UI/checkBox/CheckBox'
-import { addElectronicBoook } from '../../../store/addBookActions'
-import Selected from '../../../Components/UI/Select'
+import { addElectronicBoook } from '../../../store/createActions/addBookActions'
 import {
    ButtonDiv,
    InputDiv,
    InputWrapper,
    LabelStyle,
+   PutDiv,
    SelectDiv,
    SelectWrapper,
+   ValidSpan,
 } from './PaperBookForm'
-
-const fromInputValues = {
-   name: '',
-   author: '',
-   publishingHouse: '',
-   description: '',
-   fragment: '',
-   pageSize: '',
-   price: '',
-   yearOfIssue: '',
-   quantityOfBook: '',
-   discount: '',
-}
+import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
+import SelectBooks from '../../adminContainers/Admin/SelectBooks'
+import { editeElectronicBook } from '../../../store/createActions/vendorMainPagesActions'
+import { snackbarActions } from '../../../store/createActions/snackbarActions'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import SelectInput from './SelectInput'
 
 const languageSelect = [
-   { name: 'kyrgyzstan', id: 1 },
-   { name: 'Russian', id: 2 },
-   { name: 'English', id: 3 },
+   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
+   { name: 'Русский', text: 'RUSSIAN', id: 2 },
+   { name: 'Английский', text: 'ENGLISH', id: 3 },
 ]
 
 const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
-   const jenre = useSelector((store) => store.addbook.jenreId)
+   const { stateSnackbar } = useSelector((store) => store.snackbar)
+   const { bookSuccsess } = useSelector((store) => store.snackbar)
+   const genre = useSelector((store) => store.globalValues.genres)
+   const dataWithId = useSelector(
+      (store) => store.vendorMainPage.electronicBooks
+   )
    const dispatch = useDispatch()
-   const [inputValues, setInputValues] = useState(fromInputValues)
+   const navigate = useNavigate()
 
+   const [withIdValues, setWithIdValues] = useState({
+      name: dataWithId ? dataWithId.bookName : '',
+      author: dataWithId ? dataWithId.author : '',
+      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
+      description: dataWithId ? dataWithId.description : '',
+      fragment: dataWithId ? dataWithId.fragment : '',
+      pageSize: dataWithId ? dataWithId.pageSize : '',
+      price: dataWithId ? dataWithId.price : '',
+      yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
+      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
+      discount: dataWithId ? dataWithId.discount : '',
+   })
    const changePdfFileValue = (pdf) => {
       setPdfFile(pdf)
    }
 
    const handleChangeInput = (e) => {
       const valueEvent = e.target
-      setInputValues({ ...inputValues, [valueEvent.name]: valueEvent.value })
+      setWithIdValues({ ...withIdValues, [valueEvent.name]: valueEvent.value })
    }
+   const [navigation, setNavigation] = useState(false)
 
    const isFormValid = () => {
       const validateValues =
-         inputValues.name.length >= 1 &&
-         inputValues.author.length >= 1 &&
-         inputValues.genreId > +0 &&
-         inputValues.publishingHouse.length >= 1 &&
-         inputValues.description.length >= 1 &&
-         inputValues.fragment.length >= 1 &&
-         inputValues.pageSize.length >= 1 &&
-         inputValues.price.length >= 1 &&
-         inputValues.discount.length >= 1
-
+         withIdValues.name.length >= 1 &&
+         withIdValues.author.length >= 1 &&
+         withIdValues.genreId > +0 &&
+         withIdValues.publishingHouse.length >= 1 &&
+         withIdValues.description.length >= 1 &&
+         withIdValues.fragment.length >= 1 &&
+         withIdValues.pageSize.length >= 1 &&
+         withIdValues.price.length >= 1
       return validateValues && images.mainImage && pdfValue
    }
+   const validLength = () => {
+      const validNumbers =
+         withIdValues.yearOfIssue.length > 4 ||
+         withIdValues.yearOfIssue < 0 ||
+         withIdValues.yearOfIssue > 2022
+      return validNumbers
+   }
 
-   const clickSendFormValues = () => {
-      if (isFormValid()) {
-         dispatch(addElectronicBoook(inputValues, images, pdfValue))
+   const clickSendFormValues = async () => {
+      if (isFormValid() && !validLength()) {
+         dispatch(addElectronicBoook(withIdValues, images, pdfValue))
          dispatch(bookAction.deleteImage())
 
-         setInputValues({
+         setWithIdValues({
             name: '',
             author: '',
             genreId: '',
@@ -86,11 +104,35 @@ const ElectronicBookForm = ({ images }) => {
             quantityOfBook: '',
          })
       }
+      if (!isFormValid()) {
+         dispatch(snackbarActions({ bron: 'exit' }))
+      }
    }
+
+   const { bookId } = dataWithId !== null ? dataWithId : ''
+   const updateForms = () => {
+      if (!isFormValid()) {
+         dispatch(editeElectronicBook(withIdValues, images, bookId, pdfValue))
+         setNavigation(true)
+      }
+   }
+   useEffect(() => {
+      let navigateToMainPage
+      if (bookSuccsess && navigation) {
+         navigateToMainPage = setTimeout(() => {
+            navigate('/')
+         }, 3000)
+      }
+      return () => clearTimeout(navigateToMainPage)
+   }, [bookSuccsess])
 
    return (
       <>
-         {/* {showSnackbar && <Snackbar/>} */}
+         <GetSnackbar
+            open={stateSnackbar}
+            message="Пожалуйста, заполните все поля"
+            variant="error"
+         />
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -101,14 +143,14 @@ const ElectronicBookForm = ({ images }) => {
                   id="name"
                   name="name"
                   placeholder="Напишите полное название книги"
-                  value={inputValues.name}
+                  value={withIdValues.name}
                />
                <LabelStyle htmlFor="author">
                   ФИО автора <strong>*</strong>
                </LabelStyle>
                <InputText
                   id="author"
-                  value={inputValues.author}
+                  value={withIdValues.author}
                   onChange={handleChangeInput}
                   name="author"
                   placeholder="Напишите ФИО автора"
@@ -116,19 +158,26 @@ const ElectronicBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <Selected
-                  onChange={(genreId) =>
-                     setInputValues({ ...inputValues, genreId })
+               <SelectInput
+                  border
+                  padding="12px 10px 12px 19px"
+                  width="100%"
+                  hover
+                  defaultName="Литература, роман, стихи..."
+                  fontWeight
+                  color="#969696"
+                  height="400px"
+                  onClick={(genreId) =>
+                     setWithIdValues({ ...withIdValues, genreId })
                   }
-                  variant
-                  title={jenre}
+                  genres={genre}
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
                </LabelStyle>
                <InputText
                   placeholder="Напишите название издательства"
-                  value={inputValues.publishingHouse}
+                  value={withIdValues.publishingHouse}
                   onChange={handleChangeInput}
                   name="publishingHouse"
                   id="publishingHouse"
@@ -139,7 +188,7 @@ const ElectronicBookForm = ({ images }) => {
                   placeholder="Напишите о книге"
                   name="description"
                   maxLength="1234"
-                  value={inputValues.description}
+                  value={withIdValues.description}
                />
                <Textarea
                   title="Фрагмент книги"
@@ -147,7 +196,7 @@ const ElectronicBookForm = ({ images }) => {
                   placeholder="Напишите фрагмент книги"
                   name="fragment"
                   maxLength="9234"
-                  value={inputValues.fragment}
+                  value={withIdValues.fragment}
                />
             </InputDiv>
             <Wrapper>
@@ -156,11 +205,18 @@ const ElectronicBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <Selected
-                        onChange={(language) =>
-                           setInputValues({ ...inputValues, language })
+                     <SelectInput
+                        border
+                        padding="12px 10px 12px 19px"
+                        width="100%"
+                        hover
+                        defaultName="язык"
+                        fontWeight="400"
+                        color="#969696"
+                        onClick={(language) =>
+                           setWithIdValues({ ...withIdValues, language })
                         }
-                        title={languageSelect}
+                        genres={languageSelect}
                      />
                      <LabelStyle htmlFor="obem">
                         Объем <strong>*</strong>
@@ -169,7 +225,7 @@ const ElectronicBookForm = ({ images }) => {
                         textAlign="end"
                         placeholder="стр."
                         onChange={handleChangeInput}
-                        value={inputValues.pageSize}
+                        value={withIdValues.pageSize}
                         name="pageSize"
                         id="pageSize"
                         type="number"
@@ -180,7 +236,7 @@ const ElectronicBookForm = ({ images }) => {
                      <InputText
                         id="price"
                         onChange={handleChangeInput}
-                        value={inputValues.price}
+                        value={withIdValues.price}
                         textAlign="end"
                         type="number"
                         placeholder="сом"
@@ -194,13 +250,15 @@ const ElectronicBookForm = ({ images }) => {
                      <InputText
                         id="yearOfIssue"
                         onChange={handleChangeInput}
-                        value={inputValues.data}
+                        value={withIdValues.data}
                         textAlign="end"
                         placeholder="гг"
                         name="yearOfIssue"
+                        type="number"
                      />
+                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                      <CheckBoxDiv>
-                        <CheckBox label="besteller" />
+                        <CheckBox label="Бестселлер" />
                      </CheckBoxDiv>
                      <LabelStyle htmlFor="discount">
                         Скидка <strong>*</strong>
@@ -208,7 +266,7 @@ const ElectronicBookForm = ({ images }) => {
                      <InputText
                         id="discount"
                         onChange={handleChangeInput}
-                        value={inputValues.discount}
+                        value={withIdValues.discount}
                         textAlign="end"
                         placeholder="%"
                         name="discount"
@@ -232,9 +290,24 @@ const ElectronicBookForm = ({ images }) => {
             </Wrapper>
          </InputWrapper>
          <ButtonDiv>
-            <Button width="160px" onClick={clickSendFormValues}>
-               Отправить
-            </Button>
+            {!dataWithId ? (
+               <Button width="160px" onClick={clickSendFormValues}>
+                  Отправить
+               </Button>
+            ) : (
+               <PutDiv>
+                  <Button
+                     width="137px"
+                     background="#2f4f4f"
+                     onClick={() => navigate('/')}
+                  >
+                     Назад
+                  </Button>
+                  <Button width="137px" onClick={updateForms}>
+                     Сохранить
+                  </Button>
+               </PutDiv>
+            )}
          </ButtonDiv>
       </>
    )
