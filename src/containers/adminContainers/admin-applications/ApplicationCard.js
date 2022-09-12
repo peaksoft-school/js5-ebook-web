@@ -7,7 +7,7 @@ import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject
 import { RejectApplicationModal } from './RejectApplicationModal'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
-import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
