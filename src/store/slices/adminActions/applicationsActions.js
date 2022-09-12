@@ -71,6 +71,7 @@ export const acceptApplication = (id) => {
             body: id,
          })
          dispatch(applicationSlicesActions.postAcceptApplication(result))
+         dispatch(applicationsActions())
          toast.success(result.message)
          return result
       } catch (error) {
@@ -93,6 +94,7 @@ export const rejectAplication = ({
             url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
+         dispatch(applicationsActions())
          toast.success(result.message)
          setReasonReject('')
          onClose()
