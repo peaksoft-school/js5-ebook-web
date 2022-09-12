@@ -11,7 +11,6 @@ const PopUpMeatBalls = ({ options, prop }) => {
       if (!prop) {
          e.stopPropagation()
       }
-
       setPosition(e.currentTarget)
       setOpenPopup((prev) => !prev)
    }
@@ -58,7 +57,6 @@ const ImageBlock = styled('div')`
    /* border: 1px solid red; */
    width: 20px;
    height: 20px;
-   display: flex;
 `
 const WrapperMeatballs = styled.div`
    padding: 3px;
