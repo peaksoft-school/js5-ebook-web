@@ -28,8 +28,8 @@ export const UserHistory = () => {
                </tr>
             </TheadStyledBlock>
          </TableBlock>
-         <Div3>
-            <D>Купленные({totalElements}книг)</D>
+         <DivBlock>
+            <DivTotalBlock>Купленные({totalElements}книг)</DivTotalBlock>
             <Div>
                {userHistory.map((i) => (
                   <StyledBlock>
@@ -56,7 +56,7 @@ export const UserHistory = () => {
                   </StyledBlock>
                ))}
             </Div>
-         </Div3>
+         </DivBlock>
       </ContainerBlock>
    )
 }
@@ -75,14 +75,13 @@ const DivName = styled('h4')`
 `
 const Div = styled('div')`
    border-top: 1px solid #c4c4c4;
-   /* border-left: 1px solid; */
    width: 100%;
    display: flex;
    flex-direction: column;
    justify-content: flex-start;
    align-items: flex-end;
 `
-const D = styled.div`
+const DivTotalBlock = styled.div`
    width: 15%;
    border-top: 1px solid #c4c4c4;
    border-right: 1px solid #c4c4c4;
@@ -95,7 +94,7 @@ const D = styled.div`
    color: #f34901;
    padding-top: 50px;
 `
-const Div3 = styled.div`
+const DivBlock = styled.div`
    display: flex;
 `
 const TableBlock = styled('table')`
@@ -158,7 +157,6 @@ const DivImgBlock = styled.div`
 `
 const DivPriceBlock = styled.div`
    width: 20%;
-   /* margin-top: 20px; */
 `
 const PriceBlock = styled.p`
    font-family: 'Open Sans';

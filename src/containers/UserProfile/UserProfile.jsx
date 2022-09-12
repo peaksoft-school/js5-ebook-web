@@ -261,14 +261,12 @@ export const UserProfile = () => {
 }
 
 const ModalHeader = styled('h2')`
-   /* border: 1px solid red; */
    width: 100%;
    text-align: center;
    margin-bottom: 50px;
 `
 
 const ModalBlock = styled('div')`
-   /* border: 1px solid red; */
    display: flex;
    justify-content: center;
    flex-flow: row wrap;
@@ -279,32 +277,24 @@ const StyledInput = styled('div')`
    padding-top: 30px;
 `
 const StyledContainer = styled.div`
-   /* margin-top: 40px; */
    display: flex;
    justify-content: space-between;
    width: 100%;
-   /* border: 1px solid black; */
 `
 const StyledButton = styled(Button)`
-   /* width: 100%; */
    font-size: 16px;
-   /* height: 21px; */
    color: #ffffff;
    border: 1px solid blue;
-   /* display: flex;
-   justify-content: flex-end; */
    background-color: transparent;
    width: 135px;
    height: 42px;
    background-color: #1c1c1c;
-   /* padding: 10px 20px; */
    margin-right: 10px;
    &:hover {
       background-color: #1c1c1c;
    }
 `
 const StyledButton1 = styled(Button)`
-   /* width: 100%; */
    font-size: 16px;
    height: 21px;
    color: #f10000;
@@ -363,7 +353,5 @@ const DivStyledButton1 = styled.div`
    display: flex;
    justify-content: flex-end;
    align-items: flex-end;
-   /* margin-left: 100px; */
-   /* border: 2px solid red; */
    padding-top: 10%;
 `
