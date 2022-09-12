@@ -12,10 +12,8 @@ import {
    PutUserPfrofile,
    UserProfileAction,
 } from '../../store/slices/userProfileSlice'
-// import SnackBarDate from '../vendorLayouts/Promocode/SnackBarDate'
 import Modal from '../../Components/UI/Modal'
 import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
-// import { signUpClient } from '../../store/slices/authSlices'
 
 export const UserProfile = () => {
    const dispatch = useDispatch()
@@ -26,7 +24,6 @@ export const UserProfile = () => {
    )
    const [errorValue, setErrorValue] = useState('')
    const [isModal, setIsModal] = useState(false)
-   console.log(dataUser)
    const showModal = () => {
       setIsModal(true)
    }
@@ -150,7 +147,6 @@ export const UserProfile = () => {
    return (
       <>
          <GetSnackbar open={message} variant={status} message={message} />
-         {console.log(message)}
          <Modal
             open={isModal}
             justifyContent="flex-start"

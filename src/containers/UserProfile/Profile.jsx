@@ -9,8 +9,6 @@ export const Profile = () => {
    const navigate = useNavigate()
    const location = useLocation()
 
-   console.log(location)
-
    const UserHistoryNav = () => {
       navigate(`/profile/UserHistory`)
    }

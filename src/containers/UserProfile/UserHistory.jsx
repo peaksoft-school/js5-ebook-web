@@ -9,8 +9,6 @@ export const UserHistory = () => {
    const { userHistory, totalElements } = useSelector(
       (store) => store.userProfile
    )
-   console.log(totalElements)
-   console.log(userHistory)
    useEffect(() => {
       dispatch(getUserOperationHistory(userId))
    }, [])
