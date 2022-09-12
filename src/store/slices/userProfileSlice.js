@@ -4,9 +4,11 @@ import { exitApp } from './authSlices'
 
 const initialState = {
    dataUser: null,
+   userHistory: [],
    message: null,
    status: null,
    deleteUser: null,
+   totalElements: null,
 }
 
 const UserProfileSlice = createSlice({
@@ -16,6 +18,11 @@ const UserProfileSlice = createSlice({
       pending: (state) => {
          state.status = 'pending'
       },
+      deleteUser(state, action) {
+         console.log(action.payload.message)
+         state.message = action.payload.message
+         state.status = 'success'
+      },
       getUserprofile: (state, action) => {
          state.dataUser = {
             email: action.payload.email,
@@ -24,16 +31,21 @@ const UserProfileSlice = createSlice({
          }
       },
       putUserPfrofile: (state, action) => {
+         console.log(action)
          state.message = action.payload.message
-         state.status = 'fulfilled'
+         state.status = 'success'
+      },
+      clearMessage: (state) => {
+         state.message = null
+         state.status = null
       },
       error(state, action) {
-         state.message = action.payload.message
+         state.message = action.payload
          state.status = 'error'
       },
-      deleteUser(state, action) {
-         state.deleteUser = !state.deleteUser
-         state.message = action.payload
+      getOperationHistory(state, action) {
+         state.userHistory = action.payload.content
+         state.totalElements = action.payload.totalElements
       },
    },
 })
@@ -49,8 +61,16 @@ export function getUserprofile(id) {
       dispatch(UserProfileAction.getUserprofile(response))
    }
 }
-
-export const putUserPfrofile = (newUser) => {
+export function getUserOperationHistory(id) {
+   console.log(id)
+   return async (dispatch) => {
+      const response = await appFetch({
+         url: `/api/users/${id}/operationsHistory?page=1&size=1000`,
+      })
+      dispatch(UserProfileAction.getOperationHistory(response))
+   }
+}
+export const PutUserPfrofile = (newUser) => {
    return async (dispatch) => {
       try {
          dispatch(UserProfileAction.pending())
@@ -69,14 +89,16 @@ export const putUserPfrofile = (newUser) => {
 export const deleteUserProfile = (id) => {
    return async (dispatch) => {
       try {
+         dispatch(UserProfileAction.pending())
          const deleteuser = await appFetch({
             url: `/api/users/${id}`,
             method: 'DELETE',
          })
          dispatch(UserProfileAction.deleteUser(deleteuser))
          dispatch(exitApp())
+         console.log(deleteuser)
       } catch (error) {
-         dispatch(UserProfileAction.rejected(error))
+         dispatch(UserProfileAction.error(error))
       }
    }
 }

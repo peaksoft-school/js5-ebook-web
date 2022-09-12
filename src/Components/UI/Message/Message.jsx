@@ -48,10 +48,10 @@ function Message({ spanValues, onClick, saveText }) {
                fontFamily="Open Sans"
                onClick={onClick}
             >
-               Отправить{' '}
-               <StyledIconMessage>
-                  <IconMessage />
-               </StyledIconMessage>
+               Отправить
+               {/* <StyledIconMessage> */}
+               <IconMessage />
+               {/* </StyledIconMessage> */}
             </Button>
          </div>
       </form>
@@ -131,6 +131,6 @@ const Span = styled.span`
       color: #f8f8f8;
    }
 `
-const StyledIconMessage = styled.span`
-   padding-left: 20px;
-`
+// const StyledIconMessage = styled.span`
+/* padding-left: 20px; */
+// `

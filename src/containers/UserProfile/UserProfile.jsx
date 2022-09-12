@@ -9,18 +9,21 @@ import PaswordInput from '../../Components/UI/Inputs/PaswordInput'
 import {
    deleteUserProfile,
    getUserprofile,
-   putUserPfrofile,
+   PutUserPfrofile,
+   UserProfileAction,
 } from '../../store/slices/userProfileSlice'
 // import SnackBarDate from '../vendorLayouts/Promocode/SnackBarDate'
 import Modal from '../../Components/UI/Modal'
+import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
 // import { signUpClient } from '../../store/slices/authSlices'
 
 export const UserProfile = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { id: userId } = useSelector((store) => store.auth.user)
-   const { dataUser, message } = useSelector((store) => store.userProfile)
-   console.log(message)
+   const { dataUser, message, status } = useSelector(
+      (store) => store.userProfile
+   )
    const [errorValue, setErrorValue] = useState('')
    const [isModal, setIsModal] = useState(false)
    console.log(dataUser)
@@ -100,6 +103,18 @@ export const UserProfile = () => {
    })
 
    useEffect(() => {
+      let clear = setTimeout(() => {}, 3000)
+      if (message) {
+         clear = setTimeout(() => {
+            dispatch(UserProfileAction.clearMessage())
+         }, 3000)
+      }
+      return () => {
+         clearTimeout(clear)
+      }
+   }, [message])
+
+   useEffect(() => {
       dispatch(getUserprofile(userId))
    }, [])
    useEffect(() => {
@@ -130,10 +145,12 @@ export const UserProfile = () => {
          newPassword,
          newPassword2,
       }
-      dispatch(putUserPfrofile(newUser))
+      dispatch(PutUserPfrofile(newUser))
    }
    return (
       <>
+         <GetSnackbar open={message} variant={status} message={message} />
+         {console.log(message)}
          <Modal
             open={isModal}
             justifyContent="flex-start"
