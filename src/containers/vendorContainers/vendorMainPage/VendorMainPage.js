@@ -4,7 +4,7 @@ import { Snackbar, styled } from '@mui/material'
 import myHearticon from '../../../assets/icons/mainEdite/myHearticon.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
-import SelectBooks from '../../adminContainers/Admin/SelectBooks'
+// import SelectBooks from '../../adminContainers/Admin/SelectBooks'
 import HeaderMainPage from './HeaderMainPage'
 import strel from '../../../assets/icons/strel.svg'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
@@ -41,7 +41,7 @@ const VendorMainPage = () => {
    const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
    const vendorId = useSelector((store) => store.auth.user.id)
 
-   const [getById, setGetById] = useState()
+   // const [getById, setGetById] = useState()
 
    const bookType = [
       { name: 'Все', id: 1, text: 'ALL' },
@@ -63,6 +63,8 @@ const VendorMainPage = () => {
       setSelectId(typeData)
    }
 
+   // console.log(getById)
+
    useEffect(() => {
       dispatch(getMainBooks(selectId, next, vendorId))
    }, [selectId, next, bookSuccsess])
@@ -83,7 +85,7 @@ const VendorMainPage = () => {
          )}
          <GetSnackbar
             open={bookError || bookSuccsess}
-            message={bookSuccsess ? 'Пользователь успешно удален!' : bookError}
+            message={bookSuccsess ? 'Книга удалена!' : bookError}
             variant={bookError ? 'error' : 'success'}
          />
          <HeaderMainPage />
@@ -130,8 +132,8 @@ const VendorMainPage = () => {
                                 </div>
                              </CopyLink>
                           </BooksWrapper>
-                          <MeatBallsDiv onClick={() => setGetById(book.id)}>
-                             <UpdateBooks id={getById} />
+                          <MeatBallsDiv>
+                             <UpdateBooks id={book.id} />
                           </MeatBallsDiv>
                        </BooksContainer>
                     </Books>

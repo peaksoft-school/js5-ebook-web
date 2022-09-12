@@ -22,7 +22,7 @@ const Promocode = () => {
          <StyledPromoBtnBlock>
             <GetSnackbar
                open={snackbar || Boolean(success) || Boolean(errorPromo)}
-               message={success || errorPromo || ''}
+               message={success || errorPromo || 'Заполняйте поля!'}
                variant={success ? 'success' : 'error'}
             />
             <Button
