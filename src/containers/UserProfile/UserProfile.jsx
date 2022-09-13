@@ -144,6 +144,7 @@ export const UserProfile = () => {
       }
       dispatch(PutUserPfrofile(newUser))
    }
+
    return (
       <>
          <GetSnackbar open={message} variant={status} message={message} />

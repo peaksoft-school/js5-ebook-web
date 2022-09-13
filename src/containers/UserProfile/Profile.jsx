@@ -8,6 +8,7 @@ import Button from '../../Components/UI/Button/Button'
 export const Profile = () => {
    const navigate = useNavigate()
    const location = useLocation()
+   console.log(location)
 
    const UserHistoryNav = () => {
       navigate(`/profile/UserHistory`)
@@ -16,7 +17,8 @@ export const Profile = () => {
       navigate(`/profile/UserProfile`)
    }
    const pathTranslate = {
-      profile: 'Главная',
+      profile: 'Профиль',
+      userProfile: 'Личная информация',
    }
    return (
       <>
