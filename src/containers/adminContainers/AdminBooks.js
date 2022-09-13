@@ -7,6 +7,7 @@ import { BookType } from '../../utils/constants/constants'
 import SelectBooks from './SelectBooks'
 import { setBooks, setGenres } from '../../store/slices/globalSlices'
 import Book from './Book'
+import Button from '../../Components/UI/Button/Button'
 
 const arr = [
    {
@@ -28,9 +29,12 @@ const arr = [
 ]
 
 export default function AdminBooks() {
-   const { genres: booktypes, books } = useSelector(
-      (store) => store.globalValues
-   )
+   const {
+      genres: booktypes,
+      books,
+      totalElements,
+   } = useSelector((store) => store.globalValues)
+
    const dispatch = useDispatch()
    const [requestObj, setRequestObj] = useState({
       genres: [],
@@ -43,8 +47,13 @@ export default function AdminBooks() {
       page: null,
       size: null,
    })
+   const moreProducts = 8
+   const [more, setMore] = useState(moreProducts)
+   const handleMoreBooks = () => {
+      setMore(more + moreProducts)
+   }
    useEffect(() => {
-      dispatch(setBooks(requestObj))
+      dispatch(setBooks(requestObj, more))
    }, [requestObj])
    useEffect(() => {
       dispatch(setGenres())
@@ -86,7 +95,7 @@ export default function AdminBooks() {
                onClick={onClickSelect}
             />
          </SelectBlock>
-
+         <TotalElements>Всего:{totalElements}</TotalElements>
          <Books>
             {books &&
                books.map((book) => (
@@ -101,6 +110,9 @@ export default function AdminBooks() {
                   />
                ))}
          </Books>
+         {more < totalElements && (
+            <SeeMore onClick={handleMoreBooks}>Смотреть больше</SeeMore>
+         )}
       </AdminBooksBlock>
    )
 }
@@ -119,4 +131,25 @@ const Books = styled('div')`
    justify-content: flex-start;
    flex-wrap: wrap;
    margin-right: -40px;
+`
+const TotalElements = styled('p')`
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   color: #b5b5b5;
+   line-height: 130%;
+`
+const SeeMore = styled(Button)`
+   border: 1px solid #c4c4c4;
+   background: #f8f8f8;
+   width: 100%;
+   text-align: center;
+   padding: 10px;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 14px;
+   margin-top: 50px;
+   color: gray;
 `

@@ -1,35 +1,23 @@
 import { styled } from '@mui/material'
-import { useNavigate } from 'react-router'
 import React, { useState } from 'react'
 import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBook.svg'
 import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
 import { BookType } from '../../utils/constants/constants'
-import { ReactComponent as Edit } from '../../assets/icons/Edit.svg'
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg'
 import DeleteBooks from './DeleteBooks'
 import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopUpMeatBalls'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
-   const navigate = useNavigate()
    const [showRejectModal, setShowRejectModal] = useState(false)
    const menuMeatBall = [
       {
-         id: 55,
-         text: 'Редактировать',
-         icon: <Edit />,
-         onClick: editBook,
-      },
-      {
          id: 2,
-         text: 'Удалить',
+         text: 'Блокировать',
          icon: <Delete />,
          onClick: deleteBook,
       },
    ]
 
-   function editBook() {
-      navigate('/books/addBook')
-   }
    function deleteBook() {
       setShowRejectModal(true)
    }

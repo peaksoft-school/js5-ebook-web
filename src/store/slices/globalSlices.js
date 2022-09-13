@@ -8,6 +8,7 @@ const initialState = {
    books: '',
    sortGenres: '',
    deleteMessage: '',
+   totalElements: null,
 }
 
 const globalValues = createSlice({
@@ -32,6 +33,9 @@ const globalValues = createSlice({
       getDeleteMessage: (state, action) => {
          state.deleteMessage = action.payload
       },
+      setTotalElements(state, action) {
+         state.totalElements = action.payload
+      },
    },
 })
 
@@ -48,12 +52,13 @@ export function updateSortGenres(value) {
    }
 }
 
-export function setBooks(request) {
+export function setBooks(request, more) {
    return async (dispatch) => {
       const books = await appFetch({
-         url: `/api/admin/books${sortRequestApplic(request)}`,
+         url: `/api/admin/books${sortRequestApplic(request, more)}`,
       })
       dispatch(globalValuesAction.setBooks(books.content))
+      dispatch(globalValuesAction.setTotalElements(books.totalElements))
    }
 }
 
