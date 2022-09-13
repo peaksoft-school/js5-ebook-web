@@ -5,10 +5,11 @@ import { sortRequestApplic } from '../../utils/helpers/helpers'
 
 const initialState = {
    genres: '',
-   books: '',
+   books: [],
    sortGenres: '',
    deleteMessage: '',
    totalElements: null,
+   totalPages: null,
 }
 
 const globalValues = createSlice({
@@ -19,7 +20,12 @@ const globalValues = createSlice({
          state.genres = action.payload
       },
       setBooks: (state, action) => {
-         state.books = action.payload
+         action.payload.forEach((element) => {
+            const prev = state.books.find((el) => el.id === element.id)
+            if (!prev) {
+               state.books.push(element)
+            }
+         })
       },
       updateSortGenres: (state, action) => {
          const arr = action.payload.filter((el) => el.searchType === 'GENRE')
@@ -35,6 +41,9 @@ const globalValues = createSlice({
       },
       setTotalElements(state, action) {
          state.totalElements = action.payload
+      },
+      setTotalPages(state, action) {
+         state.totalPages = action.payload
       },
    },
 })
@@ -52,13 +61,14 @@ export function updateSortGenres(value) {
    }
 }
 
-export function setBooks(request, more) {
+export function setBooks(request) {
    return async (dispatch) => {
       const books = await appFetch({
-         url: `/api/admin/books${sortRequestApplic(request, more)}`,
+         url: `/api/admin/books${sortRequestApplic(request)}`,
       })
       dispatch(globalValuesAction.setBooks(books.content))
       dispatch(globalValuesAction.setTotalElements(books.totalElements))
+      dispatch(globalValuesAction.setTotalPages(books.totalPages))
    }
 }
 
@@ -74,7 +84,7 @@ export function deleteBookAction(id, onClose) {
    return async (dispatch) => {
       try {
          const books = await appFetch({
-            url: `/api/book/delete/${id}`,
+            url: '',
             method: 'DELETE',
          })
          dispatch(globalValuesAction.getDeleteMessage(books))
@@ -82,7 +92,7 @@ export function deleteBookAction(id, onClose) {
          toast.success(books.message)
          return books
       } catch (error) {
-         toast.error('Не удалось удалить!')
+         toast.error('Не удалось блокироват!')
          return error
       }
    }

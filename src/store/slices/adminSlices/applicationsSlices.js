@@ -19,22 +19,6 @@ const applicationsSlices = createSlice({
       getApplications(state, action) {
          state.applications = action.payload
       },
-      // getApplications(state, action) {
-      //    const updatedApplications = []
-
-      //    action.payload.array.forEach((newApplicationn) => {
-      //       const isNew = state.applications.find(
-      //          (oldApplication) =>
-      //             oldApplication.id === newApplicationn.id &&
-      //             oldApplication.enabled !== newApplicationn.enabled
-      //       )
-      //       if (!isNew) {
-      //          updatedApplications.push(newApplicationn)
-      //       }
-      //    })
-
-      //    state.applications = updatedApplications
-      // },bul ishtebedi
 
       seeMoreGetApplications(state, action) {
          action.payload.forEach((element) => {

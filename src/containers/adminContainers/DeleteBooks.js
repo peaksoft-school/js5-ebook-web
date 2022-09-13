@@ -51,7 +51,7 @@ const DeleteBooks = ({ id, open, onClose }) => {
                height="42px"
                onClick={() => deleteBook()}
             >
-               Удалить
+               Блокировать
             </Button>
          </DivButton>
       </Modal>

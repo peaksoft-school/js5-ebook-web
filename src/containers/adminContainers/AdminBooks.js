@@ -33,6 +33,7 @@ export default function AdminBooks() {
       genres: booktypes,
       books,
       totalElements,
+      totalPages,
    } = useSelector((store) => store.globalValues)
 
    const dispatch = useDispatch()
@@ -44,16 +45,12 @@ export default function AdminBooks() {
       languages: null,
       search: 'all',
       sortBy: null,
-      page: null,
-      size: null,
+      page: 1,
+      size: 8,
    })
-   const moreProducts = 8
-   const [more, setMore] = useState(moreProducts)
-   const handleMoreBooks = () => {
-      setMore(more + moreProducts)
-   }
+   const [showSeeMore, setShowSeeMore] = useState(false)
    useEffect(() => {
-      dispatch(setBooks(requestObj, more))
+      dispatch(setBooks(requestObj))
    }, [requestObj])
    useEffect(() => {
       dispatch(setGenres())
@@ -69,6 +66,24 @@ export default function AdminBooks() {
          return {
             ...prev,
             [key]: id,
+         }
+      })
+   }
+   useEffect(() => {
+      if (totalPages) {
+         if (totalPages === requestObj.page || totalPages === 0) {
+            setShowSeeMore(false)
+         } else {
+            setShowSeeMore(true)
+         }
+      }
+   }, [requestObj, totalPages])
+
+   const getMoreBooks = () => {
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            page: prev.page + 1,
          }
       })
    }
@@ -109,10 +124,10 @@ export default function AdminBooks() {
                      bookType={book.bookType}
                   />
                ))}
+            {showSeeMore && (
+               <SeeMore onClick={getMoreBooks}>Смотреть больше</SeeMore>
+            )}
          </Books>
-         {more < totalElements && (
-            <SeeMore onClick={handleMoreBooks}>Смотреть больше</SeeMore>
-         )}
       </AdminBooksBlock>
    )
 }
@@ -131,6 +146,7 @@ const Books = styled('div')`
    justify-content: flex-start;
    flex-wrap: wrap;
    margin-right: -40px;
+   padding-bottom: 30px;
 `
 const TotalElements = styled('p')`
    font-family: 'Open Sans';
