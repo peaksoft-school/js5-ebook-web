@@ -9,7 +9,7 @@ import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 
-import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()

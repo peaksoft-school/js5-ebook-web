@@ -5,7 +5,7 @@ import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.s
 import { BookType } from '../../utils/constants/constants'
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg'
 import DeleteBooks from './DeleteBooks'
-import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopUpMeatBalls'
+import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopupMeatBalls'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
    const [showRejectModal, setShowRejectModal] = useState(false)
