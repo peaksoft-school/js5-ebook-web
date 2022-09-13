@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-   snackbar: false,
+   snackbar: true,
+   rejectModal: false,
 }
 const uiSlices = createSlice({
    name: 'uiSlice',
@@ -12,6 +13,12 @@ const uiSlices = createSlice({
       },
       hideSnackbar(state) {
          state.snackbar = false
+      },
+      showRejectModal(state) {
+         state.rejectModal = true
+      },
+      hideRejectModal(state) {
+         state.rejectModal = false
       },
    },
 })

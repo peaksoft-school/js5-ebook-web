@@ -1,6 +1,6 @@
 import React from 'react'
-import Snackbar from './Snackbar'
 import { ReactComponent as OkSnackBar } from '../../../assets/icons/snackbar/fulfilled.svg'
+import Snackbar from './Snackbar'
 import { ReactComponent as Error } from '../../../assets/icons/snackbar/error.svg'
 
 const GetSnackbar = ({
@@ -18,7 +18,6 @@ const GetSnackbar = ({
             severity=""
             message={message}
             icon={variant === 'success' ? <OkSnackBar /> : <Error />}
-            // width="400px"
             handleClose={handleClose}
             horizontal={horizontal}
             {...props}
@@ -30,7 +29,7 @@ const GetSnackbar = ({
          open={open}
          severity=""
          message={message}
-         // width="400px"
+         width="400px"
          handleClose={handleClose}
          horizontal={horizontal}
          {...props}
