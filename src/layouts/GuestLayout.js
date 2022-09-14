@@ -8,7 +8,7 @@ import IconButton from './IconButton'
 import { ReactComponent as Message } from '../assets/icons/header/message.svg'
 import { ReactComponent as Heart } from '../assets/icons/header/heart.svg'
 import Genre from './Genre'
-import { UserProfileAction } from '../store/slices/userProfileSlice'
+import { userProfileAction } from '../store/slices/userProfileSlice'
 import Navbar from './Navbar'
 import AuthenticationButtons from './AuthenticationButtons'
 import Footer from './Footer'
@@ -23,7 +23,7 @@ function GuestLayout() {
       let clear = setTimeout(() => {}, 3000)
       if (message) {
          clear = setTimeout(() => {
-            dispatch(UserProfileAction.clearMessage())
+            dispatch(userProfileAction.clearMessage())
          }, 3000)
       }
       return () => {

@@ -10,7 +10,7 @@ import {
    deleteUserProfile,
    getUserprofile,
    PutUserPfrofile,
-   UserProfileAction,
+   userProfileAction,
 } from '../../store/slices/userProfileSlice'
 import Modal from '../../Components/UI/Modal'
 import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
@@ -100,14 +100,14 @@ export const UserProfile = () => {
    })
 
    useEffect(() => {
-      let clear = setTimeout(() => {}, 3000)
+      let timerId = null
       if (message) {
-         clear = setTimeout(() => {
-            dispatch(UserProfileAction.clearMessage())
+         timerId = setTimeout(() => {
+            dispatch(userProfileAction.clearMessage())
          }, 3000)
       }
       return () => {
-         clearTimeout(clear)
+         clearTimeout(timerId)
       }
    }, [message])
 
@@ -246,6 +246,7 @@ export const UserProfile = () => {
                         error={isLastPasswordValue2}
                         onBlur={onBlurLastPasswordHandler2}
                      />
+                     {errorValue && <SpanStyled>{errorValue}</SpanStyled>}
                   </StyledPasInput>
                   <DivStyledButton1>
                      <StyledButton onClick={UsersCardNavHandler}>
@@ -254,7 +255,6 @@ export const UserProfile = () => {
                      <StyledButton type="submit">Сохранить</StyledButton>
                   </DivStyledButton1>
                </StyledPasswordInput>
-               {errorValue && <span>{errorValue}</span>}
             </StyledContainer>
          </DivCont>
       </>
@@ -355,4 +355,7 @@ const DivStyledButton1 = styled.div`
    justify-content: flex-end;
    align-items: flex-end;
    padding-top: 10%;
+`
+const SpanStyled = styled.span`
+   color: red;
 `

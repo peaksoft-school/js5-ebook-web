@@ -1,17 +1,26 @@
 import styled from '@emotion/styled'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import Button from '../../Components/UI/Button/Button'
 import { getUserOperationHistory } from '../../store/slices/userProfileSlice'
 
+const card = 3
 export const UserHistory = () => {
    const dispatch = useDispatch()
    const { id: userId } = useSelector((store) => store.auth.user)
    const { userHistory, totalElements } = useSelector(
       (store) => store.userProfile
    )
+   const [nextCart, setNextCart] = useState(card)
+   const nextCarthandle = () => {
+      setNextCart(card + nextCart)
+   }
+   const onCloseHandler = () => {
+      setNextCart(card)
+   }
    useEffect(() => {
-      dispatch(getUserOperationHistory(userId))
-   }, [])
+      dispatch(getUserOperationHistory(userId, nextCart))
+   }, [nextCart])
    return (
       <ContainerBlock>
          <TableBlock>
@@ -30,32 +39,46 @@ export const UserHistory = () => {
          </TableBlock>
          <DivBlock>
             <DivTotalBlock>Купленные({totalElements}книг)</DivTotalBlock>
-            <Div>
-               {userHistory.map((i) => (
-                  <StyledBlock>
-                     <DivImgBlock key={i.id}>
-                        <ImgStyled src={i.mainImage} alt="foto" />
-                     </DivImgBlock>
-                     <DivAuthor>
-                        <DivName>{i.name}</DivName>
-                        <h3>{i.author}</h3>
-                     </DivAuthor>
-                     <DivQuantityOfBook>
-                        <p>{i.quantityOfBook}шт.</p>
-                     </DivQuantityOfBook>
-                     <DivPriceBlock>
-                        <PromocodeBlock>промокод{i.promocode}%</PromocodeBlock>
-                        <PriceBlock>{i.price} C</PriceBlock>
-                     </DivPriceBlock>
-                     <DivPurchaseDate>
-                        <p>
-                           {i.purchaseDate[0]}.{i.purchaseDate[1]}.
-                           {i.purchaseDate[2]}
-                        </p>
-                     </DivPurchaseDate>
-                  </StyledBlock>
-               ))}
-            </Div>
+            <ButtonBlock>
+               <Div>
+                  {userHistory.map((i) => (
+                     <StyledBlock key={i.id}>
+                        <DivImgBlock>
+                           <ImgStyled src={i.mainImage} alt="foto" />
+                        </DivImgBlock>
+                        <DivAuthor>
+                           <DivName>
+                              {i.name.length > 17
+                                 ? `${i.name.substring(0, 17)}...`
+                                 : `${i.name}`}
+                           </DivName>
+                           <h3>{i.author}</h3>
+                        </DivAuthor>
+                        <DivQuantityOfBook>
+                           <p>{i.quantityOfBook}шт.</p>
+                        </DivQuantityOfBook>
+                        <DivPriceBlock>
+                           <PromocodeBlock>
+                              промокод{i.promocode}%
+                           </PromocodeBlock>
+                           <PriceBlock>{i.price} C</PriceBlock>
+                        </DivPriceBlock>
+                        <DivPurchaseDate>
+                           <p>
+                              {i.purchaseDate[0]}.{i.purchaseDate[1]}.
+                              {i.purchaseDate[2]}
+                           </p>
+                        </DivPurchaseDate>
+                     </StyledBlock>
+                  ))}
+               </Div>
+               {nextCart < totalElements && (
+                  <StyledButton onClick={nextCarthandle}>SEE MORE</StyledButton>
+               )}
+               {nextCart > card && (
+                  <StyledButton onClick={onCloseHandler}>return</StyledButton>
+               )}
+            </ButtonBlock>
          </DivBlock>
       </ContainerBlock>
    )
@@ -64,7 +87,9 @@ export const UserHistory = () => {
 const ContainerBlock = styled.div`
    margin-top: 50px;
 `
-
+const ButtonBlock = styled.div`
+   width: 100%;
+`
 const DivName = styled('h4')`
    font-family: 'Open Sans';
    font-style: normal;
@@ -214,4 +239,11 @@ const PromocodeBlock = styled.p`
    font-size: 14px;
    line-height: 130%;
    color: #f10000;
+`
+
+const StyledButton = styled(Button)`
+   width: 100%;
+   margin-top: 25px;
+   color: white;
+   margin-bottom: 15px;
 `

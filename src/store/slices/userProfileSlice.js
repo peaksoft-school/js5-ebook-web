@@ -50,7 +50,7 @@ const UserProfileSlice = createSlice({
    },
 })
 
-export const UserProfileAction = UserProfileSlice.actions
+export const userProfileAction = UserProfileSlice.actions
 export default UserProfileSlice
 
 export function getUserprofile(id) {
@@ -58,30 +58,30 @@ export function getUserprofile(id) {
       const response = await appFetch({
          url: `/api/users/${id}`,
       })
-      dispatch(UserProfileAction.getUserprofile(response))
+      dispatch(userProfileAction.getUserprofile(response))
    }
 }
-export function getUserOperationHistory(id) {
+export function getUserOperationHistory(id, nextCart) {
    console.log(id)
    return async (dispatch) => {
       const response = await appFetch({
-         url: `/api/users/${id}/operationsHistory?page=1&size=1000`,
+         url: `/api/users/${id}/operationsHistory?page=1&size=${nextCart}`,
       })
-      dispatch(UserProfileAction.getOperationHistory(response))
+      dispatch(userProfileAction.getOperationHistory(response))
    }
 }
 export const PutUserPfrofile = (newUser) => {
    return async (dispatch) => {
       try {
-         dispatch(UserProfileAction.pending())
+         dispatch(userProfileAction.pending())
          const res = await appFetch({
             method: 'PUT',
             url: `/api/users`,
             body: newUser,
          })
-         dispatch(UserProfileAction.putUserPfrofile(res))
+         dispatch(userProfileAction.putUserPfrofile(res))
       } catch (error) {
-         dispatch(UserProfileAction.error(error))
+         dispatch(userProfileAction.error(error))
       }
    }
 }
@@ -89,16 +89,15 @@ export const PutUserPfrofile = (newUser) => {
 export const deleteUserProfile = (id) => {
    return async (dispatch) => {
       try {
-         dispatch(UserProfileAction.pending())
+         dispatch(userProfileAction.pending())
          const deleteuser = await appFetch({
             url: `/api/users/${id}`,
             method: 'DELETE',
          })
-         dispatch(UserProfileAction.deleteUser(deleteuser))
+         dispatch(userProfileAction.deleteUser(deleteuser))
          dispatch(exitApp())
-         console.log(deleteuser)
       } catch (error) {
-         dispatch(UserProfileAction.error(error))
+         dispatch(userProfileAction.error(error))
       }
    }
 }
