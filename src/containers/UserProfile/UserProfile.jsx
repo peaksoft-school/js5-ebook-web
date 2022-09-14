@@ -46,7 +46,7 @@ export const UserProfile = () => {
       isValidValue: isNameValue,
       onBlurHandler: onBlurNameHandler,
    } = Validation((value) => {
-      if (value.length <= 5) {
+      if (value.length <= 2) {
          return true
       }
       return false

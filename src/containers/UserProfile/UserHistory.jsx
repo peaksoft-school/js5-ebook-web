@@ -21,6 +21,7 @@ export const UserHistory = () => {
    useEffect(() => {
       dispatch(getUserOperationHistory(userId, nextCart))
    }, [nextCart])
+
    return (
       <ContainerBlock>
          <TableBlock>
@@ -61,7 +62,10 @@ export const UserHistory = () => {
                            <PromocodeBlock>
                               промокод{i.promocode}%
                            </PromocodeBlock>
-                           <PriceBlock>{i.price} C</PriceBlock>
+                           <PriceBlock>
+                              <SpanStyled>{i.price}C</SpanStyled>
+                              {i.price - (i.price / 100) * i.promocode}
+                           </PriceBlock>
                         </DivPriceBlock>
                         <DivPurchaseDate>
                            <p>
@@ -73,10 +77,14 @@ export const UserHistory = () => {
                   ))}
                </Div>
                {nextCart < totalElements && (
-                  <StyledButton onClick={nextCarthandle}>SEE MORE</StyledButton>
+                  <StyledButton onClick={nextCarthandle}>
+                     Смотреть больше
+                  </StyledButton>
                )}
                {nextCart > card && (
-                  <StyledButton onClick={onCloseHandler}>return</StyledButton>
+                  <StyledButton2 onClick={onCloseHandler}>
+                     Свернуть
+                  </StyledButton2>
                )}
             </ButtonBlock>
          </DivBlock>
@@ -183,6 +191,18 @@ const DivImgBlock = styled.div`
 const DivPriceBlock = styled.div`
    width: 20%;
 `
+
+const SpanStyled = styled.span`
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 130%;
+   text-decoration-line: line-through;
+   color: #969696;
+   margin-right: 8px;
+`
+
 const PriceBlock = styled.p`
    font-family: 'Open Sans';
    font-style: normal;
@@ -246,4 +266,11 @@ const StyledButton = styled(Button)`
    margin-top: 25px;
    color: white;
    margin-bottom: 15px;
+`
+const StyledButton2 = styled(Button)`
+   width: 100%;
+   margin-top: 25px;
+   color: white;
+   margin-bottom: 15px;
+   background-color: black;
 `

@@ -62,7 +62,6 @@ export function getUserprofile(id) {
    }
 }
 export function getUserOperationHistory(id, nextCart) {
-   console.log(id)
    return async (dispatch) => {
       const response = await appFetch({
          url: `/api/users/${id}/operationsHistory?page=1&size=${nextCart}`,
@@ -81,7 +80,7 @@ export const PutUserPfrofile = (newUser) => {
          })
          dispatch(userProfileAction.putUserPfrofile(res))
       } catch (error) {
-         dispatch(userProfileAction.error(error))
+         dispatch(userProfileAction.error('Пароль не верен!'))
       }
    }
 }
