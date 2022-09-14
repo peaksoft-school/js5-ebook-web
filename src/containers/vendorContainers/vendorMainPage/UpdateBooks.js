@@ -7,7 +7,7 @@ import {
    getMainBooksDelete,
    getMainBooksWithId,
 } from '../../../store/createActions/vendorMainPagesActions'
-import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
 
 export default function UpdateBooks({ id }) {
    const option = [
