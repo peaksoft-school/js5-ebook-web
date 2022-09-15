@@ -18,7 +18,6 @@ const GetSnackbar = ({
             severity=""
             message={message}
             icon={variant === 'success' ? <OkSnackBar /> : <Error />}
-            width="400px"
             handleClose={handleClose}
             horizontal={horizontal}
             {...props}

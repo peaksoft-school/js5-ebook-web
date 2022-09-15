@@ -52,15 +52,27 @@ const Icon = styled('span')`
 const ImageBlock = styled('div')`
    display: flex;
    align-items: center;
+<<<<<<< HEAD
    /* width: 20px; */
    /* height: 20px; */
+=======
+   width: 20px;
+   height: 20px;
+>>>>>>> fd7e7f668a1b203cdf8ba3bfd55265e4c6dbe61e
 `
 const WrapperMeatballs = styled.div`
    padding: 3px;
 `
 const Img = styled.img`
+<<<<<<< HEAD
    /* width: 100%; */
    /* cursor: pointer; */
    /* height: 100%; */
    cursor: pointer;
+=======
+   width: 100%;
+   cursor: pointer;
+   height: 100%;
+   cursor: pointer;
+>>>>>>> fd7e7f668a1b203cdf8ba3bfd55265e4c6dbe61e
 `

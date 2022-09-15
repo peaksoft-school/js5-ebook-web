@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import bookLikeIcon from '../../../assets/icons/bookLike.svg'
-import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
 import Button from '../../../Components/UI/Button/Button'
 
 const menuMeatBall = [
