@@ -1,17 +1,20 @@
 import styled from '@emotion/styled'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useState, useEffect } from 'react'
 import Button from '../../../Components/UI/Button/Button'
-import { getAdminUserWithId } from '../../../store/slices/getAdminUsersSlices'
+import {
+   deleteAdminUser,
+   getAdminUserWithId,
+} from '../../../store/slices/getAdminUsersSlices'
 import Modal from '../../../Components/UI/Modal'
 import Spinner from '../../../Components/UI/Spinner'
 
 const AdminUserProfile = () => {
-   const { user, status } = useSelector((state) => state.adminUsers)
+   const { user, status, deleteUser } = useSelector((state) => state.adminUsers)
    const { userId } = useParams()
    const dispatch = useDispatch()
-   // const navigate = useNavigate()
+   const navigate = useNavigate()
 
    const [isShowSpinner, setIsShowSpinner] = useState()
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
@@ -30,19 +33,19 @@ const AdminUserProfile = () => {
       dispatch(getAdminUserWithId(userId))
    }, [])
 
-   // const handleDeleteuser = () => {
-   //    dispatch(deleteAdminuser(userId))
-   // }
+   const handleDeleteUser = () => {
+      dispatch(deleteAdminUser(userId))
+   }
 
-   // const handleusersNav = () => {
-   //    navigate('/users')
-   // }
+   const handleusersNav = () => {
+      navigate('/users')
+   }
 
-   // useEffect(() => {
-   //    if (deleteuser) {
-   //       handleusersNav()
-   //    }
-   // }, [deleteuser])
+   useEffect(() => {
+      if (deleteUser) {
+         handleusersNav()
+      }
+   }, [deleteUser])
 
    return (
       <StyledCont>
@@ -94,7 +97,9 @@ const AdminUserProfile = () => {
                >
                   Отменить
                </Button>
-               <Button variant="default">Удалить</Button>
+               <Button variant="default" onClick={handleDeleteUser}>
+                  Удалить
+               </Button>
             </StyledModalBtnCont>
          </Modal>
       </StyledCont>

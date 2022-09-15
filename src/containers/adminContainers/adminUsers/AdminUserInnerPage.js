@@ -21,7 +21,7 @@ const tabsArray = [
 const AdminUserInnerPage = () => {
    return (
       <StyledTabBlock>
-         <TabPanel tabsArray={tabsArray} />
+         <TabPanel tabsArray={tabsArray} width="200px" />
       </StyledTabBlock>
    )
 }
