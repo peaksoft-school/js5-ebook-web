@@ -1,20 +1,49 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import styled from 'styled-components'
 // import { useNavigate } from 'react-router'
-import { Link, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import MainPageSlider from '../../Components/UI/MainPageslider'
+import { сatalogActions } from '../../store/slices/catalogSlice'
+import { SortBy, BookType } from '../../utils/constants/constants'
 
-export const BestComponent = ({ variant, books }) => {
+export const BestComponent = ({ variant, books, type }) => {
+   // const { externalSetting } = useSelector((store) => store.books)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
    const [book, setBook] = React.useState()
    const location = useLocation()
    const onClickCard = (book) => {
       setBook(book)
    }
+   const onClickBtn = (e) => {
+      e.preventDefault()
+      if (type === SortBy.BESTSELLER) {
+         dispatch(
+            сatalogActions.setExternalSetting({
+               key: 'sortBy',
+               value: { type: SortBy.BESTSELLER, label: 'Бестселлеры' },
+            })
+         )
+      }
+      if (type === BookType.ELECTRONIC_BOOK) {
+         dispatch(
+            сatalogActions.setExternalSetting({
+               key: 'bookType',
+               value: BookType.ELECTRONIC_BOOK,
+            })
+         )
+      }
+      navigate(`${location.pathname}/catalog`)
+   }
    return (
       <StyledBestSlider>
          <StyledTitle>
             <StyledBestText>{variant}</StyledBestText>
-            <Link to={`${location.pathname}/catalog`}>Смотреть все</Link>
+            <a href="#" onClick={onClickBtn}>
+               Смотреть все
+            </a>
          </StyledTitle>
          <StyledBookSliderBlock>
             <StyledBookTitle>

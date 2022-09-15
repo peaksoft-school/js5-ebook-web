@@ -3,10 +3,7 @@ import appFetch from '../../hooks/appFetch'
 // import appFetch from '../../hooks/appFetch'
 
 const initialState = {
-   books: {
-      favoriteBooksResponses: null,
-      bestsellerBooksResponses: null,
-   },
+   books: {},
    message: null,
    status: null,
 }
@@ -33,15 +30,6 @@ export const getBookMainPage = () => {
       const result = await appFetch({
          url: '/api/users/mainPage',
       })
-      console.log(result)
       dispatch(mainPageActions.setBooks(result))
    }
 }
-
-// export const postEmail = (email) => {
-//    return async () => {
-//       const result = appFetch({
-//          url: '',
-//       })
-//    }
-// }

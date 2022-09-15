@@ -6,6 +6,7 @@ import { sortRequestApplic } from '../../../utils/helpers/helpers'
 export const applicationsActions = (request) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
@@ -25,9 +26,9 @@ export const applicationsActions = (request) => {
                result.getApplications.totalPages
             )
          )
-         return result
+         dispatch(applicationSlicesActions.success())
       } catch (error) {
-         return error
+         dispatch(applicationSlicesActions.rejected())
       }
    }
 }
@@ -40,7 +41,7 @@ export const seeMoreGetApplicationsActions = (request) => {
          })
 
          dispatch(
-            applicationSlicesActions.getApplications(
+            applicationSlicesActions.seeMoreGetApplications(
                result.getApplications.content
             )
          )

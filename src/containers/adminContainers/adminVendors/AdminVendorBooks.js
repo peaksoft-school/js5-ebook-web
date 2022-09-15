@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import Divider from '@mui/material/Divider'
-import { getAdminVendorBooks } from '../../../store/slices/getAdminVendorsSlice'
+import {
+   getAdminVendorBooks,
+   setAdminVendorBooks,
+} from '../../../store/slices/getAdminVendorsSlice'
 import SelectBooks from '../Admin/SelectBooks'
 import { FilterBooks } from '../../../utils/constants/constants'
-import Button from '../../../Components/UI/Button/Button'
 import Spinner from '../../../Components/UI/Spinner'
 import VendorBookCard from './VendorBookCard'
 
@@ -32,7 +34,7 @@ const selectTitle = [
       name: 'Со скидками',
    },
    {
-      id: FilterBooks.IN_THE_PROCESS,
+      id: FilterBooks.IN_PROCESSING,
       name: 'В обработке',
    },
    {
@@ -59,31 +61,43 @@ const AdminVendorBooks = () => {
    useEffect(() => {
       if (status === 'pending') {
          setIsShowSpinner(true)
-      } else {
+      }
+      const time = setTimeout(() => {
          setIsShowSpinner(false)
+      }, 3000)
+      return () => {
+         clearTimeout(time)
       }
    }, [status])
 
    useEffect(() => {
       if (totalPages) {
-         if (totalPages === 0 || requestObj.page === totalPages) {
+         if (
+            Number(totalPages) === 0 ||
+            Number(requestObj.page) === Number(totalPages)
+         ) {
             setShowSeeMore(false)
          }
-         if (requestObj.page < totalPages) {
+         if (Number(requestObj.page) < Number(totalPages)) {
             setShowSeeMore(true)
          }
       }
-   }, [requestObj.page])
+   }, [requestObj.page, totalPages])
+
+   useEffect(() => {
+      dispatch(setAdminVendorBooks(vendorId, requestObj))
+   }, [requestObj.aboutBooks])
 
    useEffect(() => {
       dispatch(getAdminVendorBooks(vendorId, requestObj))
-   }, [requestObj])
+   }, [requestObj.page])
 
    const onClickSelect = (id, key) => {
       setRequestObj((prev) => {
          return {
             ...prev,
             [key]: id,
+            page: '1',
          }
       })
    }
@@ -92,14 +106,13 @@ const AdminVendorBooks = () => {
       setRequestObj((prev) => {
          return {
             ...prev,
-            page: prev.page + 1,
+            page: Number(prev.page) + 1,
          }
       })
    }
 
    return (
       <div>
-         {isShowSpinner && <Spinner />}
          <StyledSelectBlock>
             <StyledAmount>Всего {totalElements} книг</StyledAmount>
             <div>
@@ -111,19 +124,14 @@ const AdminVendorBooks = () => {
             </div>
          </StyledSelectBlock>
          <Divider />
-         <VendorBookCard books={books} />
-         {showSeeMore && (
-            <StyledBtnBlock>
-               <Button
-                  variant="universal"
-                  background="#F8F8F8"
-                  color="#969696"
-                  border="1px solid #C4C4C4"
-                  onClick={onClickSeeMore}
-               >
-                  Смотреть больше
-               </Button>
-            </StyledBtnBlock>
+         {isShowSpinner ? (
+            <Spinner variant="two" />
+         ) : (
+            <VendorBookCard
+               books={books}
+               showSeeMore={showSeeMore}
+               onClickSeeMore={onClickSeeMore}
+            />
          )}
       </div>
    )
@@ -149,7 +157,3 @@ const StyledAmount = styled.p`
 // const StyledMealls = styled(Meatballs)`
 //    align-self: flex-end;
 // `
-const StyledBtnBlock = styled.div`
-   width: 100%;
-   padding: 50px 0;
-`

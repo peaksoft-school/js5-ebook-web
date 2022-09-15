@@ -1,9 +1,13 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-lone-blocks */
 /* eslint-disable max-len */
 import styled from 'styled-components'
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { сatalogActions } from '../../store/slices/catalogSlice'
+import { BookType } from '../../utils/constants/constants'
 
 const BookCard = ({ audioBook, className }) => {
    const navigate = useNavigate()
@@ -37,6 +41,8 @@ const BookCard = ({ audioBook, className }) => {
 export const AudioBooks = ({ books }) => {
    const [third, setThird] = React.useState(false)
    const location = useLocation()
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
    React.useEffect(() => {
       if (books) {
          if (books.length >= 3) {
@@ -44,12 +50,24 @@ export const AudioBooks = ({ books }) => {
          }
       }
    }, [books])
+   const onClickBtn = (e) => {
+      e.preventDefault()
+      dispatch(
+         сatalogActions.setExternalSetting({
+            key: 'bookType',
+            value: BookType.AUDIO_BOOK,
+         })
+      )
+      navigate(`${location.pathname}/catalog`)
+   }
    return (
       <StyledAudioBooksCont>
          <StyledTitle>
             <StyledBestText>Аудиокниги</StyledBestText>
             <StyledNavLink>
-               <Link to={`${location.pathname}/catalog`}>Смотреть все</Link>
+               <a href="#" onClick={onClickBtn}>
+                  Смотреть все
+               </a>
             </StyledNavLink>
          </StyledTitle>
          {books && (

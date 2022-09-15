@@ -11,6 +11,7 @@ import {
    seeMoreGetApplicationsActions,
 } from '../../../store/slices/adminActions/applicationsActions'
 import ApplicationCard from './ApplicationCard'
+import Spinner from '../../../Components/UI/Spinner'
 
 const AdminApplications = () => {
    const {
@@ -18,6 +19,9 @@ const AdminApplications = () => {
       totalElements: allBooks,
       unwatched,
       totalPages,
+      acceptMessage,
+      rejectMessage,
+      status,
    } = useSelector((state) => state.applications)
 
    const [update, setupdate] = useState(true)
@@ -26,8 +30,17 @@ const AdminApplications = () => {
    const dispatch = useDispatch()
 
    useEffect(() => {
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            page: 1,
+         }
+      })
+   }, [acceptMessage, rejectMessage])
+
+   useEffect(() => {
       dispatch(applicationsActions(requestObj))
-   }, [])
+   }, [acceptMessage, rejectMessage])
 
    useEffect(() => {
       if (update) {
@@ -70,23 +83,29 @@ const AdminApplications = () => {
                Непросмотренные: <MinusView>{unwatched}</MinusView>
             </Total>
          </TotalApplication>
-         <Books>
-            {applications &&
-               applications.map((el) => (
-                  <ApplicationCard
-                     key={el.id}
-                     id={el.id}
-                     img={el.mainImage}
-                     date={getFormatedDate(el.publishedDate)}
-                     name={el.name}
-                     price={el.price}
-                     enabled={el.enabled}
-                  />
-               ))}
-            {showSeeMore && (
-               <SeeMore onClick={getMoreApplications}>Смотреть больше</SeeMore>
-            )}
-         </Books>
+         {status === 'pending' ? (
+            <Spinner variant="two" />
+         ) : (
+            <Books>
+               {applications &&
+                  applications.map((el) => (
+                     <ApplicationCard
+                        key={el.id}
+                        id={el.id}
+                        img={el.mainImage}
+                        date={getFormatedDate(el.publishedDate)}
+                        name={el.name}
+                        price={el.price}
+                        enabled={el.enabled}
+                     />
+                  ))}
+               {showSeeMore && (
+                  <SeeMore onClick={getMoreApplications}>
+                     Смотреть больше
+                  </SeeMore>
+               )}
+            </Books>
+         )}
       </Application>
    )
 }

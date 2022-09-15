@@ -9,6 +9,7 @@ import { AudioBooks } from './AudioBooks'
 import { ReactComponent as MainPageIcon } from '../../assets/icons/mainPage/mainPageIcon.svg'
 import MainFooter from './MainFooter'
 import { getBookMainPage } from '../../store/slices/mainPageSlices'
+import { SortBy, BookType } from '../../utils/constants/constants'
 
 function MainPage() {
    const dispatch = useDispatch()
@@ -39,6 +40,7 @@ function MainPage() {
          <BestComponent
             books={bestsellerBooksResponses}
             variant="Бестселлеры"
+            type={SortBy.BESTSELLER}
          />
 
          <LatestPublic books={lastPublicationsBooksResponses} />
@@ -48,6 +50,7 @@ function MainPage() {
          <BestComponent
             books={favoriteElectronicBooksResponses}
             variant="Электронные книги"
+            type={BookType.ELECTRONIC_BOOK}
          />
          <MainFooter />
       </StyledMainPage>

@@ -49,9 +49,10 @@ const AdminVendorProfile = () => {
       }
    }, [deleteVendor])
 
-   return (
+   const showComponent = isShowSpinner ? (
+      <Spinner variant="two" />
+   ) : (
       <StyledCont>
-         {isShowSpinner && <Spinner />}
          <div>
             <StyledBlock>
                <StyledInfoTitle>Имя</StyledInfoTitle>
@@ -116,11 +117,13 @@ const AdminVendorProfile = () => {
          </Modal>
       </StyledCont>
    )
+   return showComponent
 }
 
 export default AdminVendorProfile
 
 const StyledCont = styled.div`
+   /* border: 1px solid red; */
    display: flex;
    justify-content: space-between;
    /* width: 1147px; */

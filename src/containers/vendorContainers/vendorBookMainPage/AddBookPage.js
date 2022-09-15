@@ -10,6 +10,7 @@ import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
 import AudioBookForm from './AudioBookForm'
 import ElectronicBookForm from './ElectronicBookForm'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import BreadCrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
@@ -68,10 +69,17 @@ const AddBookPage = () => {
       }
       return bookComponents
    }
+   const pathTranslate = {
+      main: 'Главная',
+      addBook: 'Добавить книгу',
+   }
 
    return (
       <ContainerDiv>
          <HeaderMainPage />
+         <BreadBlock>
+            <BreadCrumbs translate={pathTranslate} />
+         </BreadBlock>
          <GetSnackbar
             open={bookError || bookSuccsess || imageSnack}
             message={bookError || bookSuccsess}
@@ -181,6 +189,11 @@ const AddBookPage = () => {
    )
 }
 export default AddBookPage
+
+const BreadBlock = styled('div')`
+   /* border: 1px solid red; */
+   padding-bottom: 30px;
+`
 
 const ContainerDiv = styled('div')`
    width: 100%;

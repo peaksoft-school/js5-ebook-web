@@ -15,7 +15,7 @@ export default function HeaderMainPage() {
    const addBookNavHandler = () => {
       dispatch(vendorMainPageAction.clearSaveBook())
       dispatch(bookAction.deleteImage())
-      navigate('/addBook')
+      navigate('/main/addBook')
    }
    return (
       <Container>

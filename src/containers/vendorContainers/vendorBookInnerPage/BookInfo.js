@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import styled from '@emotion/styled'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import Modal from '../../../Components/UI/Modal'
 import Button from '../../../Components/UI/Button/Button'
 import likeIcon from '../../../assets/icons/like.png'
@@ -9,18 +11,27 @@ import AudioListener from '../../../Components/UI/AudioListener'
 import AboutBook from './AboutBook'
 import BookFragment from './BookFragment'
 import { TabInnerPage } from './TabInnerPage'
+import { getMainBooksWithId } from '../../../store/createActions/vendorMainPagesActions'
 
-const BookInfo = ({ book, onDelete }) => {
+const BookInfo = ({ book, onDelete, bookId }) => {
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
    const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
    const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
 
    const bookTypeContent =
       book.bookType === 'AUDIO_BOOK' ? <AudioListener /> : ''
 
    const newBookIcon =
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
-
+   const onClickEdit = (e) => {
+      e.preventDefault()
+      dispatch(getMainBooksWithId(bookId))
+      setTimeout(() => {
+         navigate('/main/addbook')
+      }, 1000)
+   }
    return (
       <>
          <StyledMain>
@@ -95,13 +106,16 @@ const BookInfo = ({ book, onDelete }) => {
                         >
                            Отменить
                         </Button>
-                        <Button variant="default" onClick={onDelete}>
+                        <Button
+                           variant="default"
+                           onClick={() => onDelete(handleCloseDeleteModal)}
+                        >
                            Удалить
                         </Button>
                      </StyledModalBtnCont>
                   </Modal>
-                  <Button width="224px">
-                     <StyledLink to="/addBook">Редактировать</StyledLink>
+                  <Button width="224px" onClick={onClickEdit}>
+                     Редактировать
                   </Button>
                </StyledBtnCont>
             </div>

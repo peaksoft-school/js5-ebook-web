@@ -16,26 +16,18 @@ const applicationsSlices = createSlice({
    name: 'applications',
    initialState,
    reducers: {
+      pending: (state) => {
+         state.status = 'pending'
+      },
+      success: (state) => {
+         state.status = 'success'
+      },
+      rejected: (state) => {
+         state.status = 'error'
+      },
       getApplications(state, action) {
          state.applications = action.payload
       },
-      // getApplications(state, action) {
-      //    const updatedApplications = []
-
-      //    action.payload.array.forEach((newApplicationn) => {
-      //       const isNew = state.applications.find(
-      //          (oldApplication) =>
-      //             oldApplication.id === newApplicationn.id &&
-      //             oldApplication.enabled !== newApplicationn.enabled
-      //       )
-      //       if (!isNew) {
-      //          updatedApplications.push(newApplicationn)
-      //       }
-      //    })
-
-      //    state.applications = updatedApplications
-      // },bul ishtebedi
-
       seeMoreGetApplications(state, action) {
          action.payload.forEach((element) => {
             const prev = state.applications.find((el) => el.id === element.id)

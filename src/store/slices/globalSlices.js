@@ -6,12 +6,16 @@ const initialState = {
    genres: '',
    books: '',
    sortGenres: '',
+   globalSearch: [],
 }
 
 const globalValues = createSlice({
    name: 'globalValues',
    initialState,
    reducers: {
+      setGlobalSearch: (state, action) => {
+         state.globalSearch = action.payload
+      },
       setGenres: (state, action) => {
          state.genres = action.payload
       },
@@ -33,6 +37,15 @@ const globalValues = createSlice({
 export const globalValuesAction = globalValues.actions
 
 export default globalValues
+
+export function getGlobalSearch(requestObj) {
+   return async (dispatch) => {
+      const result = await appFetch({
+         url: `/api/books/search?search=${requestObj}`,
+      })
+      dispatch(globalValuesAction.setGlobalSearch(result))
+   }
+}
 
 export function updateSortGenres(value) {
    return async (dispatch) => {

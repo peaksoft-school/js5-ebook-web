@@ -1,12 +1,18 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable max-len */
 import styled from 'styled-components'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { сatalogActions } from '../../store/slices/catalogSlice'
+import { SortBy } from '../../utils/constants/constants'
 // import { books } from './bookImage'
 
 export const LatestPublic = ({ books }) => {
    const [book, setBook] = React.useState()
    const [booksStyled, setBooksStyled] = React.useState(null)
+   // const { externalSetting } = useSelector((store) => store.books)
+   const dispatch = useDispatch()
    const location = useLocation()
    const navigate = useNavigate()
    useEffect(() => {
@@ -44,12 +50,27 @@ export const LatestPublic = ({ books }) => {
    const onClickBook = (bookId) => {
       navigate(`${location.pathname}/catalog/${bookId}`)
    }
+   const onClickBtn = (e) => {
+      e.preventDefault()
+      dispatch(
+         сatalogActions.setExternalSetting({
+            key: 'sortBy',
+            value: {
+               type: SortBy.NEW,
+               label: 'Новинки',
+            },
+         })
+      )
+      navigate(`${location.pathname}/catalog`)
+   }
    return (
       <StyledLatestPublCont>
          <StyledTitle>
             <StyledLatestPublText>Последние публикации</StyledLatestPublText>
             <LinkBlock>
-               <Link to={`${location.pathname}/catalog`}>Смотреть все</Link>
+               <a href="#" onClick={onClickBtn}>
+                  Смотреть все
+               </a>
             </LinkBlock>
          </StyledTitle>
          <StyledBookSliderBlock>

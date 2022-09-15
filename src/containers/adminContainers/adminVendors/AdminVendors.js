@@ -42,18 +42,17 @@ export default function AdminVendor() {
    const handleNavToVendorProfile = (id) => {
       navigate(`/vendor/${id}`)
    }
-
-   return (
-      <>
-         {isShowSpinner && <Spinner />}
-         <VendorTable
-            vendors={vendors}
-            handleDelete={hendleDeleteVendor}
-            handleNav={handleNavToVendorProfile}
-            openDelModal={isOpenDeleteModal}
-            handleOpenDelModal={handleOpenDeleteModal}
-            handleCloseDelModal={handleCloseDeleteModal}
-         />
-      </>
+   const showVendorTable = isShowSpinner ? (
+      <Spinner variant="two" />
+   ) : (
+      <VendorTable
+         vendors={vendors}
+         handleDelete={hendleDeleteVendor}
+         handleNav={handleNavToVendorProfile}
+         openDelModal={isOpenDeleteModal}
+         handleOpenDelModal={handleOpenDeleteModal}
+         handleCloseDelModal={handleCloseDeleteModal}
+      />
    )
+   return showVendorTable
 }

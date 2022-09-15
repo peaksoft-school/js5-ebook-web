@@ -117,7 +117,7 @@ const VendorMainPage = () => {
                                 </ImgFavorite>
                                 <span>В корзине ({book.basket})</span>
                              </BookSHeader>
-                             <CopyLink to={`/${book.id}`}>
+                             <CopyLink to={`/main/${book.id}`}>
                                 <ImageBlock>
                                    <Img src={book.mainImage} />
                                 </ImageBlock>
