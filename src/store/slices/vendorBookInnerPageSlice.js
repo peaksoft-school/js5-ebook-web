@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-   deleteBook: null,
+   deleteBook: false,
    message: '',
    status: '',
    error: null,
@@ -23,8 +23,11 @@ export const vendorbookInnerPageSlice = createSlice({
          state.error = action.payload
       },
       deleteBook(state, action) {
-         state.deleteBook = !state.deleteBook
+         state.deleteBook = true
          state.message = action.payload
+      },
+      falseDelete(state) {
+         state.deleteBook = false
       },
    },
 })

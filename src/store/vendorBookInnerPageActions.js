@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import appFetch from '../hooks/appFetch'
 import bookInnerPageAction from './slices/vendorBookInnerPageSlice'
 
@@ -21,10 +22,21 @@ export const deleteVendorBook = (bookId) => {
             url: `/api/book/delete/${bookId}`,
             method: 'DELETE',
          })
-         // console.log(deleteData)
-         dispatch(bookInnerPageAction.deleteBook(deleteData))
+         toast.success()
+         dispatch(bookInnerPageAction.rejected())
+         console.log(deleteData)
       } catch (error) {
-         dispatch(bookInnerPageAction.rejected(error))
+         dispatch(bookInnerPageAction.deleteBook(error))
+         toast.error('Не удалось !')
       }
+   }
+}
+
+export const deleteModal = () => {
+   return async (dispatch) => {
+      const book = setTimeout(() => {
+         dispatch(bookInnerPageAction.falseDelete())
+      }, 1000)
+      return () => clearTimeout(book)
    }
 }

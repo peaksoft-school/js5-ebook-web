@@ -11,6 +11,7 @@ import { getAdminVendorsSlice } from './slices/getAdminVendorsSlice'
 import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
 import { snackbarSlice } from './slices/snackbarSlice'
 import сatalogSlices from './slices/catalogSlice'
+import { notificationsSlise } from './slices/notificationSlice'
 
 const store = configureStore({
    reducer: {
@@ -26,6 +27,7 @@ const store = configureStore({
       promocodeStore: PromocodeSlices.reducer,
       adminVendors: getAdminVendorsSlice.reducer,
       snackbar: snackbarSlice.reducer,
+      notifications: notificationsSlise.reducer,
    },
 })
 

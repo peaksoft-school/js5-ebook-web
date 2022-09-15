@@ -9,9 +9,21 @@ import {
    StyledText,
    StyledItem,
 } from './NotificationMenu'
+import logo from '../../../assets/images/logo.svg'
 
-export const NotificationDetail = ({ onClick, anchorEl, item }) => {
-   console.log(item)
+const NotificationDetail = ({ onClick, anchorEl, item }) => {
+   const statusOfBook =
+      item.bookStatus === 'ACCEPTED'
+         ? 'Ваша заявка .... была принята'
+         : 'Ваша заявка .... была отклонена'
+   const causeOfBook =
+      item.bookStatus === 'ACCEPTED' ? 'Причина принятия' : 'Причина отклонения'
+
+   const description = item.description ? (
+      item.description
+   ) : (
+      <StyledEmptyCauseText>Причины нет</StyledEmptyCauseText>
+   )
    return (
       <StyledMenu id="basic-menu" anchorEl={anchorEl} open={onClick}>
          <StyledTitle onClick={onClick}>
@@ -19,26 +31,26 @@ export const NotificationDetail = ({ onClick, anchorEl, item }) => {
          </StyledTitle>
          <StyledMenuItem key={item.id}>
             <StyledItem>
-               <StyledImage src={item.image} />
+               <StyledImage src={logo} />
                <StyledText>
-                  <StyledStatus>{item.label}</StyledStatus>
-                  <StyledDate>{item.date}</StyledDate>
+                  <StyledStatus>{statusOfBook}</StyledStatus>
+                  <StyledDate>{item.dateOfStatus}</StyledDate>
                </StyledText>
             </StyledItem>
          </StyledMenuItem>
          <div>
-            <StyledCauseTitle>Причина отклонения</StyledCauseTitle>
-            <StyledCauseText>{item.text}</StyledCauseText>
+            <StyledCauseTitle>{causeOfBook}</StyledCauseTitle>
+            <StyledCauseText>{description}</StyledCauseText>
          </div>
       </StyledMenu>
    )
 }
 
+export default NotificationDetail
+
 const StyledMenu = styled(Menu)`
    .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
       padding: 0px 20px;
-      width: 409px;
-      height: 754px;
       background: #ffff;
       font-family: 'Open Sans';
       font-style: normal;
@@ -46,7 +58,7 @@ const StyledMenu = styled(Menu)`
       font-size: 14px;
       line-height: 19px;
       color: #000000;
-      margin-top: 20px;
+      width: 409px;
    }
 `
 const StyledTitle = styled.p`
@@ -54,6 +66,7 @@ const StyledTitle = styled.p`
    display: flex;
    justify-content: space-between;
    align-items: center;
+   cursor: pointer;
 `
 const StyledCauseTitle = styled.p`
    width: 126px;
@@ -65,9 +78,19 @@ const StyledCauseTitle = styled.p`
    line-height: 130%;
    color: #000000;
 `
+const StyledEmptyCauseText = styled.p`
+   width: 369px;
+   // height: 54px;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 130%;
+   color: #969696;
+`
 const StyledCauseText = styled.p`
    width: 369px;
-   height: 54px;
+   // height: 54px;
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 400;

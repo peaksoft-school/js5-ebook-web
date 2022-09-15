@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import Modal from '../../../Components/UI/Modal'
 import Button from '../../../Components/UI/Button/Button'
 import likeIcon from '../../../assets/icons/like.png'
@@ -9,10 +10,21 @@ import AudioListener from '../../../Components/UI/AudioListener'
 import AboutBook from './AboutBook'
 import BookFragment from './BookFragment'
 import { TabInnerPage } from './TabInnerPage'
+import { deleteModal } from '../../../store/vendorBookInnerPageActions'
 
 const BookInfo = ({ book, onDelete }) => {
+   const navigte = useNavigate()
+   const dispatch = useDispatch()
+   const { deleteBook } = useSelector((state) => state.vendorBookInnerPage)
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
-   const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
+   const handleOpenDeleteModal = () => {
+      setIsOpenDeleteModal(true)
+   }
+   useEffect(() => {
+      navigte('')
+      dispatch(deleteModal())
+   }, [!deleteBook])
+
    const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
 
    const bookTypeContent =

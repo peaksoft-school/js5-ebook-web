@@ -1,15 +1,30 @@
 import Menu from '@mui/material/Menu'
 import styled from '@emotion/styled'
+import { Divider } from '@mui/material'
+import { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
-import meatballsIcon from '../../../assets/icons/MeatBalls/meatballsIcon.svg'
+import { ReactComponent as Meatballls } from '../../../assets/icons/MeatBalls/meatballsIcon.svg'
+// import meatballsIcon from '../../../assets/icons/MeatBalls/meatballsIcon.svg'
+import logo from '../../../assets/images/logo.svg'
+import PopUp from '../popup'
 
 const NotificationMenu = ({
    anchorEl,
    handleClose,
    open,
-   onClick,
    menuItems,
+   onClick,
 }) => {
+   const [isOpenPopup, setIsOpenPopup] = useState(false)
+   const [anchorElPopup, setAnchorElPopup] = useState(null)
+
+   const handleOpenPopup = (e) => {
+      setAnchorElPopup(e.currentTarget)
+      setIsOpenPopup(true)
+   }
+   const handleClosePopup = () => {
+      setIsOpenPopup(false)
+   }
    return (
       <StyledMenu
          id="basic-menu"
@@ -17,20 +32,31 @@ const NotificationMenu = ({
          open={open}
          onClose={handleClose}
       >
+         <PopUp open={isOpenPopup} close={handleClosePopup}>
+            Отметить как прочитанное
+         </PopUp>
          <StyledTitle>
-            Ваши уведомления <img src={meatballsIcon} alt="" />
+            Ваши уведомления{' '}
+            <Meatballls onClick={handleOpenPopup} anchorEl={anchorElPopup} />
          </StyledTitle>
 
          {menuItems.map((item) => (
-            <StyledMenuItem key={item.id}>
-               <StyledItem onClick={() => onClick(item.id)}>
-                  <StyledImage src={item.image} />
-                  <StyledText>
-                     <StyledStatus>{item.label}</StyledStatus>
-                     <StyledDate>{item.date}</StyledDate>
-                  </StyledText>
-               </StyledItem>
-            </StyledMenuItem>
+            <>
+               <StyledMenuItem key={item.id} onClick={() => onClick(item.id)}>
+                  <StyledItem>
+                     <StyledImage src={logo} />
+                     <StyledText>
+                        <StyledStatus>
+                           {item.bookStatus === 'ACCEPTED'
+                              ? 'Ваша заявка .... была принята'
+                              : 'Ваша заявка .... была отклонена'}
+                        </StyledStatus>
+                        <StyledDate>{item.dateOfStatus}</StyledDate>
+                     </StyledText>
+                  </StyledItem>
+               </StyledMenuItem>
+               <Divider />
+            </>
          ))}
       </StyledMenu>
    )
@@ -42,20 +68,19 @@ export const StyledMenu = styled(Menu)`
    .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
       padding: 0px 20px;
       width: 409px;
-      height: 754px;
       background: #ffff;
       font-family: 'Open Sans';
       font-style: normal;
       font-weight: 600;
       font-size: 14px;
       line-height: 19px;
-      margin-top: 20px;
    }
 `
 const StyledTitle = styled.p`
    display: flex;
    justify-content: space-between;
    align-items: center;
+   cursor: pointer;
 `
 export const StyledMenuItem = styled.div`
    display: flex;
@@ -64,7 +89,6 @@ export const StyledMenuItem = styled.div`
    height: 75px;
 `
 export const StyledImage = styled.img`
-   width: 75px;
    margin-right: 8px;
 `
 export const StyledText = styled.div`
@@ -77,6 +101,7 @@ export const StyledText = styled.div`
 
 export const StyledItem = styled(MenuItem)`
    padding: 0px;
+   width: 340px;
 `
 
 export const StyledDate = styled.span`

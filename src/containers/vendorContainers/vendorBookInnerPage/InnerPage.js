@@ -8,6 +8,7 @@ import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 import BookInfo from './BookInfo'
 import Promocode from './Promocode'
 import {
+   deleteModal,
    deleteVendorBook,
    getVendorBookInnerPage,
 } from '../../../store/vendorBookInnerPageActions'
@@ -16,6 +17,7 @@ export const InnerPage = () => {
    const { book, deleteBook } = useSelector(
       (state) => state.vendorBookInnerPage
    )
+   console.log(deleteBook)
    const { bookId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -26,6 +28,8 @@ export const InnerPage = () => {
    useEffect(() => {
       if (deleteBook) {
          booksCardNavHandler()
+         navigate('/')
+         dispatch(deleteModal())
       }
    }, [deleteBook])
 
@@ -35,7 +39,7 @@ export const InnerPage = () => {
 
    const pathTranslate = {
       books: 'Главная',
-      // [bookId]: book.bookName,
+      [bookId]: book.bookName,
    }
 
    const addBookNavHandler = () => {
@@ -43,7 +47,7 @@ export const InnerPage = () => {
    }
 
    const booksCardNavHandler = () => {
-      navigate('/mainPage')
+      navigate('/')
    }
 
    return (

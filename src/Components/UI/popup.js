@@ -1,8 +1,12 @@
 import styled from '@emotion/styled'
 import { Menu } from '@mui/material'
 
-function PopUp({ children, ...props }) {
-   return <MenuPopUp {...props}>{children}</MenuPopUp>
+function PopUp({ children, open, anchorEl, close }) {
+   return (
+      <MenuPopUp open={open} onClose={close} anchorEl={anchorEl}>
+         {children}
+      </MenuPopUp>
+   )
 }
 
 export default PopUp
@@ -12,7 +16,7 @@ const MenuPopUp = styled(Menu)`
 
    & div {
       border-radius: 0;
-      margin-top: 5px;
+      /* margin-top: 5px; */
    }
    & ul {
       padding: 15px 20px;

@@ -1,19 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+   getAllNotifications,
+   getNotificationWithId,
+} from '../../../store/slices/notificationSlice'
 import NotificationMenu from './NotificationMenu'
-import { NotificationDetail } from './NotificationDetail'
+import NotificationDetail from './NotificationDetail'
 
-const Notification = ({ open, anchorEl, handleClose, menuItems }) => {
+const Notification = ({ open, anchorEl, handleClose }) => {
    const [toggleNotif, setToggleNotif] = useState(false)
-   const [item, setItem] = useState(null)
+   const { notifications, notification } = useSelector(
+      (state) => state.notifications
+   )
 
-   const openNotifHandle = (id) => {
-      setToggleNotif(true)
-      const NewItem = menuItems.find((elem) => elem.id === id)
-      setItem(NewItem)
-   }
+   const dispatch = useDispatch()
 
    const closeNotifHandle = () => {
       setToggleNotif(false)
+   }
+
+   useEffect(() => {
+      dispatch(getAllNotifications(notifications))
+   }, [])
+
+   const openNotifHandle = (id) => {
+      setToggleNotif(true)
+      dispatch(getNotificationWithId(id))
    }
 
    return (
@@ -21,7 +33,7 @@ const Notification = ({ open, anchorEl, handleClose, menuItems }) => {
          {toggleNotif ? (
             <NotificationDetail
                onClick={closeNotifHandle}
-               item={item}
+               item={notification}
                anchorEl={anchorEl}
             />
          ) : (
@@ -29,8 +41,10 @@ const Notification = ({ open, anchorEl, handleClose, menuItems }) => {
                open={open}
                anchorEl={anchorEl}
                handleClose={handleClose}
-               onClick={openNotifHandle}
-               menuItems={menuItems}
+               onClick={(id) => {
+                  openNotifHandle(id)
+               }}
+               menuItems={notifications}
             />
          )}
       </div>
