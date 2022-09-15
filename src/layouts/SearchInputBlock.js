@@ -9,6 +9,7 @@ import { сatalogActions } from '../store/slices/catalogSlice'
 
 function SearchInputBlock({ admin }) {
    const { globalSearch } = useSelector((store) => store.globalValues)
+   const { role } = useSelector((store) => store.auth.user)
    const searchRef = useRef()
    const navigate = useNavigate()
    const dispatch = useDispatch()
@@ -16,17 +17,19 @@ function SearchInputBlock({ admin }) {
       dispatch(getGlobalSearch(searchRef.current.value))
    }
    const onClickItem = (id, name, type) => {
-      if (type === 'BOOK') {
-         navigate(`main/catalog/${id}`)
-      }
-      if (type === 'GENRE') {
-         dispatch(
-            сatalogActions.setExternalSetting({
-               key: 'genres',
-               value: { id, label: name },
-            })
-         )
-         navigate('main/catalog')
+      if (role === 'user') {
+         if (type === 'BOOK') {
+            navigate(`main/catalog/${id}`)
+         }
+         if (type === 'GENRE') {
+            dispatch(
+               сatalogActions.setExternalSetting({
+                  key: 'genres',
+                  value: { id, label: name },
+               })
+            )
+            navigate('main/catalog')
+         }
       }
       dispatch(getGlobalSearch(''))
    }
