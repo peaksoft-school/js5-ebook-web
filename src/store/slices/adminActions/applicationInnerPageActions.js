@@ -4,10 +4,12 @@ import { applicationsInnerPageSlicesAction } from '../adminSlices/applicationInn
 
 export const applicationInnerPageAction = (id) => {
    return async (dispatch) => {
+      dispatch(applicationsInnerPageSlicesAction.pending())
       const result = await appFetch({
          url: `/api/books/${id}`,
       })
       dispatch(applicationsInnerPageSlicesAction.getInnerPage(result))
+      dispatch(applicationsInnerPageSlicesAction.success())
    }
 }
 export const acceptApplicationInnerPage = (id) => {

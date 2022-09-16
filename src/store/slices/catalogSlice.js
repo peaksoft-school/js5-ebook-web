@@ -52,6 +52,8 @@ const сatalogSlices = createSlice({
          state.totalPages = action.payload.totalPages
       },
       updateBooks: (state, action) => {
+         state.totalBooks = action.payload.totalElements
+         state.totalPages = action.payload.totalPages
          action.payload.content.forEach((el) => {
             const prevElem = state.books.find((elem) => elem.id === el.id)
             if (!prevElem) {

@@ -14,11 +14,14 @@ import {
 } from '../../../store/slices/adminActions/applicationInnerPageActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { RejectApplicationModal } from './RejectApplicationModal'
+import Spinner from '../../../Components/UI/Spinner'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
-   const { application } = useSelector((state) => state.applicationsInnerPage)
+   const { application, status } = useSelector(
+      (state) => state.applicationsInnerPage
+   )
    const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
 
    useEffect(() => {
@@ -42,93 +45,100 @@ export const InnerPageAdminApplication = () => {
    return (
       <>
          <Breadcrumbs translate={pathTranslate} />
-         <StyledMain>
-            <ImageDiv>
-               <StyledBookImageCont>
-                  <StyledBookImage src={application.mainImage} />
-                  {application.new === true ? <Img src={New} /> : ''}
-                  <StyledBookImage2>
-                     {application.secondImage && (
-                        <img src={application.secondImage} alt="book" />
+         {status === 'pending' ? (
+            <Spinner variant="two" />
+         ) : (
+            <StyledMain>
+               <ImageDiv>
+                  <StyledBookImageCont>
+                     <StyledBookImage src={application.mainImage} />
+                     {application.new === true ? <Img src={New} /> : ''}
+                     <StyledBookImage2>
+                        {application.secondImage && (
+                           <img src={application.secondImage} alt="book" />
+                        )}
+                     </StyledBookImage2>
+                  </StyledBookImageCont>
+                  <InfoContainer>
+                     <StyledBookName>{application.bookName}</StyledBookName>
+                     <div>
+                        <StyledPrice>{application.price}</StyledPrice>
+                     </div>
+                     <StyledInfo>
+                        <div>
+                           <StyledInfoTitle>Автор</StyledInfoTitle>
+                           <StyledInfoTitle>Жанр</StyledInfoTitle>
+                           <StyledInfoTitle>Язык</StyledInfoTitle>
+                           <StyledInfoTitle>Издательство</StyledInfoTitle>
+                           <StyledInfoTitle>Год выпуска</StyledInfoTitle>
+                           <StyledInfoTitle>Обьем</StyledInfoTitle>
+                        </div>
+                        <div>
+                           <StyledInfoText>{application.author}</StyledInfoText>
+                           <StyledInfoText>{application.genre}</StyledInfoText>
+                           <StyledInfoText>
+                              {application.language}
+                           </StyledInfoText>
+                           <StyledInfoText>
+                              {application.publishingHouse}
+                           </StyledInfoText>
+                           <StyledInfoText>
+                              {application.yearOfIssue}
+                           </StyledInfoText>
+                           <StyledInfoText>{application.volume}</StyledInfoText>
+                        </div>
+                     </StyledInfo>
+
+                     <StyledBtnCont>
+                        <Button
+                           onClick={() => rejectModal()}
+                           variant="universal"
+                           color="#f34901"
+                           border="1px solid"
+                           background="none"
+                           width="195px"
+                        >
+                           Отклонить
+                        </Button>
+
+                        <Button
+                           onClick={() => acceptModal()}
+                           variant="universal"
+                           border="1px solid"
+                           background="#f34901"
+                           width="195px"
+                        >
+                           Принять
+                        </Button>
+
+                        <RejectApplicationModal
+                           id={id}
+                           open={isRejectModalOpen}
+                           onClose={() => onCloseRejectModal()}
+                        />
+                     </StyledBtnCont>
+                  </InfoContainer>
+               </ImageDiv>
+               <FragmentRequest>
+                  <TabInnerPage
+                     about={<About about={application.description} />}
+                     bookFragment={
+                        <BookFragment
+                           fragment={
+                              application.fragment ||
+                              application.audioBookFragment
+                           }
+                        />
+                     }
+                  />
+                  <ThirdImage>
+                     {application.thirdImage && (
+                        <img src={application.thirdImage} alt="book" />
                      )}
-                  </StyledBookImage2>
-               </StyledBookImageCont>
-               <InfoContainer>
-                  <StyledBookName>{application.bookName}</StyledBookName>
-                  <div>
-                     <StyledPrice>{application.price}</StyledPrice>
-                  </div>
-                  <StyledInfo>
-                     <div>
-                        <StyledInfoTitle>Автор</StyledInfoTitle>
-                        <StyledInfoTitle>Жанр</StyledInfoTitle>
-                        <StyledInfoTitle>Язык</StyledInfoTitle>
-                        <StyledInfoTitle>Издательство</StyledInfoTitle>
-                        <StyledInfoTitle>Год выпуска</StyledInfoTitle>
-                        <StyledInfoTitle>Обьем</StyledInfoTitle>
-                     </div>
-                     <div>
-                        <StyledInfoText>{application.author}</StyledInfoText>
-                        <StyledInfoText>{application.genre}</StyledInfoText>
-                        <StyledInfoText>{application.language}</StyledInfoText>
-                        <StyledInfoText>
-                           {application.publishingHouse}
-                        </StyledInfoText>
-                        <StyledInfoText>
-                           {application.yearOfIssue}
-                        </StyledInfoText>
-                        <StyledInfoText>{application.volume}</StyledInfoText>
-                     </div>
-                  </StyledInfo>
-
-                  <StyledBtnCont>
-                     <Button
-                        onClick={() => rejectModal()}
-                        variant="universal"
-                        color="#f34901"
-                        border="1px solid"
-                        background="none"
-                        width="195px"
-                     >
-                        Отклонить
-                     </Button>
-
-                     <Button
-                        onClick={() => acceptModal()}
-                        variant="universal"
-                        border="1px solid"
-                        background="#f34901"
-                        width="195px"
-                     >
-                        Принять
-                     </Button>
-
-                     <RejectApplicationModal
-                        id={id}
-                        open={isRejectModalOpen}
-                        onClose={() => onCloseRejectModal()}
-                     />
-                  </StyledBtnCont>
-               </InfoContainer>
-            </ImageDiv>
-            <FragmentRequest>
-               <TabInnerPage
-                  about={<About about={application.description} />}
-                  bookFragment={
-                     <BookFragment
-                        fragment={
-                           application.fragment || application.audioBookFragment
-                        }
-                     />
-                  }
-               />
-               <ThirdImage>
-                  {application.thirdImage && (
-                     <img src={application.thirdImage} alt="book" />
-                  )}
-               </ThirdImage>
-            </FragmentRequest>
-         </StyledMain>
+                  </ThirdImage>
+               </FragmentRequest>
+            </StyledMain>
+         )}
       </>
    )
 }

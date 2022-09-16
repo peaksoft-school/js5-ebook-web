@@ -12,6 +12,7 @@ import Message from '../../Components/UI/Message/Message'
 // import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
 import { getBook } from '../../store/slices/userInnerPageSlices'
+import Spinner from '../../Components/UI/Spinner'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -23,7 +24,7 @@ const DataValues = [
 export const UserInnerPage = () => {
    // const [text, setText] = useState('')
    const { bookId } = useParams()
-   const { book } = useSelector((store) => store.userBook)
+   const { book, status } = useSelector((store) => store.userBook)
    const dispatch = useDispatch()
    useEffect(() => {
       dispatch(getBook(bookId))
@@ -47,24 +48,26 @@ export const UserInnerPage = () => {
          <BreadcrumbsBlock>
             {book && <Breadcrumbs translate={pathTranslate} />}
          </BreadcrumbsBlock>
-         {book && (
+         {status === 'pending' ? (
+            <Spinner variant="two" />
+         ) : (
             <StyledMain>
                <StyledContainer>
                   <StyledBookImageCont>
                      <ImageBlock>
-                        <Image src={book.mainImage} />
+                        <Image src={book?.mainImage} />
                      </ImageBlock>
                      <StyledBookImage2>
-                        {book.secondImage && (
-                           <Image src={book.secondImage} alt="book" />
+                        {book?.secondImage && (
+                           <Image src={book?.secondImage} alt="book" />
                         )}
                      </StyledBookImage2>
                   </StyledBookImageCont>
-                  {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
+                  {book?.new ? <ImageStyled src={New} alt="icons" /> : ''}
                   <div>
-                     <StyledBookName>{book.bookName}</StyledBookName>
+                     <StyledBookName>{book?.bookName}</StyledBookName>
                      <div>
-                        <StyledPrice>{book.price}</StyledPrice>
+                        <StyledPrice>{book?.price}</StyledPrice>
                      </div>
                      <StyledInfo>
                         <div>
@@ -76,14 +79,14 @@ export const UserInnerPage = () => {
                            <StyledInfoTitle>Обьем</StyledInfoTitle>
                         </div>
                         <div>
-                           <StyledInfoText>{book.author}</StyledInfoText>
-                           <StyledInfoText>{book.genre}</StyledInfoText>
-                           <StyledInfoText>{book.language}</StyledInfoText>
+                           <StyledInfoText>{book?.author}</StyledInfoText>
+                           <StyledInfoText>{book?.genre}</StyledInfoText>
+                           <StyledInfoText>{book?.language}</StyledInfoText>
                            <StyledInfoText>
-                              {book.publishingHouse}
+                              {book?.publishingHouse}
                            </StyledInfoText>
-                           <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
-                           <StyledInfoText>{book.duration}</StyledInfoText>
+                           <StyledInfoText>{book?.yearOfIssue}</StyledInfoText>
+                           <StyledInfoText>{book?.duration}</StyledInfoText>
                         </div>
                      </StyledInfo>
 
@@ -115,8 +118,8 @@ export const UserInnerPage = () => {
                      bookFragment={<BookFragment book={book} />}
                   />
                   <StyleThirdImage>
-                     {book.thirdImage && (
-                        <Image src={book.thirdImage} alt="book" />
+                     {book?.thirdImage && (
+                        <Image src={book?.thirdImage} alt="book" />
                      )}
                   </StyleThirdImage>
                </StyledimageThirdImage>
