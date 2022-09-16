@@ -3,16 +3,16 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import Button from '../../Components/UI/Button/Button'
 import Modal from '../../Components/UI/Modal'
-import { deleteBookAction } from '../../store/slices/globalSlices'
+import { blockBookAction } from '../../store/slices/globalSlices'
 
 const DeleteBooks = ({ id, open, onClose }) => {
    const dispatch = useDispatch()
 
-   function deleteBook() {
+   function blockBook() {
       const fetch = async () => {
          try {
             const response = await dispatch(
-               deleteBookAction(id, onClose)
+               blockBookAction(id, onClose)
             ).unwrap()
             onClose()
             return response
@@ -49,7 +49,7 @@ const DeleteBooks = ({ id, open, onClose }) => {
                variant="default"
                width="137px"
                height="42px"
-               onClick={() => deleteBook()}
+               onClick={() => blockBook()}
             >
                Блокировать
             </Button>

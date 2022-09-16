@@ -7,7 +7,7 @@ const initialState = {
    genres: '',
    books: [],
    sortGenres: '',
-   deleteMessage: '',
+   blockMessage: '',
    totalElements: null,
    totalPages: null,
 }
@@ -36,8 +36,8 @@ const globalValues = createSlice({
             }
          })
       },
-      getDeleteMessage: (state, action) => {
-         state.deleteMessage = action.payload
+      getBlockMessage: (state, action) => {
+         state.blockMessage = action.payload
       },
       setTotalElements(state, action) {
          state.totalElements = action.payload
@@ -80,14 +80,13 @@ export function setGenres() {
       dispatch(globalValuesAction.setGenres(genres))
    }
 }
-export function deleteBookAction(id, onClose) {
+export function blockBookAction(onClose) {
    return async (dispatch) => {
       try {
          const books = await appFetch({
             url: '',
-            method: 'DELETE',
          })
-         dispatch(globalValuesAction.getDeleteMessage(books))
+         dispatch(globalValuesAction.getBlockMessage(books))
          onClose()
          toast.success(books.message)
          return books

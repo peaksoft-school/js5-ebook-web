@@ -1,10 +1,11 @@
 import { styled } from '@mui/material'
 import React, { useState } from 'react'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBook.svg'
 import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
 import { BookType } from '../../utils/constants/constants'
-import { ReactComponent as Delete } from '../../assets/icons/delete.svg'
-import DeleteBooks from './DeleteBooks'
+// import { ReactComponent as Delete } from '../../assets/icons/delete.svg'
+import BlockBooks from './BlockBooks'
 import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopupMeatBalls'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
@@ -13,12 +14,12 @@ const Book = ({ id, img, date, name, price, bookType }) => {
       {
          id: 2,
          text: 'Блокировать',
-         icon: <Delete />,
-         onClick: deleteBook,
+         icon: <LockOutlinedIcon />,
+         onClick: blockBook,
       },
    ]
 
-   function deleteBook() {
+   function blockBook() {
       setShowRejectModal(true)
    }
    function onCloseDeleteModal() {
@@ -38,7 +39,7 @@ const Book = ({ id, img, date, name, price, bookType }) => {
             <PopUpMeatBalls options={menuMeatBall} />
          </MeatBall>
 
-         <DeleteBooks
+         <BlockBooks
             id={id}
             open={showRejectModal}
             onClose={() => onCloseDeleteModal()}
@@ -91,7 +92,6 @@ const BookImage = styled('img')`
    width: 100%;
    height: 100%;
    object-fit: cover;
-
    cursor: pointer;
 `
 const NameBook = styled('p')`

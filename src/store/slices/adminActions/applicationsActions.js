@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import appFetch from '../../../hooks/appFetch'
 import { sortRequestApplic } from '../../../utils/helpers/helpers'
 import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
@@ -100,6 +101,7 @@ export const rejectAplication = ({
             url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
+         console.log(result)
          dispatch(applicationsActions())
          toast.success(result.message)
          setReasonReject('')
