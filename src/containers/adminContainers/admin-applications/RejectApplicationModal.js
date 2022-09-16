@@ -20,8 +20,6 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
             const response = await dispatch(
                rejectAplication({ id, reasonReject, onClose, setReasonReject })
             ).unwrap()
-            setReasonReject('')
-            onClose()
             return response
          } catch (error) {
             return error
