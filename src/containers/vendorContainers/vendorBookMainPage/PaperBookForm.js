@@ -8,7 +8,6 @@ import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import { addPaperBook } from '../../../store/createActions/addBookActions'
 import bookAction from '../../../store/slices/addBookSlice'
-import SelectBooks from '../../adminContainers/Admin/SelectBooks'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
@@ -46,8 +45,40 @@ const PaperBookForm = ({ images }) => {
       genre: dataWithId ? dataWithId.genre : '',
    })
 
+   const formatLanguage = () => {
+      let formation
+      if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
+         formation = 'Кыргызский'
+      }
+      if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
+         formation = 'Русский'
+      }
+      if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
+         formation = 'Английский'
+      }
+      return formation
+   }
+
    const handleChangeInput = (e) => {
+      const date = new Date()
       const { name, value } = e.target
+      if (
+         name === 'pageSize' ||
+         name === 'discount' ||
+         name === 'quantityOfBook' ||
+         name === 'yearOfIssue' ||
+         name === 'price'
+      ) {
+         if (value < 0) {
+            return
+         }
+      }
+      if (name === 'yearOfIssue') {
+         if (value > date.getFullYear()) {
+            return
+         }
+      }
+
       setInputValues({ ...inputValues, [name]: value })
    }
    const isFormValid = () => {
@@ -65,16 +96,8 @@ const PaperBookForm = ({ images }) => {
       return validateValues
    }
 
-   const validLength = () => {
-      const validNumbers =
-         inputValues.yearOfIssue.length > 4 ||
-         inputValues.yearOfIssue < 0 ||
-         inputValues.yearOfIssue > 2022
-      return validNumbers
-   }
-
    const clickSendFormValues = async () => {
-      if (isFormValid() && !validLength()) {
+      if (isFormValid()) {
          dispatch(addPaperBook(inputValues, images, isChecked))
          dispatch(bookAction.deleteImage())
          setInputValues({
@@ -158,6 +181,7 @@ const PaperBookForm = ({ images }) => {
                      setInputValues({ ...inputValues, genreId })
                   }
                   genres={genre}
+                  editeName={dataWithId ? dataWithId.genre : ''}
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
@@ -206,6 +230,7 @@ const PaperBookForm = ({ images }) => {
                            setInputValues({ ...inputValues, language })
                         }
                         genres={languageSelect}
+                        editeName={dataWithId ? formatLanguage() : ''}
                      />
                      <LabelStyle htmlFor="pageSize">
                         Объем <strong>*</strong>
@@ -253,7 +278,6 @@ const PaperBookForm = ({ images }) => {
                         type="number"
                         name="yearOfIssue"
                      />
-                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                      <LabelStyle htmlFor="quantityOfBook">
                         Кол-во <strong>*</strong>
                      </LabelStyle>
@@ -356,8 +380,4 @@ export const PutDiv = styled('div')`
    display: flex;
    justify-content: space-between;
    width: 300px;
-`
-export const ValidSpan = styled('span')`
-   color: red;
-   font-size: 14px;
 `

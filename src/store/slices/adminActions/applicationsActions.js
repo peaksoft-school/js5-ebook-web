@@ -74,10 +74,8 @@ export const acceptApplication = (id) => {
          dispatch(applicationSlicesActions.postAcceptApplication(result))
          dispatch(applicationsActions())
          toast.success(result.message)
-         return result
       } catch (error) {
          toast.error('Не удалось принять!')
-         return error
       }
    }
 }

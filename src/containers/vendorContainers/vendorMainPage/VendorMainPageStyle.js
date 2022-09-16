@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 export const ImageBlock = styled('div')`
    width: 197px;
    height: 297px;
+   margin-bottom: 10px;
 `
 
 export const ContainerDiv = styled('div')`
@@ -31,7 +32,7 @@ export const CopyLink = styled(Link)`
    text-decoration: none;
 `
 export const BookSHeader = styled('div')`
-   width: 144px;
+   width: 134px;
    display: flex;
    justify-content: space-between;
    padding: 19px 0px 16px 0px;
@@ -43,7 +44,6 @@ export const BookSHeader = styled('div')`
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 400;
-   font-size: 16px;
    line-height: 130%;
 `
 export const BooksWrapper = styled('div')`
@@ -113,6 +113,7 @@ export const NameBook = styled('h3')`
    font-size: 14px;
    line-height: 120%;
    text-transform: uppercase;
+   padding-top: 10px;
 `
 export const ImgFavorite = styled('span')`
    display: flex;

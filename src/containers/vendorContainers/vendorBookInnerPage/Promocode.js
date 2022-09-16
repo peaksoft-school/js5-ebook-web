@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
@@ -16,6 +16,9 @@ const Promocode = () => {
    const [isOpenPromoModal, setIsOpenPromoModal] = useState(false)
    const handleOpenPromoModal = () => setIsOpenPromoModal(true)
    const handleClosePromoModal = () => setIsOpenPromoModal(false)
+   useEffect(() => {
+      setIsOpenPromoModal(false)
+   }, [Boolean(success)])
 
    return (
       <div>
@@ -34,6 +37,7 @@ const Promocode = () => {
                width="197px"
                height="42px"
                padding="10px 16px"
+               colorhover="white"
             >
                Создать промокод
             </Button>

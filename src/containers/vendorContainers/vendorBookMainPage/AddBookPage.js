@@ -81,7 +81,7 @@ const AddBookPage = () => {
             <BreadCrumbs translate={pathTranslate} />
          </BreadBlock>
          <GetSnackbar
-            open={bookError || bookSuccsess || imageSnack}
+            open={bookError || bookSuccsess}
             message={bookError || bookSuccsess}
             variant={bookError ? 'error' : 'success'}
          />

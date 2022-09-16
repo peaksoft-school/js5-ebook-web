@@ -25,8 +25,7 @@ const BookInfo = ({ book, onDelete, bookId }) => {
 
    const newBookIcon =
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
-   const onClickEdit = (e) => {
-      e.preventDefault()
+   const onClickEdit = () => {
       dispatch(getMainBooksWithId(bookId))
       setTimeout(() => {
          navigate('/main/addbook')
@@ -36,7 +35,9 @@ const BookInfo = ({ book, onDelete, bookId }) => {
       <>
          <StyledMain>
             <StyledBookImageCont>
-               <StyledBookImage src={book.mainImage} />
+               <MainImgwrap>
+                  <StyledBookImage src={book.mainImage} />
+               </MainImgwrap>
                {newBookIcon}
                <StyledBookImage2>
                   {book.secondImage && (
@@ -126,7 +127,9 @@ const BookInfo = ({ book, onDelete, bookId }) => {
                about={<AboutBook aboutBook={book.description} />}
                bookFragment={<BookFragment fragment={book.fragment} />}
             />
-            {book.thirdImage && <img src={book.thirdImage} alt="book" />}
+            <ThirdImgwrap>
+               {book.thirdImage && <img src={book.thirdImage} alt="book" />}
+            </ThirdImgwrap>
          </StyledTabBlock>
       </>
    )
@@ -148,9 +151,14 @@ const StyledBookImage2 = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
+   height: 321px;
+   width: 201px;
+   margin-left: 20px;
+
    & img {
       width: 100%;
-      margin: 0px 0px 20px 20px;
+      height: 100%;
+      object-fit: cover;
    }
 `
 const StyledBookName = styled.h3`
@@ -167,6 +175,7 @@ const StyledTabBlock = styled.div`
    justify-content: space-between;
    align-items: flex-start;
    padding-bottom: 20px;
+   margin-top: 19vh;
    & img {
       width: 385px;
    }
@@ -188,8 +197,7 @@ const StyledInfoTitle = styled.p`
    color: #222222;
 `
 const StyledBookImage = styled.img`
-   width: 357px;
-   margin-bottom: 185px;
+   /* width: 357px; */
 `
 const StyledMain = styled.div`
    display: flex;
@@ -235,4 +243,23 @@ const StyledNewIcon = styled.img`
    position: absolute;
    top: 75%;
    left: 26%;
+`
+const MainImgwrap = styled('div')`
+   width: 357px;
+   /* height: 571px; */
+   & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+   }
+`
+const ThirdImgwrap = styled('div')`
+   width: 385px;
+   height: 614px;
+   /* margin-top: 19vh; */
+   & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+   }
 `

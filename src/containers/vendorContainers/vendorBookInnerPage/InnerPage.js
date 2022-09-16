@@ -2,11 +2,8 @@ import styled from '@emotion/styled'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
-// import Button from '../../../Components/UI/Button/Button'
-// import plusIcon from '../../../assets/icons/plus.svg'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 import BookInfo from './BookInfo'
-// import Promocode from './Promocode'
 import {
    deleteVendorBook,
    getVendorBookInnerPage,
@@ -77,9 +74,3 @@ export const StyledLink = styled(Link)`
    color: white;
    text-decoration: none;
 `
-// const StyledBtnBlock = styled.div`
-//    width: 100%;
-//    display: flex;
-//    justify-content: space-between;
-//    margin-bottom: 43px;
-// `
