@@ -1,5 +1,5 @@
 import { appFileFetchService } from '../../api/fileService'
-import appFetch from '../../hooks/AppFetch'
+import appFetch from '../../hooks/appFetch'
 import snackbarAction from '../slices/snackbarSlice'
 import vendorMainPageAction from '../slices/vendorMainPageSlice'
 

@@ -1,4 +1,4 @@
-import appFetch from '../../hooks/AppFetch'
+import appFetch from '../../hooks/appFetch'
 import bookAction from '../slices/addBookSlice'
 import { appFileFetchService } from '../../api/fileService'
 import { getMainBooks } from './vendorMainPagesActions'
@@ -95,19 +95,19 @@ export const addAudioBook = (inputValues, images, audioValues, duration) => {
    }
 }
 
-export const addElectronicBoook = (inputValues, images, pdf) => {
+export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
    const valuesWithFile = {
-      name: inputValues.name,
-      genreId: inputValues.genreId,
-      price: inputValues.price,
-      author: inputValues.author,
-      description: inputValues.description,
-      yearOfIssue: inputValues.yearOfIssue,
-      discount: inputValues.discount,
+      name: withIdValues.name,
+      genreId: withIdValues.genreId,
+      price: withIdValues.price,
+      author: withIdValues.author,
+      description: withIdValues.description,
+      yearOfIssue: withIdValues.yearOfIssue,
+      discount: withIdValues.discount,
       bestseller: true,
-      fragment: inputValues.fragment,
-      pageSize: inputValues.pageSize,
-      publishingHouse: inputValues.publishingHouse,
+      fragment: withIdValues.fragment,
+      pageSize: withIdValues.pageSize,
+      publishingHouse: withIdValues.publishingHouse,
    }
 
    return async (dispatch) => {
@@ -126,9 +126,9 @@ export const addElectronicBoook = (inputValues, images, pdf) => {
             valuesWithFile.thirdImage = imgFiles.link
          }
 
-         if (pdf) {
-            const imgFiles = await appFileFetchService(pdf)
-            valuesWithFile.electronicBook = imgFiles.link
+         if (pdfValue) {
+            const pdfFile = await appFileFetchService(pdfValue)
+            valuesWithFile.electronicBook = pdfFile.link
          }
 
          const result = await appFetch({

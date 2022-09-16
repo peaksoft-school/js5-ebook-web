@@ -1,4 +1,4 @@
-import appFetch from '../hooks/AppFetch'
+import appFetch from '../hooks/appFetch'
 import bookInnerPageAction from './slices/vendorBookInnerPageSlice'
 
 export const getVendorBookInnerPage = (bookId) => {

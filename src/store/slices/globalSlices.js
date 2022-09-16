@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import appFetch from '../../hooks/AppFetch'
+import appFetch from '../../hooks/appFetch'
 import { sortRequestApplic } from '../../utils/helpers/helpers'
 
 const initialState = {

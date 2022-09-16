@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { MenuItem } from '@mui/material'
+import strel from '../../../assets/icons/strel.svg'
 import PopUp from '../../../Components/UI/popup'
 
 export default function SelectInput({
@@ -9,11 +10,13 @@ export default function SelectInput({
    defaultName,
    onClick,
    type,
+   strelLog,
+   editeName,
    ...props
 }) {
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
-      name: defaultName || 'все',
+      name: defaultName || 'Все',
       id: null,
       key: type,
    })
@@ -40,11 +43,18 @@ export default function SelectInput({
       })
       onCloseMenu()
    }
+
    return (
       <SelectBook>
          {name && <SelectSpan>{name}:</SelectSpan>}
-         <SelectLabel {...props} onClick={handleClickLabel}>
-            {label.name}{' '}
+         <SelectLabel
+            ful={defaultName}
+            primary={editeName}
+            {...props}
+            onClick={handleClickLabel}
+         >
+            {!editeName ? label.name : editeName}
+            {strelLog && <ImgesCont src={strel} />}
          </SelectLabel>
          <PopUp
             height={props.height}
@@ -84,6 +94,7 @@ const SelectLabel = styled('div')`
    font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '600')};
    padding: ${(props) => (props.padding ? props.padding : '')};
    color: ${(props) => (props.color ? props.color : '')};
+   color: ${(props) => (props.primary ? 'black' : '')};
    width: ${(props) => (props.width ? props.width : '')};
    &:hover {
       border: ${(props) => (props.hover ? '1px solid red' : '')};
@@ -104,4 +115,7 @@ const SelectBook = styled('div')`
    justify-content: flex-start;
    /* max-width: 180px; */
    flex-grow: 2;
+`
+const ImgesCont = styled('img')`
+   margin-left: 10px;
 `
