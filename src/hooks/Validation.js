@@ -28,6 +28,7 @@ function Validation(funcValid) {
       value,
       isValidValue,
       onBlurHandler,
+      setValue,
    }
 }
 

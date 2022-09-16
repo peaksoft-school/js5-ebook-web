@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
 import WaveSurfer from 'wavesurfer.js'
+import { useEffect, useRef, useState } from 'react'
 import { styled } from '@mui/material'
 import AudioPlay from '../../assets/icons/AudioPlay.svg'
 import AudioPause from '../../assets/icons/AudioPause.svg'

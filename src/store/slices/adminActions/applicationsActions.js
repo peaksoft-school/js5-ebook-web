@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast'
 import appFetch from '../../../hooks/appFetch'
 import { sortRequestApplic } from '../../../utils/helpers/helpers'
 import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
