@@ -36,6 +36,7 @@ const ButtonStyle = styled(MuiButton)`
    &:hover {
       background: ${(props) => props.backgroundhover || '#fe6f33'};
       color: ${(props) => props.colorhover || 'fff'};
+      color: ${(props) => props.colorhover || 'fff'};
    }
 
    background: ${(props) => (props.variant === 'universal' ? 'white' : '')};

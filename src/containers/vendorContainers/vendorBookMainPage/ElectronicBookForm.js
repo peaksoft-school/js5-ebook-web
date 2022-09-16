@@ -17,7 +17,6 @@ import {
    PutDiv,
    SelectDiv,
    SelectWrapper,
-   ValidSpan,
 } from './PaperBookForm'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import SelectBooks from '../../adminContainers/Admin/SelectBooks'
@@ -56,11 +55,47 @@ const ElectronicBookForm = ({ images }) => {
       discount: dataWithId ? dataWithId.discount : '',
    })
    const changePdfFileValue = (pdf) => {
+      if (!pdf) {
+         return
+      }
       setPdfFile(pdf)
+   }
+
+   const formatLanguage = () => {
+      let formation
+      if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
+         formation = 'Кыргызский'
+      }
+      if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
+         formation = 'Русский'
+      }
+      if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
+         formation = 'Английский'
+      }
+      return formation
    }
 
    const handleChangeInput = (e) => {
       const valueEvent = e.target
+      const { name, value } = e.target
+      const date = new Date()
+      if (name === 'pageSize' || name === 'price') {
+         if (value < 0) {
+            return
+         }
+      }
+      if (name === 'discount') {
+         if (value > 100 || value < 0) {
+            return
+         }
+      }
+      if (name === 'yearOfIssue') {
+         if (name === 'yearOfIssue') {
+            if (value > date.getFullYear() || value < 0) {
+               return
+            }
+         }
+      }
       setWithIdValues({ ...withIdValues, [valueEvent.name]: valueEvent.value })
    }
    const [navigation, setNavigation] = useState(false)
@@ -77,17 +112,10 @@ const ElectronicBookForm = ({ images }) => {
          withIdValues.price.length >= 1
       return validateValues && images.mainImage && pdfValue
    }
-   const validLength = () => {
-      const validNumbers =
-         withIdValues.yearOfIssue.length > 4 ||
-         withIdValues.yearOfIssue < 0 ||
-         withIdValues.yearOfIssue > 2022
-      return validNumbers
-   }
 
    const clickSendFormValues = async () => {
-      if (isFormValid() && !validLength()) {
-         dispatch(addElectronicBoook(withIdValues, images, pdfValue))
+      if (isFormValid()) {
+         dispatch(addElectronicBoook({ withIdValues, images, pdfValue }))
          dispatch(bookAction.deleteImage())
 
          setWithIdValues({
@@ -171,6 +199,7 @@ const ElectronicBookForm = ({ images }) => {
                      setWithIdValues({ ...withIdValues, genreId })
                   }
                   genres={genre}
+                  editeName={dataWithId ? dataWithId.genre : ''}
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
@@ -207,7 +236,7 @@ const ElectronicBookForm = ({ images }) => {
                      </LabelStyle>
                      <SelectInput
                         border
-                        padding="12px 10px 12px 19px"
+                        padding="12px 10px 11px 19px"
                         width="100%"
                         hover
                         defaultName="язык"
@@ -217,6 +246,7 @@ const ElectronicBookForm = ({ images }) => {
                            setWithIdValues({ ...withIdValues, language })
                         }
                         genres={languageSelect}
+                        editeName={dataWithId ? formatLanguage() : ''}
                      />
                      <LabelStyle htmlFor="obem">
                         Объем <strong>*</strong>
@@ -250,13 +280,12 @@ const ElectronicBookForm = ({ images }) => {
                      <InputText
                         id="yearOfIssue"
                         onChange={handleChangeInput}
-                        value={withIdValues.data}
+                        value={withIdValues.yearOfIssue}
                         textAlign="end"
                         placeholder="гг"
                         name="yearOfIssue"
                         type="number"
                      />
-                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                      <CheckBoxDiv>
                         <CheckBox label="Бестселлер" />
                      </CheckBoxDiv>
@@ -280,8 +309,6 @@ const ElectronicBookForm = ({ images }) => {
                   </LabelStyle>
                   <FileUploadButton
                      onChange={changePdfFileValue}
-                     value={pdfValue}
-                     title="Загрузите книгу *"
                      accept="application/pdf"
                   >
                      Загрузите PDF
@@ -318,8 +345,8 @@ const Wrapper = styled('div')`
    width: 398px;
 `
 const CheckBoxDiv = styled('div')`
-   margin-top: 5.5vh;
+   margin-top: 7.2vh;
 `
 const PdfDiv = styled('div')`
-   margin-top: 2.7vh;
+   margin-top: 3.9vh;
 `

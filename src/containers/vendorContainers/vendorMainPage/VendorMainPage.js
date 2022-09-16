@@ -4,9 +4,7 @@ import { Snackbar, styled } from '@mui/material'
 import myHearticon from '../../../assets/icons/mainEdite/myHearticon.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
-import SelectBooks from '../../adminContainers/Admin/SelectBooks'
 import HeaderMainPage from './HeaderMainPage'
-import strel from '../../../assets/icons/strel.svg'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import { getMainBooks } from '../../../store/createActions/vendorMainPagesActions'
@@ -21,13 +19,11 @@ import {
    HeaderText,
    ImageBlock,
    Img,
-   ImgesCont,
    ImgFavorite,
    MeatBallsDiv,
    NameBook,
    Price,
    SelectBooksDiv,
-   SelectCopy,
    Span,
    WrapperDiv,
 } from './VendorMainPageStyle'
@@ -83,20 +79,26 @@ const VendorMainPage = () => {
          )}
          <GetSnackbar
             open={bookError || bookSuccsess}
-            message={bookSuccsess ? 'Пользователь успешно удален!' : bookError}
+            message={bookSuccsess ? 'Книга удалена!' : bookError}
             variant={bookError ? 'error' : 'success'}
          />
          <HeaderMainPage />
          <HeaderText>
             <Span>Всего {totalElements} книг</Span>
             <SelectBooksDiv>
-               <SelectInput genres={bookType} onClick={clickSelectBook} />
-               <SelectCopy>
-                  <ImgesCont src={strel} />
-               </SelectCopy>
+               <SelectInput
+                  strelLog="strel"
+                  genres={bookType}
+                  onClick={clickSelectBook}
+               />
             </SelectBooksDiv>
          </HeaderText>
          <hr />
+         {vendorBooks.length === 0 && (
+            <NotFound>
+               <NotFaundImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuMUfB9xqk8Od2jyPLTDauXxP4H83XbUXwBkKXw7bLRW5FmFSbe68PXIoVMsx7iUn6y7c&usqp=CAU" />
+            </NotFound>
+         )}
          <ContainerDiv>
             {vendorBooks
                ? vendorBooks.map((book) => (
@@ -166,4 +168,13 @@ const Books = styled('div')`
 
    background-color: ${(props) => (props.accepted ? '#EDEDED' : '')};
    border: ${(props) => (props.accepted ? 'none' : '')};
+`
+const NotFound = styled('div')`
+   width: 800px;
+   margin: auto;
+`
+const NotFaundImg = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 `
