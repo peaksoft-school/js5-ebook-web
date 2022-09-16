@@ -14,7 +14,6 @@ export default Button
 const ButtonStyle = styled(MuiButton)`
    text-transform: none;
    padding: 8px 40px 8px 40px;
-   text-transform: none;
    padding: ${(props) => props.padding || '10px 20px'};
    border: none;
    font-weight: ${(props) => props.fontWeight || '600'};
