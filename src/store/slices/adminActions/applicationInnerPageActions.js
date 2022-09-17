@@ -73,9 +73,9 @@ export function blockBookAction(id, navigate) {
             url: '',
          })
          dispatch(applicationsInnerPageSlicesAction.getBlockMessage(books))
-
          dispatch(applicationsInnerPageSlicesAction.success())
          toast.success(books.message)
+         dispatch(applicationsInnerPageSlicesAction.fulfilled())
          navigate(-1)
          return books
       } catch (error) {

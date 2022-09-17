@@ -8,6 +8,7 @@ import { vendorbookInnerPageSlice } from './slices/vendorBookInnerPageSlice'
 import PromocodeSlices from './slices/promocodeSlices'
 import globalValues from './slices/globalSlices'
 import UserProfileSlice from './slices/userProfileSlice'
+import VendorProfileSlice from './slices/ProfileVendorSlice'
 import { getAdminVendorsSlice } from './slices/getAdminVendorsSlice'
 import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
 import { snackbarSlice } from './slices/snackbarSlice'
@@ -26,6 +27,7 @@ const store = configureStore({
       vendorMainPage: vendorMainPageSlice.reducer,
       promocodeStore: PromocodeSlices.reducer,
       userProfile: UserProfileSlice.reducer,
+      vendorProfile: VendorProfileSlice.reducer,
       adminVendors: getAdminVendorsSlice.reducer,
       snackbar: snackbarSlice.reducer,
    },

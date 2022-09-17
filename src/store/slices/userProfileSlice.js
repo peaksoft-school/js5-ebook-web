@@ -19,7 +19,6 @@ const UserProfileSlice = createSlice({
          state.status = 'pending'
       },
       deleteUser(state, action) {
-         console.log(action.payload.message)
          state.message = action.payload.message
          state.status = 'success'
       },
@@ -31,7 +30,6 @@ const UserProfileSlice = createSlice({
          }
       },
       putUserPfrofile: (state, action) => {
-         console.log(action)
          state.message = action.payload.message
          state.status = 'success'
       },
