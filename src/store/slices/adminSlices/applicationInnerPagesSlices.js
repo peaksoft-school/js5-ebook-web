@@ -24,10 +24,10 @@ const applicationsInnerPageSlices = createSlice({
          state.rejectMessage = action.payload
          state.status = 'fulfilled'
       },
-      error: (state) => {
+      error(state) {
          state.status = 'error'
       },
-      success: (state) => {
+      success(state) {
          state.status = 'fulfilled'
       },
       pending(state) {
