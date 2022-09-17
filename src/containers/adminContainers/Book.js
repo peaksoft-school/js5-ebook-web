@@ -1,5 +1,6 @@
 import { styled } from '@mui/material'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBook.svg'
 import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
@@ -10,6 +11,7 @@ import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopupMeatBalls'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
    const [showRejectModal, setShowRejectModal] = useState(false)
+   const navigate = useNavigate()
    const menuMeatBall = [
       {
          id: 2,
@@ -33,8 +35,11 @@ const Book = ({ id, img, date, name, price, bookType }) => {
          [BookType.ELECTRONIC_BOOK]: <PdfBook />,
       }
    }, [])
+   const navigateToDetailsPage = () => {
+      navigate(`/books/${id}`)
+   }
    return (
-      <BookItems>
+      <BookItems onClick={navigateToDetailsPage}>
          <MeatBall onClick={(e) => e.stopPropagation()}>
             <PopUpMeatBalls options={menuMeatBall} />
          </MeatBall>

@@ -80,7 +80,7 @@ export function setGenres() {
       dispatch(globalValuesAction.setGenres(genres))
    }
 }
-export function blockBookAction(onClose) {
+export function blockBookAction(id, onClose) {
    return async (dispatch) => {
       try {
          const books = await appFetch({
