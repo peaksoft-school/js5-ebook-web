@@ -62,7 +62,7 @@ export const VendorProfile = () => {
       isValidValue: isNameValue,
       onBlurHandler: onBlurNameHandler,
    } = Validation((value) => {
-      if (value?.length <= 2) {
+      if (value.length <= 2) {
          return true
       }
       return false
@@ -75,7 +75,7 @@ export const VendorProfile = () => {
       isValidValue: isLastNameValue,
       onBlurHandler: onBlurLastNameHandler,
    } = Validation((value) => {
-      if (value?.length <= 2) {
+      if (value.length <= 2) {
          return true
       }
       return false
@@ -112,7 +112,7 @@ export const VendorProfile = () => {
       isValidValue: isPasswordValue,
       onBlurHandler: onBlurPasswordHandler,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
@@ -124,7 +124,7 @@ export const VendorProfile = () => {
       isValidValue: isLastPasswordValue,
       onBlurHandler: onBlurLastPasswordHandler,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
@@ -135,7 +135,7 @@ export const VendorProfile = () => {
       isValidValue: isLastPasswordValue2,
       onBlurHandler: onBlurLastPasswordHandler2,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
