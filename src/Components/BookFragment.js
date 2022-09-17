@@ -11,4 +11,5 @@ const FragmentStyle = styled('p')`
    font-weight: 400;
    font-size: 16px;
    line-height: 150%;
+   margin-left: 15px;
 `

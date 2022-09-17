@@ -64,3 +64,24 @@ export const rejectAplicationInnerPage = ({
       }
    }
 }
+
+export function blockBookAction(id, navigate) {
+   return async (dispatch) => {
+      try {
+         dispatch(applicationsInnerPageSlicesAction.pending())
+         const books = await appFetch({
+            url: '',
+         })
+         dispatch(applicationsInnerPageSlicesAction.getBlockMessage(books))
+
+         toast.success(books.message)
+         dispatch(applicationsInnerPageSlicesAction.fulfilled())
+         navigate(-1)
+         return books
+      } catch (error) {
+         toast.error('Не удалось блокировать!')
+         dispatch(applicationsInnerPageSlicesAction.error())
+         return error
+      }
+   }
+}
