@@ -1,29 +1,27 @@
 import styled from 'styled-components'
-import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import Button from '../../../Components/UI/Button/Button'
-import New from '../../../assets/icons/new.svg'
-import { TabInnerPage } from './TabInnerPage'
-import About from '../../../Components/About'
-import BookFragment from '../../../Components/BookFragment'
-import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
-import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
-import { RejectApplicationModal } from './RejectApplicationModal'
+import { useDispatch, useSelector } from 'react-redux'
+import Button from '../../Components/UI/Button/Button'
+import New from '../../assets/icons/new.svg'
+import { TabInnerPage } from '../TabInnerPage'
+import About from '../../Components/About'
+import BookFragment from '../../Components/BookFragment'
+import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import {
    applicationInnerPageAction,
-   acceptApplicationInnerPage,
-} from '../../../store/slices/adminActions/applicationInnerPageActions'
-import Spinner from '../../../Components/UI/Spinner'
+   blockBookAction,
+} from '../../store/slices/adminActions/applicationInnerPageActions'
+import Spinner from '../../Components/UI/Spinner'
 
-export const InnerPageAdminApplication = () => {
+export const InnerPageAdminInnerBook = () => {
+   const navigate = useNavigate()
    const { id } = useParams()
    const dispatch = useDispatch()
-   const navigate = useNavigate()
    const { application, status } = useSelector(
       (state) => state.applicationsInnerPage
    )
-   const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
+
    const [isShowSpinner, setIsShowSpinner] = useState(false)
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
@@ -35,26 +33,20 @@ export const InnerPageAdminApplication = () => {
          setIsShowSpinner(false)
       }
    })
-   function acceptModal() {
-      dispatch(acceptApplicationInnerPage(id, navigate))
-   }
-   function rejectModal() {
-      dispatch(uiSlicesSlicesActions.showRejectModal())
-   }
-   function onCloseRejectModal() {
-      dispatch(uiSlicesSlicesActions.hideRejectModal())
+   function blockBook() {
+      dispatch(blockBookAction(id, navigate))
    }
 
    const pathTranslate = {
-      applications: 'Заявки',
+      books: 'Книги',
       [id]: application.bookName,
    }
 
    return (
       <>
          <Breadcrumbs translate={pathTranslate} />
+         {isShowSpinner && <Spinner />}
          <StyledMain>
-            {isShowSpinner && <Spinner />}
             <ImageDiv>
                <StyledBookImageCont>
                   <Img1>
@@ -99,31 +91,14 @@ export const InnerPageAdminApplication = () => {
 
                   <StyledBtnCont>
                      <Button
-                        onClick={() => rejectModal()}
-                        variant="universal"
-                        color="#f34901"
-                        border="1px solid"
-                        background="none"
-                        width="195px"
-                     >
-                        Отклонить
-                     </Button>
-
-                     <Button
-                        onClick={() => acceptModal()}
+                        onClick={() => blockBook()}
                         variant="universal"
                         border="1px solid"
                         background="#f34901"
                         width="195px"
                      >
-                        Принять
+                        Заблокировать
                      </Button>
-
-                     <RejectApplicationModal
-                        id={id}
-                        open={isRejectModalOpen}
-                        onClose={() => onCloseRejectModal()}
-                     />
                   </StyledBtnCont>
                </InfoContainer>
             </ImageDiv>

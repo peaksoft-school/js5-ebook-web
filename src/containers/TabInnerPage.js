@@ -26,6 +26,9 @@ const MuiTabs = styled(Tabs)`
    .MuiTabs-indicator {
       background: none;
    }
+   display: flex;
+   flex-direction: column;
+   align-items: center;
 `
 const MuiTab = styled(Tab)`
    &.Mui-selected {

@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
 import { RejectApplicationModal } from './RejectApplicationModal'
-import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
+
+import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
+
 import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {

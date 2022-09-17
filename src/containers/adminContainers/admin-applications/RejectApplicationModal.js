@@ -2,8 +2,8 @@ import { styled } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
-import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
 import Modal from '../../../Components/UI/Modal'
+import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
 
 export const RejectApplicationModal = ({ id, open, onClose }) => {
    const dispatch = useDispatch()

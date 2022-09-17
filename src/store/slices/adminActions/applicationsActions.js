@@ -1,7 +1,7 @@
-import appFetch from '../../../hooks/appFetch'
-import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
-import { sortRequestApplic } from '../../../utils/helpers/helpers'
 import toast from 'react-hot-toast'
+import appFetch from '../../../hooks/appFetch'
+import { sortRequestApplic } from '../../../utils/helpers/helpers'
+import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
 
 export const applicationsActions = (request) => {
    return async (dispatch) => {
@@ -14,14 +14,17 @@ export const applicationsActions = (request) => {
                result.getApplications.content
             )
          )
+
          dispatch(
-            applicationSlicesActions.getTotalElements(
+            applicationSlicesActions.setTotalElements(
                result.getApplications.totalElements
             )
          )
-         dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
+
+         dispatch(applicationSlicesActions.setUnwatched(result.unwatched))
+
          dispatch(
-            applicationSlicesActions.getTotalPages(
+            applicationSlicesActions.setTotalPages(
                result.getApplications.totalPages
             )
          )
@@ -45,17 +48,21 @@ export const seeMoreGetApplicationsActions = (request) => {
                result.getApplications.content
             )
          )
+
          dispatch(
-            applicationSlicesActions.getTotalElements(
+            applicationSlicesActions.setTotalElements(
                result.getApplications.totalElements
             )
          )
-         dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
+
+         dispatch(applicationSlicesActions.setUnwatched(result.unwatched))
+
          dispatch(
-            applicationSlicesActions.getTotalPages(
+            applicationSlicesActions.setTotalPages(
                result.getApplications.totalPages
             )
          )
+
          return result
       } catch (error) {
          return error

@@ -29,15 +29,15 @@ const applicationsSlices = createSlice({
          })
          state.status = 'fulfilled'
       },
-      getTotalElements(state, action) {
+      setTotalElements(state, action) {
          state.totalElements = action.payload
          state.status = 'fulfilled'
       },
-      getUnwatched(state, action) {
+      setUnwatched(state, action) {
          state.unwatched = action.payload
          state.status = 'fulfilled'
       },
-      getTotalPages(state, action) {
+      setTotalPages(state, action) {
          state.totalPages = action.payload
          state.status = 'fulfilled'
          state.status = 'fulfilled'

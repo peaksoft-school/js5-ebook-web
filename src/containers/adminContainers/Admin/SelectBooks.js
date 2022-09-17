@@ -33,6 +33,7 @@ export default function SelectBooks({ genres, name, onClick, type, variant }) {
       })
       onCloseMenu()
    }
+
    return (
       <SelectBook>
          <SelectSpan>{name}</SelectSpan>
@@ -57,6 +58,7 @@ export default function SelectBooks({ genres, name, onClick, type, variant }) {
 const PopUpItem = styled(MenuItem)`
    padding: 10px;
 `
+
 const SelectLabel = styled('div')`
    /* border: 1px solid red; */
    font-family: 'Open Sans';

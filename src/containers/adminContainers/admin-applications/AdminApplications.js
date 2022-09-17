@@ -5,11 +5,11 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux/'
 import Spinner from '../../../Components/UI/Spinner'
 import Button from '../../../Components/UI/Button/Button'
-
 import {
    applicationsActions,
    seeMoreGetApplicationsActions,
 } from '../../../store/slices/adminActions/applicationsActions'
+
 import ApplicationCard from './ApplicationCard'
 
 const AdminApplications = () => {
@@ -20,7 +20,6 @@ const AdminApplications = () => {
       totalPages,
       status,
    } = useSelector((state) => state.applications)
-
    const [update, setupdate] = useState(true)
    const [requestObj, setRequestObj] = useState({ page: 1, size: 8 })
    const [showSeeMore, setShowSeeMore] = useState(false)
