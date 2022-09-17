@@ -70,7 +70,7 @@ export const UserProfile = () => {
       isValidValue: isPasswordValue,
       onBlurHandler: onBlurPasswordHandler,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
@@ -82,7 +82,7 @@ export const UserProfile = () => {
       isValidValue: isLastPasswordValue,
       onBlurHandler: onBlurLastPasswordHandler,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
@@ -93,12 +93,11 @@ export const UserProfile = () => {
       isValidValue: isLastPasswordValue2,
       onBlurHandler: onBlurLastPasswordHandler2,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
    })
-
    useEffect(() => {
       let timerId = null
       if (message) {

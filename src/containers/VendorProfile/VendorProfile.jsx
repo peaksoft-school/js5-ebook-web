@@ -55,6 +55,7 @@ export const VendorProfile = () => {
    const deleteHandler = () => {
       dispatch(deleteVendorProfile(userId, navigate))
    }
+   // const [isValidPassword, setIsValidPassword] = useState(false)
    const {
       value: firstName,
       setValue: setName,
@@ -129,17 +130,26 @@ export const VendorProfile = () => {
       }
       return false
    })
+
    const {
       value: newPassword2,
       inputChange: onChangeNewPassword2,
       isValidValue: isLastPasswordValue2,
       onBlurHandler: onBlurLastPasswordHandler2,
    } = Validation((value) => {
-      if (value.length <= 5) {
+      if (value.length <= 5 || newPassword !== value) {
          return true
       }
       return false
    })
+
+   // useEffect(() => {
+   //    if (newPassword !== newPassword2) {
+   //       setIsValidPassword(true)
+   //       return
+   //    }
+   //    setIsValidPassword(false)
+   // }, [newPassword, newPassword2])
 
    useEffect(() => {
       let timerId = null
