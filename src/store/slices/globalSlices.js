@@ -17,16 +17,11 @@ const globalValues = createSlice({
    reducers: {
       setGenres: (state, action) => {
          state.genres = action.payload
-         state.status = 'fulfilled'
       },
       setBooks: (state, action) => {
-         action.payload.forEach((element) => {
-            const prev = state.books.find((el) => el.id === element.id)
-            if (!prev) {
-               state.books.push(element)
-            }
-         })
-         state.status = 'fulfilled'
+         state.books = action.payload.content
+         state.totalElements = action.payload.totalElements
+         state.totalPages = action.payload.totalPages
       },
       updateSortGenres: (state, action) => {
          const arr = action.payload.filter((el) => el.searchType === 'GENRE')
@@ -36,15 +31,11 @@ const globalValues = createSlice({
                name: el.search,
             }
          })
-         state.status = 'fulfilled'
       },
-
-      setTotalElements(state, action) {
-         state.totalElements = action.payload
-         state.status = 'fulfilled'
+      error: (state) => {
+         state.status = 'error'
       },
-      setTotalPages(state, action) {
-         state.totalPages = action.payload
+      success: (state) => {
          state.status = 'fulfilled'
       },
       pending(state) {
@@ -64,6 +55,7 @@ export function updateSortGenres(value) {
          url: `/api/books/search?search=${value}`,
       })
       dispatch(globalValuesAction.updateSortGenres(response))
+      dispatch(globalValuesAction.success())
    }
 }
 
@@ -73,9 +65,8 @@ export function setBooks(request) {
       const books = await appFetch({
          url: `/api/admin/books${sortRequestApplic(request)}`,
       })
-      dispatch(globalValuesAction.setBooks(books.content))
-      dispatch(globalValuesAction.setTotalElements(books.totalElements))
-      dispatch(globalValuesAction.setTotalPages(books.totalPages))
+      dispatch(globalValuesAction.setBooks(books))
+      dispatch(globalValuesAction.success())
    }
 }
 
@@ -86,5 +77,6 @@ export function setGenres() {
          url: '/api/genres',
       })
       dispatch(globalValuesAction.setGenres(genres))
+      dispatch(globalValuesAction.success())
    }
 }

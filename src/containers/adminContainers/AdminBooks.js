@@ -40,13 +40,8 @@ export default function AdminBooks() {
 
    const dispatch = useDispatch()
    const [requestObj, setRequestObj] = useState({
-      genres: [],
+      genreId: null,
       bookType: 'PAPER_BOOK',
-      priceFrom: null,
-      priceTo: null,
-      languages: null,
-      search: 'all',
-      sortBy: null,
       page: 1,
       size: 8,
    })
@@ -61,15 +56,10 @@ export default function AdminBooks() {
    }, [])
    const onClickSelect = (id, key) => {
       setRequestObj((prev) => {
-         if (key === 'genres') {
-            return {
-               ...prev,
-               [key]: [id],
-            }
-         }
          return {
             ...prev,
             [key]: id,
+            size: 8,
          }
       })
    }
@@ -87,7 +77,7 @@ export default function AdminBooks() {
       setRequestObj((prev) => {
          return {
             ...prev,
-            page: prev.page + 1,
+            size: prev.size + prev.size,
          }
       })
    }
@@ -116,7 +106,7 @@ export default function AdminBooks() {
                onClick={onClickSelect}
             />
             <SelectBooks
-               type="genres"
+               type="genreId"
                name="Жанры"
                genres={booktypes}
                onClick={onClickSelect}
