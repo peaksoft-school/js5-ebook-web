@@ -16,8 +16,6 @@ import {
    ValidSpan,
 } from './PaperBookForm'
 import { addAudioBook } from '../../../store/createActions/addBookActions'
-import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
-import SelectBooks from '../../adminContainers/Admin/SelectBooks'
 import { editeAudioBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
