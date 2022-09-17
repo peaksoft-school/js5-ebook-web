@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import Button from '../../../Components/UI/Button/Button'
 import New from '../../../assets/icons/new.svg'
 import { TabInnerPage } from './TabInnerPage'
@@ -14,18 +14,29 @@ import {
    applicationInnerPageAction,
    acceptApplicationInnerPage,
 } from '../../../store/slices/adminActions/applicationInnerPageActions'
+import Spinner from '../../../Components/UI/Spinner'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
-   const { application } = useSelector((state) => state.applicationsInnerPage)
+   const navigate = useNavigate()
+   const { application, status } = useSelector(
+      (state) => state.applicationsInnerPage
+   )
    const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
-
+   const [isShowSpinner, setIsShowSpinner] = useState(false)
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
    }, [])
+   useEffect(() => {
+      if (status === 'pending') {
+         setIsShowSpinner(true)
+      } else {
+         setIsShowSpinner(false)
+      }
+   })
    function acceptModal() {
-      dispatch(acceptApplicationInnerPage(id))
+      dispatch(acceptApplicationInnerPage(id, navigate))
    }
    function rejectModal() {
       dispatch(uiSlicesSlicesActions.showRejectModal())
@@ -43,6 +54,7 @@ export const InnerPageAdminApplication = () => {
       <>
          <Breadcrumbs translate={pathTranslate} />
          <StyledMain>
+            {isShowSpinner && <Spinner />}
             <ImageDiv>
                <StyledBookImageCont>
                   <StyledBookImage src={application.mainImage} />

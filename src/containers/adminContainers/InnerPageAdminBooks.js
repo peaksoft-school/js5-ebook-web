@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../Components/UI/Button/Button'
 import New from '../../assets/icons/new.svg'
@@ -8,19 +8,33 @@ import { TabInnerPage } from '../TabInnerPage'
 import About from '../../Components/About'
 import BookFragment from '../../Components/BookFragment'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
-import { applicationInnerPageAction } from '../../store/slices/adminActions/applicationInnerPageActions'
-import { blockBookAction } from '../../store/slices/globalSlices'
+import {
+   applicationInnerPageAction,
+   blockBookAction,
+} from '../../store/slices/adminActions/applicationInnerPageActions'
+import Spinner from '../../Components/UI/Spinner'
 
 export const InnerPageAdminInnerBook = () => {
+   const navigate = useNavigate()
    const { id } = useParams()
    const dispatch = useDispatch()
-   const { application } = useSelector((state) => state.applicationsInnerPage)
+   const { application, status } = useSelector(
+      (state) => state.applicationsInnerPage
+   )
 
+   const [isShowSpinner, setIsShowSpinner] = useState(false)
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
    }, [])
+   useEffect(() => {
+      if (status === 'pending') {
+         setIsShowSpinner(true)
+      } else {
+         setIsShowSpinner(false)
+      }
+   })
    function blockBook() {
-      dispatch(blockBookAction(id))
+      dispatch(blockBookAction(id, navigate))
    }
 
    const pathTranslate = {
@@ -31,6 +45,7 @@ export const InnerPageAdminInnerBook = () => {
    return (
       <>
          <Breadcrumbs translate={pathTranslate} />
+         {isShowSpinner && <Spinner />}
          <StyledMain>
             <ImageDiv>
                <StyledBookImageCont>

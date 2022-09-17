@@ -38,6 +38,7 @@ export const applicationsActions = (request) => {
 export const seeMoreGetApplicationsActions = (request) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
@@ -72,6 +73,7 @@ export const seeMoreGetApplicationsActions = (request) => {
 export const acceptApplication = (id) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             method: 'POST',
             url: `/api/admin/applications/books/${id}/accepted`,
@@ -96,12 +98,12 @@ export const rejectAplication = ({
 }) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             method: 'POST',
             url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
-         console.log(result)
          dispatch(applicationsActions())
          toast.success(result.message)
          setReasonReject('')

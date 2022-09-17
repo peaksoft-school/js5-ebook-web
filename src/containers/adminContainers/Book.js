@@ -1,31 +1,28 @@
 import { styled } from '@mui/material'
-import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import React from 'react'
 import { useNavigate } from 'react-router'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { ReactComponent as AudioBook } from '../../assets/icons/bookCard/audioBook.svg'
 import { ReactComponent as PdfBook } from '../../assets/icons/bookCard/pdfBook.svg'
 import { BookType } from '../../utils/constants/constants'
-// import { ReactComponent as Delete } from '../../assets/icons/delete.svg'
-import BlockBooks from './BlockBooks'
 import PopUpMeatBalls from '../../Components/UI/MeatBalls/PopupMeatBalls'
+import { blockBookAction } from '../../store/slices/adminActions/applicationInnerPageActions'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
-   const [showRejectModal, setShowRejectModal] = useState(false)
+   const dispatch = useDispatch()
    const navigate = useNavigate()
    const menuMeatBall = [
       {
          id: 2,
-         text: 'Блокировать',
+         text: 'Заблокировать',
          icon: <LockOutlinedIcon />,
          onClick: blockBook,
       },
    ]
 
    function blockBook() {
-      setShowRejectModal(true)
-   }
-   function onCloseDeleteModal() {
-      setShowRejectModal(false)
+      dispatch(blockBookAction(id))
    }
 
    const BookTypeBlock = React.useMemo(() => {
@@ -44,11 +41,6 @@ const Book = ({ id, img, date, name, price, bookType }) => {
             <PopUpMeatBalls options={menuMeatBall} />
          </MeatBall>
 
-         <BlockBooks
-            id={id}
-            open={showRejectModal}
-            onClose={() => onCloseDeleteModal()}
-         />
          <CartTypeIcon>{BookTypeBlock[bookType]}</CartTypeIcon>
          <Div>
             <Img>

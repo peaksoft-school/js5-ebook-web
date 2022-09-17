@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux/'
-
+import Spinner from '../../../Components/UI/Spinner'
 import Button from '../../../Components/UI/Button/Button'
 import {
    applicationsActions,
@@ -18,16 +18,24 @@ const AdminApplications = () => {
       totalElements: allBooks,
       unwatched,
       totalPages,
+      status,
    } = useSelector((state) => state.applications)
    const [update, setupdate] = useState(true)
    const [requestObj, setRequestObj] = useState({ page: 1, size: 8 })
    const [showSeeMore, setShowSeeMore] = useState(false)
+   const [isShowSpinner, setIsShowSpinner] = useState(false)
    const dispatch = useDispatch()
 
    useEffect(() => {
       dispatch(applicationsActions(requestObj))
    }, [])
-
+   useEffect(() => {
+      if (status === 'pending') {
+         setIsShowSpinner(true)
+      } else {
+         setIsShowSpinner(false)
+      }
+   })
    useEffect(() => {
       if (update) {
          setupdate(false)
@@ -63,6 +71,7 @@ const AdminApplications = () => {
    }
    return (
       <Application>
+         {isShowSpinner && <Spinner />}
          <TotalApplication>
             <Total>Всего:{allBooks}</Total>
             <Total>

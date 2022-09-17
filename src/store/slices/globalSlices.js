@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import toast from 'react-hot-toast'
 import appFetch from '../../hooks/appFetch'
 import { sortRequestApplic } from '../../utils/helpers/helpers'
 
@@ -7,9 +6,9 @@ const initialState = {
    genres: '',
    books: [],
    sortGenres: '',
-   blockMessage: '',
    totalElements: null,
    totalPages: null,
+   status: null,
 }
 
 const globalValues = createSlice({
@@ -18,6 +17,7 @@ const globalValues = createSlice({
    reducers: {
       setGenres: (state, action) => {
          state.genres = action.payload
+         state.status = 'fulfilled'
       },
       setBooks: (state, action) => {
          action.payload.forEach((element) => {
@@ -26,6 +26,7 @@ const globalValues = createSlice({
                state.books.push(element)
             }
          })
+         state.status = 'fulfilled'
       },
       updateSortGenres: (state, action) => {
          const arr = action.payload.filter((el) => el.searchType === 'GENRE')
@@ -35,15 +36,19 @@ const globalValues = createSlice({
                name: el.search,
             }
          })
+         state.status = 'fulfilled'
       },
-      getBlockMessage: (state, action) => {
-         state.blockMessage = action.payload
-      },
+
       setTotalElements(state, action) {
          state.totalElements = action.payload
+         state.status = 'fulfilled'
       },
       setTotalPages(state, action) {
          state.totalPages = action.payload
+         state.status = 'fulfilled'
+      },
+      pending(state) {
+         state.status = 'pending'
       },
    },
 })
@@ -54,6 +59,7 @@ export default globalValues
 
 export function updateSortGenres(value) {
    return async (dispatch) => {
+      dispatch(globalValuesAction.pending())
       const response = await appFetch({
          url: `/api/books/search?search=${value}`,
       })
@@ -63,6 +69,7 @@ export function updateSortGenres(value) {
 
 export function setBooks(request) {
    return async (dispatch) => {
+      dispatch(globalValuesAction.pending())
       const books = await appFetch({
          url: `/api/admin/books${sortRequestApplic(request)}`,
       })
@@ -74,25 +81,10 @@ export function setBooks(request) {
 
 export function setGenres() {
    return async (dispatch) => {
+      dispatch(globalValuesAction.pending())
       const genres = await appFetch({
          url: '/api/genres',
       })
       dispatch(globalValuesAction.setGenres(genres))
-   }
-}
-export function blockBookAction(id, onClose) {
-   return async (dispatch) => {
-      try {
-         const books = await appFetch({
-            url: '',
-         })
-         dispatch(globalValuesAction.getBlockMessage(books))
-         onClose()
-         toast.success(books.message)
-         return books
-      } catch (error) {
-         toast.error('Не удалось блокироват!')
-         return error
-      }
    }
 }

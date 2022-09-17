@@ -8,6 +8,7 @@ import SelectBooks from './SelectBooks'
 import { setBooks, setGenres } from '../../store/slices/globalSlices'
 import Book from './Book'
 import Button from '../../Components/UI/Button/Button'
+import Spinner from '../../Components/UI/Spinner'
 
 const arr = [
    {
@@ -34,6 +35,7 @@ export default function AdminBooks() {
       books,
       totalElements,
       totalPages,
+      status,
    } = useSelector((store) => store.globalValues)
 
    const dispatch = useDispatch()
@@ -48,7 +50,9 @@ export default function AdminBooks() {
       page: 1,
       size: 8,
    })
+
    const [showSeeMore, setShowSeeMore] = useState(false)
+   const [isShowSpinner, setIsShowSpinner] = useState(false)
    useEffect(() => {
       dispatch(setBooks(requestObj))
    }, [requestObj])
@@ -94,8 +98,16 @@ export default function AdminBooks() {
            })
          : ''
    }
+   useEffect(() => {
+      if (status === 'pending') {
+         setIsShowSpinner(true)
+      } else {
+         setIsShowSpinner(false)
+      }
+   })
    return (
       <AdminBooksBlock>
+         {isShowSpinner && <Spinner />}
          <SelectBlock>
             <SelectBooks
                type="bookType"
