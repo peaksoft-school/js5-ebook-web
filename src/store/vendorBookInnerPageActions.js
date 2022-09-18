@@ -23,11 +23,10 @@ export const deleteVendorBook = (bookId) => {
             method: 'DELETE',
          })
          toast.success()
-         dispatch(bookInnerPageAction.rejected())
-         console.log(deleteData)
+         dispatch(bookInnerPageAction.rejected(deleteData))
       } catch (error) {
          dispatch(bookInnerPageAction.deleteBook(error))
-         toast.error('Не удалось !')
+         toast.error('Не удалось удалить книгу!')
       }
    }
 }

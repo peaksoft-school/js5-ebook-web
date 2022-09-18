@@ -51,7 +51,9 @@ const NotificationMenu = ({
                               ? 'Ваша заявка .... была принята'
                               : 'Ваша заявка .... была отклонена'}
                         </StyledStatus>
-                        <StyledDate>{item.dateOfStatus}</StyledDate>
+                        <StyledDate>
+                           {`${item.dateOfStatus[2]}.${item.dateOfStatus[1]}.${item.dateOfStatus[0]}`}
+                        </StyledDate>
                      </StyledText>
                   </StyledItem>
                </StyledMenuItem>
@@ -74,6 +76,20 @@ export const StyledMenu = styled(Menu)`
       font-weight: 600;
       font-size: 14px;
       line-height: 19px;
+      margin-top: 40px;
+      ::-webkit-scrollbar {
+         width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+         background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+         background: #888;
+         border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+         background: #555;
+      }
    }
 `
 const StyledTitle = styled.p`

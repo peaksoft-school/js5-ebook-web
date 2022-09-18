@@ -34,7 +34,7 @@ const NotificationDetail = ({ onClick, anchorEl, item }) => {
                <StyledImage src={logo} />
                <StyledText>
                   <StyledStatus>{statusOfBook}</StyledStatus>
-                  <StyledDate>{item.dateOfStatus}</StyledDate>
+                  <StyledDate>{`${item.dateOfStatus[2]}.${item.dateOfStatus[1]}.${item.dateOfStatus[0]}`}</StyledDate>
                </StyledText>
             </StyledItem>
          </StyledMenuItem>
