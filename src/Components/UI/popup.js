@@ -8,6 +8,8 @@ function PopUp({ children, ...props }) {
 export default PopUp
 
 const MenuPopUp = styled(Menu)`
+   height: ${(props) => (props.height ? props.height : '')};
+
    & div {
       border-radius: 0;
       margin-top: 5px;

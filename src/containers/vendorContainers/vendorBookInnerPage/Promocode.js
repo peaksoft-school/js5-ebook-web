@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
 import warningIcon from '../../../assets/icons/warning.svg'
 import CreatePromocode from '../../vendorLayouts/Promocode/CreatePromocode'
-import SnackBarDate from '../../vendorLayouts/Promocode/SnackBarDate'
+import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 
 const Promocode = () => {
    const {
@@ -16,14 +16,17 @@ const Promocode = () => {
    const [isOpenPromoModal, setIsOpenPromoModal] = useState(false)
    const handleOpenPromoModal = () => setIsOpenPromoModal(true)
    const handleClosePromoModal = () => setIsOpenPromoModal(false)
+   useEffect(() => {
+      setIsOpenPromoModal(false)
+   }, [Boolean(success)])
 
    return (
       <div>
          <StyledPromoBtnBlock>
-            <SnackBarDate
-               snack={snackbar || Boolean(success) || Boolean(errorPromo)}
+            <GetSnackbar
+               open={snackbar || Boolean(success) || Boolean(errorPromo)}
                message={success || errorPromo || ''}
-               variant={success ? 'success' : ''}
+               variant={success ? 'success' : 'error'}
             />
             <Button
                onClick={handleOpenPromoModal}
@@ -34,6 +37,7 @@ const Promocode = () => {
                width="197px"
                height="42px"
                padding="10px 16px"
+               colorhover="white"
             >
                Создать промокод
             </Button>

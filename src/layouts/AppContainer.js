@@ -52,8 +52,8 @@ const Item = styled.div`
    display: flex;
    flex-flow: column;
    height: auto;
+   /* max-width: 1280px; */
    max-width: 100%;
-   /* padding: 20px; */
    ${(props) =>
       props.maxWidth &&
       css`

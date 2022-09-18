@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Snackbar, styled } from '@mui/material'
-import vendorHeart from '../../../assets/icons/bookCard/heartBook.svg'
+import myHearticon from '../../../assets/icons/mainEdite/myHearticon.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
-import SelectBooks from '../../Admin/SelectBooks'
 import HeaderMainPage from './HeaderMainPage'
-import strel from '../../../assets/icons/strel.svg'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import { getMainBooks } from '../../../store/createActions/vendorMainPagesActions'
@@ -19,17 +17,17 @@ import {
    DateSpan,
    FooterDiv,
    HeaderText,
+   ImageBlock,
    Img,
-   ImgesCont,
    ImgFavorite,
    MeatBallsDiv,
    NameBook,
    Price,
    SelectBooksDiv,
-   SelectCopy,
    Span,
    WrapperDiv,
 } from './VendorMainPageStyle'
+import SelectInput from '../vendorBookMainPage/SelectInput'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
@@ -37,6 +35,8 @@ const VendorMainPage = () => {
    const { status } = useSelector((state) => state.vendorMainPage)
    const dispatch = useDispatch()
    const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
+   const vendorId = useSelector((store) => store.auth.user.id)
+
    const [getById, setGetById] = useState()
 
    const bookType = [
@@ -45,7 +45,7 @@ const VendorMainPage = () => {
       { name: 'В корзине', id: 3, text: 'IN_THE_BASKET' },
       { name: 'Проданы', id: 4, text: 'SOLD_OUT' },
       { name: 'Со скидками', id: 5, text: 'WITH_DISCOUNTS' },
-      { name: 'В обработке', id: 6, text: 'IN_THE_PROCESS' },
+      { name: 'В обработке', id: 6, text: 'IN_PROCESSING' },
       { name: 'Отклоненные', id: 7, text: 'REJECTED' },
    ]
 
@@ -60,7 +60,7 @@ const VendorMainPage = () => {
    }
 
    useEffect(() => {
-      dispatch(getMainBooks(selectId, next))
+      dispatch(getMainBooks(selectId, next, vendorId))
    }, [selectId, next, bookSuccsess])
 
    useEffect(() => {
@@ -74,58 +74,71 @@ const VendorMainPage = () => {
                width="460px"
                message="this page is empty"
                severity="error"
-               open={vendorBooks.length === 0}
+               open={vendorBooks ? vendorBooks.length === 0 : ''}
             />
          )}
          <GetSnackbar
             open={bookError || bookSuccsess}
-            message={bookSuccsess ? 'Пользователь успешно удален!' : bookError}
+            message={bookSuccsess ? 'Книга удалена!' : bookError}
             variant={bookError ? 'error' : 'success'}
          />
          <HeaderMainPage />
          <HeaderText>
             <Span>Всего {totalElements} книг</Span>
             <SelectBooksDiv>
-               <SelectBooks genres={bookType} onClick={clickSelectBook} />
-               <SelectCopy>
-                  <ImgesCont src={strel} />
-               </SelectCopy>
+               <SelectInput
+                  strelLog="strel"
+                  genres={bookType}
+                  onClick={clickSelectBook}
+               />
             </SelectBooksDiv>
          </HeaderText>
          <hr />
+         {vendorBooks.length === 0 && (
+            <NotFound>
+               <NotFaundImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuMUfB9xqk8Od2jyPLTDauXxP4H83XbUXwBkKXw7bLRW5FmFSbe68PXIoVMsx7iUn6y7c&usqp=CAU" />
+            </NotFound>
+         )}
          <ContainerDiv>
-            {vendorBooks.map((book) => (
-               <Books
-                  key={book.id}
-                  reject={book.bookStatus === 'REJECTED'}
-                  primary={book.bookStatus === 'IN_PROCESSING'}
-                  accepted={book.bookStatus === 'ACCEPTED'}
-               >
-                  <BooksContainer>
-                     <BooksWrapper>
-                        <BookSHeader>
-                           <ImgFavorite>
-                              <img src={vendorHeart} alt="" /> ({book.favorite})
-                           </ImgFavorite>
-                           <span>В корзине ({book.basket})</span>
-                        </BookSHeader>
-                        <CopyLink to={`/${book.id}`}>
-                           <Img src={book.mainImage} />
-                           <div>
-                              <NameBook>{book.name}</NameBook>
-                              <FooterDiv>
-                                 <DateSpan>{book.dateOfRegistration}</DateSpan>
-                                 <Price>{book.price}сом</Price>
-                              </FooterDiv>
-                           </div>
-                        </CopyLink>
-                     </BooksWrapper>
-                     <MeatBallsDiv onClick={() => setGetById(book.id)}>
-                        <UpdateBooks id={getById} />
-                     </MeatBallsDiv>
-                  </BooksContainer>
-               </Books>
-            ))}
+            {vendorBooks
+               ? vendorBooks.map((book) => (
+                    <Books
+                       key={book.id}
+                       reject={book.bookStatus === 'REJECTED'}
+                       primary={book.bookStatus === 'IN_PROCESSING'}
+                       accepted={book.bookStatus === 'ACCEPTED'}
+                    >
+                       <BooksContainer>
+                          <BooksWrapper>
+                             <BookSHeader>
+                                <ImgFavorite>
+                                   <img src={myHearticon} alt="" /> (
+                                   {book.favorite})
+                                </ImgFavorite>
+                                <span>В корзине ({book.basket})</span>
+                             </BookSHeader>
+                             <CopyLink to={`/${book.id}`}>
+                                <ImageBlock>
+                                   <Img src={book.mainImage} />
+                                </ImageBlock>
+                                <div>
+                                   <NameBook>{book.name}</NameBook>
+                                   <FooterDiv>
+                                      <DateSpan>
+                                         {book.dateOfRegistration}
+                                      </DateSpan>
+                                      <Price>{book.price}сом</Price>
+                                   </FooterDiv>
+                                </div>
+                             </CopyLink>
+                          </BooksWrapper>
+                          <MeatBallsDiv onClick={() => setGetById(book.id)}>
+                             <UpdateBooks id={getById} />
+                          </MeatBallsDiv>
+                       </BooksContainer>
+                    </Books>
+                 ))
+               : ''}
          </ContainerDiv>
          {next < totalElements && (
             <Button
@@ -145,14 +158,23 @@ const VendorMainPage = () => {
 export default VendorMainPage
 
 const Books = styled('div')`
-   border: ${(props) => (props.primary ? 'none' : '')};
-   background-color: ${(props) => (props.primary ? '#EDEDED' : '')};
+   border: ${(props) => (props.primary ? '1px solid #F34901' : '')};
+   background-color: ${(props) =>
+      props.primary ? 'rgba(243, 73, 1, 0.08)' : ''};
 
    background-color: ${(props) =>
       props.reject ? 'rgba(220, 220, 220, 0.61)' : ''};
-   opacity: ${(props) => (props.reject ? '0.4' : '')};
+   opacity: ${(props) => (props.reject ? '0.5' : '')};
 
-   background-color: ${(props) =>
-      props.accepted ? 'rgba(243, 73, 1, 0.08)' : ''};
-   border: ${(props) => (props.accepted ? '1px solid #F34901' : '')};
+   background-color: ${(props) => (props.accepted ? '#EDEDED' : '')};
+   border: ${(props) => (props.accepted ? 'none' : '')};
+`
+const NotFound = styled('div')`
+   width: 800px;
+   margin: auto;
+`
+const NotFaundImg = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 `

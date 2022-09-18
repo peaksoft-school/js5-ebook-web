@@ -1,12 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { addBookSlice } from './slices/addBookSlice'
-import applicationsInnerPageSlices from './slices/applicationInnerPagesSlices'
+import applicationsInnerPageSlices from './slices/adminSlices/applicationInnerPagesSlices'
 import applicationsSlices from './slices/adminSlices/applicationsSlices'
 import authSlices from './slices/authSlices'
 import uiSlices from './slices/uiSlices'
 import { vendorbookInnerPageSlice } from './slices/vendorBookInnerPageSlice'
 import PromocodeSlices from './slices/promocodeSlices'
 import globalValues from './slices/globalSlices'
+import UserProfileSlice from './slices/userProfileSlice'
+import VendorProfileSlice from './slices/ProfileVendorSlice'
+import { getAdminVendorsSlice } from './slices/getAdminVendorsSlice'
 import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
 import { snackbarSlice } from './slices/snackbarSlice'
 import сatalogSlices from './slices/catalogSlice'
@@ -24,6 +27,9 @@ const store = configureStore({
       vendorBookInnerPage: vendorbookInnerPageSlice.reducer,
       vendorMainPage: vendorMainPageSlice.reducer,
       promocodeStore: PromocodeSlices.reducer,
+      userProfile: UserProfileSlice.reducer,
+      vendorProfile: VendorProfileSlice.reducer,
+      adminVendors: getAdminVendorsSlice.reducer,
       snackbar: snackbarSlice.reducer,
       adminUsers: getAdminUsersSlice.reducer,
    },

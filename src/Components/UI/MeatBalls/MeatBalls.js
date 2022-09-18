@@ -53,7 +53,6 @@ const Img = styled.img`
    width: 3.75px;
    height: 16px;
    margin-left: 30px;
-   margin-top: 11px;
 `
 
 const DivMeatBalls = styled.div`

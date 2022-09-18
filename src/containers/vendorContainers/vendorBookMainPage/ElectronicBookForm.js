@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,23 +17,22 @@ import {
    PutDiv,
    SelectDiv,
    SelectWrapper,
-   ValidSpan,
 } from './PaperBookForm'
-import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
-import SelectBooks from '../../Admin/SelectBooks'
+import { editeElectronicBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import SelectInput from './SelectInput'
 
 const languageSelect = [
-   { name: 'KYRGYZ', id: 1 },
-   { name: 'RUSSIAN', id: 2 },
-   { name: 'ENGLISH', id: 3 },
+   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
+   { name: 'Русский', text: 'RUSSIAN', id: 2 },
+   { name: 'Английский', text: 'ENGLISH', id: 3 },
 ]
 
 const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
    const { stateSnackbar } = useSelector((store) => store.snackbar)
-   const { bookSuccsess, bookError } = useSelector((store) => store.snackbar)
+   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const genre = useSelector((store) => store.globalValues.genres)
    const dataWithId = useSelector(
       (store) => store.vendorMainPage.electronicBooks
@@ -54,13 +53,50 @@ const ElectronicBookForm = ({ images }) => {
       discount: dataWithId ? dataWithId.discount : '',
    })
    const changePdfFileValue = (pdf) => {
+      if (!pdf) {
+         return
+      }
       setPdfFile(pdf)
+   }
+
+   const formatLanguage = () => {
+      let formation
+      if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
+         formation = 'Кыргызский'
+      }
+      if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
+         formation = 'Русский'
+      }
+      if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
+         formation = 'Английский'
+      }
+      return formation
    }
 
    const handleChangeInput = (e) => {
       const valueEvent = e.target
+      const { name, value } = e.target
+      const date = new Date()
+      if (name === 'pageSize' || name === 'price') {
+         if (value < 0) {
+            return
+         }
+      }
+      if (name === 'discount') {
+         if (value > 100 || value < 0) {
+            return
+         }
+      }
+      if (name === 'yearOfIssue') {
+         if (name === 'yearOfIssue') {
+            if (value > date.getFullYear() || value < 0) {
+               return
+            }
+         }
+      }
       setWithIdValues({ ...withIdValues, [valueEvent.name]: valueEvent.value })
    }
+   const [navigation, setNavigation] = useState(false)
 
    const isFormValid = () => {
       const validateValues =
@@ -71,21 +107,13 @@ const ElectronicBookForm = ({ images }) => {
          withIdValues.description.length >= 1 &&
          withIdValues.fragment.length >= 1 &&
          withIdValues.pageSize.length >= 1 &&
-         withIdValues.price.length >= 1 &&
-         withIdValues.discount.length >= 1
+         withIdValues.price.length >= 1
       return validateValues && images.mainImage && pdfValue
-   }
-   const validLength = () => {
-      const validNumbers =
-         withIdValues.yearOfIssue.length > 4 ||
-         withIdValues.yearOfIssue < 0 ||
-         withIdValues.yearOfIssue > 2022
-      return validNumbers
    }
 
    const clickSendFormValues = async () => {
-      if (isFormValid() && !validLength()) {
-         dispatch(addElectronicBoook(withIdValues, images, pdfValue))
+      if (isFormValid()) {
+         dispatch(addElectronicBoook({ withIdValues, images, pdfValue }))
          dispatch(bookAction.deleteImage())
 
          setWithIdValues({
@@ -107,19 +135,22 @@ const ElectronicBookForm = ({ images }) => {
       }
    }
 
+   const { bookId } = dataWithId !== null ? dataWithId : ''
    const updateForms = () => {
-      if (isFormValid()) {
-         dispatch(putVendorBook(withIdValues, images))
-      }
       if (!isFormValid()) {
-         dispatch(snackbarActions({ bron: 'exit' }))
+         dispatch(editeElectronicBook(withIdValues, images, bookId, pdfValue))
+         setNavigation(true)
       }
-      if (bookSuccsess || bookError) {
-         setTimeout(() => {
+   }
+   useEffect(() => {
+      let navigateToMainPage
+      if (bookSuccsess && navigation) {
+         navigateToMainPage = setTimeout(() => {
             navigate('/')
          }, 3000)
       }
-   }
+      return () => clearTimeout(navigateToMainPage)
+   }, [bookSuccsess])
 
    return (
       <>
@@ -153,7 +184,7 @@ const ElectronicBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectBooks
+               <SelectInput
                   border
                   padding="12px 10px 12px 19px"
                   width="100%"
@@ -161,10 +192,12 @@ const ElectronicBookForm = ({ images }) => {
                   defaultName="Литература, роман, стихи..."
                   fontWeight
                   color="#969696"
+                  height="400px"
                   onClick={(genreId) =>
                      setWithIdValues({ ...withIdValues, genreId })
                   }
                   genres={genre}
+                  editeName={dataWithId ? dataWithId.genre : ''}
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
@@ -199,9 +232,9 @@ const ElectronicBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectBooks
+                     <SelectInput
                         border
-                        padding="12px 10px 12px 19px"
+                        padding="12px 10px 11px 19px"
                         width="100%"
                         hover
                         defaultName="язык"
@@ -211,6 +244,7 @@ const ElectronicBookForm = ({ images }) => {
                            setWithIdValues({ ...withIdValues, language })
                         }
                         genres={languageSelect}
+                        editeName={dataWithId ? formatLanguage() : ''}
                      />
                      <LabelStyle htmlFor="obem">
                         Объем <strong>*</strong>
@@ -244,13 +278,12 @@ const ElectronicBookForm = ({ images }) => {
                      <InputText
                         id="yearOfIssue"
                         onChange={handleChangeInput}
-                        value={withIdValues.data}
+                        value={withIdValues.yearOfIssue}
                         textAlign="end"
                         placeholder="гг"
                         name="yearOfIssue"
                         type="number"
                      />
-                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                      <CheckBoxDiv>
                         <CheckBox label="Бестселлер" />
                      </CheckBoxDiv>
@@ -274,8 +307,6 @@ const ElectronicBookForm = ({ images }) => {
                   </LabelStyle>
                   <FileUploadButton
                      onChange={changePdfFileValue}
-                     value={pdfValue}
-                     title="Загрузите книгу *"
                      accept="application/pdf"
                   >
                      Загрузите PDF
@@ -312,8 +343,8 @@ const Wrapper = styled('div')`
    width: 398px;
 `
 const CheckBoxDiv = styled('div')`
-   margin-top: 5.5vh;
+   margin-top: 7.2vh;
 `
 const PdfDiv = styled('div')`
-   margin-top: 2.7vh;
+   margin-top: 3.9vh;
 `

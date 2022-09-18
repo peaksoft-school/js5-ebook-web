@@ -10,13 +10,17 @@ export const applicationsActions = (request) => {
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
          dispatch(
-            applicationSlicesActions.seeMoreGetApplications(
+            applicationSlicesActions.getApplications(
                result.getApplications.content
-            ),
+            )
+         )
+         dispatch(
             applicationSlicesActions.getTotalElements(
                result.getApplications.totalElements
-            ),
-            applicationSlicesActions.getUnwatched(result.unwatched),
+            )
+         )
+         dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
+         dispatch(
             applicationSlicesActions.getTotalPages(
                result.getApplications.totalPages
             )
@@ -31,18 +35,23 @@ export const applicationsActions = (request) => {
 export const seeMoreGetApplicationsActions = (request) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
 
          dispatch(
-            applicationSlicesActions.seeMoreGetApplications(
+            applicationSlicesActions.getApplications(
                result.getApplications.content
-            ),
+            )
+         )
+         dispatch(
             applicationSlicesActions.getTotalElements(
                result.getApplications.totalElements
-            ),
-            applicationSlicesActions.getUnwatched(result.unwatched),
+            )
+         )
+         dispatch(applicationSlicesActions.getUnwatched(result.unwatched))
+         dispatch(
             applicationSlicesActions.getTotalPages(
                result.getApplications.totalPages
             )
@@ -57,12 +66,14 @@ export const seeMoreGetApplicationsActions = (request) => {
 export const acceptApplication = (id) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             method: 'POST',
             url: `/api/admin/applications/books/${id}/accepted`,
             body: id,
          })
          dispatch(applicationSlicesActions.postAcceptApplication(result))
+         dispatch(applicationsActions())
          toast.success(result.message)
          return result
       } catch (error) {
@@ -72,15 +83,24 @@ export const acceptApplication = (id) => {
    }
 }
 
-export const rejectAplication = ({ id, reasonReject }) => {
+export const rejectAplication = ({
+   id,
+   reasonReject,
+   onClose,
+   setReasonReject,
+}) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             method: 'POST',
             url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
          })
          dispatch(applicationSlicesActions.postRejectApplication(result))
+         dispatch(applicationsActions())
          toast.success(result.message)
+         setReasonReject('')
+         onClose()
          return result
       } catch (error) {
          toast.error('Не удалось отклонить!')

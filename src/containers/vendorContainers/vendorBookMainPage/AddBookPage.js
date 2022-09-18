@@ -24,6 +24,7 @@ const AddBookPage = () => {
       thirdImage: dataWithId ? dataWithId.thirdImage : '',
    })
    const [radio, setRadio] = useState('Бумажная')
+   const [imageSnack, setImageSnack] = useState(null)
 
    useEffect(() => {
       if (bookType) {
@@ -32,12 +33,24 @@ const AddBookPage = () => {
    }, [bookType])
    useEffect(() => {
       dispatch(snackbarActions())
-   }, [bookError, bookSuccsess])
+   }, [bookError, bookSuccsess, imageSnack])
+
    useEffect(() => {
       dispatch(setGenres())
    }, [])
 
+   useEffect(() => {
+      const time = setTimeout(() => {
+         setImageSnack(false)
+      }, 3000)
+      return () => clearTimeout(time)
+   }, [imageSnack])
+
    const saveImageValue = (imageFile, e) => {
+      if (imageFile === -1) {
+         setImageSnack(true)
+         return
+      }
       const { name } = e.target
       setImages({ ...images, [name]: imageFile })
    }
@@ -60,8 +73,13 @@ const AddBookPage = () => {
       <ContainerDiv>
          <HeaderMainPage />
          <GetSnackbar
-            open={bookError || bookSuccsess}
+            open={bookError || bookSuccsess || imageSnack}
             message={bookError || bookSuccsess}
+            variant={bookError ? 'error' : 'success'}
+         />
+         <GetSnackbar
+            open={imageSnack}
+            message="image size must be > 1MB"
             variant={bookError ? 'error' : 'success'}
          />
          <div>

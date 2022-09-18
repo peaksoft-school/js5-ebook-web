@@ -1,11 +1,13 @@
 import { styled } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
-import { rejectAplicationInnerPage } from '../../../store/slices/applicationInnerPageActions'
+import { rejectAplicationInnerPage } from '../../../store/slices/adminActions/applicationInnerPageActions'
 
 export const RejectApplicationModal = ({ id, open, onClose }) => {
+   const navigate = useNavigate()
    const dispatch = useDispatch()
 
    const [reasonReject, setReasonReject] = useState('')
@@ -13,14 +15,19 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
    const reasonChangeHandler = (e) => {
       setReasonReject(e.target.value)
    }
+
    function sendReason() {
       const fetch = async () => {
          try {
             const response = await dispatch(
-               rejectAplicationInnerPage({ id, reasonReject })
+               rejectAplicationInnerPage({
+                  id,
+                  reasonReject,
+                  onClose,
+                  setReasonReject,
+                  navigate,
+               })
             ).unwrap()
-            setReasonReject('')
-            onClose()
             return response
          } catch (error) {
             return error

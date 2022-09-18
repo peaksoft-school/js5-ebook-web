@@ -15,6 +15,15 @@ export const BookType = {
    ELECTRONIC_BOOK: 'ELECTRONIC_BOOK',
 }
 
+export const FilterBooks = {
+   ALL: 'ALL',
+   FAVORITES: 'FAVORITES',
+   IN_THE_BASKET: 'IN_THE_BASKET',
+   SOLD_OUT: 'SOLD_OUT',
+   WITH_DISCOUNTS: 'WITH_DISCOUNTS',
+   IN_THE_PROCESS: 'IN_THE_PROCESS',
+   REJECTED: 'REJECTED',
+}
 export const Languages = {
    KYRGYZ: 'KYRGYZ',
    RUSSIAN: 'RUSSIAN',
