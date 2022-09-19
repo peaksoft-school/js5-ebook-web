@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import Divider from '@mui/material/Divider'
+
 import {
    getAdminVendorBooks,
    setAdminVendorBooks,
 } from '../../../store/slices/getAdminVendorsSlice'
-import SelectBooks from '../Admin/SelectBooks'
+import SelectBooks from './SelectBooks'
+
 import { FilterBooks } from '../../../utils/constants/constants'
 import Spinner from '../../../Components/UI/Spinner'
 import VendorBookCard from './VendorBookCard'

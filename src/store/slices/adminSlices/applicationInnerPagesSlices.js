@@ -5,6 +5,7 @@ const initialState = {
    acceptMessage: null,
    rejectMessage: null,
    status: null,
+   blockMessage: '',
 }
 
 const applicationsInnerPageSlices = createSlice({
@@ -30,6 +31,13 @@ const applicationsInnerPageSlices = createSlice({
       },
       postRejectApplication(state, action) {
          state.rejectMessage = action.payload
+         state.status = 'fulfilled'
+      },
+      error(state) {
+         state.status = 'error'
+      },
+      getBlockMessage: (state, action) => {
+         state.blockMessage = action.payload
          state.status = 'fulfilled'
       },
    },
