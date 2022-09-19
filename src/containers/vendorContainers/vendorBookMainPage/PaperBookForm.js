@@ -13,6 +13,7 @@ import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import { setGenres } from '../../../store/slices/globalSlices'
 import SelectInput from './SelectInput'
+import Spinner from '../../../Components/UI/Spinner'
 
 const languageSelect = [
    { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
@@ -28,6 +29,7 @@ const PaperBookForm = ({ images }) => {
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
    const { bookSuccsess } = useSelector((store) => store.snackbar)
+   const { status } = useSelector((store) => store.addbook)
    const [isChecked, setIsChecked] = useState()
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
@@ -45,6 +47,8 @@ const PaperBookForm = ({ images }) => {
       genre: dataWithId ? dataWithId.genre : '',
    })
 
+   console.log(inputValues)
+   console.log(dataWithId)
    const formatLanguage = () => {
       let formation
       if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
@@ -75,6 +79,11 @@ const PaperBookForm = ({ images }) => {
       }
       if (name === 'yearOfIssue') {
          if (value > date.getFullYear()) {
+            return
+         }
+      }
+      if (name === 'discount') {
+         if (value > 100) {
             return
          }
       }
@@ -117,16 +126,22 @@ const PaperBookForm = ({ images }) => {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   const { bookType, bookId } = dataWithId !== null ? dataWithId : ''
+   const { bookId, language } = dataWithId !== null ? dataWithId : ''
+   const genreId = dataWithId !== null ? dataWithId : ''
    const updateForms = async () => {
-      dispatch(putVendorBook(inputValues, images, bookType, bookId))
+      dispatch(
+         putVendorBook(
+            { inputValues, images, bookId, language, genreId },
+            navigate
+         )
+      )
       setNavigation(true)
    }
    useEffect(() => {
       let navigateToMainPage
       if (bookSuccsess && navigation) {
          navigateToMainPage = setTimeout(() => {
-            navigate('/')
+            // navigate('/')
          }, 3000)
       }
       return () => clearTimeout(navigateToMainPage)
@@ -143,6 +158,7 @@ const PaperBookForm = ({ images }) => {
             message="Пожалуйста, заполните все поля"
             variant="error"
          />
+         {status === 'pending' && <Spinner />}
          <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -305,24 +321,24 @@ const PaperBookForm = ({ images }) => {
             </div>
          </InputWrapper>
          <ButtonDiv>
-            {!dataWithId ? (
-               <Button width="137px" onClick={clickSendFormValues}>
-                  Отправить
+            <PutDiv>
+               <Button
+                  width="137px"
+                  background="#2f4f4f"
+                  onClick={() => navigate('/')}
+               >
+                  Назад
                </Button>
-            ) : (
-               <PutDiv>
-                  <Button
-                     width="137px"
-                     background="#2f4f4f"
-                     onClick={() => navigate('/')}
-                  >
-                     Назад
+               {!dataWithId ? (
+                  <Button width="137px" onClick={clickSendFormValues}>
+                     Отправить
                   </Button>
+               ) : (
                   <Button width="137px" onClick={updateForms}>
                      Сохранить
                   </Button>
-               </PutDiv>
-            )}
+               )}
+            </PutDiv>
          </ButtonDiv>
       </>
    )

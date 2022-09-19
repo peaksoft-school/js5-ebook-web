@@ -1,23 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
+   snackbarMessage: null,
+   snackbarStatus: '',
    stateSnackbar: null,
-   bookSuccsess: '',
-   bookError: '',
 }
 export const snackbarSlice = createSlice({
    name: 'snackbar',
    initialState,
    reducers: {
-      snackbarSuccess(state) {
-         state.bookSuccsess = 'Ваш запрос был успешно отправлен!'
+      snackbarPending(state) {
+         state.snackbarStatus = 'pending'
       },
-      notSnackbar(state) {
-         state.bookError = ''
-         state.bookSuccsess = ''
+      snackbarSuccess(state, action) {
+         console.log(action.payload)
+         state.snackbarStatus = 'success'
+         state.snackbarMessage = action.payload
       },
       snackbarFalse(state, action) {
-         state.bookError = action.payload
+         state.snackbarMessage = action.payload
+         state.snackbarStatus = 'error'
+      },
+      notSnackbar(state) {
+         state.snackbarStatus = ''
+         state.stateSnackbar = ''
+         state.snackbarMessage = ''
       },
       success(state) {
          state.stateSnackbar = true

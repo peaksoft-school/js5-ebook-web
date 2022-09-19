@@ -1,8 +1,6 @@
 import appFetch from '../../hooks/appFetch'
 import bookAction from '../slices/addBookSlice'
 import { appFileFetchService } from '../../api/fileService'
-import { getMainBooks } from './vendorMainPagesActions'
-import snackbarAction from '../slices/snackbarSlice'
 
 export const addPaperBook = (inputValues, images, bestseller) => {
    const valuesWithFile = {
@@ -20,8 +18,10 @@ export const addPaperBook = (inputValues, images, bestseller) => {
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
+   console.log(valuesWithFile)
 
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (images.mainImage) {
             const imgFiles = await appFileFetchService(images.mainImage)
@@ -41,22 +41,33 @@ export const addPaperBook = (inputValues, images, bestseller) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(bookAction.statusSuccess(result))
-         dispatch(snackbarAction.snackbarSuccess(result.message))
-         dispatch(getMainBooks())
+         console.log('tuura')
+         console.log(result.message)
+         dispatch(bookAction.statusSuccess('USpeshno sohranen'))
+         // dispatch(snackbarAction.snackbarSuccess(result.message))
       } catch (error) {
-         dispatch(bookAction.statusError(error))
-         dispatch(snackbarAction.snackbarFalse(error))
+         console.log('kata')
+         dispatch(bookAction.statusError('Что то пошло не так!'))
+         // dispatch(snackbarAction.snackbarFalse(error))
       }
    }
 }
 
-export const addAudioBook = (inputValues, images, audioValues, duration) => {
+export const addAudioBook = ({
+   inputValues,
+   images,
+   audioValues,
+   durationTimer,
+}) => {
    const valuesWithFile = {
       ...inputValues,
-      duration,
+      duration: durationTimer,
+      fragment: audioValues.fragment,
+      audioBook: audioValues.audioBook,
    }
+   console.log(images)
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (images.mainImage) {
             const imgFiles = await appFileFetchService(images.mainImage)
@@ -86,11 +97,10 @@ export const addAudioBook = (inputValues, images, audioValues, duration) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(snackbarAction.snackbarSuccess(result.message))
-         dispatch(bookAction.statusSuccess(result))
+         console.log(result)
+         dispatch(bookAction.statusSuccess('USpeshno sohranen'))
       } catch (error) {
-         dispatch(bookAction.statusError(error))
-         dispatch(snackbarAction.snackbarFalse(error))
+         dispatch(bookAction.statusError('Что то пошло не так!'))
       }
    }
 }
@@ -105,12 +115,14 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
       yearOfIssue: withIdValues.yearOfIssue,
       discount: withIdValues.discount,
       bestseller: true,
+      language: 'KYRGYZ',
       fragment: withIdValues.fragment,
       pageSize: withIdValues.pageSize,
       publishingHouse: withIdValues.publishingHouse,
    }
 
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (images.mainImage) {
             const imgFiles = await appFileFetchService(images.mainImage)
@@ -136,11 +148,12 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(snackbarAction.snackbarSuccess(result.message))
-         dispatch(bookAction.statusSuccess(result))
+         dispatch(bookAction.statusSuccess('uspeshno sohranen'))
+         if (result.ok) {
+            dispatch(bookAction.statusSuccess('uspeshno sohranen'))
+         }
       } catch (error) {
-         dispatch(bookAction.statusError(error))
-         dispatch(snackbarAction.snackbarFalse(error))
+         dispatch(bookAction.statusError('Что то пошло не так!'))
       }
    }
 }

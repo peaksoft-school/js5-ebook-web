@@ -100,6 +100,7 @@ export const NameBook = styled('span')`
    font-size: 14px;
    line-height: 120%;
    padding-top: 10px;
+   text-transform: uppercase;
 `
 export const ImgFavorite = styled('span')`
    display: flex;

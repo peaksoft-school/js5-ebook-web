@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Snackbar, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import myHearticon from '../../../assets/icons/mainEdite/myHearticon.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
@@ -28,13 +28,15 @@ import {
    WrapperDiv,
 } from './VendorMainPageStyle'
 import SelectInput from '../vendorBookMainPage/SelectInput'
+import Spinner from '../../../Components/UI/Spinner'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
    const { totalElements } = useSelector((state) => state.vendorMainPage)
-   const { status } = useSelector((state) => state.vendorMainPage)
    const dispatch = useDispatch()
-   const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
+   const { snackbarMessage, snackbarStatus } = useSelector(
+      (store) => store.snackbar
+   )
    const vendorId = useSelector((store) => store.auth.user.id)
 
    const [getById, setGetById] = useState()
@@ -58,30 +60,28 @@ const VendorMainPage = () => {
    const clickSelectBook = (data, _, typeData) => {
       setSelectId(typeData)
    }
+   const backHome = () => {
+      setNext(next - moreProducts)
+   }
 
    useEffect(() => {
       dispatch(getMainBooks(selectId, next, vendorId))
-   }, [selectId, next, bookSuccsess])
+   }, [selectId, next, snackbarMessage])
 
-   useEffect(() => {
+   const deleteSnackbar = () => {
       dispatch(snackbarActions())
-   }, [bookError, bookSuccsess])
+   }
 
    return (
       <WrapperDiv>
-         {status && (
-            <Snackbar
-               width="460px"
-               message="this page is empty"
-               severity="error"
-               open={vendorBooks ? vendorBooks.length === 0 : ''}
-            />
-         )}
          <GetSnackbar
-            open={bookError || bookSuccsess}
-            message={bookSuccsess ? 'Книга удалена!' : bookError}
-            variant={bookError ? 'error' : 'success'}
+            open={snackbarMessage}
+            message={snackbarMessage}
+            variant={snackbarStatus === 'error' ? 'error' : 'success'}
+            width="400px"
+            handleClose={deleteSnackbar}
          />
+         {snackbarStatus === 'pending' && <Spinner />}
          <HeaderMainPage />
          <HeaderText>
             <Span>Всего {totalElements} книг</Span>
@@ -150,6 +150,20 @@ const VendorMainPage = () => {
                onClick={handleMoreImage}
             >
                Смотреть больше
+            </Button>
+         )}
+         {next > 8 && (
+            <Button
+               colorhover="white"
+               fullWidth
+               variant="universal"
+               border="1px solid grey"
+               color="white"
+               margintop="16px"
+               background="black"
+               onClick={backHome}
+            >
+               Свернуть
             </Button>
          )}
       </WrapperDiv>

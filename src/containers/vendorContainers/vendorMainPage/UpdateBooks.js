@@ -33,10 +33,7 @@ export default function UpdateBooks({ id }) {
    const navigate = useNavigate()
    const editeBook = () => {
       if (id) {
-         dispatch(getMainBooksWithId(id))
-         setTimeout(() => {
-            navigate('/addbook')
-         }, 1000)
+         dispatch(getMainBooksWithId(id, navigate))
       }
    }
    const deleteBook = () => {

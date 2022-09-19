@@ -10,9 +10,12 @@ import AudioListener from '../../../Components/UI/AudioListener'
 import AboutBook from './AboutBook'
 import BookFragment from './BookFragment'
 import { TabInnerPage } from './TabInnerPage'
-import { getMainBooksWithId } from '../../../store/createActions/vendorMainPagesActions'
+import {
+   getMainBooksDelete,
+   getMainBooksWithId,
+} from '../../../store/createActions/vendorMainPagesActions'
 
-const BookInfo = ({ book, onDelete }) => {
+const BookInfo = ({ book }) => {
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
    const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
    const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
@@ -26,10 +29,12 @@ const BookInfo = ({ book, onDelete }) => {
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
 
    const editBook = () => {
-      dispatch(getMainBooksWithId(book.bookId))
-      setTimeout(() => {
-         navigate('/addbook')
-      }, 1000)
+      dispatch(getMainBooksWithId(book.bookId, navigate))
+   }
+
+   const onDelete = (id) => {
+      setIsOpenDeleteModal(false)
+      dispatch(getMainBooksDelete(id, navigate))
    }
 
    return (
@@ -82,6 +87,7 @@ const BookInfo = ({ book, onDelete }) => {
                      border="1px solid"
                      background="none"
                      width="224px"
+                     colorhover="white"
                   >
                      Удалить
                   </Button>
@@ -108,7 +114,10 @@ const BookInfo = ({ book, onDelete }) => {
                         >
                            Отменить
                         </Button>
-                        <Button variant="default" onClick={onDelete}>
+                        <Button
+                           variant="default"
+                           onClick={() => onDelete(book.bookId)}
+                        >
                            Удалить
                         </Button>
                      </StyledModalBtnCont>

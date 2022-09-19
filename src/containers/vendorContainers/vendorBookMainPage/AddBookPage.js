@@ -10,18 +10,26 @@ import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
 import AudioBookForm from './AudioBookForm'
 import ElectronicBookForm from './ElectronicBookForm'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import bookAction from '../../../store/slices/addBookSlice'
+import Spinner from '../../../Components/UI/Spinner'
 
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
    const { bookType } = useSelector((store) => store.vendorMainPage)
-   const { deleteImage } = useSelector((store) => store.addbook)
-   const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
+   const { deleteImage, addBookMessage, addBookStatus } = useSelector(
+      (store) => store.addbook
+   )
+   // const { addBookMessage, addBookStatus } = useSelector(
+   //    (store) => store.snackbar
+   // )
 
+   console.log(addBookMessage)
    const dispatch = useDispatch()
+   const editData = dataWithId !== null ? dataWithId : ''
    const [images, setImages] = useState({
-      mainImage: dataWithId ? dataWithId.mainImage : '',
-      secondImage: dataWithId ? dataWithId.secondImage : '',
-      thirdImage: dataWithId ? dataWithId.thirdImage : '',
+      mainImage: editData ? dataWithId.mainImage : '',
+      secondImage: editData.secondImage ? dataWithId.secondImage : '',
+      thirdImage: editData.thirdImage ? dataWithId.thirdImage : '',
    })
    const [radio, setRadio] = useState('Бумажная')
    const [imageSnack, setImageSnack] = useState(null)
@@ -33,7 +41,7 @@ const AddBookPage = () => {
    }, [bookType])
    useEffect(() => {
       dispatch(snackbarActions())
-   }, [bookError, bookSuccsess, imageSnack])
+   }, [addBookMessage, imageSnack])
 
    useEffect(() => {
       dispatch(setGenres())
@@ -69,18 +77,26 @@ const AddBookPage = () => {
       return bookComponents
    }
 
+   const closeSnackbarFunc = () => {
+      dispatch(bookAction.cleanStatusMessage())
+   }
+   console.log(addBookStatus)
+
    return (
       <ContainerDiv>
+         {addBookStatus === 'pending' && <Spinner />}
          <HeaderMainPage />
          <GetSnackbar
-            open={bookError || bookSuccsess || imageSnack}
-            message={bookError || bookSuccsess}
-            variant={bookError ? 'error' : 'success'}
+            open={addBookMessage}
+            message={addBookMessage}
+            variant={addBookStatus === 'error' ? 'error' : 'success'}
+            width="400px"
+            handleClose={closeSnackbarFunc}
          />
          <GetSnackbar
             open={imageSnack}
             message="image size must be > 1MB"
-            variant={bookError ? 'error' : 'success'}
+            variant={addBookStatus === 'error' ? 'error' : 'success'}
          />
          <div>
             <ThreeImagesDiv>

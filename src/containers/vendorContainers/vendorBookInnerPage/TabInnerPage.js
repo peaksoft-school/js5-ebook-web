@@ -14,7 +14,7 @@ export function TabInnerPage({ about, bookFragment }) {
          <div>
             <MuiTabs value={selectedTab} onChange={handleChange}>
                <MuiTab label="О книге" />
-               <MuiTab label="Читать фрагмент" />
+               {bookFragment && <MuiTab label="Читать фрагмент" />}
             </MuiTabs>
          </div>
          <TextCont>

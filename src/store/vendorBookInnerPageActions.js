@@ -14,7 +14,7 @@ export const getVendorBookInnerPage = (bookId) => {
    }
 }
 
-export const deleteVendorBook = (bookId) => {
+export const deleteVendorBook = (bookId, navigate) => {
    return async (dispatch) => {
       try {
          const deleteData = await appFetch({
@@ -22,6 +22,7 @@ export const deleteVendorBook = (bookId) => {
             method: 'DELETE',
          })
          // console.log(deleteData)
+         navigate('/')
          dispatch(bookInnerPageAction.deleteBook(deleteData))
       } catch (error) {
          dispatch(bookInnerPageAction.rejected(error))
