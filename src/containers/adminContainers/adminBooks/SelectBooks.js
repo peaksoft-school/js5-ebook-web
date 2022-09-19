@@ -1,26 +1,20 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { MenuItem } from '@mui/material'
-import PopUp from '../../Components/UI/popup'
+import PopUp from '../../../Components/UI/popup'
+import arrow from '../../../assets/icons/selectArrow.svg'
 
-export default function SelectBooks({
-   genres,
-   name,
-   defaultName,
-   onClick,
-   type,
-   ...props
-}) {
+export default function SelectBooks({ genres, name, onClick, type, ...props }) {
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
-      name: defaultName || 'все',
+      name: 'все',
       id: null,
       key: type,
    })
    const open = Boolean(anChorEl)
    useEffect(() => {
       if (onClick) {
-         onClick(label.id, label.key, label.text, label.name)
+         onClick(label.id, label.key, label.name)
       }
    }, [label])
    const handleClickLabel = (e) => {
@@ -29,13 +23,12 @@ export default function SelectBooks({
    const onCloseMenu = () => {
       setAnchorEl(null)
    }
-   const onSelectItem = (id, name, text) => {
+   const onSelectItem = (id, name) => {
       setLabel((prev) => {
          return {
             ...prev,
             name,
             id,
-            text,
          }
       })
       onCloseMenu()
@@ -44,7 +37,7 @@ export default function SelectBooks({
       <SelectBook>
          {name && <SelectSpan>{name}:</SelectSpan>}
          <SelectLabel {...props} onClick={handleClickLabel}>
-            {label.name}{' '}
+            {label.name} <img src={arrow} alt="icon" />
          </SelectLabel>
          <PopUp open={open} anchorEl={anChorEl} onClose={onCloseMenu}>
             {genres &&
@@ -52,9 +45,7 @@ export default function SelectBooks({
                   return (
                      <PopUpItem
                         key={elem.id}
-                        onClick={() =>
-                           onSelectItem(elem.id, elem.name, elem.text)
-                        }
+                        onClick={() => onSelectItem(elem.id, elem.name)}
                      >
                         {elem.name}
                      </PopUpItem>

@@ -1,5 +1,5 @@
 import { Navigate, Route } from 'react-router'
-import AdminBooks from '../containers/adminContainers/Admin/AdminBooks'
+import AdminBooks from '../containers/adminContainers/adminBooks/AdminBooks'
 import AdminVendorInnerPage from '../containers/adminContainers/adminVendors/AdminVendorInnerPage'
 import AdminVendors from '../containers/adminContainers/adminVendors/AdminVendors'
 import { InnerPageAdminApplication } from '../containers/adminContainers/adminInnerPage/InnerPageAdminApplication'
