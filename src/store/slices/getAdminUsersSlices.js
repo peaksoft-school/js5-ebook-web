@@ -5,11 +5,6 @@ import appFetch from '../../hooks/appFetch'
 const initialState = {
    users: [],
    user: {},
-   // userHistory: {
-   //    history: [],
-   //    totalElements: '',
-   //    totalPages: '',
-   // },
    userHistory: [],
    totalElements: null,
    deleteUser: null,
@@ -28,12 +23,6 @@ export const getAdminUsersSlice = createSlice({
          state.status = 'fulfilled'
          state.user = action.payload
       },
-      // setUserHistory(state, action) {
-      //    state.status = 'fulfilled'
-      //    state.userHistory.history = action.payload.content
-      //    state.userHistory.totalElements = action.payload.totalElements
-      //    state.userHistory.totalPages = action.payload.totalPages
-      // },
       setOperationHistory(state, action) {
          state.userHistory = action.payload.content
          state.totalElements = action.payload.totalElements
@@ -95,28 +84,13 @@ export const getAdminUserWithId = (userId) => {
    }
 }
 
-// export const getAdminUserHistory = (userId, filterHistory) => {
-//    return async (dispatch) => {
-//       try {
-//          dispatch(adminUsersAction.pending())
-//          const getData = await appFetch({
-//             url: `/api/users/${userId}/operationsHistory${sortRequestApplic(
-//                filterHistory
-//             )}`,
-//          })
-//          dispatch(adminUsersAction.getVendorBooks(getData))
-//       } catch (error) {
-//          dispatch(adminUsersAction.rejected(error))
-//       }
-//    }
-// }
-
 export function getUserOperationHistory(id, nextCart) {
    return async (dispatch) => {
       const response = await appFetch({
-         url: `/api/users/${id}/operationsHistory?page=1&size=${nextCart}`,
+         url: `/api/admin/users/${id}/operationsHistory?page=1&size=${nextCart}`,
       })
-      dispatch(adminUsersAction.getOperationHistory(response))
+      console.log(response)
+      dispatch(adminUsersAction.setOperationHistory(response))
    }
 }
 
