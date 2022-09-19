@@ -16,4 +16,5 @@ const StyledText = styled.div`
    font-size: 14px;
    line-height: 150%;
    color: #222222;
+   margin-left: 15px;
 `

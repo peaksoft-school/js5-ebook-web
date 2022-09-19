@@ -2,25 +2,43 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import NumberFormat from 'react-number-format'
 import Button from '../../Components/UI/Button/Button'
 import InputText from '../../Components/UI/Inputs/InputText'
 import Validation from '../../hooks/Validation'
 import PaswordInput from '../../Components/UI/Inputs/PaswordInput'
 import {
-   deleteUserProfile,
-   getUserprofile,
-   PutUserPfrofile,
-   userProfileAction,
-} from '../../store/slices/userProfileSlice'
+   deleteVendorProfile,
+   getVendorprofile,
+   putVendorProfile,
+   vendorProfileAction,
+} from '../../store/slices/ProfileVendorSlice'
 import Modal from '../../Components/UI/Modal'
 import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
+import HeaderMainPage from '../vendorContainers/vendorMainPage/HeaderMainPage'
 
-export const UserProfile = () => {
+function InputMaskPhone({ value, onChange, onBlur, error }) {
+   return (
+      <InputForm
+         name="phone"
+         type="tel"
+         value={value}
+         onChange={onChange}
+         onBlur={onBlur}
+         format="+996 (###) ## ## ##"
+         placeholder="+996 (___) __ __ __"
+         mask="_"
+         error={error}
+      />
+   )
+}
+
+export const VendorProfile = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { id: userId } = useSelector((store) => store.auth.user)
+   const userId = useSelector((store) => store.auth.user.id)
    const { dataUser, message, status } = useSelector(
-      (store) => store.userProfile
+      (store) => store.vendorProfile
    )
    const [errorValue, setErrorValue] = useState('')
    const [isModal, setIsModal] = useState(false)
@@ -35,18 +53,42 @@ export const UserProfile = () => {
       navigate('/')
    }
    const deleteHandler = () => {
-      dispatch(deleteUserProfile(userId))
-      navigate('/')
+      dispatch(deleteVendorProfile(userId, navigate))
    }
-
    const {
-      value: name,
+      value: firstName,
       setValue: setName,
       inputChange: UserNameHandler,
       isValidValue: isNameValue,
       onBlurHandler: onBlurNameHandler,
    } = Validation((value) => {
       if (value.length <= 2) {
+         return true
+      }
+      return false
+   })
+
+   const {
+      value: lastName,
+      setValue: setLastName,
+      inputChange: LastNameHandler,
+      isValidValue: isLastNameValue,
+      onBlurHandler: onBlurLastNameHandler,
+   } = Validation((value) => {
+      if (value.length <= 2) {
+         return true
+      }
+      return false
+   })
+
+   const {
+      value: phoneNumber,
+      setValue: setPhone,
+      inputChange: onChangeInputPhone,
+      isValidValue: isValidPhone,
+      onBlurHandler: onBlurPhone,
+   } = Validation((phone) => {
+      if (phone.length <= 5 || phone.includes('_')) {
          return true
       }
       return false
@@ -87,22 +129,24 @@ export const UserProfile = () => {
       }
       return false
    })
+
    const {
       value: newPassword2,
       inputChange: onChangeNewPassword2,
       isValidValue: isLastPasswordValue2,
       onBlurHandler: onBlurLastPasswordHandler2,
    } = Validation((value) => {
-      if (value.length <= 5) {
+      if (value.length <= 5 || newPassword !== value) {
          return true
       }
       return false
    })
+
    useEffect(() => {
       let timerId = null
       if (message) {
          timerId = setTimeout(() => {
-            dispatch(userProfileAction.clearMessage())
+            dispatch(vendorProfileAction.clearMessage())
          }, 3000)
       }
       return () => {
@@ -111,12 +155,14 @@ export const UserProfile = () => {
    }, [message])
 
    useEffect(() => {
-      dispatch(getUserprofile(userId))
+      dispatch(getVendorprofile(userId))
    }, [])
    useEffect(() => {
       if (dataUser) {
-         setName(dataUser.name)
+         setName(dataUser.firstName)
          setEmail(dataUser.email)
+         setPhone(dataUser.phoneNumber)
+         setLastName(dataUser.lastName)
       }
    }, [dataUser])
 
@@ -126,8 +172,16 @@ export const UserProfile = () => {
          setErrorValue('Пароли не совпадают!')
          return
       }
-      if (email === '' || name === '' || password === '') {
+      if (
+         email === '' ||
+         firstName === '' ||
+         lastName === '' ||
+         phoneNumber === '' ||
+         password === ''
+      ) {
          onBlurNameHandler()
+         onBlurLastNameHandler()
+         onBlurLastPasswordHandler()
          onBlurEmailHandler()
          onBlurPasswordHandler()
          setErrorValue('')
@@ -135,13 +189,15 @@ export const UserProfile = () => {
       }
       setErrorValue('')
       const newUser = {
-         name,
+         firstName,
+         lastName,
+         phoneNumber,
          email,
          password,
          newPassword,
          newPassword2,
       }
-      dispatch(PutUserPfrofile(newUser))
+      dispatch(putVendorProfile(newUser))
    }
 
    return (
@@ -170,6 +226,7 @@ export const UserProfile = () => {
                </StyledButton>
             </ModalBlock>
          </Modal>
+         <HeaderMainPage />
          <DivCont onSubmit={onClientSubmit}>
             <StyledText>
                <h3>Личная информация</h3>
@@ -181,11 +238,33 @@ export const UserProfile = () => {
                      <LabelStyled htmlFor="name">Мое имя</LabelStyled>
                      <InputText
                         id="name"
-                        value={name}
+                        value={firstName}
                         placeholder="Напишите ваше имя"
                         onChange={UserNameHandler}
                         error={isNameValue}
                         onBlur={onBlurNameHandler}
+                     />
+                  </StyledInput>
+                  <StyledInput>
+                     <LabelStyled htmlFor="Lastname">Ваша фамилие</LabelStyled>
+                     <InputText
+                        id="Lastname"
+                        value={lastName}
+                        placeholder="Введите вашу фамилию"
+                        onChange={LastNameHandler}
+                        error={isLastNameValue}
+                        onBlur={onBlurLastNameHandler}
+                     />
+                  </StyledInput>
+                  <StyledInput>
+                     <LabelStyled htmlFor="tel">Номер телефона</LabelStyled>
+                     <InputMaskPhone
+                        id="tel"
+                        value={phoneNumber}
+                        placeholder="+996 (___) __ __ __"
+                        onChange={onChangeInputPhone}
+                        error={isValidPhone}
+                        onBlur={onBlurPhone}
                      />
                   </StyledInput>
                   <StyledInput>
@@ -308,7 +387,6 @@ const StyledButton1 = styled(Button)`
 `
 const DivCont = styled.form`
    width: 100%;
-   padding-top: 50px;
 `
 const DivStyledButton = styled.div`
    width: 100%;
@@ -348,9 +426,6 @@ const LabelStyled = styled.label`
    font-weight: 400;
    font-size: 16px;
    line-height: 130%;
-   display: block;
-   /* border: 1px solid red; */
-   padding-bottom: 10px;
 `
 const DivStyledButton1 = styled.div`
    width: 100%;
@@ -361,4 +436,13 @@ const DivStyledButton1 = styled.div`
 `
 const SpanStyled = styled.span`
    color: red;
+`
+
+const InputForm = styled(NumberFormat)`
+   width: 514px;
+   height: 45px;
+   padding-left: 10px;
+   background-color: #f8f8f8;
+   outline: none;
+   border: 1px solid #c4c4c4;
 `

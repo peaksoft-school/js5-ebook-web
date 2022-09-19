@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux/'
-
+import Spinner from '../../../Components/UI/Spinner'
 import Button from '../../../Components/UI/Button/Button'
 
 import {
@@ -11,7 +11,6 @@ import {
    seeMoreGetApplicationsActions,
 } from '../../../store/slices/adminActions/applicationsActions'
 import ApplicationCard from './ApplicationCard'
-import Spinner from '../../../Components/UI/Spinner'
 
 const AdminApplications = () => {
    const {

@@ -22,12 +22,15 @@ const applicationsInnerPageSlices = createSlice({
       },
       getInnerPage(state, action) {
          state.application = action.payload
+         state.status = 'fulfilled'
       },
       postAcceptApplication(state, action) {
          state.acceptMessage = action.payload
+         state.status = 'fulfilled'
       },
       postRejectApplication(state, action) {
          state.rejectMessage = action.payload
+         state.status = 'fulfilled'
       },
    },
 })
