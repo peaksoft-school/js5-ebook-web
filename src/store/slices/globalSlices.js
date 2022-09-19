@@ -4,8 +4,11 @@ import { sortRequestApplic } from '../../utils/helpers/helpers'
 
 const initialState = {
    genres: '',
-   books: '',
+   books: [],
    sortGenres: '',
+   totalElements: null,
+   totalPages: null,
+   status: null,
 }
 
 const globalValues = createSlice({
@@ -16,7 +19,9 @@ const globalValues = createSlice({
          state.genres = action.payload
       },
       setBooks: (state, action) => {
-         state.books = action.payload
+         state.books = action.payload.content
+         state.totalElements = action.payload.totalElements
+         state.totalPages = action.payload.totalPages
       },
       updateSortGenres: (state, action) => {
          const arr = action.payload.filter((el) => el.searchType === 'GENRE')
@@ -27,6 +32,15 @@ const globalValues = createSlice({
             }
          })
       },
+      error: (state) => {
+         state.status = 'error'
+      },
+      success: (state) => {
+         state.status = 'fulfilled'
+      },
+      pending(state) {
+         state.status = 'pending'
+      },
    },
 })
 
@@ -36,27 +50,33 @@ export default globalValues
 
 export function updateSortGenres(value) {
    return async (dispatch) => {
+      dispatch(globalValuesAction.pending())
       const response = await appFetch({
          url: `/api/books/search?search=${value}`,
       })
       dispatch(globalValuesAction.updateSortGenres(response))
+      dispatch(globalValuesAction.success())
    }
 }
 
 export function setBooks(request) {
    return async (dispatch) => {
+      dispatch(globalValuesAction.pending())
       const books = await appFetch({
          url: `/api/admin/books${sortRequestApplic(request)}`,
       })
       dispatch(globalValuesAction.setBooks(books))
+      dispatch(globalValuesAction.success())
    }
 }
 
 export function setGenres() {
    return async (dispatch) => {
+      dispatch(globalValuesAction.pending())
       const genres = await appFetch({
          url: '/api/genres',
       })
       dispatch(globalValuesAction.setGenres(genres))
+      dispatch(globalValuesAction.success())
    }
 }
