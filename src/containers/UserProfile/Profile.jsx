@@ -71,11 +71,12 @@ const ButtonStyled = styled(Button)`
    background-color: transparent;
    font-family: 'Open Sans';
    font-style: normal;
-   font-weight: 400;
+   font-weight: ${(props) => (props.primary ? '600' : '400')};
    font-size: 16px;
    line-height: 130%;
-   color: ${(props) => (props.primary ? 'red' : '#222222')};
-   border-bottom: ${(props) => (props.primary ? '2px solid #FF4C00' : 'none')};
+   color: ${(props) => (props.primary ? '#FF4C00' : '#222222')};
+   border-bottom: ${(props) =>
+      props.primary ? '3px solid #FF4C00' : '3px solid rgba(0,0,0,0)'};
    &:hover {
       background-color: transparent;
    }

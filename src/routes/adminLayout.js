@@ -17,7 +17,7 @@ export default function adminLayout() {
          />
          <Route path="/books" element={<AdminBooks />} />
          <Route path="/vendors" element={<AdminVendors />} />
-         <Route path="/vendor/:vendorId" element={<AdminVendorInnerPage />} />
+         <Route path="/vendors/:vendorId" element={<AdminVendorInnerPage />} />
          <Route path="/*" element={<div>not found</div>} />
       </Route>
    )

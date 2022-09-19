@@ -117,7 +117,7 @@ const AdminVendorProfile = () => {
          </Modal>
       </StyledCont>
    )
-   return showComponent
+   return <div>{showComponent}</div>
 }
 
 export default AdminVendorProfile

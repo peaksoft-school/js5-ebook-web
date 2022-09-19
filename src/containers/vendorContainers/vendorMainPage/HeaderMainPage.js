@@ -17,6 +17,7 @@ export default function HeaderMainPage() {
       dispatch(bookAction.deleteImage())
       navigate('/main/addBook')
    }
+
    return (
       <Container>
          <Promocode />

@@ -17,7 +17,7 @@ function SearchInputBlock({ admin }) {
       dispatch(getGlobalSearch(searchRef.current.value))
    }
    const onClickItem = (id, name, type) => {
-      if (role === 'user') {
+      if (role === 'USER') {
          if (type === 'BOOK') {
             navigate(`main/catalog/${id}`)
          }

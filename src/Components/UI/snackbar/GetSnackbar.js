@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ReactComponent as OkSnackBar } from '../../../assets/icons/snackbar/fulfilled.svg'
 import Snackbar from './Snackbar'
 import { ReactComponent as Error } from '../../../assets/icons/snackbar/error.svg'
@@ -11,6 +11,14 @@ const GetSnackbar = ({
    handleClose,
    ...props
 }) => {
+   useEffect(() => {
+      const time = setTimeout(() => {
+         handleClose()
+      }, 3000)
+      return () => {
+         clearTimeout(time)
+      }
+   }, [])
    if (variant) {
       return (
          <Snackbar

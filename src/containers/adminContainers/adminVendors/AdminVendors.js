@@ -40,7 +40,7 @@ export default function AdminVendor() {
    }
 
    const handleNavToVendorProfile = (id) => {
-      navigate(`/vendor/${id}`)
+      navigate(`/vendors/${id}`)
    }
    const showVendorTable = isShowSpinner ? (
       <Spinner variant="two" />
