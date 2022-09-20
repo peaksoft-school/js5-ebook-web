@@ -1,7 +1,25 @@
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
 import GenreItem from './GenreItem'
+import { сatalogActions } from '../../../store/slices/catalogSlice'
 
-function GenreMenu({ data, onSelect }) {
+function GenreMenu({ data, onCloseGenre }) {
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const onSelect = (id, label) => {
+      dispatch(
+         сatalogActions.setExternalSetting({
+            key: 'genres',
+            value: {
+               id,
+               label,
+            },
+         })
+      )
+      navigate(`main/catalog`)
+      onCloseGenre()
+   }
    return (
       <MenuContainer>
          <MenuUl>
@@ -11,9 +29,9 @@ function GenreMenu({ data, onSelect }) {
                      <GenreItem
                         key={elem.id}
                         name={elem.name}
-                        quantity={elem.quantity}
+                        quantity={elem.quantityOfBook}
                         id={elem.id}
-                        onSelect={onSelect}
+                        onSelect={() => onSelect(elem.id, elem.name)}
                      />
                   )
                })}

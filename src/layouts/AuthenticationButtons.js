@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { MenuItem } from '@mui/material'
 import styled from '@emotion/styled'
@@ -17,6 +18,7 @@ function AuthenticationButtons() {
    const [anchorEl, setAnchorEl] = useState(null)
    const open = Boolean(anchorEl)
    const user = useSelector((store) => store.auth.user)
+   const navigate = useNavigate()
    useEffect(() => {
       if (user.role === APP_ROLES.USER && user.token) {
          setUserActive(true)
@@ -47,6 +49,10 @@ function AuthenticationButtons() {
       setIsShowModal(true)
       onCloseProfileHandler()
    }
+   const onClickProfile = () => {
+      navigate('/main/profile')
+      onCloseProfileHandler()
+   }
    const showUser = userActive ? (
       <>
          <Profile onClick={onClickProfileHandler}>
@@ -54,7 +60,7 @@ function AuthenticationButtons() {
             <PofileSpan>{user.firstName}</PofileSpan>
          </Profile>
          <PopUp open={open} onClose={onCloseProfileHandler} anchorEl={anchorEl}>
-            <MenuItem>Профиль</MenuItem>
+            <MenuItem onClick={onClickProfile}>Профиль</MenuItem>
             <MenuItem onClick={onClickExitBtn}>Выйти</MenuItem>
          </PopUp>
          <Modal open={isShowModal} onClose={closeModal}>
@@ -63,14 +69,14 @@ function AuthenticationButtons() {
       </>
    ) : (
       <>
-         <ModalSignUp
+         <Modal
             open={isShowModal}
             width="500px"
             justifyContent="flex-start"
             onClose={closeModal}
          >
             <SignUp activeBtn={activeBtn} />
-         </ModalSignUp>
+         </Modal>
          <Button
             variant="default"
             border="1px solid #000"
@@ -86,11 +92,6 @@ function AuthenticationButtons() {
          </Button>
          <Button
             variant="default"
-            // <<<<<<< HEAD
-            //             background="#fff"
-            //             color="#1C1C1C"
-            //             border="1px solid #1C1C1C"
-            // =======
             border="1px solid #000"
             width="auto"
             background={!activeBtn ? '#000' : '#fff'}
@@ -107,12 +108,6 @@ function AuthenticationButtons() {
 }
 
 export default AuthenticationButtons
-
-const ModalSignUp = styled(Modal)`
-   & > div {
-      border: 1px solid red;
-   }
-`
 
 const PofileSpan = styled('span')`
    margin-left: 8px;

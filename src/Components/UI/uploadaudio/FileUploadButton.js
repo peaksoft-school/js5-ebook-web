@@ -1,8 +1,10 @@
 import styled from '@emotion/styled'
-import { CircularProgress } from '@mui/material'
-import { useState } from 'react'
+import { CircularProgress, Snackbar } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import Vector from '../../../assets/upaudioicons/Vector.png'
 import VectorOk from '../../../assets/upaudioicons/VectorOk.png'
+// import GetSnackbar from '../snackbar/GetSnackbar'
 
 const FileUploadButton = ({
    onChange,
@@ -14,14 +16,24 @@ const FileUploadButton = ({
    name,
    ...props
 }) => {
+   const deleteFile = useSelector((store) => store.addbook.deleteImage)
    const [fileState, setFileState] = useState('default')
    const [pdfFile, setPdfFile] = useState([])
    const [audioFile, setAudioFile] = useState([])
-
+   const [isValid, setIsValid] = useState(false)
+   useEffect(() => {
+      const valid = setTimeout(() => {
+         setIsValid(false)
+      }, 3000)
+      return () => clearInterval(valid)
+   }, [isValid])
    const saveFilesHandler = (e) => {
+      if (e.target.files[0].size > 1000000) {
+         setIsValid(true)
+         return
+      }
       const files = e.target.files[0]
       onChange(files, e)
-
       if (files.type === 'application/pdf') {
          setFileState('loading')
          setPdfFile(files)
@@ -34,13 +46,25 @@ const FileUploadButton = ({
          setFileState('success')
       }
    }
-
+   useEffect(() => {
+      setFileState('default')
+   }, [deleteFile])
    let fileButton
-
    if (fileState === 'default') {
       fileButton = (
          <ContainerDiv>
-            <DefaultContainer {...props}>
+            <Snackbar
+               open={isValid}
+               message="File size must be > 1MB"
+               severity="error"
+               sx={{ height: '184%', horizontal: 'right' }}
+               anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                  width: '40px',
+               }}
+            />
+            <DefaultContainer den={!isValid} {...props}>
                <ImgVector src={Vector} />
                {children}
                <input
@@ -50,11 +74,11 @@ const FileUploadButton = ({
                   type="file"
                   onChange={saveFilesHandler}
                />
+               {/* {!isValid && <span>fjkjkd</span>} */}
             </DefaultContainer>
          </ContainerDiv>
       )
    }
-
    if (fileState === 'loading') {
       fileButton = (
          <ContainerDiv>
@@ -75,12 +99,9 @@ const FileUploadButton = ({
          </ContainerDiv>
       )
    }
-
    return <div>{fileButton}</div>
 }
-
 export default FileUploadButton
-
 const DefaultContainer = styled('label')((props) => ({
    display: 'flex',
    alignItems: 'center',
@@ -101,7 +122,6 @@ const DefaultContainer = styled('label')((props) => ({
       display: 'none',
    },
 }))
-
 const LoadedContainer = styled('label')((props) => ({
    display: 'flex',
    alignItems: 'center',
@@ -119,7 +139,6 @@ const LoadedContainer = styled('label')((props) => ({
       display: 'none',
    },
 }))
-
 const SuccessContainer = styled('label')((props) => ({
    lineHeight: '16.8px',
    width: props.width || '100%',
@@ -138,7 +157,6 @@ const SuccessContainer = styled('label')((props) => ({
       display: 'none',
    },
 }))
-
 const ImgVector = styled('img')(() => ({
    color: '#969696',
    width: '15px',
@@ -146,12 +164,10 @@ const ImgVector = styled('img')(() => ({
    marginTop: '2px',
    marginRight: '18px',
 }))
-
 const ImgVectorOk = styled('img')`
    color: white;
    margin-right: 18px;
 `
-
 const ContainerDiv = styled('div')`
    display: inline-block;
 `

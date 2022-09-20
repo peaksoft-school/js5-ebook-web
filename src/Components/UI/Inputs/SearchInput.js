@@ -16,6 +16,8 @@ const SearchInput = React.forwardRef(
          setIsFocus(!isFocus)
       }
 
+      // console.log
+
       return (
          <InputContainer
             borderColor={isFocus ? '#F34901' : ''}
@@ -42,9 +44,11 @@ const SearchInput = React.forwardRef(
                      return (
                         <Item
                            key={elem.id}
-                           onClick={() => ItemOnClick(elem.name)}
+                           onClick={() =>
+                              ItemOnClick(elem.id, elem.search, elem.searchType)
+                           }
                         >
-                           {elem.name}
+                           {elem.search}
                         </Item>
                      )
                   })}
@@ -68,8 +72,8 @@ const ItemBlock = styled('ui')`
    z-index: 10;
    border-radius: 3px;
    overflow: hidden;
-   box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
-      0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
+   /* box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
+      0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%); */
 `
 
 const Item = styled('li')`

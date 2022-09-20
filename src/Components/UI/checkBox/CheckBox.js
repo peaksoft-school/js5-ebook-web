@@ -1,15 +1,46 @@
+import { useState, useEffect } from 'react'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import MuiCheckbox from '@mui/material/Checkbox'
 import { styled } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { сatalogActions } from '../../../store/slices/catalogSlice'
 
-const CheckBox = ({ onChange, checked, label, ...props }) => {
+const CheckBox = ({ onChange, label, id, sortMethods, ...props }) => {
+   const [checked, setChecked] = useState(false)
+   const [one, setOne] = useState(true)
+   const dispatch = useDispatch()
+   const onChangeHandler = (id, checked, label) => {
+      setChecked((prev) => !prev)
+      onChange(id, !checked, label, onChangeHandler)
+      dispatch(
+         сatalogActions.deleteExternal({
+            key: 'genres',
+         })
+      )
+   }
+   useEffect(() => {
+      if (one) {
+         setOne(false)
+      }
+      if (sortMethods) {
+         sortMethods((prev) => {
+            return {
+               ...prev,
+               genresMethods: [
+                  ...prev.genresMethods,
+                  { id, genreMethod: onChangeHandler },
+               ],
+            }
+         })
+      }
+   }, [])
    return (
       <FormGroup>
          <FormLabelStyle
             control={
                <ChesckboxStyle
-                  onChange={onChange}
+                  onChange={() => onChangeHandler(id, checked, label)}
                   checked={checked}
                   {...props}
                />
@@ -23,9 +54,12 @@ export default CheckBox
 
 const FormLabelStyle = styled(FormControlLabel)`
    .MuiFormControlLabel-label {
+      font-family: 'Open Sans';
       color: black;
-      font-size: 16px;
+      font-style: normal;
       font-weight: 400;
+      font-size: 16px;
+      line-height: 130%;
    }
 `
 const ChesckboxStyle = styled(MuiCheckbox)`

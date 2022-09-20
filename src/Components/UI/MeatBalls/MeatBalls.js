@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import { useState } from 'react'
-import MeadBalls from '../../../assets/icons/MeatBalls/MeatBalls.jpg'
 
-const Meatballs = ({ options }) => {
+import MeadBalls from '../../../assets/icons/MeatBalls/MeatBall.svg'
+
+const MeatBalls = ({ options, onClick, height }) => {
    const [state, setState] = useState(false)
 
    const clickHandler = () => {
@@ -11,14 +12,15 @@ const Meatballs = ({ options }) => {
 
    const clickCloseHandler = (option) => {
       setState(false)
-      option.onClick(option)
+      onClick(option)
+      options.onClick(option.id)
    }
 
    return (
       <DivBlock>
-         <Img onClick={clickHandler} src={MeadBalls} />
+         <Img onClick={() => clickHandler()} src={MeadBalls} />
          {state && (
-            <DivMeatBalls>
+            <DivMeatBalls height={height} width={options.width}>
                {options.map((option) => {
                   return (
                      <OptionMeadBalls
@@ -26,7 +28,7 @@ const Meatballs = ({ options }) => {
                         onClick={() => clickCloseHandler(option)}
                      >
                         <Div>{option.icon}</Div>
-                        {option.title}
+                        <DivOprions>{option.title}</DivOprions>
                      </OptionMeadBalls>
                   )
                })}
@@ -36,29 +38,33 @@ const Meatballs = ({ options }) => {
    )
 }
 
-export default Meatballs
-
+export default MeatBalls
+const DivOprions = styled('div')``
 const DivBlock = styled.div`
    display: flex;
    flex-direction: column;
    position: relative;
    z-index: 10;
+   cursor: pointer;
+   width: 14px;
 `
 
 const Img = styled.img`
    width: 3.75px;
    height: 16px;
+   margin-left: 30px;
 `
 
 const DivMeatBalls = styled.div`
    display: flex;
    flex-direction: column;
    justify-content: center;
-   border: 1px solid #c4c4c4;
    position: absolute;
    top: 100%;
-   left: 0;
+   right: 0;
    background-color: white;
+   height: ${(props) => props.height || '10px 20px'};
+   width: ${(props) => props.width || '10px 20px'};
    padding: 30px;
 `
 

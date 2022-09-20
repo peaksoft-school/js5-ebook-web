@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate, useLocation } from 'react-router'
 
 import { ReactComponent as Application } from '../../assets/icons/sideDrower/State=Application, Fill-color=Default.svg'
 import { ReactComponent as ApplicationOrange } from '../../assets/icons/sideDrower/State=Application, Fill-color=Fill-orange.svg'
@@ -20,6 +20,8 @@ const items = [
          0: <Application />,
          1: <ApplicationOrange />,
       },
+      link: 'applications',
+      navigate: 'applications',
    },
    {
       name: 'Продавцы',
@@ -27,6 +29,9 @@ const items = [
          0: <Vendor />,
          1: <VendorOrange />,
       },
+
+      link: 'request',
+      navigate: 'vendors',
    },
    {
       name: 'Пользователи',
@@ -34,6 +39,10 @@ const items = [
          0: <User />,
          1: <UserOrange />,
       },
+
+      link: 'request',
+
+      navigate: 'users',
    },
    {
       name: 'Книги',
@@ -41,10 +50,19 @@ const items = [
          0: <Books />,
          1: <BooksOrange />,
       },
+
+      link: 'books',
+      navigate: 'books',
    },
 ]
 
-function SideDrawerMenu({ onClick }) {
+function SideDrawerMenu() {
+   const navigate = useNavigate()
+   const location = useLocation()
+   const onClickItem = (nav) => {
+      navigate(`/${nav}`)
+   }
+   const layout = location.pathname.split('/')[1]
    return (
       <SideDrowerMenuContainer>
          <DrowerList>
@@ -52,9 +70,10 @@ function SideDrawerMenu({ onClick }) {
                return (
                   <DrowerItem
                      key={elem.name}
-                     onClick={onClick}
+                     onClick={() => onClickItem(elem.navigate)}
                      name={elem.name}
                      icon={elem.icon}
+                     active={layout === elem.navigate}
                   />
                )
             })}
@@ -64,19 +83,11 @@ function SideDrawerMenu({ onClick }) {
 }
 export default SideDrawerMenu
 
-function DrowerItem({ name, icon }) {
-   const [bool, setBool] = useState(false)
-   const onHoverItem = () => {
-      setBool(true)
-   }
-
-   const offHoverItem = () => {
-      setBool(false)
-   }
+function DrowerItem({ name, icon, onClick, active }) {
    return (
-      <DrowerItemBlock onMouseOver={onHoverItem} onMouseOut={offHoverItem}>
+      <DrowerItemBlock onClick={onClick} active={active}>
          <span>{name}</span>
-         <span>{bool ? icon[1] : icon[0]}</span>
+         <span>{active ? icon[1] : icon[0]}</span>
       </DrowerItemBlock>
    )
 }
@@ -86,7 +97,6 @@ const DrowerItemBlock = styled.li`
    font-family: 'Open Sans';
    font-size: 1rem;
    font-weight: 400;
-   color: #fff;
    text-align: left;
    line-height: 21.79px;
    padding: 20px 41px;
@@ -94,6 +104,8 @@ const DrowerItemBlock = styled.li`
    transition: ease-in 0.2s;
    display: flex;
    align-items: center;
+   background-color: ${(props) => (props.active ? '#fff' : 'rgba(0,0,0,0)')};
+   color: ${(props) => (props.active ? '#f34901' : '#fff')};
    & > span:nth-child(2) {
       flex-shrink: 0;
       display: flex;
@@ -101,10 +113,10 @@ const DrowerItemBlock = styled.li`
       margin-right: 15px;
       order: -1;
    }
-   &:hover {
+   /* &:hover {
       background-color: #fff;
       color: #f34901;
-   }
+   } */
 `
 
 const DrowerList = styled.ul`
