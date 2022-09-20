@@ -13,6 +13,7 @@ import { getAdminVendorsSlice } from './slices/getAdminVendorsSlice'
 import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
 import { snackbarSlice } from './slices/snackbarSlice'
 import сatalogSlices from './slices/catalogSlice'
+import { getAdminUsersSlice } from './slices/getAdminUsersSlices'
 
 const store = configureStore({
    reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
       vendorProfile: VendorProfileSlice.reducer,
       adminVendors: getAdminVendorsSlice.reducer,
       snackbar: snackbarSlice.reducer,
+      adminUsers: getAdminUsersSlice.reducer,
    },
 })
 
