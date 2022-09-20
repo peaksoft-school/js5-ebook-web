@@ -178,6 +178,7 @@ const StyledBookImage = styled.img`
 `
 const StyledMain = styled.div`
    padding-top: 72px;
+   padding-bottom: 123px;
 `
 const StyledInfo = styled.div`
    display: flex;
@@ -212,7 +213,7 @@ const StyledBookImageCont = styled.div`
 `
 const Img1 = styled.div`
    width: 357px;
-   height: 571px;
+   height: 500px;
    margin-bottom: 185px;
    margin-right: -8px;
 `
@@ -222,8 +223,8 @@ const Img2 = styled.div`
    margin: 0px 0px 20px 20px;
 `
 const Img3 = styled.div`
-   width: 385px;
-   height: 614px;
+   width: 357px;
+   height: 580px;
 `
 
 const NewIcon = styled('img')`
