@@ -88,7 +88,7 @@ const BookItems = styled('div')`
    font-family: 'Open Sans';
    margin-top: 22px;
    padding-top: 20px;
-   margin-right: 10px;
+   padding-right: 2px;
 `
 const MeatBall = styled('div')`
    display: flex;

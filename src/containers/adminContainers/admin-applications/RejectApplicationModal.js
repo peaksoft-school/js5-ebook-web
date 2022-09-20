@@ -15,17 +15,7 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
    }
 
    function sendReason() {
-      const fetch = async () => {
-         try {
-            const response = await dispatch(
-               rejectAplication({ id, reasonReject, onClose, setReasonReject })
-            ).unwrap()
-            return response
-         } catch (error) {
-            return error
-         }
-      }
-      fetch()
+      dispatch(rejectAplication({ id, reasonReject, onClose, setReasonReject }))
    }
    return (
       <Modal
