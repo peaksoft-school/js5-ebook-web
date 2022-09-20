@@ -308,6 +308,7 @@ const StyledButton1 = styled(Button)`
 `
 const DivCont = styled.form`
    width: 100%;
+   padding-top: 50px;
 `
 const DivStyledButton = styled.div`
    width: 100%;
@@ -347,6 +348,9 @@ const LabelStyled = styled.label`
    font-weight: 400;
    font-size: 16px;
    line-height: 130%;
+   display: block;
+   /* border: 1px solid red; */
+   padding-bottom: 10px;
 `
 const DivStyledButton1 = styled.div`
    width: 100%;

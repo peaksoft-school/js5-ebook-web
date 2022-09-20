@@ -2,6 +2,9 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 const TotalBooks = ({ totalBooks }) => {
+   if (totalBooks === 1) {
+      return <TotalBlock>Найдена {totalBooks} книга</TotalBlock>
+   }
    return <TotalBlock>Найдены {totalBooks} книг</TotalBlock>
 }
 

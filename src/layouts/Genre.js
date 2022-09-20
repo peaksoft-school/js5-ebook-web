@@ -30,7 +30,7 @@ function Genre({ text }) {
             anchorEl={anchorEl}
             onClose={onCloseGenreMenu}
          >
-            <GenreMenu data={genres} />
+            <GenreMenu data={genres} onCloseGenre={onCloseGenreMenu} />
          </GenreMenuPopUp>
       </Div>
    )

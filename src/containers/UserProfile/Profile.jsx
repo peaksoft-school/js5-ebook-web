@@ -1,50 +1,67 @@
+import { useState } from 'react'
 import styled from '@emotion/styled'
-import { Outlet, useNavigate, useLocation } from 'react-router'
 import BreadCrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import Button from '../../Components/UI/Button/Button'
+import { UserProfile } from './UserProfile'
+import { UserHistory } from './UserHistory'
 // import { UserHistory } from './UserHistory'
 // import { UserProfile } from './UserProfile'
 
+const profilePages = ['UserProfile', 'UserHistory']
+
 export const Profile = () => {
-   const navigate = useNavigate()
-   const location = useLocation()
+   const [pages, setPages] = useState(0)
 
    const UserHistoryNav = () => {
-      navigate(`/profile/UserHistory`)
+      setPages(1)
    }
    const UserProfileNav = () => {
-      navigate(`/profile/UserProfile`)
+      setPages(0)
    }
    const pathTranslate = {
+      main: 'Главная',
       profile: 'Профиль',
-      userProfile: 'Личная информация',
+   }
+   let showComponent
+   if (profilePages[pages] === 'UserProfile') {
+      showComponent = <UserProfile />
+   }
+   if (profilePages[pages] === 'UserHistory') {
+      showComponent = <UserHistory />
    }
    return (
       <>
-         <BreadCrumbs translate={pathTranslate} />
+         <BreadBlock>
+            <BreadCrumbs translate={pathTranslate} />
+         </BreadBlock>
          <DivBlock>
             <ButtonBlock>
                <ButtonStyled
                   onClick={UserProfileNav}
-                  primary={location.pathname === '/profile/UserProfile'}
+                  primary={profilePages[pages] === `UserProfile`}
                >
                   Личная информация
                </ButtonStyled>
                <ButtonStyled
                   onClick={UserHistoryNav}
-                  primary={location.pathname === '/profile/UserHistory'}
+                  primary={profilePages[pages] === `UserHistory`}
                >
                   История операций
                </ButtonStyled>
             </ButtonBlock>
-            <Outlet />
+            {showComponent}
          </DivBlock>
       </>
    )
 }
 
+const BreadBlock = styled.div`
+   /* border: 1px solid red; */
+   padding: 30px 0;
+`
 const DivBlock = styled.div``
 const ButtonBlock = styled.div`
+   /* border: 1px solid red; */
    display: flex;
    width: 50%;
    margin: 20px 0 0 25%;
@@ -54,11 +71,12 @@ const ButtonStyled = styled(Button)`
    background-color: transparent;
    font-family: 'Open Sans';
    font-style: normal;
-   font-weight: 400;
+   font-weight: ${(props) => (props.primary ? '600' : '400')};
    font-size: 16px;
    line-height: 130%;
-   color: ${(props) => (props.primary ? 'red' : '#222222')};
-   border-bottom: ${(props) => (props.primary ? '2px solid #FF4C00' : 'none')};
+   color: ${(props) => (props.primary ? '#FF4C00' : '#222222')};
+   border-bottom: ${(props) =>
+      props.primary ? '3px solid #FF4C00' : '3px solid rgba(0,0,0,0)'};
    &:hover {
       background-color: transparent;
    }

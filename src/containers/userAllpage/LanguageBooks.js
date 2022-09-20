@@ -26,7 +26,7 @@ const languageBooks = [
    },
 ]
 
-const LanguageBooks = ({ onChange }) => {
+const LanguageBooks = ({ onChange, sortMethods }) => {
    const [languages, setLenguages] = React.useState(languageBooks)
    React.useEffect(() => {
       const findEl = languages.find((el) => el.checked === true)
@@ -66,6 +66,15 @@ const LanguageBooks = ({ onChange }) => {
          })
       })
    }
+   // console.log(onChangeItem)
+   React.useEffect(() => {
+      sortMethods((prev) => {
+         return {
+            ...prev,
+            onChangeLanguages: onChangeItem,
+         }
+      })
+   }, [])
    return (
       <TypeBlock>
          <Type>

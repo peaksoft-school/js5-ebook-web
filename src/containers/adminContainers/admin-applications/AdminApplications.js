@@ -18,25 +18,29 @@ const AdminApplications = () => {
       totalElements: allBooks,
       unwatched,
       totalPages,
+      acceptMessage,
+      rejectMessage,
       status,
    } = useSelector((state) => state.applications)
 
    const [update, setupdate] = useState(true)
    const [requestObj, setRequestObj] = useState({ page: 1, size: 8 })
    const [showSeeMore, setShowSeeMore] = useState(false)
-   const [isShowSpinner, setIsShowSpinner] = useState(false)
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(applicationsActions(requestObj))
-   }, [])
+      setRequestObj((prev) => {
+         return {
+            ...prev,
+            page: 1,
+         }
+      })
+   }, [acceptMessage, rejectMessage])
+
    useEffect(() => {
-      if (status === 'pending') {
-         setIsShowSpinner(true)
-      } else {
-         setIsShowSpinner(false)
-      }
-   })
+      dispatch(applicationsActions(requestObj))
+   }, [acceptMessage, rejectMessage])
+
    useEffect(() => {
       if (update) {
          setupdate(false)
@@ -72,30 +76,35 @@ const AdminApplications = () => {
    }
    return (
       <Application>
-         {isShowSpinner && <Spinner />}
          <TotalApplication>
             <Total>Всего:{allBooks}</Total>
             <Total>
                Непросмотренные: <MinusView>{unwatched}</MinusView>
             </Total>
          </TotalApplication>
-         <Books>
-            {applications &&
-               applications.map((el) => (
-                  <ApplicationCard
-                     key={el.id}
-                     id={el.id}
-                     img={el.mainImage}
-                     date={getFormatedDate(el.publishedDate)}
-                     name={el.name}
-                     price={el.price}
-                     enabled={el.enabled}
-                  />
-               ))}
-            {showSeeMore && (
-               <SeeMore onClick={getMoreApplications}>Смотреть больше</SeeMore>
-            )}
-         </Books>
+         {status === 'pending' ? (
+            <Spinner variant="two" />
+         ) : (
+            <Books>
+               {applications &&
+                  applications.map((el) => (
+                     <ApplicationCard
+                        key={el.id}
+                        id={el.id}
+                        img={el.mainImage}
+                        date={getFormatedDate(el.publishedDate)}
+                        name={el.name}
+                        price={el.price}
+                        enabled={el.enabled}
+                     />
+                  ))}
+               {showSeeMore && (
+                  <SeeMore onClick={getMoreApplications}>
+                     Смотреть больше
+                  </SeeMore>
+               )}
+            </Books>
+         )}
       </Application>
    )
 }

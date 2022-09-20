@@ -37,8 +37,6 @@ const VendorMainPage = () => {
    const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
    const vendorId = useSelector((store) => store.auth.user.id)
 
-   const [getById, setGetById] = useState()
-
    const bookType = [
       { name: 'Все', id: 1, text: 'ALL' },
       { name: 'В избранном', id: 2, text: 'FAVORITES' },
@@ -58,6 +56,8 @@ const VendorMainPage = () => {
    const clickSelectBook = (data, _, typeData) => {
       setSelectId(typeData)
    }
+
+   // console.log(getById)
 
    useEffect(() => {
       dispatch(getMainBooks(selectId, next, vendorId))
@@ -81,6 +81,7 @@ const VendorMainPage = () => {
             open={bookError || bookSuccsess}
             message={bookSuccsess ? 'Книга удалена!' : bookError}
             variant={bookError ? 'error' : 'success'}
+            width="400px"
          />
          <HeaderMainPage />
          <HeaderText>
@@ -117,7 +118,7 @@ const VendorMainPage = () => {
                                 </ImgFavorite>
                                 <span>В корзине ({book.basket})</span>
                              </BookSHeader>
-                             <CopyLink to={`/${book.id}`}>
+                             <CopyLink to={`/main/${book.id}`}>
                                 <ImageBlock>
                                    <Img src={book.mainImage} />
                                 </ImageBlock>
@@ -132,8 +133,8 @@ const VendorMainPage = () => {
                                 </div>
                              </CopyLink>
                           </BooksWrapper>
-                          <MeatBallsDiv onClick={() => setGetById(book.id)}>
-                             <UpdateBooks id={getById} />
+                          <MeatBallsDiv>
+                             <UpdateBooks id={book.id} />
                           </MeatBallsDiv>
                        </BooksContainer>
                     </Books>

@@ -10,7 +10,14 @@ import { InnerPageAdminInnerBook } from '../containers/adminContainers/adminBook
 export default function adminLayout() {
    return (
       <Route path="/" element={<AdminLayout />}>
-         <Route path="/" element={<Navigate to="/applications" replace />} />
+         <Route
+            path="/main"
+            element={<Navigate to="/applications" replace />}
+         />
+         <Route
+            path="/main/catalog"
+            element={<Navigate to="/applications" replace />}
+         />
          <Route path="applications" element={<AdminApplications />} />
          <Route
             path="applications/:id"
@@ -19,7 +26,7 @@ export default function adminLayout() {
          <Route path="/books" element={<AdminBooks />} />
          <Route path="/books/:id" element={<InnerPageAdminInnerBook />} />
          <Route path="/vendors" element={<AdminVendors />} />
-         <Route path="/vendor/:vendorId" element={<AdminVendorInnerPage />} />
+         <Route path="/vendors/:vendorId" element={<AdminVendorInnerPage />} />
          <Route path="/*" element={<div>not found</div>} />
       </Route>
    )

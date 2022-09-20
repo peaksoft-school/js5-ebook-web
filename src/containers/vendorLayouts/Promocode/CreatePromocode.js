@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import BasicDatePicker from './DatePicker'
@@ -16,21 +16,8 @@ export default function CreatePromocode() {
       dataOut: '',
       percent: 0,
    })
-   const {
-      promocode: success,
-      error: errorPromo,
-      snackbar,
-   } = useSelector((store) => store.promocodeStore)
 
    const dispatch = useDispatch()
-   React.useEffect(() => {
-      const time = setTimeout(() => {
-         dispatch(promocodeActions.clean())
-      }, [3000])
-      return () => {
-         clearTimeout(time)
-      }
-   }, [snackbar, success, errorPromo])
    const onChangeHandler = (key, value) => {
       setPromocod((prev) => {
          return {
