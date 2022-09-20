@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
-import Modal from '../../../Components/UI/Modal'
+// import Modal from '../../../Components/UI/Modal'
 
-export const RejectApplicationModal = ({ id, open, onClose }) => {
+export const RejectApplicationModal = ({ id, onClose }) => {
    const dispatch = useDispatch()
 
    const [reasonReject, setReasonReject] = useState('')
@@ -14,38 +14,30 @@ export const RejectApplicationModal = ({ id, open, onClose }) => {
       setReasonReject(e.target.value)
    }
 
-   function sendReason() {
+   function sendReason(e) {
       dispatch(rejectAplication({ id, reasonReject, onClose, setReasonReject }))
+      e.stopPropagation()
    }
    return (
-      <Modal
-         open={open}
-         onClose={onClose}
-         variant="mini"
-         width="523px"
-         height="247px"
-         overflow="none"
-      >
-         <RejectModal onClick={(e) => e.stopPropagation()}>
-            <ReasonForRejection>Причина вашего отклонения</ReasonForRejection>
-            <Input
-               placeholder="Напишите причину отклонения..."
-               onChange={reasonChangeHandler}
-               value={reasonReject}
-            />
+      <RejectModal onClick={(e) => e.stopPropagation()}>
+         <ReasonForRejection>Причина вашего отклонения</ReasonForRejection>
+         <Input
+            placeholder="Напишите причину отклонения..."
+            onChange={reasonChangeHandler}
+            value={reasonReject}
+         />
 
-            <DivButton>
-               <Button
-                  variant="default"
-                  width="137px"
-                  height="42px"
-                  onClick={() => sendReason()}
-               >
-                  Отправить
-               </Button>
-            </DivButton>
-         </RejectModal>
-      </Modal>
+         <DivButton>
+            <Button
+               variant="default"
+               width="137px"
+               height="42px"
+               onClick={(e) => sendReason(e)}
+            >
+               Отправить
+            </Button>
+         </DivButton>
+      </RejectModal>
    )
 }
 
