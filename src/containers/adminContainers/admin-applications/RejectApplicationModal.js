@@ -7,6 +7,7 @@ import Modal from '../../../Components/UI/Modal'
 
 export const RejectApplicationModal = ({ id, open, onClose }) => {
    const dispatch = useDispatch()
+   console.log(id)
 
    const [reasonReject, setReasonReject] = useState('')
 
