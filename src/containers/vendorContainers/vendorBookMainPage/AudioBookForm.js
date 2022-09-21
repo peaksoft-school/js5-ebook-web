@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,6 +14,7 @@ import { editeAudioBook } from '../../../store/createActions/vendorMainPagesActi
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
+import Spinner from '../../../Components/UI/Spinner'
 
 const languageSelect = [
    { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
@@ -22,15 +23,14 @@ const languageSelect = [
 ]
 
 const AudioBookForm = ({ images }) => {
-   const [navigation, setNavigation] = useState(false)
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
-   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
+   const { status } = useSelector((store) => store.addbook)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [audioValues, setAudioValues] = useState({
-      fragment: dataWithId ? dataWithId.fragment : '',
+      fragment: dataWithId ? dataWithId.audioBookFragment : '',
       audioBook: dataWithId ? dataWithId.audioBook : '',
    })
    const [duration, setDuration] = useState({
@@ -51,6 +51,8 @@ const AudioBookForm = ({ images }) => {
       price: dataWithId ? dataWithId.price : '',
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
       discount: dataWithId ? dataWithId.discount : '',
+      language: dataWithId ? dataWithId.language : '',
+      genreId: '',
    })
 
    const changeAudioValue = (audio, e) => {
@@ -95,6 +97,11 @@ const AudioBookForm = ({ images }) => {
             return
          }
       }
+      if (name === 'discount') {
+         if (value > 100) {
+            return
+         }
+      }
       setInputValues({ ...inputValues, [name]: value })
       setDuration({ ...duration, [name]: value })
    }
@@ -114,7 +121,9 @@ const AudioBookForm = ({ images }) => {
 
    const clickSendFormValues = async () => {
       if (isFormValid()) {
-         dispatch(addAudioBook(inputValues, images, audioValues, durationTimer))
+         dispatch(
+            addAudioBook({ inputValues, images, audioValues, durationTimer })
+         )
          dispatch(bookAction.deleteImage())
 
          setInputValues({
@@ -138,20 +147,22 @@ const AudioBookForm = ({ images }) => {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   const { bookId } = dataWithId !== null ? dataWithId : ''
+   const { bookId, language } = dataWithId !== null ? dataWithId : ''
+   const genreBook = dataWithId !== null ? dataWithId : ''
+
    const updateForms = () => {
-      dispatch(editeAudioBook(inputValues, images, bookId, audioValues))
-      setNavigation(true)
+      dispatch(
+         editeAudioBook({
+            inputValues,
+            images,
+            bookId,
+            audioValues,
+            navigate,
+            language,
+            genreBook,
+         })
+      )
    }
-   useEffect(() => {
-      let navigateToMainPage
-      if (bookSuccsess && navigation) {
-         navigateToMainPage = setTimeout(() => {
-            navigate('/')
-         }, 3000)
-      }
-      return () => clearTimeout(navigateToMainPage)
-   }, [bookSuccsess])
 
    return (
       <>
@@ -159,7 +170,9 @@ const AudioBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
+         {status === 'pending' && <Spinner />}
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -358,24 +371,24 @@ const AudioBookForm = ({ images }) => {
             </SelectWrapper>
          </InputWrapper>
          <ButtonDiv>
-            {!dataWithId ? (
-               <Button width="137px" onClick={clickSendFormValues}>
-                  Отправить
+            <PutDiv>
+               <Button
+                  width="137px"
+                  background="#2f4f4f"
+                  onClick={() => navigate('/')}
+               >
+                  Назад
                </Button>
-            ) : (
-               <PutDiv>
-                  <Button
-                     width="137px"
-                     background="#2f4f4f"
-                     onClick={() => navigate('/')}
-                  >
-                     Назад
+               {!dataWithId ? (
+                  <Button width="137px" onClick={clickSendFormValues}>
+                     Отправить
                   </Button>
+               ) : (
                   <Button width="137px" onClick={updateForms}>
                      Сохранить
                   </Button>
-               </PutDiv>
-            )}
+               )}
+            </PutDiv>
          </ButtonDiv>
       </>
    )

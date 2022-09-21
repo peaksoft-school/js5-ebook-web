@@ -11,9 +11,12 @@ import AudioListener from '../../../Components/UI/AudioListener'
 import AboutBook from './AboutBook'
 import BookFragment from './BookFragment'
 import { TabInnerPage } from './TabInnerPage'
-import { getMainBooksWithId } from '../../../store/createActions/vendorMainPagesActions'
+import {
+   getMainBooksDelete,
+   getMainBooksWithId,
+} from '../../../store/createActions/vendorMainPagesActions'
 
-const BookInfo = ({ book, onDelete, bookId }) => {
+const BookInfo = ({ book }) => {
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
    const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
    const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
@@ -25,11 +28,14 @@ const BookInfo = ({ book, onDelete, bookId }) => {
 
    const newBookIcon =
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
-   const onClickEdit = () => {
-      dispatch(getMainBooksWithId(bookId))
-      setTimeout(() => {
-         navigate('/main/addbook')
-      }, 1000)
+
+   const editBook = () => {
+      dispatch(getMainBooksWithId(book.bookId, navigate))
+   }
+
+   const onDelete = (id) => {
+      setIsOpenDeleteModal(false)
+      dispatch(getMainBooksDelete(id, navigate))
    }
    return (
       <>
@@ -81,6 +87,7 @@ const BookInfo = ({ book, onDelete, bookId }) => {
                      border="1px solid"
                      background="none"
                      width="224px"
+                     colorhover="white"
                   >
                      Удалить
                   </Button>
@@ -109,13 +116,13 @@ const BookInfo = ({ book, onDelete, bookId }) => {
                         </Button>
                         <Button
                            variant="default"
-                           onClick={() => onDelete(handleCloseDeleteModal)}
+                           onClick={() => onDelete(book.bookId)}
                         >
                            Удалить
                         </Button>
                      </StyledModalBtnCont>
                   </Modal>
-                  <Button width="224px" onClick={onClickEdit}>
+                  <Button width="224px" onClick={editBook}>
                      Редактировать
                   </Button>
                </StyledBtnCont>

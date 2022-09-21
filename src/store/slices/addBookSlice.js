@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
    deleteImage: false,
-   status: null,
-   message: '',
+   addBookStatus: '',
+   addBookMessage: '',
 }
 export const addBookSlice = createSlice({
    name: 'addbook',
@@ -13,12 +13,22 @@ export const addBookSlice = createSlice({
          state.deleteImage = !state.deleteImage
       },
       statusSuccess(state, action) {
-         state.status = 'success'
-         state.message = `Ваша книга ${action.name} была успешно добавлена!`
+         // console.log(action.payload)
+         state.addBookStatus = 'success'
+         state.addBookMessage = action.payload
       },
-      statusError(state) {
-         state.status = 'error'
-         state.message = 'Что то пошла не так!'
+      statusError(state, action) {
+         // console.log(action.payload)
+
+         state.addBookStatus = 'error'
+         state.addBookMessage = action.payload
+      },
+      statusPending(state) {
+         state.addBookStatus = 'pending'
+      },
+      cleanStatusMessage(state) {
+         state.addBookMessage = ''
+         state.addBookStatus = ''
       },
    },
 })

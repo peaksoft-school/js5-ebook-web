@@ -17,10 +17,13 @@ const FileUploadButton = ({
    ...props
 }) => {
    const deleteFile = useSelector((store) => store.addbook.deleteImage)
+   const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
    const [fileState, setFileState] = useState('default')
    const [pdfFile, setPdfFile] = useState([])
    const [audioFile, setAudioFile] = useState([])
    const [isValid, setIsValid] = useState(false)
+   // console.log(dataWithId)
+   // console.log(dataWithId)
    useEffect(() => {
       const valid = setTimeout(() => {
          setIsValid(false)
@@ -46,6 +49,11 @@ const FileUploadButton = ({
          setFileState('success')
       }
    }
+   useEffect(() => {
+      if (dataWithId) {
+         setFileState('success')
+      }
+   }, [dataWithId])
    useEffect(() => {
       setFileState('default')
    }, [deleteFile])
@@ -74,7 +82,6 @@ const FileUploadButton = ({
                   type="file"
                   onChange={saveFilesHandler}
                />
-               {/* {!isValid && <span>fjkjkd</span>} */}
             </DefaultContainer>
          </ContainerDiv>
       )
@@ -95,6 +102,13 @@ const FileUploadButton = ({
             <SuccessContainer {...props}>
                <ImgVectorOk src={VectorOk} />
                {children}
+               <input
+                  accept={accept}
+                  value={value}
+                  name={name}
+                  type="file"
+                  onChange={saveFilesHandler}
+               />
             </SuccessContainer>
          </ContainerDiv>
       )
@@ -153,6 +167,7 @@ const SuccessContainer = styled('label')((props) => ({
    fontWeight: '600',
    fontSize: '14px',
    marginTop: '10px',
+   cursor: 'pointer',
    '& input': {
       display: 'none',
    },
