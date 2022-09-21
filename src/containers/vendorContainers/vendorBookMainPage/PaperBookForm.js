@@ -13,6 +13,7 @@ import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import { setGenres } from '../../../store/slices/globalSlices'
 import SelectInput from './SelectInput'
+import Spinner from '../../../Components/UI/Spinner'
 
 const languageSelect = [
    { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
@@ -21,13 +22,12 @@ const languageSelect = [
 ]
 
 const PaperBookForm = ({ images }) => {
-   const [navigation, setNavigation] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
-   const { bookSuccsess } = useSelector((store) => store.snackbar)
+   const { status } = useSelector((store) => store.addbook)
    const [isChecked, setIsChecked] = useState()
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
@@ -78,6 +78,11 @@ const PaperBookForm = ({ images }) => {
             return
          }
       }
+      if (name === 'discount') {
+         if (value > 100) {
+            return
+         }
+      }
 
       setInputValues({ ...inputValues, [name]: value })
    }
@@ -117,20 +122,16 @@ const PaperBookForm = ({ images }) => {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   const { bookType, bookId } = dataWithId !== null ? dataWithId : ''
+   const { bookId, language } = dataWithId !== null ? dataWithId : ''
+   const genreId = dataWithId !== null ? dataWithId : ''
    const updateForms = async () => {
-      dispatch(putVendorBook(inputValues, images, bookType, bookId))
-      setNavigation(true)
+      dispatch(
+         putVendorBook(
+            { inputValues, images, bookId, language, genreId },
+            navigate
+         )
+      )
    }
-   useEffect(() => {
-      let navigateToMainPage
-      if (bookSuccsess && navigation) {
-         navigateToMainPage = setTimeout(() => {
-            navigate('/')
-         }, 3000)
-      }
-      return () => clearTimeout(navigateToMainPage)
-   }, [bookSuccsess])
 
    useEffect(() => {
       dispatch(setGenres())
@@ -142,7 +143,9 @@ const PaperBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
+         {status === 'pending' && <Spinner />}
          <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -282,7 +285,7 @@ const PaperBookForm = ({ images }) => {
                         Кол-во <strong>*</strong>
                      </LabelStyle>
                      <InputText
-                        data="quantityOfBook"
+                        // data="quantityOfBook"
                         onChange={handleChangeInput}
                         value={inputValues.quantityOfBook}
                         textAlign="end"
@@ -305,24 +308,24 @@ const PaperBookForm = ({ images }) => {
             </div>
          </InputWrapper>
          <ButtonDiv>
-            {!dataWithId ? (
-               <Button width="137px" onClick={clickSendFormValues}>
-                  Отправить
+            <PutDiv>
+               <Button
+                  width="137px"
+                  background="#2f4f4f"
+                  onClick={() => navigate('/')}
+               >
+                  Назад
                </Button>
-            ) : (
-               <PutDiv>
-                  <Button
-                     width="137px"
-                     background="#2f4f4f"
-                     onClick={() => navigate('/')}
-                  >
-                     Назад
+               {!dataWithId ? (
+                  <Button width="137px" onClick={clickSendFormValues}>
+                     Отправить
                   </Button>
+               ) : (
                   <Button width="137px" onClick={updateForms}>
                      Сохранить
                   </Button>
-               </PutDiv>
-            )}
+               )}
+            </PutDiv>
          </ButtonDiv>
       </>
    )

@@ -30,6 +30,7 @@ export const vendorMainPageSlice = createSlice({
          state.audioBooks = ''
          state.electronicBooks = ''
          state.allBooks = ''
+         state.vendorBooks = ''
       },
 
       updateValid(state) {
@@ -44,6 +45,9 @@ export const vendorMainPageSlice = createSlice({
       errorResult(state, action) {
          state.status = 'rejected'
          state.boolean = action.payload
+      },
+      pending(state) {
+         state.status = 'pending'
       },
 
       // type books withId
