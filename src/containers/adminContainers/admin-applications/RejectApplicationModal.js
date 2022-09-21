@@ -1,5 +1,6 @@
 import { styled } from '@mui/material'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
@@ -7,7 +8,7 @@ import { rejectAplication } from '../../../store/slices/adminActions/application
 
 export const RejectApplicationModal = ({ id, onClose }) => {
    const dispatch = useDispatch()
-   console.log(id)
+   // console.log(id)
 
    const [reasonReject, setReasonReject] = useState('')
 
@@ -16,8 +17,14 @@ export const RejectApplicationModal = ({ id, onClose }) => {
    }
 
    function sendReason(e) {
-      dispatch(rejectAplication({ id, reasonReject, onClose, setReasonReject }))
       e.stopPropagation()
+      if (reasonReject.trim().length !== 0) {
+         dispatch(
+            rejectAplication({ id, reasonReject, onClose, setReasonReject })
+         )
+         return
+      }
+      toast.error('Заполняйте поля!')
    }
    return (
       <RejectModal onClick={(e) => e.stopPropagation()}>

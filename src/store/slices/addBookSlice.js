@@ -12,9 +12,9 @@ export const addBookSlice = createSlice({
       deleteImage(state) {
          state.deleteImage = !state.deleteImage
       },
-      statusSuccess(state) {
+      statusSuccess(state, action) {
          state.status = 'success'
-         state.message = 'Ваш запрос был успешно отправлен!'
+         state.message = `Ваша книга ${action.name} была успешно добавлена!`
       },
       statusError(state) {
          state.status = 'error'

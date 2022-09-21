@@ -34,11 +34,13 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
       dispatch(acceptApplication(id))
    }
 
-   function rejectModal() {
+   function rejectModal(e) {
       setShowModal(true)
+      e.stopPropagation()
    }
 
-   function onCloseRejectModal() {
+   function onCloseRejectModal(e) {
+      e.stopPropagation()
       setShowModal(false)
    }
 
@@ -53,7 +55,7 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
          </MeatBall>
          <Modal
             open={showModal}
-            onClose={() => onCloseRejectModal()}
+            onClose={(e) => onCloseRejectModal(e)}
             variant="mini"
             width="523px"
             height="247px"
@@ -61,7 +63,7 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
          >
             <RejectApplicationModal
                id={id}
-               onClose={() => onCloseRejectModal()}
+               onClose={(e) => onCloseRejectModal(e)}
             />
          </Modal>
          <Div>
