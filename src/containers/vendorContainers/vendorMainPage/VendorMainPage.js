@@ -6,7 +6,6 @@ import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
 import HeaderMainPage from './HeaderMainPage'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
-import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import { getMainBooks } from '../../../store/createActions/vendorMainPagesActions'
 import {
    BooksContainer,
@@ -29,6 +28,8 @@ import {
 } from './VendorMainPageStyle'
 import SelectInput from '../vendorBookMainPage/SelectInput'
 import Spinner from '../../../Components/UI/Spinner'
+import snackbarAction from '../../../store/slices/snackbarSlice'
+import NotFound from './NotFound'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
@@ -51,7 +52,7 @@ const VendorMainPage = () => {
       { name: 'Отклоненные', id: 7, text: 'REJECTED' },
    ]
 
-   const moreProducts = 8
+   const moreProducts = 12
    const [next, setNext] = useState(moreProducts)
    const handleMoreImage = () => {
       setNext(next + moreProducts)
@@ -69,7 +70,7 @@ const VendorMainPage = () => {
    }, [selectId, next, snackbarMessage])
 
    const deleteSnackbar = () => {
-      dispatch(snackbarActions())
+      dispatch(snackbarAction.notSnackbar())
    }
 
    return (
@@ -77,7 +78,10 @@ const VendorMainPage = () => {
          <GetSnackbar
             open={snackbarMessage}
             message={snackbarMessage}
-            variant={snackbarStatus === 'error' ? 'error' : 'success'}
+            variant={
+               (snackbarStatus === 'error' && 'error') ||
+               (snackbarStatus === 'success' && 'success')
+            }
             width="400px"
             handleClose={deleteSnackbar}
          />
@@ -94,10 +98,10 @@ const VendorMainPage = () => {
             </SelectBooksDiv>
          </HeaderText>
          <hr />
-         {vendorBooks.length === 0 && (
-            <NotFound>
-               <NotFaundImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuMUfB9xqk8Od2jyPLTDauXxP4H83XbUXwBkKXw7bLRW5FmFSbe68PXIoVMsx7iUn6y7c&usqp=CAU" />
-            </NotFound>
+         {vendorBooks.length === 0 && snackbarStatus && (
+            <NotFoundPage>
+               <NotFound />
+            </NotFoundPage>
          )}
          <ContainerDiv>
             {vendorBooks
@@ -152,7 +156,7 @@ const VendorMainPage = () => {
                Смотреть больше
             </Button>
          )}
-         {next > 8 && (
+         {next > 12 && (
             <Button
                colorhover="white"
                fullWidth
@@ -183,12 +187,7 @@ const Books = styled('div')`
    background-color: ${(props) => (props.accepted ? '#EDEDED' : '')};
    border: ${(props) => (props.accepted ? 'none' : '')};
 `
-const NotFound = styled('div')`
+const NotFoundPage = styled('div')`
    width: 800px;
    margin: auto;
-`
-const NotFaundImg = styled('img')`
-   width: 100%;
-   height: 100%;
-   object-fit: cover;
 `

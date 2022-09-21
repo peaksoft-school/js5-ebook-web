@@ -19,11 +19,6 @@ const AddBookPage = () => {
    const { deleteImage, addBookMessage, addBookStatus } = useSelector(
       (store) => store.addbook
    )
-   // const { addBookMessage, addBookStatus } = useSelector(
-   //    (store) => store.snackbar
-   // )
-
-   console.log(addBookMessage)
    const dispatch = useDispatch()
    const editData = dataWithId !== null ? dataWithId : ''
    const [images, setImages] = useState({
@@ -80,7 +75,6 @@ const AddBookPage = () => {
    const closeSnackbarFunc = () => {
       dispatch(bookAction.cleanStatusMessage())
    }
-   console.log(addBookStatus)
 
    return (
       <ContainerDiv>
@@ -89,7 +83,10 @@ const AddBookPage = () => {
          <GetSnackbar
             open={addBookMessage}
             message={addBookMessage}
-            variant={addBookStatus === 'error' ? 'error' : 'success'}
+            variant={
+               (addBookStatus === 'error' && 'error') ||
+               (addBookStatus === 'success' && 'success')
+            }
             width="400px"
             handleClose={closeSnackbarFunc}
          />

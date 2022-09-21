@@ -16,6 +16,7 @@ export const InnerPage = () => {
    const { bookId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   console.log(addBookStatus)
    useEffect(() => {
       dispatch(getVendorBookInnerPage(bookId))
    }, [])

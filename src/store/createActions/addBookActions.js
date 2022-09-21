@@ -13,12 +13,12 @@ export const addPaperBook = (inputValues, images, bestseller) => {
       discount: inputValues.discount,
       language: inputValues.language,
       bestseller,
-      fragment: inputValues.fragment,
+      // fragment: inputValues.fragment,
+      fragment: 'shdc',
       pageSize: inputValues.pageSize,
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
-   console.log(valuesWithFile)
 
    return async (dispatch) => {
       dispatch(bookAction.statusPending())
@@ -41,14 +41,10 @@ export const addPaperBook = (inputValues, images, bestseller) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         console.log('tuura')
-         console.log(result.message)
-         dispatch(bookAction.statusSuccess('USpeshno sohranen'))
-         // dispatch(snackbarAction.snackbarSuccess(result.message))
+         console.log(result)
+         dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
       } catch (error) {
-         console.log('kata')
          dispatch(bookAction.statusError('Что то пошло не так!'))
-         // dispatch(snackbarAction.snackbarFalse(error))
       }
    }
 }
@@ -65,7 +61,6 @@ export const addAudioBook = ({
       fragment: audioValues.fragment,
       audioBook: audioValues.audioBook,
    }
-   console.log(images)
    return async (dispatch) => {
       dispatch(bookAction.statusPending())
       try {
@@ -98,7 +93,7 @@ export const addAudioBook = ({
             body: valuesWithFile,
          })
          console.log(result)
-         dispatch(bookAction.statusSuccess('USpeshno sohranen'))
+         dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
       } catch (error) {
          dispatch(bookAction.statusError('Что то пошло не так!'))
       }
@@ -148,9 +143,11 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(bookAction.statusSuccess('uspeshno sohranen'))
+         dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
          if (result.ok) {
-            dispatch(bookAction.statusSuccess('uspeshno sohranen'))
+            dispatch(
+               bookAction.statusSuccess('Ваш запрос был успешно отправлен!')
+            )
          }
       } catch (error) {
          dispatch(bookAction.statusError('Что то пошло не так!'))

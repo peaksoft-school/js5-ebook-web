@@ -160,6 +160,7 @@ const ElectronicBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
          {status === 'pending' && <Spinner />}
          <InputWrapper>
@@ -290,9 +291,7 @@ const ElectronicBookForm = ({ images }) => {
                      <CheckBoxDiv>
                         <CheckBox label="Бестселлер" />
                      </CheckBoxDiv>
-                     <LabelStyle htmlFor="discount">
-                        Скидка <strong>*</strong>
-                     </LabelStyle>
+                     <LabelStyle htmlFor="discount">Скидка</LabelStyle>
                      <InputText
                         id="discount"
                         onChange={handleChangeInput}

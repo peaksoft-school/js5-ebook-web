@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,10 +23,8 @@ const languageSelect = [
 ]
 
 const AudioBookForm = ({ images }) => {
-   const [navigation, setNavigation] = useState(false)
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
-   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
    const { status } = useSelector((store) => store.addbook)
    const dispatch = useDispatch()
@@ -35,7 +33,6 @@ const AudioBookForm = ({ images }) => {
       fragment: dataWithId ? dataWithId.audioBookFragment : '',
       audioBook: dataWithId ? dataWithId.audioBook : '',
    })
-   console.log(audioValues)
    const [duration, setDuration] = useState({
       duration: '',
       minute: '',
@@ -55,8 +52,8 @@ const AudioBookForm = ({ images }) => {
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
       discount: dataWithId ? dataWithId.discount : '',
       language: dataWithId ? dataWithId.language : '',
+      genreId: '',
    })
-   console.log(inputValues)
 
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
@@ -151,9 +148,8 @@ const AudioBookForm = ({ images }) => {
       }
    }
    const { bookId, language } = dataWithId !== null ? dataWithId : ''
-   const genreId = dataWithId !== null ? dataWithId : ''
+   const genreBook = dataWithId !== null ? dataWithId : ''
 
-   console.log(language, bookId)
    const updateForms = () => {
       dispatch(
          editeAudioBook({
@@ -163,20 +159,10 @@ const AudioBookForm = ({ images }) => {
             audioValues,
             navigate,
             language,
-            genreId,
+            genreBook,
          })
       )
-      setNavigation(true)
    }
-   useEffect(() => {
-      let navigateToMainPage
-      if (bookSuccsess && navigation) {
-         navigateToMainPage = setTimeout(() => {
-            // navigate('/')
-         }, 3000)
-      }
-      return () => clearTimeout(navigateToMainPage)
-   }, [bookSuccsess])
 
    return (
       <>
@@ -184,6 +170,7 @@ const AudioBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
          {status === 'pending' && <Spinner />}
          <InputWrapper>

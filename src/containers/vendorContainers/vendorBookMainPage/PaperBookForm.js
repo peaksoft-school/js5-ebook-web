@@ -22,13 +22,11 @@ const languageSelect = [
 ]
 
 const PaperBookForm = ({ images }) => {
-   const [navigation, setNavigation] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
-   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const { status } = useSelector((store) => store.addbook)
    const [isChecked, setIsChecked] = useState()
    const [inputValues, setInputValues] = useState({
@@ -47,8 +45,6 @@ const PaperBookForm = ({ images }) => {
       genre: dataWithId ? dataWithId.genre : '',
    })
 
-   console.log(inputValues)
-   console.log(dataWithId)
    const formatLanguage = () => {
       let formation
       if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
@@ -135,17 +131,7 @@ const PaperBookForm = ({ images }) => {
             navigate
          )
       )
-      setNavigation(true)
    }
-   useEffect(() => {
-      let navigateToMainPage
-      if (bookSuccsess && navigation) {
-         navigateToMainPage = setTimeout(() => {
-            // navigate('/')
-         }, 3000)
-      }
-      return () => clearTimeout(navigateToMainPage)
-   }, [bookSuccsess])
 
    useEffect(() => {
       dispatch(setGenres())
@@ -157,6 +143,7 @@ const PaperBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
          {status === 'pending' && <Spinner />}
          <InputWrapper onSubmit={clickSendFormValues}>
@@ -298,7 +285,7 @@ const PaperBookForm = ({ images }) => {
                         Кол-во <strong>*</strong>
                      </LabelStyle>
                      <InputText
-                        data="quantityOfBook"
+                        // data="quantityOfBook"
                         onChange={handleChangeInput}
                         value={inputValues.quantityOfBook}
                         textAlign="end"
