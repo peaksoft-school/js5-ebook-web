@@ -5,7 +5,8 @@ import { appFileFetchService } from '../../api/fileService'
 export const addPaperBook = (inputValues, images, bestseller) => {
    const valuesWithFile = {
       name: inputValues.name,
-      genreId: inputValues.genreId,
+      // genreId: inputValues.genreId,
+      genreId: 12,
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
@@ -19,6 +20,9 @@ export const addPaperBook = (inputValues, images, bestseller) => {
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
+   console.log(inputValues)
+   console.log(valuesWithFile)
+   console.log(images.mainImage)
 
    return async (dispatch) => {
       dispatch(bookAction.statusPending())

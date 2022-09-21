@@ -102,22 +102,22 @@ const PaperBookForm = ({ images }) => {
    }
 
    const clickSendFormValues = async () => {
-      if (isFormValid()) {
+      if (!isFormValid()) {
          dispatch(addPaperBook(inputValues, images, isChecked))
          dispatch(bookAction.deleteImage())
-         setInputValues({
-            name: '',
-            author: '',
-            genreId: '',
-            publishingHouse: '',
-            description: '',
-            fragment: '',
-            pageSize: '',
-            price: '',
-            yearOfIssue: '',
-            discount: '',
-            quantityOfBook: '',
-         })
+         // setInputValues({
+         //    name: '',
+         //    author: '',
+         //    genreId: '',
+         //    publishingHouse: '',
+         //    description: '',
+         //    fragment: '',
+         //    pageSize: '',
+         //    price: '',
+         //    yearOfIssue: '',
+         //    discount: '',
+         //    quantityOfBook: '',
+         // })
       } else {
          dispatch(snackbarActions({ bron: 'exit' }))
       }

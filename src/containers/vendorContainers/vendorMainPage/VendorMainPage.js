@@ -57,6 +57,7 @@ const VendorMainPage = () => {
    const handleMoreImage = () => {
       setNext(next + moreProducts)
    }
+   const [state, setState] = useState(false)
    const [selectId, setSelectId] = useState()
    const clickSelectBook = (data, _, typeData) => {
       setSelectId(typeData)
@@ -67,10 +68,11 @@ const VendorMainPage = () => {
 
    useEffect(() => {
       dispatch(getMainBooks(selectId, next, vendorId))
-   }, [selectId, next, snackbarMessage])
+   }, [selectId, next, state])
 
    const deleteSnackbar = () => {
       dispatch(snackbarAction.notSnackbar())
+      setState((prev) => !prev)
    }
 
    return (

@@ -34,10 +34,11 @@ const AudioBookForm = ({ images }) => {
       audioBook: dataWithId ? dataWithId.audioBook : '',
    })
    const [duration, setDuration] = useState({
-      duration: '',
-      minute: '',
-      second: '',
+      duration: dataWithId ? dataWithId.duration[0] : '',
+      minute: dataWithId ? dataWithId.duration[1] : '',
+      second: dataWithId ? dataWithId.duration[2] : '',
    })
+   console.log(dataWithId.duration[1])
    const durationTimer = `${
       duration.duration < 10 ? `${0}${duration.duration}` : duration.duration
    }:${duration.minute < 10 ? `${0}${duration.minute}` : duration.minute}:${
@@ -270,7 +271,7 @@ const AudioBookForm = ({ images }) => {
                            onChange={handleChangeInput}
                            textAlign="end"
                            placeholder="ч"
-                           value={dataWithId ? '12' : duration.duration}
+                           value={duration.duration}
                            type="number"
                         />
                      </InnerSelectDIv>
@@ -285,7 +286,7 @@ const AudioBookForm = ({ images }) => {
                            textAlign="end"
                            placeholder="мин"
                            name="minute"
-                           value={dataWithId ? '47' : duration.minute}
+                           value={duration.minute}
                            type="number"
                         />
                      </TimeInputs>
@@ -300,7 +301,7 @@ const AudioBookForm = ({ images }) => {
                            textAlign="end"
                            name="second"
                            placeholder="сек"
-                           value={dataWithId ? '06' : duration.second}
+                           value={duration.second}
                            type="number"
                         />
                      </TimeInputs>

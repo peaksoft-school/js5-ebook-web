@@ -8,7 +8,7 @@ import {
    getMainBooksDelete,
    getMainBooksWithId,
 } from '../../../store/createActions/vendorMainPagesActions'
-import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
 import Modal from '../../../Components/UI/Modal'
 import Button from '../../../Components/UI/Button/Button'
 
