@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import appFetch from '../../../hooks/appFetch'
 import { applicationSlicesActions } from '../adminSlices/applicationsSlices'
 import { sortRequestApplic } from '../../../utils/helpers/helpers'
@@ -5,6 +6,7 @@ import { sortRequestApplic } from '../../../utils/helpers/helpers'
 export const applicationsActions = (request) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
@@ -24,9 +26,9 @@ export const applicationsActions = (request) => {
                result.getApplications.totalPages
             )
          )
-         return result
+         dispatch(applicationSlicesActions.success())
       } catch (error) {
-         return error
+         dispatch(applicationSlicesActions.rejected())
       }
    }
 }
@@ -34,12 +36,13 @@ export const applicationsActions = (request) => {
 export const seeMoreGetApplicationsActions = (request) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             url: `/api/admin/applications${sortRequestApplic(request)}`,
          })
 
          dispatch(
-            applicationSlicesActions.getApplications(
+            applicationSlicesActions.seeMoreGetApplications(
                result.getApplications.content
             )
          )
@@ -64,6 +67,7 @@ export const seeMoreGetApplicationsActions = (request) => {
 export const acceptApplication = (id) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             method: 'POST',
             url: `/api/admin/applications/books/${id}/accepted`,
@@ -72,10 +76,8 @@ export const acceptApplication = (id) => {
          dispatch(applicationSlicesActions.postAcceptApplication(result))
          dispatch(applicationsActions())
          toast.success(result.message)
-         return result
       } catch (error) {
          toast.error('Не удалось принять!')
-         return error
       }
    }
 }
@@ -88,6 +90,7 @@ export const rejectAplication = ({
 }) => {
    return async (dispatch) => {
       try {
+         dispatch(applicationSlicesActions.pending())
          const result = await appFetch({
             method: 'POST',
             url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,

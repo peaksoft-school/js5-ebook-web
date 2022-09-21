@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -15,7 +16,7 @@ import {
    getMainBooksWithId,
 } from '../../../store/createActions/vendorMainPagesActions'
 
-const BookInfo = ({ book }) => {
+const BookInfo = ({ book, onDelete, bookId }) => {
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
    const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
    const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
@@ -35,8 +36,8 @@ const BookInfo = ({ book }) => {
    const onDelete = (id) => {
       setIsOpenDeleteModal(false)
       dispatch(getMainBooksDelete(id, navigate))
-   }
 
+   }
    return (
       <>
          <StyledMain>
@@ -122,7 +123,7 @@ const BookInfo = ({ book }) => {
                         </Button>
                      </StyledModalBtnCont>
                   </Modal>
-                  <Button onClick={editBook} width="224px">
+                  <Button width="224px" onClick={onClickEdit}>
                      Редактировать
                   </Button>
                </StyledBtnCont>

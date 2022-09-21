@@ -40,8 +40,6 @@ const VendorMainPage = () => {
    )
    const vendorId = useSelector((store) => store.auth.user.id)
 
-   const [getById, setGetById] = useState()
-
    const bookType = [
       { name: 'Все', id: 1, text: 'ALL' },
       { name: 'В избранном', id: 2, text: 'FAVORITES' },
@@ -64,6 +62,8 @@ const VendorMainPage = () => {
    const backHome = () => {
       setNext(next - moreProducts)
    }
+
+   // console.log(getById)
 
    useEffect(() => {
       dispatch(getMainBooks(selectId, next, vendorId))
@@ -121,7 +121,7 @@ const VendorMainPage = () => {
                                 </ImgFavorite>
                                 <span>В корзине ({book.basket})</span>
                              </BookSHeader>
-                             <CopyLink to={`/${book.id}`}>
+                             <CopyLink to={`/main/${book.id}`}>
                                 <ImageBlock>
                                    <Img src={book.mainImage} />
                                 </ImageBlock>
@@ -136,8 +136,8 @@ const VendorMainPage = () => {
                                 </div>
                              </CopyLink>
                           </BooksWrapper>
-                          <MeatBallsDiv onClick={() => setGetById(book.id)}>
-                             <UpdateBooks id={getById} />
+                          <MeatBallsDiv>
+                             <UpdateBooks id={book.id} />
                           </MeatBallsDiv>
                        </BooksContainer>
                     </Books>

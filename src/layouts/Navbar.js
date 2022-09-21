@@ -1,24 +1,41 @@
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 import styled from 'styled-components'
+import { сatalogActions } from '../store/slices/catalogSlice'
+import { BookType } from '../utils/constants/constants'
 
 const itemBook = [
    {
       name: 'Электронные книги',
-      id: 1,
+      type: BookType.ELECTRONIC_BOOK,
    },
    {
       name: 'Аудиокниги',
-      id: 2,
+      type: BookType.AUDIO_BOOK,
    },
    {
-      name: 'Начать продавать на eBooK',
-      id: 3,
+      name: 'Бумажные книги',
+      type: BookType.PAPER_BOOK,
    },
 ]
 
-function Navbar({ onClick }) {
+function Navbar() {
+   const dispatch = useDispatch()
+   const { externalSetting } = useSelector((store) => store.books)
+   const navigate = useNavigate()
+   const onClickItem = (type) => {
+      dispatch(
+         сatalogActions.setExternalSetting({ key: 'bookType', value: type })
+      )
+      navigate('main/catalog')
+   }
    const items = itemBook.map((elem) => {
       return (
-         <NavbarItem key={elem.id} onClick={onClick}>
+         <NavbarItem
+            active={externalSetting.bookType === elem.type}
+            key={elem.type}
+            onClick={() => onClickItem(elem.type)}
+         >
             {elem.name}
          </NavbarItem>
       )
@@ -46,19 +63,16 @@ const NavbarItem = styled.li`
    font-weight: 400;
    font-size: 14px;
    line-height: 18.2px;
-   color: #222222;
+   color: ${(props) => (props.active ? '#f34901' : '#222222')};
    cursor: pointer;
    position: relative;
    transition: ease-in 0.2s;
-   &:active {
-      transform: scale(1.1);
-   }
    &:after {
       content: '';
       position: absolute;
       top: 85%;
       left: 0;
-      width: 0%;
+      width: ${(props) => (props.active ? '100%' : '0%')};
       height: 2px;
       background-color: #f34901;
       transition: ease-in 0.2s;

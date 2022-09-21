@@ -12,6 +12,7 @@ import ElectronicBookForm from './ElectronicBookForm'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import bookAction from '../../../store/slices/addBookSlice'
 import Spinner from '../../../Components/UI/Spinner'
+import BreadCrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
@@ -71,6 +72,10 @@ const AddBookPage = () => {
       }
       return bookComponents
    }
+   const pathTranslate = {
+      main: 'Главная',
+      addBook: 'Добавить книгу',
+   }
 
    const closeSnackbarFunc = () => {
       dispatch(bookAction.cleanStatusMessage())
@@ -80,6 +85,9 @@ const AddBookPage = () => {
       <ContainerDiv>
          {addBookStatus === 'pending' && <Spinner />}
          <HeaderMainPage />
+         <BreadBlock>
+            <BreadCrumbs translate={pathTranslate} />
+         </BreadBlock>
          <GetSnackbar
             open={addBookMessage}
             message={addBookMessage}
@@ -194,6 +202,11 @@ const AddBookPage = () => {
    )
 }
 export default AddBookPage
+
+const BreadBlock = styled('div')`
+   /* border: 1px solid red; */
+   padding-bottom: 30px;
+`
 
 const ContainerDiv = styled('div')`
    width: 100%;

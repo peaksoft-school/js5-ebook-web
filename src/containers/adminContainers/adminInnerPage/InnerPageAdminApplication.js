@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '../../../Components/UI/Button/Button'
 import New from '../../../assets/icons/new.svg'
 import { TabInnerPage } from './TabInnerPage'
@@ -14,18 +14,29 @@ import {
 } from '../../../store/slices/adminActions/applicationInnerPageActions'
 import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import { RejectApplicationModal } from './RejectApplicationModal'
+import Spinner from '../../../Components/UI/Spinner'
 
 export const InnerPageAdminApplication = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
-   const { application } = useSelector((state) => state.applicationsInnerPage)
+   const navigate = useNavigate()
+   const { application, status } = useSelector(
+      (state) => state.applicationsInnerPage
+   )
    const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
-
+   const [isShowSpinner, setIsShowSpinner] = useState(false)
    useEffect(() => {
       dispatch(applicationInnerPageAction(id))
    }, [])
+   useEffect(() => {
+      if (status === 'pending') {
+         setIsShowSpinner(true)
+      } else {
+         setIsShowSpinner(false)
+      }
+   })
    function acceptModal() {
-      dispatch(acceptApplicationInnerPage(id))
+      dispatch(acceptApplicationInnerPage(id, navigate))
    }
    function rejectModal() {
       dispatch(uiSlicesSlicesActions.showRejectModal())
@@ -43,13 +54,18 @@ export const InnerPageAdminApplication = () => {
       <>
          <Breadcrumbs translate={pathTranslate} />
          <StyledMain>
+            {isShowSpinner && <Spinner />}
             <ImageDiv>
                <StyledBookImageCont>
-                  <StyledBookImage src={application.mainImage} />
-                  {application.new === true ? <Img src={New} /> : ''}
+                  <Img1>
+                     <StyledBookImage src={application.mainImage} />
+                  </Img1>
+                  {application.new === true ? <NewIcon src={New} /> : ''}
                   <StyledBookImage2>
                      {application.secondImage && (
-                        <img src={application.secondImage} alt="book" />
+                        <Img2>
+                           <Image2 src={application.secondImage} alt="book" />
+                        </Img2>
                      )}
                   </StyledBookImage2>
                </StyledBookImageCont>
@@ -124,7 +140,9 @@ export const InnerPageAdminApplication = () => {
                />
                <ThirdImage>
                   {application.thirdImage && (
-                     <img src={application.thirdImage} alt="book" />
+                     <Img3>
+                        <Image3 src={application.thirdImage} alt="book" />
+                     </Img3>
                   )}
                </ThirdImage>
             </FragmentRequest>
@@ -139,7 +157,8 @@ const InfoContainer = styled('div')`
 const FragmentRequest = styled('div')`
    display: flex;
    justify-content: space-between;
-   margin-top: 185px;
+   margin-top: -100px;
+   width: 100%;
 `
 const ImageDiv = styled('div')`
    display: flex;
@@ -149,17 +168,9 @@ const StyledBookImage2 = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
-   & img {
-      width: 170px;
-      margin: 0px 0px 20px 20px;
-   }
 `
 const ThirdImage = styled('div')`
-   & img {
-      width: 320px;
-      height: 480px;
-   }
-   margin-top: -49px;
+   margin-left: 30px;
 `
 const StyledBookName = styled.h3`
    height: 36px;
@@ -186,12 +197,13 @@ const StyledInfoTitle = styled.p`
    color: #222222;
 `
 const StyledBookImage = styled.img`
-   width: 357px;
-   margin-bottom: 185px;
-   margin-right: -8px;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 `
 const StyledMain = styled.div`
    padding-top: 72px;
+   padding-bottom: 123px;
 `
 const StyledInfo = styled.div`
    display: flex;
@@ -224,10 +236,36 @@ const StyledBookImageCont = styled.div`
    margin-right: 20px;
    position: relative;
 `
-const Img = styled('img')`
+const Img1 = styled.div`
+   width: 357px;
+   height: 500px;
+   margin-bottom: 185px;
+   margin-right: -8px;
+`
+const Img2 = styled.div`
+   width: 201px;
+   height: 321px;
+   margin: 0px 0px 20px 20px;
+`
+const Img3 = styled.div`
+   width: 357px;
+   height: 580px;
+`
+
+const NewIcon = styled('img')`
    width: 206px;
    height: 206px;
    position: absolute;
    left: 230px;
-   top: 250px;
+   top: 280px;
+`
+const Image2 = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+`
+const Image3 = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 `

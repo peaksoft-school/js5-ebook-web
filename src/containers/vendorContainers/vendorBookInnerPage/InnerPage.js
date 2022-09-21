@@ -27,8 +27,14 @@ export const InnerPage = () => {
       }
    }, [deleteBook])
 
+   const deleteBookHandler = (handleCloseDeleteModal) => {
+      dispatch(deleteVendorBook(bookId))
+      handleCloseDeleteModal()
+   }
+
    const pathTranslate = {
-      books: 'Главная',
+      main: 'Главная',
+      [bookId]: book.bookName,
    }
 
    const booksCardNavHandler = () => {

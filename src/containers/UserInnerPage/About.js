@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 const About = ({ book }) => {
-   return <StyledText>{book.description}</StyledText>
+   return <StyledText>{book?.description}</StyledText>
 }
 
 export default About

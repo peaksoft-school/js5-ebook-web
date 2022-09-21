@@ -5,8 +5,9 @@ import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconS
 import PopUp from '../../Components/UI/popup'
 import { SortBy } from '../../utils/constants/constants'
 
-const Sorting = ({ onChange }) => {
+const Sorting = ({ onChange, sortMethods }) => {
    const [anchorEl, setAnchorEl] = React.useState(null)
+   const [state, setState] = React.useState('Сортировка')
    const open = Boolean(anchorEl)
    const onClickSortHandler = (e) => {
       setAnchorEl(e.currentTarget)
@@ -14,20 +15,30 @@ const Sorting = ({ onChange }) => {
    const onClosePopUp = () => {
       setAnchorEl(null)
    }
-   const onClickItemHandler = (value) => {
+   const onClickItemHandler = (value, label) => {
       onChange('sortBy', value)
+      setState(label)
       onClosePopUp()
    }
+   React.useEffect(() => {
+      sortMethods((prev) => {
+         return { ...prev, sortByMethod: onClickItemHandler }
+      })
+   }, [])
    return (
       <div>
          <SortingButton onClick={onClickSortHandler}>
-            Сортировка <Icontriangle />
+            {state} <Icontriangle />
          </SortingButton>
          <PopUp open={open} onClose={onClosePopUp} anchorEl={anchorEl}>
-            <MenuItem onClick={() => onClickItemHandler(SortBy.NEW)}>
+            <MenuItem onClick={() => onClickItemHandler(SortBy.NEW, 'Новинки')}>
                Новинки
             </MenuItem>
-            <MenuItem onClick={() => onClickItemHandler(SortBy.BESTSELLER)}>
+            <MenuItem
+               onClick={() =>
+                  onClickItemHandler(SortBy.BESTSELLER, 'Бестселлеры')
+               }
+            >
                Бестселлеры
             </MenuItem>
          </PopUp>
