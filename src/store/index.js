@@ -14,10 +14,13 @@ import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
 import { snackbarSlice } from './slices/snackbarSlice'
 import сatalogSlices from './slices/catalogSlice'
 import { getAdminUsersSlice } from './slices/getAdminUsersSlices'
+import userInnerPageSlices from './slices/userInnerPageSlices'
+import mainPageSlices from './slices/mainPageSlices'
 
 const store = configureStore({
    reducer: {
       auth: authSlices.reducer,
+      mainPage: mainPageSlices.reducer,
       globalValues: globalValues.reducer,
       addbook: addBookSlice.reducer,
       applicationsInnerPage: applicationsInnerPageSlices.reducer,
@@ -32,6 +35,7 @@ const store = configureStore({
       adminVendors: getAdminVendorsSlice.reducer,
       snackbar: snackbarSlice.reducer,
       adminUsers: getAdminUsersSlice.reducer,
+      userBook: userInnerPageSlices.reducer,
    },
 })
 

@@ -5,7 +5,12 @@ import appFetch from '../../hooks/appFetch'
 const initialState = {
    users: [],
    user: {},
-   userHistory: [],
+   favoriteBooks: [],
+   basketBooks: [],
+   purchasedBooks: [],
+   totalElementFavoriteBooks: null,
+   totalElementBasketBooks: null,
+   numberOfElements: null,
    totalElements: null,
    deleteUser: null,
    status: null,
@@ -24,8 +29,14 @@ export const getAdminUsersSlice = createSlice({
          state.user = action.payload
       },
       setOperationHistory(state, action) {
-         state.userHistory = action.payload.content
-         state.totalElements = action.payload.totalElements
+         state.purchasedBooks = action.payload.purchasedBooks.content
+         state.numberOfElements = action.payload.purchasedBooks.numberOfElements
+         state.totalElements = action.payload.purchasedBooks.totalElements
+         state.totalElementFavoriteBooks =
+            action.payload.totalElementFavoriteBooks
+         state.favoriteBooks = action.payload.favoriteBooks
+         state.basketBooks = action.payload.basketBooks
+         state.totalElementBasketBooks = action.payload.totalElementBasketBooks
       },
       deleteUser(state, action) {
          state.deleteUser = action.payload
@@ -89,7 +100,6 @@ export function getUserOperationHistory(id, nextCart) {
       const response = await appFetch({
          url: `/api/admin/users/${id}/operationsHistory?page=1&size=${nextCart}`,
       })
-      console.log(response)
       dispatch(adminUsersAction.setOperationHistory(response))
    }
 }

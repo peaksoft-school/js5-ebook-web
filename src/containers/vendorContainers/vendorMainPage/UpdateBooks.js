@@ -36,7 +36,7 @@ export default function UpdateBooks({ id }) {
       if (id) {
          dispatch(getMainBooksWithId(id))
          setTimeout(() => {
-            navigate('/addbook')
+            navigate('/main/addbook')
          }, 1000)
       }
    }

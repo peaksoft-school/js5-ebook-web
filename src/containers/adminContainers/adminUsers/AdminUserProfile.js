@@ -113,6 +113,7 @@ const StyledCont = styled.div`
    justify-content: space-between;
    /* width: 1147px; */
    height: 367px;
+   margin-top: -120px;
 `
 const StyledBlock = styled.div`
    margin-bottom: 32px;

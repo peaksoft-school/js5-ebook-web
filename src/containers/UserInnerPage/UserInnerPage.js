@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
@@ -11,7 +11,8 @@ import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
 // import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
-import { getMainBooksWithId } from '../../store/createActions/vendorMainPagesActions'
+import { getBook } from '../../store/slices/userInnerPageSlices'
+import Spinner from '../../Components/UI/Spinner'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -21,100 +22,130 @@ const DataValues = [
 ]
 
 export const UserInnerPage = () => {
-   const [text, setText] = useState('')
+   // const [text, setText] = useState('')
    const { bookId } = useParams()
-   const book = useSelector((state) => state.addbook.getUserInnerBook)
+   const { book, status } = useSelector((store) => store.userBook)
    const dispatch = useDispatch()
    useEffect(() => {
-      dispatch(getMainBooksWithId(bookId))
+      dispatch(getBook(bookId))
+      window.scrollTo(0, 0)
    }, [])
    const sendText = () => {
-      console.log(text)
+      // console.log(text)
    }
-   const saveValue = (e) => {
-      setText(e)
+   const saveValue = () => {
+      // setText(e
    }
 
    const pathTranslate = {
-      allbooks: 'Главная',
-      [bookId]: book.bookName,
+      main: 'Главная',
+      catalog: 'Каталог',
+      [bookId]: book?.bookName,
    }
 
    return (
       <>
-         <Breadcrumbs translate={pathTranslate} />
-         <StyledMain>
-            <StyledContainer>
-               <StyledBookImageCont>
-                  <StyledBookImage src={book.mainImage} />
-                  <StyledBookImage2>
-                     {book.secondImage && (
-                        <img src={book.secondImage} alt="book" />
-                     )}
-                  </StyledBookImage2>
-               </StyledBookImageCont>
-               {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
-               <div>
-                  <StyledBookName>{book.bookName}</StyledBookName>
+         <BreadcrumbsBlock>
+            {book && <Breadcrumbs translate={pathTranslate} />}
+         </BreadcrumbsBlock>
+         {status === 'pending' ? (
+            <Spinner variant="two" />
+         ) : (
+            <StyledMain>
+               <StyledContainer>
+                  <StyledBookImageCont>
+                     <ImageBlock>
+                        <Image src={book?.mainImage} />
+                     </ImageBlock>
+                     <StyledBookImage2>
+                        {book?.secondImage && (
+                           <Image src={book?.secondImage} alt="book" />
+                        )}
+                     </StyledBookImage2>
+                  </StyledBookImageCont>
+                  {book?.new ? <ImageStyled src={New} alt="icons" /> : ''}
                   <div>
-                     <StyledPrice>{book.price}</StyledPrice>
+                     <StyledBookName>{book?.bookName}</StyledBookName>
+                     <div>
+                        <StyledPrice>{book?.price}</StyledPrice>
+                     </div>
+                     <StyledInfo>
+                        <div>
+                           <StyledInfoTitle>Автор</StyledInfoTitle>
+                           <StyledInfoTitle>Жанр</StyledInfoTitle>
+                           <StyledInfoTitle>Язык</StyledInfoTitle>
+                           <StyledInfoTitle>Издательство</StyledInfoTitle>
+                           <StyledInfoTitle>Год выпуска</StyledInfoTitle>
+                           <StyledInfoTitle>Обьем</StyledInfoTitle>
+                        </div>
+                        <div>
+                           <StyledInfoText>{book?.author}</StyledInfoText>
+                           <StyledInfoText>{book?.genre}</StyledInfoText>
+                           <StyledInfoText>{book?.language}</StyledInfoText>
+                           <StyledInfoText>
+                              {book?.publishingHouse}
+                           </StyledInfoText>
+                           <StyledInfoText>{book?.yearOfIssue}</StyledInfoText>
+                           <StyledInfoText>{book?.duration}</StyledInfoText>
+                        </div>
+                     </StyledInfo>
+
+                     <StyledBtnCont>
+                        <Button
+                           variant="universal"
+                           color="#f34901"
+                           border="1px solid"
+                           background="none"
+                           width="224px"
+                        >
+                           В избранное
+                        </Button>
+                        <Button width="224px">Добавить в корзину</Button>
+                     </StyledBtnCont>
+                     <DivStyledMessage>
+                        <Message
+                           saveText={saveValue}
+                           onClick={sendText}
+                           spanValues={DataValues}
+                        />
+                     </DivStyledMessage>
                   </div>
-                  <StyledInfo>
-                     <div>
-                        <StyledInfoTitle>Автор</StyledInfoTitle>
-                        <StyledInfoTitle>Жанр</StyledInfoTitle>
-                        <StyledInfoTitle>Язык</StyledInfoTitle>
-                        <StyledInfoTitle>Издательство</StyledInfoTitle>
-                        <StyledInfoTitle>Год выпуска</StyledInfoTitle>
-                        <StyledInfoTitle>Обьем</StyledInfoTitle>
-                     </div>
-                     <div>
-                        <StyledInfoText>{book.author}</StyledInfoText>
-                        <StyledInfoText>{book.genre}</StyledInfoText>
-                        <StyledInfoText>{book.language}</StyledInfoText>
-                        <StyledInfoText>{book.publishingHouse}</StyledInfoText>
-                        <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
-                        <StyledInfoText>{book.duration}</StyledInfoText>
-                     </div>
-                  </StyledInfo>
+               </StyledContainer>
 
-                  <StyledBtnCont>
-                     <Button
-                        variant="universal"
-                        color="#f34901"
-                        border="1px solid"
-                        background="none"
-                        width="224px"
-                     >
-                        В избранное
-                     </Button>
-                     <Button width="224px">Добавить в корзину</Button>
-                  </StyledBtnCont>
-                  <DivStyledMessage>
-                     <Message
-                        saveText={saveValue}
-                        onClick={sendText}
-                        spanValues={DataValues}
-                     />
-                  </DivStyledMessage>
-               </div>
-            </StyledContainer>
-
-            <StyledimageThirdImage>
-               <TabInnerPage
-                  about={<About book={book} />}
-                  bookFragment={<BookFragment book={book} />}
-               />
-               <div>
-                  {book.thirdImage && (
-                     <StyleThirdImage src={book.thirdImage} alt="book" />
-                  )}
-               </div>
-            </StyledimageThirdImage>
-         </StyledMain>
+               <StyledimageThirdImage>
+                  <TabInnerPage
+                     about={<About book={book} />}
+                     bookFragment={<BookFragment book={book} />}
+                  />
+                  <StyleThirdImage>
+                     {book?.thirdImage && (
+                        <Image src={book?.thirdImage} alt="book" />
+                     )}
+                  </StyleThirdImage>
+               </StyledimageThirdImage>
+            </StyledMain>
+         )}
       </>
    )
 }
+
+const BreadcrumbsBlock = styled('div')`
+   /* border: 1px solid red; */
+   padding-top: 20px;
+`
+
+const ImageBlock = styled('div')`
+   /* border: 1px solid red; */
+   width: 357px;
+   height: 571px;
+   margin-right: 20px;
+   overflow: hidden;
+`
+const Image = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+`
 
 const StyledContainer = styled.div`
    display: flex;
@@ -129,12 +160,13 @@ const StyledimageThirdImage = styled.div`
 `
 
 const StyledBookImage2 = styled.div`
+   /* border: 1px solid red; */
+   overflow: hidden;
    display: flex;
    flex-direction: column;
    align-items: center;
-   & img {
-      width: 100%;
-   }
+   width: 201px;
+   height: 321px;
 `
 const StyledBookName = styled.h3`
    width: 504px;
@@ -162,10 +194,6 @@ const StyledInfoTitle = styled.p`
    line-height: 130%;
    color: #222222;
 `
-const StyledBookImage = styled.img`
-   width: 357px;
-   /* margin-bottom: 185px; */
-`
 const StyledMain = styled.div`
    padding-top: 72px;
 `
@@ -191,21 +219,23 @@ const StyledPrice = styled.p`
    color: #f34901;
 `
 const StyledBookImageCont = styled.div`
+   /* border: 1px solid red; */
    display: flex;
-   width: 531px;
+   /* width: 531px; */
 `
 const DivStyledMessage = styled.div`
    margin-top: 30px;
 `
-const StyleThirdImage = styled.img`
+const StyleThirdImage = styled.div`
    width: 443px;
    height: 574px;
    margin-bottom: 109px;
 `
 const ImageStyled = styled.img`
+   /* border: 1px solid red; */
    width: 206px;
    height: 206px;
    border-radius: 20px;
-   margin-top: 250px;
-   margin-left: -42%;
+   margin-top: 290px;
+   margin-left: -48%;
 `

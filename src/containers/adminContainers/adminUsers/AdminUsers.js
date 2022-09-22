@@ -27,7 +27,7 @@ const AdminUsers = () => {
    }
 
    const handleNavToUserProfile = (id) => {
-      navigate(`/user/${id}`)
+      navigate(`/users/${id}`)
    }
    return (
       <UserTable

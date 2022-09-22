@@ -16,10 +16,18 @@ const applicationsSlices = createSlice({
    name: 'applications',
    initialState,
    reducers: {
+      pending: (state) => {
+         state.status = 'pending'
+      },
+      success: (state) => {
+         state.status = 'success'
+      },
+      rejected: (state) => {
+         state.status = 'error'
+      },
       getApplications(state, action) {
          state.applications = action.payload
       },
-
       seeMoreGetApplications(state, action) {
          action.payload.forEach((element) => {
             const prev = state.applications.find((el) => el.id === element.id)
@@ -40,7 +48,6 @@ const applicationsSlices = createSlice({
       getTotalPages(state, action) {
          state.totalPages = action.payload
          state.status = 'fulfilled'
-         state.status = 'fulfilled'
       },
       postAcceptApplication(state, action) {
          state.acceptMessage = action.payload
@@ -53,9 +60,6 @@ const applicationsSlices = createSlice({
       getApplicationId(state, action) {
          state.getId = action.payload
          state.status = 'fulfilled'
-      },
-      pending(state) {
-         state.status = 'pending'
       },
    },
 })

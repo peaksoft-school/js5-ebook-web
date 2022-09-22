@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import bookLikeIcon from '../../../assets/icons/bookLike.svg'
 import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
+import Button from '../../../Components/UI/Button/Button'
 
 const menuMeatBall = [
    {
@@ -8,7 +9,8 @@ const menuMeatBall = [
       text: 'Удалить',
    },
 ]
-const VendorBookCard = ({ books }) => {
+
+const VendorBookCard = ({ books, showSeeMore, onClickSeeMore }) => {
    return (
       <StyledBookSBlock>
          {books &&
@@ -32,11 +34,30 @@ const VendorBookCard = ({ books }) => {
                   </StyledWrap>
                )
             })}
+         {showSeeMore && (
+            <StyledBtnBlock>
+               <Button
+                  variant="universal"
+                  background="#F8F8F8"
+                  color="#969696"
+                  border="1px solid #C4C4C4"
+                  onClick={onClickSeeMore}
+               >
+                  Смотреть больше
+               </Button>
+            </StyledBtnBlock>
+         )}
       </StyledBookSBlock>
    )
 }
 
 export default VendorBookCard
+
+const StyledBtnBlock = styled.div`
+   width: 100%;
+   /* border: 1px solid red; */
+   padding-bottom: 50px;
+`
 
 const StyledBookSBlock = styled.div`
    width: 100%;
@@ -45,13 +66,18 @@ const StyledBookSBlock = styled.div`
    padding: 30px 0;
 `
 const StyledWrap = styled.div`
-   width: 208px;
+   /* border: 1px solid red; */
+   width: 212px;
    background: #efefef;
    padding: 14px 34px;
    margin-bottom: 30px;
    margin-right: 17px;
+   &:nth-child(4n) {
+      margin-right: 0;
+   }
 `
 const StyledHeader = styled.div`
+   /* border: 1px solid red; */
    width: 100%;
    display: flex;
    justify-content: space-between;

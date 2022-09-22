@@ -12,18 +12,25 @@ import AdminUserInnerPage from '../containers/adminContainers/adminUsers/AdminUs
 export default function adminLayout() {
    return (
       <Route path="/" element={<AdminLayout />}>
-         <Route path="/" element={<Navigate to="/applications" replace />} />
+         <Route
+            path="/main"
+            element={<Navigate to="/applications" replace />}
+         />
+         <Route
+            path="/main/catalog"
+            element={<Navigate to="/applications" replace />}
+         />
          <Route path="applications" element={<AdminApplications />} />
          <Route
             path="applications/:id"
             element={<InnerPageAdminApplication />}
          />
          <Route path="/users" element={<AdminUsers />} />
-         <Route path="/user/:userId" element={<AdminUserInnerPage />} />
+         <Route path="/users/:userId/*" element={<AdminUserInnerPage />} />
          <Route path="/books" element={<AdminBooks />} />
          <Route path="/books/:id" element={<InnerPageAdminInnerBook />} />
          <Route path="/vendors" element={<AdminVendors />} />
-         <Route path="/vendor/:vendorId" element={<AdminVendorInnerPage />} />
+         <Route path="/vendors/:vendorId" element={<AdminVendorInnerPage />} />
          <Route path="/*" element={<div>not found</div>} />
       </Route>
    )

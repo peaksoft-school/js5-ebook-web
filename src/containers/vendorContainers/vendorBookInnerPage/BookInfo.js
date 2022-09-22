@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -12,7 +13,7 @@ import BookFragment from './BookFragment'
 import { TabInnerPage } from './TabInnerPage'
 import { getMainBooksWithId } from '../../../store/createActions/vendorMainPagesActions'
 
-const BookInfo = ({ book, onDelete }) => {
+const BookInfo = ({ book, onDelete, bookId }) => {
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
    const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
    const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
@@ -24,14 +25,12 @@ const BookInfo = ({ book, onDelete }) => {
 
    const newBookIcon =
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
-
-   const editBook = () => {
-      dispatch(getMainBooksWithId(book.bookId))
+   const onClickEdit = () => {
+      dispatch(getMainBooksWithId(bookId))
       setTimeout(() => {
-         navigate('/addbook')
+         navigate('/main/addbook')
       }, 1000)
    }
-
    return (
       <>
          <StyledMain>
@@ -108,12 +107,15 @@ const BookInfo = ({ book, onDelete }) => {
                         >
                            Отменить
                         </Button>
-                        <Button variant="default" onClick={onDelete}>
+                        <Button
+                           variant="default"
+                           onClick={() => onDelete(handleCloseDeleteModal)}
+                        >
                            Удалить
                         </Button>
                      </StyledModalBtnCont>
                   </Modal>
-                  <Button onClick={editBook} width="224px">
+                  <Button width="224px" onClick={onClickEdit}>
                      Редактировать
                   </Button>
                </StyledBtnCont>

@@ -9,6 +9,7 @@ export const applicationInnerPageAction = (id) => {
          url: `/api/books/${id}`,
       })
       dispatch(applicationsInnerPageSlicesAction.getInnerPage(result))
+      dispatch(applicationsInnerPageSlicesAction.success())
    }
 }
 

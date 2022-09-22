@@ -12,7 +12,12 @@ export default function SelectBooks({ genres, name, onClick, type, ...props }) {
       key: type,
    })
    const open = Boolean(anChorEl)
+   const [one, setOne] = useState(true)
    useEffect(() => {
+      if (one) {
+         setOne(false)
+         return
+      }
       if (onClick) {
          onClick(label.id, label.key, label.name)
       }

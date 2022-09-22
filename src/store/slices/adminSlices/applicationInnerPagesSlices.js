@@ -12,6 +12,15 @@ const applicationsInnerPageSlices = createSlice({
    name: 'getApplications',
    initialState,
    reducers: {
+      pending: (state) => {
+         state.status = 'pending'
+      },
+      rejected: (state) => {
+         state.status = 'error'
+      },
+      success: (state) => {
+         state.status = 'success'
+      },
       getInnerPage(state, action) {
          state.application = action.payload
          state.status = 'fulfilled'
@@ -26,12 +35,6 @@ const applicationsInnerPageSlices = createSlice({
       },
       error(state) {
          state.status = 'error'
-      },
-      success(state) {
-         state.status = 'fulfilled'
-      },
-      pending(state) {
-         state.status = 'pending'
       },
       getBlockMessage: (state, action) => {
          state.blockMessage = action.payload

@@ -41,13 +41,14 @@ export default function AdminBooks() {
    const dispatch = useDispatch()
    const [requestObj, setRequestObj] = useState({
       genreId: null,
-      bookType: 'PAPER_BOOK',
+      bookType: null,
       page: 1,
       size: 8,
    })
 
    const [showSeeMore, setShowSeeMore] = useState(false)
    const [isShowSpinner, setIsShowSpinner] = useState(false)
+
    useEffect(() => {
       dispatch(setBooks(requestObj))
    }, [requestObj])
