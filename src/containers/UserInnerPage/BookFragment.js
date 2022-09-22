@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 const BookFragment = ({ book }) => {
-   return <StyledText>{book.fragment}</StyledText>
+   return <StyledText>{book?.fragment}</StyledText>
 }
 
 export default BookFragment
