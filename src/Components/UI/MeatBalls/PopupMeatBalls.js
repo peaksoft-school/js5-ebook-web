@@ -59,8 +59,5 @@ const WrapperMeatballs = styled.div`
    padding: 3px;
 `
 const Img = styled.img`
-   width: 100%;
-   cursor: pointer;
-   height: 100%;
    cursor: pointer;
 `

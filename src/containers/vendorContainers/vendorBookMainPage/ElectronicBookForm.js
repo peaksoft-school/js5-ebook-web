@@ -52,6 +52,7 @@ const ElectronicBookForm = ({ images }) => {
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
       quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
       discount: dataWithId ? dataWithId.discount : '',
+      genreId: dataWithId ? dataWithId.genre : '',
    })
    const changePdfFileValue = (pdf) => {
       if (!pdf) {

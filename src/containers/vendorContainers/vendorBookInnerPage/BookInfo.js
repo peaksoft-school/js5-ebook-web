@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -36,7 +37,6 @@ const BookInfo = ({ book }) => {
       setIsOpenDeleteModal(false)
       dispatch(getMainBooksDelete(id, navigate))
    }
-
    return (
       <>
          <StyledMain>
@@ -122,7 +122,7 @@ const BookInfo = ({ book }) => {
                         </Button>
                      </StyledModalBtnCont>
                   </Modal>
-                  <Button onClick={editBook} width="224px">
+                  <Button width="224px" onClick={editBook}>
                      Редактировать
                   </Button>
                </StyledBtnCont>

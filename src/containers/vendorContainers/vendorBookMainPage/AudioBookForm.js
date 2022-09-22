@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,7 +26,7 @@ const AudioBookForm = ({ images }) => {
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
-   const { status } = useSelector((store) => store.addbook)
+   const { status, addBookStatus } = useSelector((store) => store.addbook)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [audioValues, setAudioValues] = useState({
@@ -38,7 +38,6 @@ const AudioBookForm = ({ images }) => {
       minute: dataWithId ? dataWithId.duration[1] : '',
       second: dataWithId ? dataWithId.duration[2] : '',
    })
-   console.log(dataWithId.duration[1])
    const durationTimer = `${
       duration.duration < 10 ? `${0}${duration.duration}` : duration.duration
    }:${duration.minute < 10 ? `${0}${duration.minute}` : duration.minute}:${
@@ -53,12 +52,33 @@ const AudioBookForm = ({ images }) => {
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
       discount: dataWithId ? dataWithId.discount : '',
       language: dataWithId ? dataWithId.language : '',
-      genreId: '',
    })
+
+   const [genId, setGenId] = useState('')
+   console.log(genId)
+   console.log(dataWithId)
 
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
       setAudioValues({ ...audioValues, [name]: audio })
+   }
+
+   const genreFunction = (genreId) => {
+      setGenId(genreId)
+      setInputValues({ ...inputValues, genreId })
+   }
+   // const [state, setState] = useState(false)
+   useEffect(() => {
+      if (dataWithId) {
+         const a = genre ? genre.find((el) => el.name === dataWithId.genre) : ''
+         // setState(true)
+         setGenId(a.id)
+         console.log(a.id)
+      }
+   }, [dataWithId])
+   const selectLanguage = (language) => {
+      console.log(language)
+      setInputValues({ ...inputValues, language })
    }
 
    const formatLanguage = () => {
@@ -72,6 +92,7 @@ const AudioBookForm = ({ images }) => {
       if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
          formation = 'Английский'
       }
+      console.log(formation)
       return formation
    }
 
@@ -125,31 +146,34 @@ const AudioBookForm = ({ images }) => {
          dispatch(
             addAudioBook({ inputValues, images, audioValues, durationTimer })
          )
-         dispatch(bookAction.deleteImage())
-
-         setInputValues({
-            name: '',
-            author: '',
-            genreId: '',
-            description: '',
-            yearOfIssue: '',
-            duration: '',
-            minute: '',
-            second: '',
-            price: '',
-            discount: '',
-         })
-         setDuration({
-            duration: '',
-            minute: '',
-            second: '',
-         })
       } else {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
+   useEffect(() => {
+      dispatch(bookAction.deleteImage())
+
+      setInputValues({
+         name: '',
+         author: '',
+         genreId: '',
+         description: '',
+         yearOfIssue: '',
+         duration: '',
+         minute: '',
+         second: '',
+         price: '',
+         discount: '',
+      })
+      setDuration({
+         duration: '',
+         minute: '',
+         second: '',
+      })
+   }, [addBookStatus === 'success'])
    const { bookId, language } = dataWithId !== null ? dataWithId : ''
    const genreBook = dataWithId !== null ? dataWithId : ''
+   console.log(language)
 
    const updateForms = () => {
       dispatch(
@@ -161,6 +185,7 @@ const AudioBookForm = ({ images }) => {
             navigate,
             language,
             genreBook,
+            durationTimer,
          })
       )
    }
@@ -208,9 +233,10 @@ const AudioBookForm = ({ images }) => {
                   fontWeight
                   height="400px"
                   color="#969696"
-                  onClick={(genreId) =>
-                     setInputValues({ ...inputValues, genreId })
-                  }
+                  // onClick={(genreId) =>
+                  //    setInputValues({ ...inputValues, genreId })
+                  // }
+                  onClick={(genreId, _, name) => genreFunction(genreId, name)}
                   genres={genre}
                   editeName={dataWithId ? dataWithId.genre : ''}
                />
@@ -237,9 +263,7 @@ const AudioBookForm = ({ images }) => {
                         fontWeight="400"
                         color="#969696"
                         hover
-                        onClick={(_, data, language) =>
-                           setInputValues({ ...inputValues, language })
-                        }
+                        onClick={(_, language) => selectLanguage(language)}
                         genres={languageSelect}
                         editeName={dataWithId ? formatLanguage() : ''}
                      />

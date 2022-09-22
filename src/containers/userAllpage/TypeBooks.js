@@ -1,10 +1,13 @@
 import React from 'react'
 import { styled } from '@mui/material'
+import { useDispatch } from 'react-redux'
 import RadioButton from '../../Components/UI/RadioButton'
 import { BookType } from '../../utils/constants/constants'
 import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconSort.svg'
+import { сatalogActions } from '../../store/slices/catalogSlice'
 
-const TypeBooks = ({ onChange }) => {
+const TypeBooks = ({ onChange, sortMethods }) => {
+   const dispatch = useDispatch()
    const [arr, setArr] = React.useState([
       {
          id: 'bookType',
@@ -46,6 +49,7 @@ const TypeBooks = ({ onChange }) => {
             }
          })
       })
+      dispatch(сatalogActions.deleteExternal({ key: 'bookType' }))
    }
    const onChangeHandler = (value) => {
       setArr((prev) => {
@@ -63,6 +67,11 @@ const TypeBooks = ({ onChange }) => {
          })
       })
    }
+   React.useEffect(() => {
+      sortMethods((prev) => {
+         return { ...prev, typeBookMethod: onChangeHandler }
+      })
+   }, [])
    return (
       <TypeBlock>
          <Type>

@@ -11,7 +11,7 @@ import bookAction from '../../../store/slices/addBookSlice'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
-import { setGenres } from '../../../store/slices/globalSlices'
+// import { setGenres } from '../../../store/slices/globalSlices'
 import SelectInput from './SelectInput'
 import Spinner from '../../../Components/UI/Spinner'
 
@@ -37,12 +37,11 @@ const PaperBookForm = ({ images }) => {
       fragment: dataWithId ? dataWithId.fragment : '',
       pageSize: dataWithId ? dataWithId.pageSize : '',
       price: dataWithId ? dataWithId.price : '',
-      genreId: dataWithId ? dataWithId.genreId : '',
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
       quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
       language: dataWithId ? dataWithId.language : '',
       discount: dataWithId ? dataWithId.discount : '',
-      genre: dataWithId ? dataWithId.genre : '',
+      genreId: dataWithId ? dataWithId.genre : '',
    })
 
    const formatLanguage = () => {
@@ -58,6 +57,7 @@ const PaperBookForm = ({ images }) => {
       }
       return formation
    }
+   console.log(formatLanguage())
 
    const handleChangeInput = (e) => {
       const date = new Date()
@@ -122,20 +122,56 @@ const PaperBookForm = ({ images }) => {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   const { bookId, language } = dataWithId !== null ? dataWithId : ''
-   const genreId = dataWithId !== null ? dataWithId : ''
+
+   const [genId, setGenId] = useState(null)
+   const [langText, setLangText] = useState(null)
+   console.log(genId)
+   console.log(langText)
+   const { bookId } = dataWithId !== null ? dataWithId : ''
+   // const genreId = dataWithId !== null ? dataWithId : ''
    const updateForms = async () => {
       dispatch(
          putVendorBook(
-            { inputValues, images, bookId, language, genreId },
+            { inputValues, images, bookId, langText, genId },
             navigate
          )
       )
    }
 
+   // useEffect(() => {
+   //    dispatch(setGenres())
+   // }, [])
+
+   console.log(dataWithId)
+
+   const genreFunction = (genreId) => {
+      setGenId(genreId)
+      setInputValues({ ...inputValues, genreId })
+   }
+   const [re, setRe] = useState(false)
+   console.log(re)
    useEffect(() => {
-      dispatch(setGenres())
-   }, [])
+      // const a = genre ? genre.find((el) => el.name === dataWithId.genre) : ''
+      // console.log(genre)
+      // setGenId(a.id)
+      // setLangText(dataWithId.language)
+      dataFunc()
+      setRe(true)
+   }, [dataWithId])
+
+   const dataFunc = () => {
+      if (dataWithId) {
+         const a = genre ? genre.find((el) => el.name === dataWithId.genre) : ''
+         console.log(genre)
+         setGenId(a.id)
+         setLangText(dataWithId.language)
+         console.log(999)
+      }
+   }
+
+   const languageFunc = (language) => {
+      setLangText(language)
+   }
 
    return (
       <>
@@ -180,9 +216,7 @@ const PaperBookForm = ({ images }) => {
                   fontWeight
                   color="#969696"
                   height="400px"
-                  onClick={(genreId) =>
-                     setInputValues({ ...inputValues, genreId })
-                  }
+                  onClick={(genreId, _, name) => genreFunction(genreId, name)}
                   genres={genre}
                   editeName={dataWithId ? dataWithId.genre : ''}
                />
@@ -229,9 +263,10 @@ const PaperBookForm = ({ images }) => {
                         color="#969696"
                         hover
                         nameText=""
-                        onClick={(_, notext, language) =>
-                           setInputValues({ ...inputValues, language })
-                        }
+                        onClick={(_, language) => languageFunc(language)}
+                        // onClick={(_, language) =>
+                        //    setInputValues({ ...inputValues, language })
+                        // }
                         genres={languageSelect}
                         editeName={dataWithId ? formatLanguage() : ''}
                      />

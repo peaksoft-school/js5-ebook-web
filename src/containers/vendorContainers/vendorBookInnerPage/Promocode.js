@@ -1,11 +1,12 @@
 import styled from '@emotion/styled'
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import Modal from '../../../Components/UI/Modal'
 import warningIcon from '../../../assets/icons/warning.svg'
 import CreatePromocode from '../../vendorLayouts/Promocode/CreatePromocode'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import { promocodeActions } from '../../../store/slices/promocodeSlices'
 
 const Promocode = () => {
    const {
@@ -13,6 +14,7 @@ const Promocode = () => {
       error: errorPromo,
       snackbar,
    } = useSelector((store) => store.promocodeStore)
+   const dispatch = useDispatch()
    const [isOpenPromoModal, setIsOpenPromoModal] = useState(false)
    const handleOpenPromoModal = () => setIsOpenPromoModal(true)
    const handleClosePromoModal = () => setIsOpenPromoModal(false)
@@ -20,13 +22,25 @@ const Promocode = () => {
       setIsOpenPromoModal(false)
    }, [Boolean(success)])
 
+   const handleClose = () => {
+      dispatch(promocodeActions.clean())
+   }
+
    return (
       <div>
          <StyledPromoBtnBlock>
             <GetSnackbar
                open={snackbar || Boolean(success) || Boolean(errorPromo)}
-               message={success || errorPromo || ''}
-               variant={success ? 'success' : 'error'}
+               message={
+                  success || errorPromo || (snackbar && 'Заполняйте поля!')
+               }
+               variant={
+                  (success && 'success') ||
+                  (errorPromo && 'error') ||
+                  (snackbar && 'error')
+               }
+               width="400px"
+               handleClose={handleClose}
             />
             <Button
                onClick={handleOpenPromoModal}

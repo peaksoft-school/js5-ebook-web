@@ -33,18 +33,18 @@ export const getMainBooks = (slectedText, next, vendorId) => {
 // GET with id for UPDATE
 export const getMainBooksWithId = (id, navigate) => {
    return async (dispatch) => {
-      dispatch(bookAction.statusPending())
+      // dispatch(bookAction.statusPending())
       try {
          const getData = await appFetch({
             url: `/api/books/${id}`,
          })
-         dispatch(vendorMainPageAction.findBookWithId(getData))
+         // dispatch(vendorMainPageAction.findBookWithId(getData))
          dispatch(vendorMainPageAction.bookType(getData))
-         dispatch(vendorMainPageAction.success())
-         dispatch(bookAction.statusSuccess())
-         navigate('/addbook')
+         // dispatch(vendorMainPageAction.success())
+         // dispatch(bookAction.statusSuccess())
+         navigate('/main/addbook')
       } catch (error) {
-         dispatch(vendorMainPageAction.errorResult(error))
+         // dispatch(vendorMainPageAction.errorResult(error))
          dispatch(bookAction.statusError(error))
       }
    }
@@ -83,15 +83,11 @@ export const getMainBooksDelete = (id, navigate) => {
 // EDITE
 
 export const putVendorBook = (
-   {
-      inputValues,
-      images,
-      bookId,
-      language,
-      // genreId,
-   },
+   { inputValues, images, bookId, langText, genId },
    navigate
 ) => {
+   // console.log(language)
+   console.log(genId)
    const { token } = store2.getState().auth.user
 
    const mydata = {
@@ -99,11 +95,12 @@ export const putVendorBook = (
       secondImage: images.secondImage,
       thirdImage: images.thirdImage,
       name: inputValues.name,
-      genreId: 15,
+      genreId: genId,
+      // genreId: genId,
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
-      language,
+      language: langText,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
       fragment: 'string',
@@ -177,7 +174,7 @@ export const editeElectronicBook = ({
       secondImage: withIdValues.secondImage,
       thirdImage: withIdValues.thirdImage,
       name: withIdValues.name,
-      genreId: 21,
+      genreId: withIdValues.genre,
       price: withIdValues.price,
       author: withIdValues.author,
       description: withIdValues.description,
@@ -250,10 +247,11 @@ export const editeAudioBook = ({
    inputValues,
    images,
    bookId,
-   audioValues,
+   // audioValues,
    navigate,
    language,
    // genreBook,
+   durationTimer,
 }) => {
    const mydata = {
       mainImage: images.mainImage,
@@ -268,10 +266,27 @@ export const editeAudioBook = ({
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
       bestseller: true,
-      fragment: audioValues.fragment,
-      duration: '02:30:45',
-      audioBook: audioValues.audioBook,
+      // fragment: audioValues.fragment ? audioValues.fragment : 'string',
+      duration: durationTimer,
+      // audioBook: audioValues.audioBook,
+
+      // mainImage: 'string',
+      // secondImage: 'string',
+      // thirdImage: 'string',
+      // name: 'string',
+      // genreId: 0,
+      // price: 0,
+      // author: 'string',
+      // description: 'string',
+      // language: 'KYRGYZ',
+      // yearOfIssue: 0,
+      // discount: 0,
+      // bestseller: true,
+      fragment: 'string',
+      // duration: 'string',
+      audioBook: 'string',
    }
+   console.log(language)
    return async (dispatch) => {
       const { token } = store2.getState().auth.user
       dispatch(bookAction.statusPending())

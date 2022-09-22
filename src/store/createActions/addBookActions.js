@@ -147,7 +147,6 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
          if (result.ok) {
             dispatch(
                bookAction.statusSuccess('Ваш запрос был успешно отправлен!')

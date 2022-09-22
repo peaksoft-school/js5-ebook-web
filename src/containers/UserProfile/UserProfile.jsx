@@ -70,7 +70,7 @@ export const UserProfile = () => {
       isValidValue: isPasswordValue,
       onBlurHandler: onBlurPasswordHandler,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
@@ -82,7 +82,7 @@ export const UserProfile = () => {
       isValidValue: isLastPasswordValue,
       onBlurHandler: onBlurLastPasswordHandler,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
@@ -93,12 +93,11 @@ export const UserProfile = () => {
       isValidValue: isLastPasswordValue2,
       onBlurHandler: onBlurLastPasswordHandler2,
    } = Validation((value) => {
-      if (value?.length <= 5) {
+      if (value.length <= 5) {
          return true
       }
       return false
    })
-
    useEffect(() => {
       let timerId = null
       if (message) {
@@ -309,6 +308,7 @@ const StyledButton1 = styled(Button)`
 `
 const DivCont = styled.form`
    width: 100%;
+   padding-top: 50px;
 `
 const DivStyledButton = styled.div`
    width: 100%;
@@ -348,6 +348,9 @@ const LabelStyled = styled.label`
    font-weight: 400;
    font-size: 16px;
    line-height: 130%;
+   display: block;
+   /* border: 1px solid red; */
+   padding-bottom: 10px;
 `
 const DivStyledButton1 = styled.div`
    width: 100%;

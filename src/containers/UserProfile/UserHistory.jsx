@@ -76,24 +76,33 @@ export const UserHistory = () => {
                      </StyledBlock>
                   ))}
                </Div>
-               {nextCart < totalElements && (
-                  <StyledButton onClick={nextCarthandle}>
-                     Смотреть больше
-                  </StyledButton>
-               )}
-               {nextCart > card && (
-                  <StyledButton2 onClick={onCloseHandler}>
-                     Свернуть
-                  </StyledButton2>
-               )}
+               <DivBtn>
+                  {nextCart < totalElements && (
+                     <StyledButton onClick={nextCarthandle}>
+                        Смотреть больше
+                     </StyledButton>
+                  )}
+                  {nextCart > card && (
+                     <StyledButton2 onClick={onCloseHandler}>
+                        Свернуть
+                     </StyledButton2>
+                  )}
+               </DivBtn>
             </ButtonBlock>
          </DivBlock>
       </ContainerBlock>
    )
 }
 
+const DivBtn = styled.div`
+   /* border: 1px solid red; */
+   width: 100%;
+   padding-left: 4%;
+   padding-bottom: 30px;
+`
+
 const ContainerBlock = styled.div`
-   margin-top: 50px;
+   margin-top: 60px;
 `
 const ButtonBlock = styled.div`
    width: 100%;
@@ -115,7 +124,7 @@ const Div = styled('div')`
    align-items: flex-end;
 `
 const DivTotalBlock = styled.div`
-   width: 15%;
+   width: 18%;
    border-top: 1px solid #c4c4c4;
    border-right: 1px solid #c4c4c4;
    display: flex;
@@ -156,6 +165,7 @@ const ThClearStyled = styled('th')`
 `
 const ThStyledImg = styled('th')`
    width: 20%;
+   /* border: 1px solid red; */
 `
 const ThStyledAvtor = styled('th')`
    width: 15%;
@@ -174,19 +184,25 @@ const ThStyledDate = styled('th')`
    text-align: end;
 `
 const ImgStyled = styled.img`
-   width: 82px;
-   height: 132px;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 `
 const StyledBlock = styled.div`
-   width: 97%;
+   /* border: 1px solid red; */
+   width: 96%;
    display: flex;
    justify-content: space-between;
-   margin-top: 25px;
+   /* margin-top: 25px; */
+   padding: 20px 0;
    border-bottom: 1px solid #c4c4c4;
 `
 const DivImgBlock = styled.div`
-   width: 13%;
-   text-align: center;
+   /* width: 13%; */
+   /* text-align: center; */
+   width: 82px;
+   height: 132px;
+   /* border: 1px solid red; */
 `
 const DivPriceBlock = styled.div`
    width: 20%;

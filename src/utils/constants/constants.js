@@ -21,7 +21,7 @@ export const FilterBooks = {
    IN_THE_BASKET: 'IN_THE_BASKET',
    SOLD_OUT: 'SOLD_OUT',
    WITH_DISCOUNTS: 'WITH_DISCOUNTS',
-   IN_THE_PROCESS: 'IN_THE_PROCESS',
+   IN_PROCESSING: 'IN_PROCESSING',
    REJECTED: 'REJECTED',
 }
 export const Languages = {

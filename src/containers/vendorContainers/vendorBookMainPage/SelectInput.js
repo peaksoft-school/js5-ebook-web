@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { useSelector } from 'react-redux'
 import { MenuItem } from '@mui/material'
 import strel from '../../../assets/icons/strel.svg'
 import PopUp from '../../../Components/UI/popup'
@@ -14,6 +15,7 @@ export default function SelectInput({
    editeName,
    ...props
 }) {
+   const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
       name: defaultName || 'Все',
@@ -23,7 +25,7 @@ export default function SelectInput({
    const open = Boolean(anChorEl)
    useEffect(() => {
       if (onClick) {
-         onClick(label.id, label.key, label.text, label.name)
+         onClick(label.id, label.text, label.name)
       }
    }, [label])
    const handleClickLabel = (e) => {
@@ -32,6 +34,17 @@ export default function SelectInput({
    const onCloseMenu = () => {
       setAnchorEl(null)
    }
+   // const a = false
+   useEffect(() => {
+      if (editeName) {
+         setLabel((prev) => {
+            return {
+               ...prev,
+               name: editeName,
+            }
+         })
+      }
+   }, [dataWithId])
    const onSelectItem = (id, name, text) => {
       setLabel((prev) => {
          return {
@@ -53,7 +66,7 @@ export default function SelectInput({
             {...props}
             onClick={handleClickLabel}
          >
-            {!editeName ? label.name : editeName}
+            <SpanStyle primary={label.id}>{label.name}</SpanStyle>
             {strelLog && <ImgesCont src={strel} />}
          </SelectLabel>
          <PopUp
@@ -81,6 +94,7 @@ export default function SelectInput({
 }
 const PopUpItem = styled(MenuItem)`
    padding: 10px;
+   color: red;
 `
 const SelectLabel = styled('div')`
    font-family: 'Open Sans';
@@ -118,4 +132,7 @@ const SelectBook = styled('div')`
 `
 const ImgesCont = styled('img')`
    margin-left: 10px;
+`
+const SpanStyle = styled('span')`
+   color: ${(props) => (props.primary ? 'black' : '')};
 `
