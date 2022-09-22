@@ -10,22 +10,27 @@ export function TabInnerPage({ about, bookFragment }) {
       setSelectedTab(newValue)
    }
    return (
-      <div>
+      <Container>
          <div>
             <MuiTabs value={selectedTab} onChange={handleChange}>
                <MuiTab label="О книге" />
-               <MuiTab label="Читать фрагмент" />
+               {bookFragment && <MuiTab label="Читать фрагмент" />}
             </MuiTabs>
          </div>
-         {selectedTab === 0 && about}
-         {selectedTab === 1 && bookFragment}
-      </div>
+         <TextCont>
+            {selectedTab === 0 && about}
+            {selectedTab === 1 && bookFragment}
+         </TextCont>
+      </Container>
    )
 }
 const MuiTabs = styled(Tabs)`
    .MuiTabs-indicator {
       background: none;
    }
+`
+const Container = styled('div')`
+   margin-top: 5vh;
 `
 const MuiTab = styled(Tab)`
    &.Mui-selected {
@@ -43,4 +48,8 @@ const MuiTab = styled(Tab)`
       font-size: 18px;
       text-transform: none;
    }
+`
+const TextCont = styled('div')`
+   width: 96%;
+   margin: auto;
 `

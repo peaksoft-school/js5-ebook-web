@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import styled from '@emotion/styled'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import Modal from '../../../Components/UI/Modal'
 import Button from '../../../Components/UI/Button/Button'
 import likeIcon from '../../../assets/icons/like.png'
@@ -9,11 +11,17 @@ import AudioListener from '../../../Components/UI/AudioListener'
 import AboutBook from './AboutBook'
 import BookFragment from './BookFragment'
 import { TabInnerPage } from './TabInnerPage'
+import {
+   getMainBooksDelete,
+   getMainBooksWithId,
+} from '../../../store/createActions/vendorMainPagesActions'
 
-const BookInfo = ({ book, onDelete }) => {
+const BookInfo = ({ book }) => {
    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
    const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
    const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
 
    const bookTypeContent =
       book.bookType === 'AUDIO_BOOK' ? <AudioListener /> : ''
@@ -21,11 +29,21 @@ const BookInfo = ({ book, onDelete }) => {
    const newBookIcon =
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
 
+   const editBook = () => {
+      dispatch(getMainBooksWithId(book.bookId, navigate))
+   }
+
+   const onDelete = (id) => {
+      setIsOpenDeleteModal(false)
+      dispatch(getMainBooksDelete(id, navigate))
+   }
    return (
       <>
          <StyledMain>
             <StyledBookImageCont>
-               <StyledBookImage src={book.mainImage} />
+               <MainImgwrap>
+                  <StyledBookImage src={book.mainImage} />
+               </MainImgwrap>
                {newBookIcon}
                <StyledBookImage2>
                   {book.secondImage && (
@@ -69,6 +87,7 @@ const BookInfo = ({ book, onDelete }) => {
                      border="1px solid"
                      background="none"
                      width="224px"
+                     colorhover="white"
                   >
                      Удалить
                   </Button>
@@ -95,13 +114,16 @@ const BookInfo = ({ book, onDelete }) => {
                         >
                            Отменить
                         </Button>
-                        <Button variant="default" onClick={onDelete}>
+                        <Button
+                           variant="default"
+                           onClick={() => onDelete(book.bookId)}
+                        >
                            Удалить
                         </Button>
                      </StyledModalBtnCont>
                   </Modal>
-                  <Button width="224px">
-                     <StyledLink to="/addBook">Редактировать</StyledLink>
+                  <Button width="224px" onClick={editBook}>
+                     Редактировать
                   </Button>
                </StyledBtnCont>
             </div>
@@ -112,7 +134,9 @@ const BookInfo = ({ book, onDelete }) => {
                about={<AboutBook aboutBook={book.description} />}
                bookFragment={<BookFragment fragment={book.fragment} />}
             />
-            {book.thirdImage && <img src={book.thirdImage} alt="book" />}
+            <ThirdImgwrap>
+               {book.thirdImage && <img src={book.thirdImage} alt="book" />}
+            </ThirdImgwrap>
          </StyledTabBlock>
       </>
    )
@@ -134,9 +158,14 @@ const StyledBookImage2 = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
+   height: 321px;
+   width: 201px;
+   margin-left: 20px;
+
    & img {
       width: 100%;
-      margin: 0px 0px 20px 20px;
+      height: 100%;
+      object-fit: cover;
    }
 `
 const StyledBookName = styled.h3`
@@ -153,6 +182,7 @@ const StyledTabBlock = styled.div`
    justify-content: space-between;
    align-items: flex-start;
    padding-bottom: 20px;
+   margin-top: 19vh;
    & img {
       width: 385px;
    }
@@ -174,8 +204,7 @@ const StyledInfoTitle = styled.p`
    color: #222222;
 `
 const StyledBookImage = styled.img`
-   width: 357px;
-   margin-bottom: 185px;
+   /* width: 357px; */
 `
 const StyledMain = styled.div`
    display: flex;
@@ -221,4 +250,23 @@ const StyledNewIcon = styled.img`
    position: absolute;
    top: 75%;
    left: 26%;
+`
+const MainImgwrap = styled('div')`
+   width: 357px;
+   /* height: 571px; */
+   & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+   }
+`
+const ThirdImgwrap = styled('div')`
+   width: 385px;
+   height: 614px;
+   /* margin-top: 19vh; */
+   & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+   }
 `

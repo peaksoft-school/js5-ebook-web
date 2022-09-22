@@ -1,8 +1,6 @@
 import appFetch from '../../hooks/appFetch'
 import bookAction from '../slices/addBookSlice'
 import { appFileFetchService } from '../../api/fileService'
-import { getMainBooks } from './vendorMainPagesActions'
-import snackbarAction from '../slices/snackbarSlice'
 
 export const addPaperBook = (inputValues, images, bestseller) => {
    const valuesWithFile = {
@@ -15,13 +13,15 @@ export const addPaperBook = (inputValues, images, bestseller) => {
       discount: inputValues.discount,
       language: inputValues.language,
       bestseller,
-      fragment: inputValues.fragment,
+      // fragment: inputValues.fragment,
+      fragment: 'shdc',
       pageSize: inputValues.pageSize,
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
 
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (images.mainImage) {
             const imgFiles = await appFileFetchService(images.mainImage)
@@ -41,22 +41,28 @@ export const addPaperBook = (inputValues, images, bestseller) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(bookAction.statusSuccess(result))
-         dispatch(snackbarAction.snackbarSuccess(result.message))
-         dispatch(getMainBooks())
+         console.log(result)
+         dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
       } catch (error) {
-         dispatch(bookAction.statusError(error))
-         dispatch(snackbarAction.snackbarFalse(error))
+         dispatch(bookAction.statusError('Что то пошло не так!'))
       }
    }
 }
 
-export const addAudioBook = (inputValues, images, audioValues, duration) => {
+export const addAudioBook = ({
+   inputValues,
+   images,
+   audioValues,
+   durationTimer,
+}) => {
    const valuesWithFile = {
       ...inputValues,
-      duration,
+      duration: durationTimer,
+      fragment: audioValues.fragment,
+      audioBook: audioValues.audioBook,
    }
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (images.mainImage) {
             const imgFiles = await appFileFetchService(images.mainImage)
@@ -86,31 +92,32 @@ export const addAudioBook = (inputValues, images, audioValues, duration) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(snackbarAction.snackbarSuccess(result.message))
-         dispatch(bookAction.statusSuccess(result))
+         console.log(result)
+         dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
       } catch (error) {
-         dispatch(bookAction.statusError(error))
-         dispatch(snackbarAction.snackbarFalse(error))
+         dispatch(bookAction.statusError('Что то пошло не так!'))
       }
    }
 }
 
-export const addElectronicBoook = (inputValues, images, pdf) => {
+export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
    const valuesWithFile = {
-      name: inputValues.name,
-      genreId: inputValues.genreId,
-      price: inputValues.price,
-      author: inputValues.author,
-      description: inputValues.description,
-      yearOfIssue: inputValues.yearOfIssue,
-      discount: inputValues.discount,
+      name: withIdValues.name,
+      genreId: withIdValues.genreId,
+      price: withIdValues.price,
+      author: withIdValues.author,
+      description: withIdValues.description,
+      yearOfIssue: withIdValues.yearOfIssue,
+      discount: withIdValues.discount,
       bestseller: true,
-      fragment: inputValues.fragment,
-      pageSize: inputValues.pageSize,
-      publishingHouse: inputValues.publishingHouse,
+      language: 'KYRGYZ',
+      fragment: withIdValues.fragment,
+      pageSize: withIdValues.pageSize,
+      publishingHouse: withIdValues.publishingHouse,
    }
 
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (images.mainImage) {
             const imgFiles = await appFileFetchService(images.mainImage)
@@ -126,9 +133,9 @@ export const addElectronicBoook = (inputValues, images, pdf) => {
             valuesWithFile.thirdImage = imgFiles.link
          }
 
-         if (pdf) {
-            const imgFiles = await appFileFetchService(pdf)
-            valuesWithFile.electronicBook = imgFiles.link
+         if (pdfValue) {
+            const pdfFile = await appFileFetchService(pdfValue)
+            valuesWithFile.electronicBook = pdfFile.link
          }
 
          const result = await appFetch({
@@ -136,11 +143,14 @@ export const addElectronicBoook = (inputValues, images, pdf) => {
             method: 'POST',
             body: valuesWithFile,
          })
-         dispatch(snackbarAction.snackbarSuccess(result.message))
-         dispatch(bookAction.statusSuccess(result))
+         dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
+         if (result.ok) {
+            dispatch(
+               bookAction.statusSuccess('Ваш запрос был успешно отправлен!')
+            )
+         }
       } catch (error) {
-         dispatch(bookAction.statusError(error))
-         dispatch(snackbarAction.snackbarFalse(error))
+         dispatch(bookAction.statusError('Что то пошло не так!'))
       }
    }
 }

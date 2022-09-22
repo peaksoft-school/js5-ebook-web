@@ -6,9 +6,7 @@ import Tab from '@mui/material/Tab'
 import { TabList } from '@mui/lab'
 
 export function TabInnerPage({ about, bookFragment }) {
-   console.log(bookFragment.props)
    const bookType = bookFragment.props.book
-   console.log(bookType)
    const [selectedTab, setSelectedTab] = React.useState('1')
 
    const handleChange = (event, newValue) => {
@@ -20,7 +18,7 @@ export function TabInnerPage({ about, bookFragment }) {
             <TabContext value={selectedTab}>
                <TabListStyle onChange={handleChange}>
                   <MuiTab label="О книге" value="1" />
-                  {bookType.bookType !== 'AUDIO_BOOK' && (
+                  {bookType?.bookType !== 'AUDIO_BOOK' && (
                      <MuiTab label="Читать фрагмент" value="2" />
                   )}
                </TabListStyle>

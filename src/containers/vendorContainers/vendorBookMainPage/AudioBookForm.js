@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,18 +8,13 @@ import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import CheckBox from '../../../Components/UI/checkBox/CheckBox'
 import bookAction from '../../../store/slices/addBookSlice'
-import {
-   ButtonDiv,
-   InputDiv,
-   InputWrapper,
-   LabelStyle,
-   ValidSpan,
-} from './PaperBookForm'
+import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
 import { addAudioBook } from '../../../store/createActions/addBookActions'
 import { editeAudioBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
+import Spinner from '../../../Components/UI/Spinner'
 
 const languageSelect = [
    { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
@@ -28,15 +23,14 @@ const languageSelect = [
 ]
 
 const AudioBookForm = ({ images }) => {
-   const [navigation, setNavigation] = useState(false)
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
-   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
+   const { status } = useSelector((store) => store.addbook)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [audioValues, setAudioValues] = useState({
-      fragment: dataWithId ? dataWithId.fragment : '',
+      fragment: dataWithId ? dataWithId.audioBookFragment : '',
       audioBook: dataWithId ? dataWithId.audioBook : '',
    })
    const [duration, setDuration] = useState({
@@ -44,17 +38,21 @@ const AudioBookForm = ({ images }) => {
       minute: '',
       second: '',
    })
-   const durationTimer = `${duration.duration}:${duration.minute}:${duration.second}`
+   const durationTimer = `${
+      duration.duration < 10 ? `${0}${duration.duration}` : duration.duration
+   }:${duration.minute < 10 ? `${0}${duration.minute}` : duration.minute}:${
+      duration.second < 10 ? `${0}${duration.second}` : duration.second
+   }`
 
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
       author: dataWithId ? dataWithId.author : '',
-      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
       description: dataWithId ? dataWithId.description : '',
       price: dataWithId ? dataWithId.price : '',
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
-      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
       discount: dataWithId ? dataWithId.discount : '',
+      language: dataWithId ? dataWithId.language : '',
+      genreId: '',
    })
 
    const changeAudioValue = (audio, e) => {
@@ -62,8 +60,48 @@ const AudioBookForm = ({ images }) => {
       setAudioValues({ ...audioValues, [name]: audio })
    }
 
+   const formatLanguage = () => {
+      let formation
+      if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
+         formation = 'Кыргызский'
+      }
+      if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
+         formation = 'Русский'
+      }
+      if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
+         formation = 'Английский'
+      }
+      return formation
+   }
+
    const handleChangeInput = (e) => {
       const { name, value } = e.target
+      const date = new Date()
+      if (name === 'discount' || name === 'yearOfIssue' || name === 'price') {
+         if (value < 0) {
+            return
+         }
+      }
+      if (name === 'duration') {
+         if (value < 0 || value > 23) {
+            return
+         }
+      }
+      if (name === 'minute' || name === 'second') {
+         if (value < 0 || value > 60) {
+            return
+         }
+      }
+      if (name === 'yearOfIssue') {
+         if (value > date.getFullYear()) {
+            return
+         }
+      }
+      if (name === 'discount') {
+         if (value > 100) {
+            return
+         }
+      }
       setInputValues({ ...inputValues, [name]: value })
       setDuration({ ...duration, [name]: value })
    }
@@ -78,18 +116,14 @@ const AudioBookForm = ({ images }) => {
          inputValues.yearOfIssue.length >= 1 &&
          inputValues.price.length >= 1
 
-      return isInputsAreValid && images.mainImage
+      return isInputsAreValid && images.mainImage && audioValues.fragment
    }
-   const validLength = () => {
-      const validNumbers =
-         inputValues.yearOfIssue.length > 4 ||
-         inputValues.yearOfIssue < 0 ||
-         inputValues.yearOfIssue > 2022
-      return validNumbers
-   }
+
    const clickSendFormValues = async () => {
       if (isFormValid()) {
-         dispatch(addAudioBook(inputValues, images, audioValues, durationTimer))
+         dispatch(
+            addAudioBook({ inputValues, images, audioValues, durationTimer })
+         )
          dispatch(bookAction.deleteImage())
 
          setInputValues({
@@ -113,20 +147,22 @@ const AudioBookForm = ({ images }) => {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   const { bookId } = dataWithId !== null ? dataWithId : ''
+   const { bookId, language } = dataWithId !== null ? dataWithId : ''
+   const genreBook = dataWithId !== null ? dataWithId : ''
+
    const updateForms = () => {
-      dispatch(editeAudioBook(inputValues, images, bookId, audioValues))
-      setNavigation(true)
+      dispatch(
+         editeAudioBook({
+            inputValues,
+            images,
+            bookId,
+            audioValues,
+            navigate,
+            language,
+            genreBook,
+         })
+      )
    }
-   useEffect(() => {
-      let navigateToMainPage
-      if (bookSuccsess && navigation) {
-         navigateToMainPage = setTimeout(() => {
-            navigate('/')
-         }, 3000)
-      }
-      return () => clearTimeout(navigateToMainPage)
-   }, [bookSuccsess])
 
    return (
       <>
@@ -134,7 +170,9 @@ const AudioBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
+         {status === 'pending' && <Spinner />}
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -173,6 +211,7 @@ const AudioBookForm = ({ images }) => {
                      setInputValues({ ...inputValues, genreId })
                   }
                   genres={genre}
+                  editeName={dataWithId ? dataWithId.genre : ''}
                />
                <Textarea
                   title="О книге"
@@ -201,6 +240,7 @@ const AudioBookForm = ({ images }) => {
                            setInputValues({ ...inputValues, language })
                         }
                         genres={languageSelect}
+                        editeName={dataWithId ? formatLanguage() : ''}
                      />
                   </PriceDiv>
                   <PriceDiv>
@@ -216,44 +256,58 @@ const AudioBookForm = ({ images }) => {
                         value={inputValues.yearOfIssue}
                         type="number"
                      />
-                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                   </PriceDiv>
                </SelectDiv>
                <LabelStyleTime htmlFor="duration">
                   <LabelStyle>Длительность</LabelStyle>
                </LabelStyleTime>
                <SelectDiv>
-                  <InnerSelectDIv>
-                     <InputText
-                        id="duration"
-                        name="duration"
-                        onChange={handleChangeInput}
-                        textAlign="end"
-                        placeholder="ч"
-                        value={duration.duration}
-                        type="number"
-                     />
-                  </InnerSelectDIv>
-                  <TimeInputs>
-                     <InputText
-                        onChange={handleChangeInput}
-                        textAlign="end"
-                        placeholder="мин"
-                        name="minute"
-                        value={duration.minute}
-                        type="number"
-                     />
-                  </TimeInputs>
-                  <TimeInputs>
-                     <InputText
-                        onChange={handleChangeInput}
-                        textAlign="end"
-                        name="second"
-                        placeholder="сек"
-                        value={duration.second}
-                        type="number"
-                     />
-                  </TimeInputs>
+                  <TimerStan>
+                     <InnerSelectDIv>
+                        <InputText
+                           id="duration"
+                           name="duration"
+                           onChange={handleChangeInput}
+                           textAlign="end"
+                           placeholder="ч"
+                           value={dataWithId ? '12' : duration.duration}
+                           type="number"
+                        />
+                     </InnerSelectDIv>
+                     {duration.duration > 30 && (
+                        <ValidateStyle>menwe 30</ValidateStyle>
+                     )}
+                  </TimerStan>
+                  <TimerStan>
+                     <TimeInputs>
+                        <InputText
+                           onChange={handleChangeInput}
+                           textAlign="end"
+                           placeholder="мин"
+                           name="minute"
+                           value={dataWithId ? '47' : duration.minute}
+                           type="number"
+                        />
+                     </TimeInputs>
+                     {duration.minute > 60 && (
+                        <ValidateStyle>menwe 60</ValidateStyle>
+                     )}
+                  </TimerStan>
+                  <TimerStan>
+                     <TimeInputs>
+                        <InputText
+                           onChange={handleChangeInput}
+                           textAlign="end"
+                           name="second"
+                           placeholder="сек"
+                           value={dataWithId ? '06' : duration.second}
+                           type="number"
+                        />
+                     </TimeInputs>
+                     {duration.second > 60 && (
+                        <ValidateStyle>menwe 60</ValidateStyle>
+                     )}
+                  </TimerStan>
                </SelectDiv>
                <CheckBoxDiv>
                   <CheckBox label="Бестселлер" />
@@ -293,7 +347,7 @@ const AudioBookForm = ({ images }) => {
                      </LabelStyle>
                      <FileUploadButton
                         onChange={changeAudioValue}
-                        title="Загрузите фрагмент аудиозаписи"
+                        title="Загрузите"
                         name="fragment"
                         accept="audio/mpeg"
                      >
@@ -317,24 +371,24 @@ const AudioBookForm = ({ images }) => {
             </SelectWrapper>
          </InputWrapper>
          <ButtonDiv>
-            {!dataWithId ? (
-               <Button width="137px" onClick={clickSendFormValues}>
-                  Отправить
+            <PutDiv>
+               <Button
+                  width="137px"
+                  background="#2f4f4f"
+                  onClick={() => navigate('/')}
+               >
+                  Назад
                </Button>
-            ) : (
-               <PutDiv>
-                  <Button
-                     width="137px"
-                     background="#2f4f4f"
-                     onClick={() => navigate('/')}
-                  >
-                     Назад
+               {!dataWithId ? (
+                  <Button width="137px" onClick={clickSendFormValues}>
+                     Отправить
                   </Button>
+               ) : (
                   <Button width="137px" onClick={updateForms}>
                      Сохранить
                   </Button>
-               </PutDiv>
-            )}
+               )}
+            </PutDiv>
          </ButtonDiv>
       </>
    )
@@ -350,17 +404,18 @@ const SelectDiv = styled('div')`
    justify-content: space-between;
    align-items: center;
    outline: none;
+   /* border: 1px solid red; */
 `
 
 const InnerSelectDIv = styled('div')`
-   width: 30%;
+   width: 100%;
 `
 const LabelStyleTime = styled('div')`
    display: block;
    margin: 26px 0px 10px 0px;
 `
 const TimeInputs = styled('div')`
-   width: 30%;
+   width: 100%;
    height: 100%;
    display: flex;
    align-items: flex-end;
@@ -390,4 +445,14 @@ export const PutDiv = styled('div')`
    display: flex;
    justify-content: space-between;
    width: 300px;
+`
+const ValidateStyle = styled('span')`
+   font-size: 12px;
+   position: relative;
+   top: 0px;
+   width: 30%;
+   color: red;
+`
+const TimerStan = styled('div')`
+   width: 30%;
 `

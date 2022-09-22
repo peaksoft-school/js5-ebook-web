@@ -57,7 +57,8 @@ const LayoutBreadcrumbs = styled(Breadcrumbs)`
 const Title = styled(Typography)`
    font-family: 'Open Sans';
    font-style: normal;
-   font-weight: 400;
+   font-weight: 600;
+   line-height: 130%;
    font-size: ${(props) => props.fontSize || '14px'};
    line-height: 17px;
    cursor: pointer;
@@ -67,8 +68,8 @@ const LinkStyle = styled(Link)`
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 400;
+   line-height: 130%;
    font-size: ${(props) => props.fontSize || '14px'};
-   line-height: none;
    text-decoration: none;
    cursor: pointer;
    color: ${(props) => props.colorlink || '#C4C4C4'};

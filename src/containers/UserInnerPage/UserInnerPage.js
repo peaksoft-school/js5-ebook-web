@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
 import About from './About'
@@ -9,9 +9,8 @@ import BookFragment from './BookFragment'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
-// import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
-import { getMainBooksWithId } from '../../store/createActions/vendorMainPagesActions'
+import { getBook } from '../../store/slices/userInnerPageSlices'
 import AudioListener from '../../Components/UI/AudioListener'
 
 const DataValues = [
@@ -21,94 +20,93 @@ const DataValues = [
    { text: 'Торг возможен?', id: '4' },
 ]
 
-const book = {
-   bookType: 'AUDIO_BOOK',
-   bookId: 21,
-   bookName: 'qwert',
-   genre: 'Общество',
-   price: 5768,
-   author: 'rethy',
-   publishingHouse: null,
-   description: 'efregthyjuy',
-   language: null,
-   yearOfIssue: 2022,
-   discount: 0,
-   bestseller: false,
-   mainImage:
-      'https://ebookjava5.s3.eu-central-1.amazonaws.com/1663767900767С заливкой.png',
-   secondImage: null,
-   thirdImage: null,
-   audioBookFragment: null,
-   audioBook:
-      'https://ebookjava5.s3.eu-central-1.amazonaws.com/1663767902406gs-cd-track2.mp3',
-   duration: [2, 2, 2],
-}
-
 export const UserInnerPage = () => {
-   const [text, setText] = useState('')
+   // const [text, setText] = useState('')
    const { bookId } = useParams()
-   // const book = useSelector((state) => state.addbook.getUserInnerBook)
+   const { book } = useSelector((store) => store.userBook)
    const dispatch = useDispatch()
    useEffect(() => {
-      dispatch(getMainBooksWithId(bookId))
+      dispatch(getBook(bookId))
+      window.scrollTo(0, 0)
    }, [])
    const sendText = () => {
-      console.log(text)
+      // console.log(text)
    }
-   const saveValue = (e) => {
-      setText(e)
+   const saveValue = () => {
+      // setText(e
    }
 
    const pathTranslate = {
-      allbooks: 'Главная',
-      [bookId]: book.bookName,
+      main: 'Главная',
+      catalog: 'Каталог',
+      [bookId]: book?.bookName,
    }
 
    return (
       <>
-         <Breadcrumbs translate={pathTranslate} />
+         <BreadcrumbsBlock>
+            {book && <Breadcrumbs translate={pathTranslate} />}
+         </BreadcrumbsBlock>
          <StyledMain>
             <StyledContainer>
                <StyledBookImageCont>
-                  <StyledBookImage src={book.mainImage} />
+                  <ImageBlock>
+                     <Image src={book?.mainImage} />
+                  </ImageBlock>
                   <StyledBookImage2>
-                     {book.secondImage && (
-                        <img src={book.secondImage} alt="book" />
+                     {book?.secondImage && (
+                        <Image src={book?.secondImage} alt="book" />
                      )}
                   </StyledBookImage2>
                </StyledBookImageCont>
-               {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
+               {book?.new ? <ImageStyled src={New} alt="icons" /> : ''}
                <div>
-                  <StyledBookName>{book.bookName}</StyledBookName>
-                  {/* <AudioListenerStyled>
-                     
-                  </AudioListenerStyled> */}
+                  <StyledBookName>{book?.bookName}</StyledBookName>
                   <StyledInfo>
                      <div>
-                        <StyledPrice>{book.price}</StyledPrice>
+                        <StyledInfoTitle primary>
+                           <StyledPrice>{book?.price}</StyledPrice>
+                        </StyledInfoTitle>
                         <StyledInfoTitle>Автор</StyledInfoTitle>
                         <StyledInfoTitle>Жанр</StyledInfoTitle>
                         <StyledInfoTitle>Язык</StyledInfoTitle>
-                        <StyledInfoTitle>Издательство</StyledInfoTitle>
+                        {book?.bookType !== 'AUDIO_BOOK' && (
+                           <StyledInfoTitle>Издательство</StyledInfoTitle>
+                        )}
                         <StyledInfoTitle>Год выпуска</StyledInfoTitle>
-                        <StyledInfoTitle>Обьем</StyledInfoTitle>
+                        {book?.bookType === 'AUDIO_BOOK' && (
+                           <StyledInfoTitle>Длительность</StyledInfoTitle>
+                        )}
+                        {book?.bookType !== 'AUDIO_BOOK' && (
+                           <StyledInfoTitle>Обьем</StyledInfoTitle>
+                        )}
                      </div>
                      <DivBlockStyled>
-                        <StyledInfoText>
+                        <StyledInfoText primary>
                            <DivBlock>
-                              {book.bookType !== 'PAPER_BOOK' && (
-                                 <AudioListener url={book.audioBook} />
-                              )}
-                              {console.log(book.audioBook)}
+                              {book?.bookType === 'AUDIO_BOOK' &&
+                                 book.audioBook && (
+                                    <AudioListener url={book.audioBook} />
+                                 )}
                            </DivBlock>
                         </StyledInfoText>
-                        <StyledInfoText>{book.author}</StyledInfoText>
-                        <StyledInfoText>{book.genre}</StyledInfoText>
-                        <StyledInfoText>{book.language}</StyledInfoText>
-                        <StyledInfoText>{book.publishingHouse}</StyledInfoText>
-                        <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
-                        <StyledInfoText>{book.duration}</StyledInfoText>
-                        {console.log(book.duration)}
+                        <StyledInfoText>{book?.author}</StyledInfoText>
+                        <StyledInfoText>{book?.genre}</StyledInfoText>
+                        <StyledInfoText>{book?.language}</StyledInfoText>
+                        {book?.bookType !== 'AUDIO_BOOK' && (
+                           <StyledInfoText>
+                              {book?.publishingHouse}
+                           </StyledInfoText>
+                        )}
+                        <StyledInfoText>{book?.yearOfIssue}</StyledInfoText>
+                        {book?.bookType === 'AUDIO_BOOK' ? (
+                           <StyledInfoText>
+                              {book?.duration[0]} ч. {book?.duration[1]} мин.{' '}
+                              {book?.duration[2]} сек.
+                           </StyledInfoText>
+                        ) : (
+                           <StyledInfoText>{book?.pageSize}</StyledInfoText>
+                        )}
                      </DivBlockStyled>
                   </StyledInfo>
 
@@ -133,22 +131,37 @@ export const UserInnerPage = () => {
                   </DivStyledMessage>
                </div>
             </StyledContainer>
-
             <StyledimageThirdImage>
                <TabInnerPage
                   about={<About book={book} />}
                   bookFragment={<BookFragment book={book} />}
                />
-               <div>
-                  {book.thirdImage && (
-                     <StyleThirdImage src={book.thirdImage} alt="book" />
+               <StyleThirdImage>
+                  {book?.thirdImage && (
+                     <Image src={book?.thirdImage} alt="book" />
                   )}
-               </div>
+               </StyleThirdImage>
             </StyledimageThirdImage>
          </StyledMain>
       </>
    )
 }
+
+const BreadcrumbsBlock = styled('div')`
+   padding-top: 20px;
+`
+
+const ImageBlock = styled('div')`
+   width: 357px;
+   height: 571px;
+   margin-right: 20px;
+   overflow: hidden;
+`
+const Image = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+`
 
 const StyledContainer = styled.div`
    display: flex;
@@ -163,12 +176,12 @@ const StyledimageThirdImage = styled.div`
 `
 
 const StyledBookImage2 = styled.div`
+   overflow: hidden;
    display: flex;
    flex-direction: column;
    align-items: center;
-   & img {
-      width: 100%;
-   }
+   width: 201px;
+   height: 321px;
 `
 const StyledBookName = styled.h3`
    width: 504px;
@@ -187,6 +200,7 @@ const StyledInfoText = styled.p`
    font-size: 14px;
    line-height: 130%;
    color: #222222;
+   padding: ${(props) => (props.primary ? '10px 0' : '0')};
 `
 const StyledInfoTitle = styled.p`
    font-family: 'Open Sans';
@@ -195,11 +209,9 @@ const StyledInfoTitle = styled.p`
    font-size: 14px;
    line-height: 130%;
    color: #222222;
+   padding: ${(props) => (props.primary ? '0 0 10px 0' : '0')};
 `
-const StyledBookImage = styled.img`
-   width: 357px;
-   /* margin-bottom: 185px; */
-`
+
 const StyledMain = styled.div`
    padding-top: 72px;
 `
@@ -226,12 +238,11 @@ const StyledPrice = styled.p`
 `
 const StyledBookImageCont = styled.div`
    display: flex;
-   width: 531px;
 `
 const DivStyledMessage = styled.div`
    margin-top: 30px;
 `
-const StyleThirdImage = styled.img`
+const StyleThirdImage = styled.div`
    width: 443px;
    height: 574px;
    margin-bottom: 109px;
