@@ -42,7 +42,6 @@ const StyledTabPanel = styled(MuiTabPanel)`
    padding: 0px;
 `
 const StyledTabList = styled(TabList)`
-   /* padding: 70px 0 50px 0; */
    .MuiTabs-indicator {
       background: #f34901;
    }
@@ -54,11 +53,11 @@ const StyledTabListBlock = styled.div`
    align-items: center;
 `
 const StyledTab = styled(Tab)`
-   width: 152px;
+   width: 192px;
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 600;
-   font-size: 16px;
+   font-size: 15px;
    line-height: 130%;
    color: #222222;
    text-transform: none;
