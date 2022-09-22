@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,6 +22,7 @@ import { editeElectronicBook } from '../../../store/createActions/vendorMainPage
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
+import Spinner from '../../../Components/UI/Spinner'
 
 const languageSelect = [
    { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
@@ -32,8 +33,8 @@ const languageSelect = [
 const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
    const { stateSnackbar } = useSelector((store) => store.snackbar)
-   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const genre = useSelector((store) => store.globalValues.genres)
+   const { status } = useSelector((store) => store.addbook)
    const dataWithId = useSelector(
       (store) => store.vendorMainPage.electronicBooks
    )
@@ -96,7 +97,6 @@ const ElectronicBookForm = ({ images }) => {
       }
       setWithIdValues({ ...withIdValues, [valueEvent.name]: valueEvent.value })
    }
-   const [navigation, setNavigation] = useState(false)
 
    const isFormValid = () => {
       const validateValues =
@@ -135,22 +135,24 @@ const ElectronicBookForm = ({ images }) => {
       }
    }
 
-   const { bookId } = dataWithId !== null ? dataWithId : ''
+   const { bookId, language } = dataWithId !== null ? dataWithId : ''
+   const genreId = dataWithId !== null ? dataWithId : ''
+
    const updateForms = () => {
       if (!isFormValid()) {
-         dispatch(editeElectronicBook(withIdValues, images, bookId, pdfValue))
-         setNavigation(true)
+         dispatch(
+            editeElectronicBook({
+               withIdValues,
+               images,
+               bookId,
+               pdfValue,
+               language,
+               genreId,
+               navigate,
+            })
+         )
       }
    }
-   useEffect(() => {
-      let navigateToMainPage
-      if (bookSuccsess && navigation) {
-         navigateToMainPage = setTimeout(() => {
-            navigate('/')
-         }, 3000)
-      }
-      return () => clearTimeout(navigateToMainPage)
-   }, [bookSuccsess])
 
    return (
       <>
@@ -158,7 +160,9 @@ const ElectronicBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
+         {status === 'pending' && <Spinner />}
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -287,9 +291,7 @@ const ElectronicBookForm = ({ images }) => {
                      <CheckBoxDiv>
                         <CheckBox label="Бестселлер" />
                      </CheckBoxDiv>
-                     <LabelStyle htmlFor="discount">
-                        Скидка <strong>*</strong>
-                     </LabelStyle>
+                     <LabelStyle htmlFor="discount">Скидка</LabelStyle>
                      <InputText
                         id="discount"
                         onChange={handleChangeInput}
@@ -315,24 +317,24 @@ const ElectronicBookForm = ({ images }) => {
             </Wrapper>
          </InputWrapper>
          <ButtonDiv>
-            {!dataWithId ? (
-               <Button width="160px" onClick={clickSendFormValues}>
-                  Отправить
+            <PutDiv>
+               <Button
+                  width="137px"
+                  background="#2f4f4f"
+                  onClick={() => navigate('/')}
+               >
+                  Назад
                </Button>
-            ) : (
-               <PutDiv>
-                  <Button
-                     width="137px"
-                     background="#2f4f4f"
-                     onClick={() => navigate('/')}
-                  >
-                     Назад
+               {!dataWithId ? (
+                  <Button width="137px" onClick={clickSendFormValues}>
+                     Отправить
                   </Button>
+               ) : (
                   <Button width="137px" onClick={updateForms}>
                      Сохранить
                   </Button>
-               </PutDiv>
-            )}
+               )}
+            </PutDiv>
          </ButtonDiv>
       </>
    )

@@ -5,6 +5,7 @@ import MuiCheckbox from '@mui/material/Checkbox'
 import { styled } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { сatalogActions } from '../../../store/slices/catalogSlice'
+// import vendorMainPageAction from '../../../store/slices/vendorMainPageSlice'
 
 const CheckBox = ({ onChange, label, id, sortMethods, ...props }) => {
    const [checked, setChecked] = useState(false)
@@ -21,6 +22,7 @@ const CheckBox = ({ onChange, label, id, sortMethods, ...props }) => {
    }
    useEffect(() => {
       if (one) {
+         // dispatch(vendorMainPageAction.setBestSellerFunc(onChangeHandler))
          setOne(false)
       }
       if (sortMethods) {

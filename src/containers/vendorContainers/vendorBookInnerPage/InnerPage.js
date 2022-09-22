@@ -4,16 +4,15 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 import BookInfo from './BookInfo'
-import {
-   deleteVendorBook,
-   getVendorBookInnerPage,
-} from '../../../store/vendorBookInnerPageActions'
+import { getVendorBookInnerPage } from '../../../store/vendorBookInnerPageActions'
 import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
+import Spinner from '../../../Components/UI/Spinner'
 
 export const InnerPage = () => {
    const { book, deleteBook } = useSelector(
       (state) => state.vendorBookInnerPage
    )
+   const { addBookStatus } = useSelector((store) => store.addbook)
    const { bookId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -27,11 +26,6 @@ export const InnerPage = () => {
       }
    }, [deleteBook])
 
-   const deleteBookHandler = (handleCloseDeleteModal) => {
-      dispatch(deleteVendorBook(bookId))
-      handleCloseDeleteModal()
-   }
-
    const pathTranslate = {
       main: 'Главная',
       [bookId]: book.bookName,
@@ -43,15 +37,10 @@ export const InnerPage = () => {
 
    return (
       <>
+         {addBookStatus === 'pending' && <Spinner />}
          <HeaderMainPage />
          <Breadcrumbs translate={pathTranslate} />
-         {book && (
-            <BookInfo
-               book={book}
-               onDelete={deleteBookHandler}
-               bookId={bookId}
-            />
-         )}
+         {book && <BookInfo book={book} bookId={bookId} />}
       </>
    )
 }

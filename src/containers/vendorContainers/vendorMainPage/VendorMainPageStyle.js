@@ -114,6 +114,7 @@ export const NameBook = styled('h3')`
    line-height: 120%;
    text-transform: uppercase;
    padding-top: 10px;
+   text-transform: uppercase;
 `
 export const ImgFavorite = styled('span')`
    display: flex;
