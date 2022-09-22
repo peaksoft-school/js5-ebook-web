@@ -4,12 +4,9 @@ import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import Button from '../../../Components/UI/Button/Button'
 import { rejectAplication } from '../../../store/slices/adminActions/applicationsActions'
-// import Modal from '../../../Components/UI/Modal'
 
 export const RejectApplicationModal = ({ id, onClose }) => {
    const dispatch = useDispatch()
-   // console.log(id)
-
    const [reasonReject, setReasonReject] = useState('')
 
    const reasonChangeHandler = (e) => {
@@ -18,6 +15,7 @@ export const RejectApplicationModal = ({ id, onClose }) => {
 
    function sendReason(e) {
       e.stopPropagation()
+      dispatch(rejectAplication({ id, reasonReject, onClose, setReasonReject }))
       if (reasonReject.trim().length !== 0) {
          dispatch(
             rejectAplication({ id, reasonReject, onClose, setReasonReject })
