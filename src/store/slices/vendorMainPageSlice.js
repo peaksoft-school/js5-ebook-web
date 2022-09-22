@@ -7,10 +7,8 @@ const initialState = {
    audioBooks: null,
    electronicBooks: null,
    allBooks: null,
-   isValid: true,
    bookType: null,
    status: null,
-   boolean: null,
 }
 export const vendorMainPageSlice = createSlice({
    name: 'vendorMainPage',

@@ -9,10 +9,9 @@ import BookFragment from './BookFragment'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
-// import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
 import { getBook } from '../../store/slices/userInnerPageSlices'
-import Spinner from '../../Components/UI/Spinner'
+import AudioListener from '../../Components/UI/AudioListener'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -24,7 +23,7 @@ const DataValues = [
 export const UserInnerPage = () => {
    // const [text, setText] = useState('')
    const { bookId } = useParams()
-   const { book, status } = useSelector((store) => store.userBook)
+   const { book } = useSelector((store) => store.userBook)
    const dispatch = useDispatch()
    useEffect(() => {
       dispatch(getBook(bookId))
@@ -48,94 +47,111 @@ export const UserInnerPage = () => {
          <BreadcrumbsBlock>
             {book && <Breadcrumbs translate={pathTranslate} />}
          </BreadcrumbsBlock>
-         {status === 'pending' ? (
-            <Spinner variant="two" />
-         ) : (
-            <StyledMain>
-               <StyledContainer>
-                  <StyledBookImageCont>
-                     <ImageBlock>
-                        <Image src={book?.mainImage} />
-                     </ImageBlock>
-                     <StyledBookImage2>
-                        {book?.secondImage && (
-                           <Image src={book?.secondImage} alt="book" />
-                        )}
-                     </StyledBookImage2>
-                  </StyledBookImageCont>
-                  {book?.new ? <ImageStyled src={New} alt="icons" /> : ''}
-                  <div>
-                     <StyledBookName>{book?.bookName}</StyledBookName>
+         <StyledMain>
+            <StyledContainer>
+               <StyledBookImageCont>
+                  <ImageBlock>
+                     <Image src={book?.mainImage} />
+                  </ImageBlock>
+                  <StyledBookImage2>
+                     {book?.secondImage && (
+                        <Image src={book?.secondImage} alt="book" />
+                     )}
+                  </StyledBookImage2>
+               </StyledBookImageCont>
+               {book?.new ? <ImageStyled src={New} alt="icons" /> : ''}
+               <div>
+                  <StyledBookName>{book?.bookName}</StyledBookName>
+                  <StyledInfo>
                      <div>
-                        <StyledPrice>{book?.price}</StyledPrice>
-                     </div>
-                     <StyledInfo>
-                        <div>
-                           <StyledInfoTitle>Автор</StyledInfoTitle>
-                           <StyledInfoTitle>Жанр</StyledInfoTitle>
-                           <StyledInfoTitle>Язык</StyledInfoTitle>
+                        <StyledInfoTitle primary>
+                           <StyledPrice>{book?.price}</StyledPrice>
+                        </StyledInfoTitle>
+                        <StyledInfoTitle>Автор</StyledInfoTitle>
+                        <StyledInfoTitle>Жанр</StyledInfoTitle>
+                        <StyledInfoTitle>Язык</StyledInfoTitle>
+                        {book?.bookType !== 'AUDIO_BOOK' && (
                            <StyledInfoTitle>Издательство</StyledInfoTitle>
-                           <StyledInfoTitle>Год выпуска</StyledInfoTitle>
+                        )}
+                        <StyledInfoTitle>Год выпуска</StyledInfoTitle>
+                        {book?.bookType === 'AUDIO_BOOK' && (
+                           <StyledInfoTitle>Длительность</StyledInfoTitle>
+                        )}
+                        {book?.bookType !== 'AUDIO_BOOK' && (
                            <StyledInfoTitle>Обьем</StyledInfoTitle>
-                        </div>
-                        <div>
-                           <StyledInfoText>{book?.author}</StyledInfoText>
-                           <StyledInfoText>{book?.genre}</StyledInfoText>
-                           <StyledInfoText>{book?.language}</StyledInfoText>
+                        )}
+                     </div>
+                     <DivBlockStyled>
+                        <StyledInfoText primary>
+                           <DivBlock>
+                              {book?.bookType === 'AUDIO_BOOK' &&
+                                 book.audioBook && (
+                                    <AudioListener url={book.audioBook} />
+                                 )}
+                           </DivBlock>
+                        </StyledInfoText>
+                        <StyledInfoText>{book?.author}</StyledInfoText>
+                        <StyledInfoText>{book?.genre}</StyledInfoText>
+                        <StyledInfoText>{book?.language}</StyledInfoText>
+                        {book?.bookType !== 'AUDIO_BOOK' && (
                            <StyledInfoText>
                               {book?.publishingHouse}
                            </StyledInfoText>
-                           <StyledInfoText>{book?.yearOfIssue}</StyledInfoText>
-                           <StyledInfoText>{book?.duration}</StyledInfoText>
-                        </div>
-                     </StyledInfo>
+                        )}
+                        <StyledInfoText>{book?.yearOfIssue}</StyledInfoText>
+                        {book?.bookType === 'AUDIO_BOOK' ? (
+                           <StyledInfoText>
+                              {book?.duration[0]} ч. {book?.duration[1]} мин.{' '}
+                              {book?.duration[2]} сек.
+                           </StyledInfoText>
+                        ) : (
+                           <StyledInfoText>{book?.pageSize}</StyledInfoText>
+                        )}
+                     </DivBlockStyled>
+                  </StyledInfo>
 
-                     <StyledBtnCont>
-                        <Button
-                           variant="universal"
-                           color="#f34901"
-                           border="1px solid"
-                           background="none"
-                           width="224px"
-                        >
-                           В избранное
-                        </Button>
-                        <Button width="224px">Добавить в корзину</Button>
-                     </StyledBtnCont>
-                     <DivStyledMessage>
-                        <Message
-                           saveText={saveValue}
-                           onClick={sendText}
-                           spanValues={DataValues}
-                        />
-                     </DivStyledMessage>
-                  </div>
-               </StyledContainer>
-
-               <StyledimageThirdImage>
-                  <TabInnerPage
-                     about={<About book={book} />}
-                     bookFragment={<BookFragment book={book} />}
-                  />
-                  <StyleThirdImage>
-                     {book?.thirdImage && (
-                        <Image src={book?.thirdImage} alt="book" />
-                     )}
-                  </StyleThirdImage>
-               </StyledimageThirdImage>
-            </StyledMain>
-         )}
+                  <StyledBtnCont>
+                     <Button
+                        variant="universal"
+                        color="#f34901"
+                        border="1px solid"
+                        background="none"
+                        width="224px"
+                     >
+                        В избранное
+                     </Button>
+                     <Button width="224px">Добавить в корзину</Button>
+                  </StyledBtnCont>
+                  <DivStyledMessage>
+                     <Message
+                        saveText={saveValue}
+                        onClick={sendText}
+                        spanValues={DataValues}
+                     />
+                  </DivStyledMessage>
+               </div>
+            </StyledContainer>
+            <StyledimageThirdImage>
+               <TabInnerPage
+                  about={<About book={book} />}
+                  bookFragment={<BookFragment book={book} />}
+               />
+               <StyleThirdImage>
+                  {book?.thirdImage && (
+                     <Image src={book?.thirdImage} alt="book" />
+                  )}
+               </StyleThirdImage>
+            </StyledimageThirdImage>
+         </StyledMain>
       </>
    )
 }
 
 const BreadcrumbsBlock = styled('div')`
-   /* border: 1px solid red; */
    padding-top: 20px;
 `
 
 const ImageBlock = styled('div')`
-   /* border: 1px solid red; */
    width: 357px;
    height: 571px;
    margin-right: 20px;
@@ -160,7 +176,6 @@ const StyledimageThirdImage = styled.div`
 `
 
 const StyledBookImage2 = styled.div`
-   /* border: 1px solid red; */
    overflow: hidden;
    display: flex;
    flex-direction: column;
@@ -185,6 +200,7 @@ const StyledInfoText = styled.p`
    font-size: 14px;
    line-height: 130%;
    color: #222222;
+   padding: ${(props) => (props.primary ? '10px 0' : '0')};
 `
 const StyledInfoTitle = styled.p`
    font-family: 'Open Sans';
@@ -193,14 +209,16 @@ const StyledInfoTitle = styled.p`
    font-size: 14px;
    line-height: 130%;
    color: #222222;
+   padding: ${(props) => (props.primary ? '0 0 10px 0' : '0')};
 `
+
 const StyledMain = styled.div`
    padding-top: 72px;
 `
 const StyledInfo = styled.div`
    display: flex;
    justify-content: space-between;
-   width: 401px;
+   width: 545px;
    margin-bottom: 76px;
 `
 const StyledBtnCont = styled.div`
@@ -219,9 +237,7 @@ const StyledPrice = styled.p`
    color: #f34901;
 `
 const StyledBookImageCont = styled.div`
-   /* border: 1px solid red; */
    display: flex;
-   /* width: 531px; */
 `
 const DivStyledMessage = styled.div`
    margin-top: 30px;
@@ -232,10 +248,15 @@ const StyleThirdImage = styled.div`
    margin-bottom: 109px;
 `
 const ImageStyled = styled.img`
-   /* border: 1px solid red; */
    width: 206px;
    height: 206px;
    border-radius: 20px;
-   margin-top: 290px;
-   margin-left: -48%;
+   margin-top: 250px;
+   margin-left: -42%;
+`
+const DivBlockStyled = styled('div')`
+   width: 300px;
+`
+const DivBlock = styled.div`
+   height: 25px;
 `

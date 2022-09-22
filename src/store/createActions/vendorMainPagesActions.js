@@ -22,10 +22,8 @@ export const getMainBooks = (slectedText, next, vendorId) => {
          })
          dispatch(vendorMainPageAction.saveBook(getData))
          dispatch(vendorMainPageAction.success())
-         dispatch(snackbarAction.snackbarSuccess())
       } catch (error) {
          dispatch(vendorMainPageAction.errorResult(error))
-         dispatch(snackbarAction.snackbarFalse())
       }
    }
 }
@@ -33,47 +31,40 @@ export const getMainBooks = (slectedText, next, vendorId) => {
 // GET with id for UPDATE
 export const getMainBooksWithId = (id, navigate) => {
    return async (dispatch) => {
-      // dispatch(bookAction.statusPending())
       try {
          const getData = await appFetch({
             url: `/api/books/${id}`,
          })
          // dispatch(vendorMainPageAction.findBookWithId(getData))
          dispatch(vendorMainPageAction.bookType(getData))
-         // dispatch(vendorMainPageAction.success())
-         // dispatch(bookAction.statusSuccess())
+         // <<<<<<< HEAD
+         //          // dispatch(vendorMainPageAction.success())
+         //          // dispatch(bookAction.statusSuccess())
+         //          navigate('/main/addbook')
+         //       } catch (error) {
+         //          // dispatch(vendorMainPageAction.errorResult(error))
+         //          dispatch(bookAction.statusError(error))
+         dispatch(vendorMainPageAction.success())
          navigate('/main/addbook')
       } catch (error) {
-         // dispatch(vendorMainPageAction.errorResult(error))
-         dispatch(bookAction.statusError(error))
+         dispatch(vendorMainPageAction.errorResult(error))
       }
    }
 }
 
 // DELETE
 export const getMainBooksDelete = (id, navigate) => {
-   const { token } = store2.getState().auth.user
-
    return async (dispatch) => {
       dispatch(snackbarAction.snackbarPending())
       try {
-         const getData = await fetch(`${URLEDIT}/api/book/delete/${id}`, {
+         const result = await appFetch({
+            url: `/api/book/delete/${id}`,
             method: 'DELETE',
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
          })
-         if (!getData.ok) {
-            throw new Error('Что то пошло не так!')
+         if (navigate) {
+            navigate('/')
          }
-         if (getData.ok) {
-            dispatch(snackbarAction.snackbarSuccess('Книга удалена'))
-            dispatch(bookAction.statusSuccess())
-            dispatch(getMainBooks())
-            if (navigate) {
-               navigate('/')
-            }
-         }
+         dispatch(snackbarAction.snackbarSuccess(result.message))
       } catch (error) {
          dispatch(snackbarAction.snackbarFalse('Что то пошло не так!'))
       }
@@ -103,7 +94,7 @@ export const putVendorBook = (
       language: langText,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
-      fragment: 'string',
+      fragment: inputValues.fragment,
       // fragment: inputValues.fragment,
       bestseller: true,
       pageSize: inputValues.pageSize,

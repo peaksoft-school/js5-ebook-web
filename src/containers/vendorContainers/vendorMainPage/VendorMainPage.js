@@ -5,7 +5,6 @@ import myHearticon from '../../../assets/icons/mainEdite/myHearticon.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
 import HeaderMainPage from './HeaderMainPage'
-import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import { getMainBooks } from '../../../store/createActions/vendorMainPagesActions'
 import {
    BooksContainer,
@@ -27,18 +26,15 @@ import {
    WrapperDiv,
 } from './VendorMainPageStyle'
 import SelectInput from '../vendorBookMainPage/SelectInput'
-import Spinner from '../../../Components/UI/Spinner'
-import snackbarAction from '../../../store/slices/snackbarSlice'
 import NotFound from './NotFound'
+// import Spinner from '../../../Components/UI/Spinner'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
    const { totalElements } = useSelector((state) => state.vendorMainPage)
    const dispatch = useDispatch()
-   const { snackbarMessage, snackbarStatus } = useSelector(
-      (store) => store.snackbar
-   )
    const vendorId = useSelector((store) => store.auth.user.id)
+   const { snackbarStatus } = useSelector((store) => store.snackbar)
 
    const bookType = [
       { name: 'Все', id: 1, text: 'ALL' },
@@ -55,7 +51,7 @@ const VendorMainPage = () => {
    const handleMoreImage = () => {
       setNext(next + moreProducts)
    }
-   const [state, setState] = useState(false)
+   // const [state, setState] = useState(false)
    const [selectId, setSelectId] = useState()
    const clickSelectBook = (data, _, typeData) => {
       setSelectId(typeData)
@@ -65,29 +61,13 @@ const VendorMainPage = () => {
    }
 
    // console.log(getById)
-
    useEffect(() => {
       dispatch(getMainBooks(selectId, next, vendorId))
-   }, [selectId, next, state])
-
-   const deleteSnackbar = () => {
-      dispatch(snackbarAction.notSnackbar())
-      setState((prev) => !prev)
-   }
+   }, [selectId, next])
 
    return (
       <WrapperDiv>
-         <GetSnackbar
-            open={snackbarMessage}
-            message={snackbarMessage}
-            variant={
-               (snackbarStatus === 'error' && 'error') ||
-               (snackbarStatus === 'success' && 'success')
-            }
-            width="400px"
-            handleClose={deleteSnackbar}
-         />
-         {snackbarStatus === 'pending' && <Spinner />}
+         {/* {snackbarStatus === 'pending' && <Spinner />} */}
          <HeaderMainPage />
          <HeaderText>
             <Span>Всего {totalElements} книг</Span>

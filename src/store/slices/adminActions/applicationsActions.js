@@ -89,21 +89,15 @@ export const rejectAplication = ({
    setReasonReject,
 }) => {
    return async (dispatch) => {
-      try {
-         dispatch(applicationSlicesActions.pending())
-         const result = await appFetch({
-            method: 'POST',
-            url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
-         })
-         dispatch(applicationSlicesActions.postRejectApplication(result))
-         dispatch(applicationsActions())
-         toast.success(result.message)
-         setReasonReject('')
-         onClose()
-         return result
-      } catch (error) {
-         toast.error('Не удалось отклонить!')
-         return error
-      }
+      dispatch(applicationSlicesActions.pending())
+      const result = await appFetch({
+         method: 'POST',
+         url: `/api/admin/applications/books/${id}/rejected?description=${reasonReject}`,
+      })
+      dispatch(applicationSlicesActions.postRejectApplication(result))
+      dispatch(applicationsActions())
+      toast.success(result.message)
+      setReasonReject('')
+      onClose()
    }
 }

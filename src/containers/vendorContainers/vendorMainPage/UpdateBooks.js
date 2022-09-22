@@ -45,6 +45,7 @@ export default function UpdateBooks({ id }) {
    }
    const onDelete = () => {
       dispatch(getMainBooksDelete(id))
+      handleCloseDeleteModal()
    }
 
    return (

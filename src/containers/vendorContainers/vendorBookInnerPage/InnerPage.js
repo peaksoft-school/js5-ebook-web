@@ -16,7 +16,6 @@ export const InnerPage = () => {
    const { bookId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   console.log(addBookStatus)
    useEffect(() => {
       dispatch(getVendorBookInnerPage(bookId))
    }, [])
@@ -26,11 +25,6 @@ export const InnerPage = () => {
          booksCardNavHandler()
       }
    }, [deleteBook])
-
-   // const deleteBookHandler = (handleCloseDeleteModal) => {
-   //    dispatch(deleteVendorBook(bookId))
-   //    handleCloseDeleteModal()
-   // }
 
    const pathTranslate = {
       main: 'Главная',

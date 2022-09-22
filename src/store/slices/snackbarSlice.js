@@ -13,7 +13,7 @@ export const snackbarSlice = createSlice({
          state.snackbarStatus = 'pending'
       },
       snackbarSuccess(state, action) {
-         console.log(action.payload)
+         // console.log(action.payload)
          state.snackbarStatus = 'success'
          state.snackbarMessage = action.payload
       },

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import Checkbox from '../../../Components/UI/checkBox/CheckBox'
+import BestsellerCheckBox from '../../../Components/UI/checkBox/CheckBox'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
@@ -28,7 +28,7 @@ const PaperBookForm = ({ images }) => {
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
    const { status } = useSelector((store) => store.addbook)
-   const [isChecked, setIsChecked] = useState()
+   const [isChecked, setIsChecked] = useState(false)
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
       author: dataWithId ? dataWithId.author : '',
@@ -150,6 +150,16 @@ const PaperBookForm = ({ images }) => {
    }
    const [re, setRe] = useState(false)
    console.log(re)
+   const setBestSeller = () => {
+      setIsChecked((prev) => !prev)
+   }
+
+   useEffect(() => {
+      if (dataWithId) {
+         setIsChecked(dataWithId.bestseller)
+      }
+   }, [dataWithId])
+
    useEffect(() => {
       // const a = genre ? genre.find((el) => el.name === dataWithId.genre) : ''
       // console.log(genre)
@@ -295,11 +305,11 @@ const PaperBookForm = ({ images }) => {
                         type="number"
                      />
                      <Bestssler>
-                        <Checkbox
+                        <BestsellerCheckBox
                            label="Бестселлер"
-                           onChange={(e) => {
-                              setIsChecked(e.target.checked)
-                           }}
+                           onChange={setBestSeller}
+                           checked={isChecked}
+                           id="bestseller"
                         />
                      </Bestssler>
                   </SelectDiv>

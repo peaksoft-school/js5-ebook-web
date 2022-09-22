@@ -13,12 +13,12 @@ export const addBookSlice = createSlice({
          state.deleteImage = !state.deleteImage
       },
       statusSuccess(state, action) {
-         console.log(action.payload)
+         // console.log(action.payload)
          state.addBookStatus = 'success'
          state.addBookMessage = action.payload
       },
       statusError(state, action) {
-         console.log(action.payload)
+         // console.log(action.payload)
 
          state.addBookStatus = 'error'
          state.addBookMessage = action.payload
