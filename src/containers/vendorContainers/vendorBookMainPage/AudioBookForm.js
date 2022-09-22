@@ -17,9 +17,9 @@ import SelectInput from './SelectInput'
 import Spinner from '../../../Components/UI/Spinner'
 
 const languageSelect = [
-   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
-   { name: 'Русский', text: 'RUSSIAN', id: 2 },
-   { name: 'Английский', text: 'ENGLISH', id: 3 },
+   { name: 'Кыргызский', id: 'KYRGYZ' },
+   { name: 'Русский', id: 'RUSSIAN' },
+   { name: 'Английский', id: 'ENGLISH' },
 ]
 
 const AudioBookForm = ({ images }) => {
@@ -34,9 +34,9 @@ const AudioBookForm = ({ images }) => {
       audioBook: dataWithId ? dataWithId.audioBook : '',
    })
    const [duration, setDuration] = useState({
-      duration: '',
-      minute: '',
-      second: '',
+      duration: dataWithId ? dataWithId.duration[0] : '',
+      minute: dataWithId ? dataWithId.duration[1] : '',
+      second: dataWithId ? dataWithId.duration[2] : '',
    })
    const durationTimer = `${
       duration.duration < 10 ? `${0}${duration.duration}` : duration.duration
@@ -52,27 +52,55 @@ const AudioBookForm = ({ images }) => {
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
       discount: dataWithId ? dataWithId.discount : '',
       language: dataWithId ? dataWithId.language : '',
-      genreId: '',
+      genreId:
+         dataWithId && genre
+            ? genre.find((el) => el.name === dataWithId.genre).id
+            : '',
    })
+
+   console.log(inputValues)
+   // const [genId, setGenId] = useState(null)
+   // const [findGenre, setFindGenre] = useState(null)
+   // const [lengText, setLengText] = useState('')
+
+   // useEffect(() => {
+   //    if (dataWithId) {
+   //       setFindGenre(() => {
+   //          return genre.find((el) => el.name === dataWithId.genre)
+   //       })
+   //    }
+   // }, [dataWithId])
+
+   const languageFunc = (name, id) => {
+      setInputValues((prev) => {
+         return { ...prev, language: id }
+      })
+   }
+
+   const genreFunction = (name, id) => {
+      setInputValues((prev) => {
+         return { ...prev, genreId: id }
+      })
+   }
 
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
       setAudioValues({ ...audioValues, [name]: audio })
    }
 
-   const formatLanguage = () => {
-      let formation
-      if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
-         formation = 'Кыргызский'
-      }
-      if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
-         formation = 'Русский'
-      }
-      if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
-         formation = 'Английский'
-      }
-      return formation
-   }
+   // const formatLanguage = () => {
+   //    let formation
+   //    if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
+   //       formation = 'Кыргызский'
+   //    }
+   //    if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
+   //       formation = 'Русский'
+   //    }
+   //    if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
+   //       formation = 'Английский'
+   //    }
+   //    return formation
+   // }
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -147,19 +175,18 @@ const AudioBookForm = ({ images }) => {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   const { bookId, language } = dataWithId !== null ? dataWithId : ''
-   const genreBook = dataWithId !== null ? dataWithId : ''
-
+   // const { bookId } = dataWithId !== null ? dataWithId : ''
+   // const genreBook = dataWithId !== null ? dataWithId : ''
+   // console.log(genreBook)
    const updateForms = () => {
       dispatch(
          editeAudioBook({
             inputValues,
             images,
-            bookId,
+            bookId: dataWithId && dataWithId.bookId,
             audioValues,
             navigate,
-            language,
-            genreBook,
+            durationTimer,
          })
       )
    }
@@ -207,11 +234,17 @@ const AudioBookForm = ({ images }) => {
                   fontWeight
                   height="400px"
                   color="#969696"
-                  onClick={(genreId) =>
-                     setInputValues({ ...inputValues, genreId })
-                  }
+                  onClick={genreFunction}
                   genres={genre}
-                  editeName={dataWithId ? dataWithId.genre : ''}
+                  from={{
+                     name:
+                        genre && dataWithId
+                           ? genre.find((el) => el.id === inputValues.genreId)
+                                .name
+                           : 'Выберите жанр',
+                     id: inputValues ? inputValues.genreId : null,
+                  }}
+                  primary
                />
                <Textarea
                   title="О книге"
@@ -236,11 +269,18 @@ const AudioBookForm = ({ images }) => {
                         fontWeight="400"
                         color="#969696"
                         hover
-                        onClick={(_, data, language) =>
-                           setInputValues({ ...inputValues, language })
-                        }
                         genres={languageSelect}
-                        editeName={dataWithId ? formatLanguage() : ''}
+                        // name="язык"
+                        onClick={languageFunc}
+                        from={{
+                           name: dataWithId
+                              ? languageSelect.find(
+                                   (el) => el.id === dataWithId.language
+                                ).name
+                              : 'Выберите язык',
+                           id: dataWithId ? dataWithId.language : null,
+                        }}
+                        primary
                      />
                   </PriceDiv>
                   <PriceDiv>
@@ -270,7 +310,7 @@ const AudioBookForm = ({ images }) => {
                            onChange={handleChangeInput}
                            textAlign="end"
                            placeholder="ч"
-                           value={dataWithId ? '12' : duration.duration}
+                           value={duration.duration}
                            type="number"
                         />
                      </InnerSelectDIv>
@@ -285,7 +325,7 @@ const AudioBookForm = ({ images }) => {
                            textAlign="end"
                            placeholder="мин"
                            name="minute"
-                           value={dataWithId ? '47' : duration.minute}
+                           value={duration.minute}
                            type="number"
                         />
                      </TimeInputs>
@@ -300,7 +340,7 @@ const AudioBookForm = ({ images }) => {
                            textAlign="end"
                            name="second"
                            placeholder="сек"
-                           value={dataWithId ? '06' : duration.second}
+                           value={duration.second}
                            type="number"
                         />
                      </TimeInputs>

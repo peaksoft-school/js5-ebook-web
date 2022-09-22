@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import PaperBookForm from './PaperBookForm'
 import ImagePicker from '../../../Components/UI/imagePicker/imagePicker'
 import RadioButton from '../../../Components/UI/RadioButton'
-import { setGenres } from '../../../store/slices/globalSlices'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
 import AudioBookForm from './AudioBookForm'
@@ -38,10 +37,6 @@ const AddBookPage = () => {
    useEffect(() => {
       dispatch(snackbarActions())
    }, [addBookMessage, imageSnack])
-
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
 
    useEffect(() => {
       const time = setTimeout(() => {

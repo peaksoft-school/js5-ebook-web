@@ -12,19 +12,19 @@ import { putVendorBook } from '../../../store/createActions/vendorMainPagesActio
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import { setGenres } from '../../../store/slices/globalSlices'
-import SelectInput from './SelectInput'
+// import SelectInput from './SelectInput'
 import Spinner from '../../../Components/UI/Spinner'
 
-const languageSelect = [
-   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
-   { name: 'Русский', text: 'RUSSIAN', id: 2 },
-   { name: 'Английский', text: 'ENGLISH', id: 3 },
-]
+// const languageSelect = [
+//    { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
+//    { name: 'Русский', text: 'RUSSIAN', id: 2 },
+//    { name: 'Английский', text: 'ENGLISH', id: 3 },
+// ]
 
 const PaperBookForm = ({ images }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const genre = useSelector((store) => store.globalValues.genres)
+   // const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
    const { status } = useSelector((store) => store.addbook)
@@ -45,19 +45,19 @@ const PaperBookForm = ({ images }) => {
       genre: dataWithId ? dataWithId.genre : '',
    })
 
-   const formatLanguage = () => {
-      let formation
-      if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
-         formation = 'Кыргызский'
-      }
-      if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
-         formation = 'Русский'
-      }
-      if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
-         formation = 'Английский'
-      }
-      return formation
-   }
+   // const formatLanguage = () => {
+   //    let formation
+   //    if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
+   //       formation = 'Кыргызский'
+   //    }
+   //    if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
+   //       formation = 'Русский'
+   //    }
+   //    if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
+   //       formation = 'Английский'
+   //    }
+   //    return formation
+   // }
 
    const handleChangeInput = (e) => {
       const date = new Date()
@@ -181,7 +181,7 @@ const PaperBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               <SelectInput
+               {/* <SelectInput
                   border
                   padding="12px 10px 12px 19px"
                   width="100%"
@@ -195,7 +195,7 @@ const PaperBookForm = ({ images }) => {
                   }
                   genres={genre}
                   editeName={dataWithId ? dataWithId.genre : ''}
-               />
+               /> */}
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
                </LabelStyle>
@@ -230,7 +230,7 @@ const PaperBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     <SelectInput
+                     {/* <SelectInput
                         border
                         padding="12px 10px 12px 19px"
                         width="100%"
@@ -244,7 +244,7 @@ const PaperBookForm = ({ images }) => {
                         }
                         genres={languageSelect}
                         editeName={dataWithId ? formatLanguage() : ''}
-                     />
+                     /> */}
                      <LabelStyle htmlFor="pageSize">
                         Объем <strong>*</strong>
                      </LabelStyle>

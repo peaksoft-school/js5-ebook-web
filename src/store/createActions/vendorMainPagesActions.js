@@ -236,28 +236,26 @@ export const editeAudioBook = ({
    bookId,
    audioValues,
    navigate,
-   language,
-   // genreBook,
+   durationTimer,
 }) => {
    const mydata = {
       mainImage: images.mainImage,
       secondImage: images.secondImage,
       thirdImage: images.thirdImage,
       name: inputValues.name,
-      genreId: 2,
+      genreId: inputValues.genreId,
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
-      language,
+      language: inputValues.language,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
       bestseller: true,
-      fragment: audioValues.fragment,
-      duration: '02:30:45',
+      fragment: String(audioValues.fragment),
+      duration: durationTimer,
       audioBook: audioValues.audioBook,
    }
    return async (dispatch) => {
-      const { token } = store2.getState().auth.user
       dispatch(bookAction.statusPending())
       try {
          if (typeof images.mainImage === 'object') {
@@ -272,28 +270,18 @@ export const editeAudioBook = ({
             const imgFiles = await appFileFetchService(images.thirdImage)
             mydata.thirdImage = imgFiles.link
          }
-         const putData = await fetch(
-            `${URLEDIT}/api/book/update/audioBook/${bookId}`,
-            {
-               method: 'PUT',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-               },
-               body: JSON.stringify(mydata),
-            }
-         )
-         if (!putData.ok) {
-            throw new Error('Что то пошло не так!')
-         }
-         if (putData.ok) {
-            dispatch(snackbarAction.snackbarSuccess('книга успешно сохранена!'))
-            dispatch(bookAction.statusSuccess())
-            navigate('/')
-         }
+         console.log(mydata)
+         const result = await appFetch({
+            url: `/api/book/update/audioBook/${bookId}`,
+            method: 'PUT',
+            body: mydata,
+         })
+         console.log(result)
+         dispatch(bookAction.statusSuccess(result.message))
+         navigate('/')
+         // }
       } catch (error) {
          dispatch(bookAction.statusError(error.message))
-         dispatch(bookAction.statusError())
       }
    }
 }
