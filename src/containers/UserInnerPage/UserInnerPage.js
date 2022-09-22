@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
 import About from './About'
@@ -12,6 +12,7 @@ import Message from '../../Components/UI/Message/Message'
 // import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
 import { getMainBooksWithId } from '../../store/createActions/vendorMainPagesActions'
+import AudioListener from '../../Components/UI/AudioListener'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -20,10 +21,33 @@ const DataValues = [
    { text: 'Торг возможен?', id: '4' },
 ]
 
+const book = {
+   bookType: 'AUDIO_BOOK',
+   bookId: 21,
+   bookName: 'qwert',
+   genre: 'Общество',
+   price: 5768,
+   author: 'rethy',
+   publishingHouse: null,
+   description: 'efregthyjuy',
+   language: null,
+   yearOfIssue: 2022,
+   discount: 0,
+   bestseller: false,
+   mainImage:
+      'https://ebookjava5.s3.eu-central-1.amazonaws.com/1663767900767С заливкой.png',
+   secondImage: null,
+   thirdImage: null,
+   audioBookFragment: null,
+   audioBook:
+      'https://ebookjava5.s3.eu-central-1.amazonaws.com/1663767902406gs-cd-track2.mp3',
+   duration: [2, 2, 2],
+}
+
 export const UserInnerPage = () => {
    const [text, setText] = useState('')
    const { bookId } = useParams()
-   const book = useSelector((state) => state.addbook.getUserInnerBook)
+   // const book = useSelector((state) => state.addbook.getUserInnerBook)
    const dispatch = useDispatch()
    useEffect(() => {
       dispatch(getMainBooksWithId(bookId))
@@ -56,11 +80,12 @@ export const UserInnerPage = () => {
                {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
                <div>
                   <StyledBookName>{book.bookName}</StyledBookName>
-                  <div>
-                     <StyledPrice>{book.price}</StyledPrice>
-                  </div>
+                  {/* <AudioListenerStyled>
+                     
+                  </AudioListenerStyled> */}
                   <StyledInfo>
                      <div>
+                        <StyledPrice>{book.price}</StyledPrice>
                         <StyledInfoTitle>Автор</StyledInfoTitle>
                         <StyledInfoTitle>Жанр</StyledInfoTitle>
                         <StyledInfoTitle>Язык</StyledInfoTitle>
@@ -68,14 +93,23 @@ export const UserInnerPage = () => {
                         <StyledInfoTitle>Год выпуска</StyledInfoTitle>
                         <StyledInfoTitle>Обьем</StyledInfoTitle>
                      </div>
-                     <div>
+                     <DivBlockStyled>
+                        <StyledInfoText>
+                           <DivBlock>
+                              {book.bookType !== 'PAPER_BOOK' && (
+                                 <AudioListener url={book.audioBook} />
+                              )}
+                              {console.log(book.audioBook)}
+                           </DivBlock>
+                        </StyledInfoText>
                         <StyledInfoText>{book.author}</StyledInfoText>
                         <StyledInfoText>{book.genre}</StyledInfoText>
                         <StyledInfoText>{book.language}</StyledInfoText>
                         <StyledInfoText>{book.publishingHouse}</StyledInfoText>
                         <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
                         <StyledInfoText>{book.duration}</StyledInfoText>
-                     </div>
+                        {console.log(book.duration)}
+                     </DivBlockStyled>
                   </StyledInfo>
 
                   <StyledBtnCont>
@@ -172,7 +206,7 @@ const StyledMain = styled.div`
 const StyledInfo = styled.div`
    display: flex;
    justify-content: space-between;
-   width: 401px;
+   width: 545px;
    margin-bottom: 76px;
 `
 const StyledBtnCont = styled.div`
@@ -208,4 +242,10 @@ const ImageStyled = styled.img`
    border-radius: 20px;
    margin-top: 250px;
    margin-left: -42%;
+`
+const DivBlockStyled = styled('div')`
+   width: 300px;
+`
+const DivBlock = styled.div`
+   height: 25px;
 `
