@@ -76,7 +76,7 @@ export const StyledMenu = styled(Menu)`
       font-weight: 600;
       font-size: 14px;
       line-height: 19px;
-      margin-top: 40px;
+      /* margin-top: 40px; */
       ::-webkit-scrollbar {
          width: 5px;
       }

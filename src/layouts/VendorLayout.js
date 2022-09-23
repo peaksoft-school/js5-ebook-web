@@ -43,7 +43,6 @@ const Vendor = () => {
    const onCloseNotifHandler = () => {
       setIsOpenNotif(false)
    }
-   console.log(isOpenNotif)
    return (
       <Wrapper>
          <AppContainer
@@ -68,10 +67,10 @@ const Vendor = () => {
                                  </Badge>
                               }
                               onClick={onClickNotifHandler}
-                              handleClose={onCloseNotifHandler}
                            />
                            <Notification
                               open={isOpenNotif}
+                              handleClose={onCloseNotifHandler}
                               anchorEl={anchorElNotif}
                            />
                            <IconButton
