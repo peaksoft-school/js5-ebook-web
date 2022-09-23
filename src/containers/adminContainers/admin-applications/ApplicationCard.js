@@ -6,7 +6,7 @@ import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/che
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
 import { RejectApplicationModal } from './RejectApplicationModal'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
-import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
 import Modal from '../../../Components/UI/Modal'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {

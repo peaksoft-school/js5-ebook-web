@@ -7,7 +7,7 @@ import { ReactComponent as AudioBook } from '../../../assets/icons/bookCard/audi
 import { ReactComponent as PdfBook } from '../../../assets/icons/bookCard/pdfBook.svg'
 import { BookType } from '../../../utils/constants/constants'
 import { blockBookAction } from '../../../store/slices/adminActions/applicationInnerPageActions'
-import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
+import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopUpMeatBalls'
 
 const Book = ({ id, img, date, name, price, bookType }) => {
    const dispatch = useDispatch()
