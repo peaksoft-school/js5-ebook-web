@@ -45,7 +45,7 @@ export const getNotificationWithId = (id) => {
    }
 }
 
-export const unReadNotification = () => {
+export const readNotification = () => {
    return async (dispatch) => {
       const putData = await appFetch({
          url: '/api/notifications/markAsRead',

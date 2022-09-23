@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { ReactComponent as Meatballls } from '../../../assets/icons/MeatBalls/meatballsIcon.svg'
 import logo from '../../../assets/images/logo.svg'
 import PopUp from '../popup'
-import { unReadNotification } from '../../../store/slices/notificationSlice'
+import { readNotification } from '../../../store/slices/notificationSlice'
 
 const NotificationMenu = ({
    anchorEl,
@@ -28,7 +28,7 @@ const NotificationMenu = ({
       setIsOpenPopup(false)
    }
    const handleReadNotif = () => {
-      dispatch(unReadNotification())
+      dispatch(readNotification())
       handleClosePopup()
    }
    return (
