@@ -4,6 +4,7 @@ import appFetch from '../../hooks/appFetch'
 const initialState = {
    notifications: [],
    notification: {},
+   read: false,
 }
 
 export const notificationsSlise = createSlice({
@@ -15,6 +16,9 @@ export const notificationsSlise = createSlice({
       },
       setNotification(state, action) {
          state.notification = action.payload
+      },
+      readNotification(state) {
+         state.read = !state.read
       },
    },
 })
@@ -28,6 +32,7 @@ export const getAllNotifications = () => {
          url: '/api/notifications',
       })
       dispatch(notificationAction.setNotifications(getData))
+      dispatch(getAllNotifications())
    }
 }
 
@@ -37,6 +42,16 @@ export const getNotificationWithId = (id) => {
          url: `/api/notifications/${id}`,
       })
       dispatch(notificationAction.setNotification(getData))
-      console.log(getData)
+   }
+}
+
+export const unReadNotification = () => {
+   return async (dispatch) => {
+      const putData = await appFetch({
+         url: '/api/notifications/markAsRead',
+         method: 'PUT',
+      })
+      dispatch(notificationAction.readNotification(putData))
+      dispatch(getAllNotifications())
    }
 }

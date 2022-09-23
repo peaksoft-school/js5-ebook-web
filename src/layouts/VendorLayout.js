@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router'
+// import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { Badge, MenuItem } from '@mui/material'
 import AppContainer, { Wrapper } from './AppContainer'
@@ -18,6 +19,7 @@ import ExitApp from '../Components/UI/ExitApp'
 import Notification from '../Components/UI/notification/Notification'
 
 const Vendor = () => {
+   // const { notifications } = useSelector((state) => state.notifications)
    const [anchorEl, setAnchorEl] = useState(null)
    const [isModal, setIsModal] = useState(false)
    const [anchorElNotif, setAnchorElNotif] = useState(null)
@@ -43,6 +45,7 @@ const Vendor = () => {
    const onCloseNotifHandler = () => {
       setIsOpenNotif(false)
    }
+
    return (
       <Wrapper>
          <AppContainer

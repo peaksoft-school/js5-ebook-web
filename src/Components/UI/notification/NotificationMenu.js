@@ -3,10 +3,11 @@ import styled from '@emotion/styled'
 import { Divider } from '@mui/material'
 import { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
+import { useDispatch } from 'react-redux'
 import { ReactComponent as Meatballls } from '../../../assets/icons/MeatBalls/meatballsIcon.svg'
-// import meatballsIcon from '../../../assets/icons/MeatBalls/meatballsIcon.svg'
 import logo from '../../../assets/images/logo.svg'
 import PopUp from '../popup'
+import { unReadNotification } from '../../../store/slices/notificationSlice'
 
 const NotificationMenu = ({
    anchorEl,
@@ -17,6 +18,7 @@ const NotificationMenu = ({
 }) => {
    const [isOpenPopup, setIsOpenPopup] = useState(false)
    const [anchorElPopup, setAnchorElPopup] = useState(null)
+   const dispatch = useDispatch()
 
    const handleOpenPopup = (e) => {
       setAnchorElPopup(e.currentTarget)
@@ -25,6 +27,10 @@ const NotificationMenu = ({
    const handleClosePopup = () => {
       setIsOpenPopup(false)
    }
+   const handleReadNotif = () => {
+      dispatch(unReadNotification())
+      handleClosePopup()
+   }
    return (
       <StyledMenu
          id="basic-menu"
@@ -32,8 +38,14 @@ const NotificationMenu = ({
          open={open}
          onClose={handleClose}
       >
-         <PopUp open={isOpenPopup} close={handleClosePopup}>
-            Отметить как прочитанное
+         <PopUp
+            open={isOpenPopup}
+            close={handleClosePopup}
+            anchorEl={anchorElPopup}
+         >
+            <StyledPopupText onClick={handleReadNotif}>
+               Отметить как прочитанное
+            </StyledPopupText>
          </PopUp>
          <StyledTitle>
             Ваши уведомления{' '}
@@ -42,7 +54,11 @@ const NotificationMenu = ({
 
          {menuItems.map((item) => (
             <>
-               <StyledMenuItem key={item.id} onClick={() => onClick(item.id)}>
+               <StyledMenuItem
+                  key={item.id}
+                  onClick={() => onClick(item.id)}
+                  primary={item.read}
+               >
                   <StyledItem>
                      <StyledImage src={logo} />
                      <StyledText>
@@ -76,7 +92,6 @@ export const StyledMenu = styled(Menu)`
       font-weight: 600;
       font-size: 14px;
       line-height: 19px;
-      /* margin-top: 40px; */
       ::-webkit-scrollbar {
          width: 5px;
       }
@@ -103,6 +118,7 @@ export const StyledMenuItem = styled.div`
    align-items: center;
    width: 409px;
    height: 75px;
+   background: ${(props) => (!props.primary ? '#F0F0F0' : '#ffff')};
 `
 export const StyledImage = styled.img`
    margin-right: 8px;
@@ -140,4 +156,12 @@ export const StyledStatus = styled.span`
    font-size: 16px;
    line-height: 130%;
    color: #000000;
+`
+const StyledPopupText = styled.p`
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 130%;
+   cursor: pointer;
 `
