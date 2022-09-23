@@ -31,43 +31,15 @@ export const vendorMainPageSlice = createSlice({
          state.vendorBooks = ''
       },
 
-      updateValid(state) {
-         state.isValid = !state.isValid
-      },
-
-      // status VendormainPage
       success(state) {
          state.status = 'success'
-         state.boolean = true
       },
-      errorResult(state, action) {
+      errorResult(state) {
          state.status = 'rejected'
-         state.boolean = action.payload
       },
       pending(state) {
          state.status = 'pending'
       },
-
-      // type books withId
-      // findBookWithId(state, action) {
-      //    const typeBook = action.payload.bookType
-      //    if (typeBook === 'PAPER_BOOK') {
-      //       state.paperBooks = action.payload
-      //    } else {
-      //       state.paperBooks = ''
-      //    }
-      //    if (typeBook === 'AUDIO_BOOK') {
-      //       state.audioBooks = action.payload
-      //    } else {
-      //       state.audioBooks = ''
-      //    }
-      //    if (typeBook === 'ELECTRONIC_BOOK') {
-      //       state.electronicBooks = action.payload
-      //    } else {
-      //       state.electronicBooks = ''
-      //    }
-      //    state.allBooks = action.payload
-      // },
 
       bookType(state, action) {
          if (action.payload.bookType === 'PAPER_BOOK') {

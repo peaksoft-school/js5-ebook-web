@@ -4,14 +4,6 @@ import bookAction from '../slices/addBookSlice'
 import snackbarAction from '../slices/snackbarSlice'
 import vendorMainPageAction from '../slices/vendorMainPageSlice'
 
-const URLEDIT =
-   'http://ebook-env.eba-kbrgztwq.eu-central-1.elasticbeanstalk.com'
-let store2
-
-export const injectStore2 = (fromStore) => {
-   store2 = fromStore
-}
-
 export const getMainBooks = (slectedText, next, vendorId) => {
    return async (dispatch) => {
       try {
@@ -35,16 +27,7 @@ export const getMainBooksWithId = (id, navigate) => {
          const getData = await appFetch({
             url: `/api/books/${id}`,
          })
-         // dispatch(vendorMainPageAction.findBookWithId(getData))
          dispatch(vendorMainPageAction.bookType(getData))
-         // <<<<<<< HEAD
-         //          // dispatch(vendorMainPageAction.success())
-         //          // dispatch(bookAction.statusSuccess())
-         //          navigate('/main/addbook')
-         //       } catch (error) {
-         //          // dispatch(vendorMainPageAction.errorResult(error))
-         //          dispatch(bookAction.statusError(error))
-         dispatch(vendorMainPageAction.success())
          navigate('/main/addbook')
       } catch (error) {
          dispatch(vendorMainPageAction.errorResult(error))
@@ -65,6 +48,7 @@ export const getMainBooksDelete = (id, navigate) => {
             navigate('/')
          }
          dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(getMainBooksWithId())
       } catch (error) {
          dispatch(snackbarAction.snackbarFalse('Что то пошло не так!'))
       }
@@ -74,29 +58,23 @@ export const getMainBooksDelete = (id, navigate) => {
 // EDITE
 
 export const putVendorBook = (
-   { inputValues, images, bookId, langText, genId },
+   { inputValues, images, bookId, isChecked },
    navigate
 ) => {
-   // console.log(language)
-   console.log(genId)
-   const { token } = store2.getState().auth.user
-
    const mydata = {
       mainImage: images.mainImage,
       secondImage: images.secondImage,
       thirdImage: images.thirdImage,
       name: inputValues.name,
-      genreId: genId,
-      // genreId: genId,
+      genreId: inputValues.genreId,
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
-      language: langText,
+      language: inputValues.language,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
       fragment: inputValues.fragment,
-      // fragment: inputValues.fragment,
-      bestseller: true,
+      bestseller: isChecked,
       pageSize: inputValues.pageSize,
       publishingHouse: 'we',
       quantityOfBook: inputValues.quantityOfBook,
@@ -125,28 +103,16 @@ export const putVendorBook = (
          } else if (typeof images.thirdImage === 'string') {
             mydata.thirdImage = images.thirdImage
          }
-
-         const putData = await fetch(
-            `${URLEDIT}/api/book/update/paperBook/${bookId}`,
-            {
-               method: 'PUT',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-               },
-               body: JSON.stringify(mydata),
-            }
-         )
-         if (!putData.ok) {
-            throw new Error('Что то пошло не так!')
-         }
-         if (putData.ok) {
-            dispatch(snackbarAction.snackbarSuccess('книга успешно сохранена'))
-            dispatch(bookAction.statusSuccess())
-            navigate('/')
-         }
+         const result = await appFetch({
+            url: `/api/book/update/paperBook/${bookId}`,
+            method: 'PUT',
+            body: mydata,
+         })
+         dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(bookAction.statusSuccess())
+         navigate('/')
       } catch (error) {
-         dispatch(bookAction.statusError('Что то пошло не так!'))
+         dispatch(bookAction.statusError(error))
       }
    }
 }
@@ -156,32 +122,30 @@ export const editeElectronicBook = ({
    images,
    bookId,
    pdfValue,
-   language,
-   // genreId,
    navigate,
+   isChecked,
 }) => {
    const mydata = {
       mainImage: withIdValues.mainImage,
       secondImage: withIdValues.secondImage,
       thirdImage: withIdValues.thirdImage,
       name: withIdValues.name,
-      genreId: withIdValues.genre,
+      genreId: withIdValues.genreId,
       price: withIdValues.price,
       author: withIdValues.author,
       description: withIdValues.description,
-      language,
+      language: withIdValues.language,
       yearOfIssue: withIdValues.yearOfIssue,
       discount: withIdValues.discount,
       fragment: withIdValues.fragment,
-      bestseller: true,
-      electronicBook: 'string',
+      bestseller: isChecked,
+      electronicBook: pdfValue,
       pageSize: withIdValues.pageSize,
       publishingHouse: withIdValues.publishingHouse,
       quantityOfBook: withIdValues.quantityOfBook,
    }
 
    return async (dispatch) => {
-      const { token } = store2.getState().auth.user
       dispatch(bookAction.statusPending())
       try {
          if (typeof images.mainImage === 'object') {
@@ -209,27 +173,16 @@ export const editeElectronicBook = ({
             const pdf = await appFileFetchService(pdfValue)
             mydata.electronicBook = pdf.link
          }
-         const putData = await fetch(
-            `${URLEDIT}/api/book/update/electronicBook/${bookId}`,
-            {
-               method: 'PUT',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-               },
-               body: JSON.stringify(mydata),
-            }
-         )
-         if (!putData.ok) {
-            throw new Error('Что то пошло не так!')
-         }
-         if (putData.ok) {
-            dispatch(bookAction.statusSuccess())
-            dispatch(snackbarAction.snackbarSuccess('книга успешно сохранена!'))
-            navigate('/')
-         }
+         const result = await appFetch({
+            url: `/api/book/update/electronicBook/${bookId}`,
+            method: 'PUT',
+            body: mydata,
+         })
+         dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(bookAction.statusSuccess())
+         navigate('/')
       } catch (error) {
-         dispatch(bookAction.statusError(error.message))
+         dispatch(bookAction.statusError(error))
       }
    }
 }
@@ -238,48 +191,30 @@ export const editeAudioBook = ({
    inputValues,
    images,
    bookId,
-   // audioValues,
+   audioValues,
    navigate,
-   language,
-   // genreBook,
    durationTimer,
+   isChecked,
 }) => {
    const mydata = {
       mainImage: images.mainImage,
       secondImage: images.secondImage,
       thirdImage: images.thirdImage,
       name: inputValues.name,
-      genreId: 2,
+      genreId: inputValues.genreId,
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
-      language,
+      language: inputValues.language,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
-      bestseller: true,
-      // fragment: audioValues.fragment ? audioValues.fragment : 'string',
+      bestseller: isChecked,
+      fragment: 'erg',
+      // fragment: String(audioValues.fragment),
       duration: durationTimer,
-      // audioBook: audioValues.audioBook,
-
-      // mainImage: 'string',
-      // secondImage: 'string',
-      // thirdImage: 'string',
-      // name: 'string',
-      // genreId: 0,
-      // price: 0,
-      // author: 'string',
-      // description: 'string',
-      // language: 'KYRGYZ',
-      // yearOfIssue: 0,
-      // discount: 0,
-      // bestseller: true,
-      fragment: 'string',
-      // duration: 'string',
-      audioBook: 'string',
+      audioBook: audioValues.audioBook,
    }
-   console.log(language)
    return async (dispatch) => {
-      const { token } = store2.getState().auth.user
       dispatch(bookAction.statusPending())
       try {
          if (typeof images.mainImage === 'object') {
@@ -294,28 +229,16 @@ export const editeAudioBook = ({
             const imgFiles = await appFileFetchService(images.thirdImage)
             mydata.thirdImage = imgFiles.link
          }
-         const putData = await fetch(
-            `${URLEDIT}/api/book/update/audioBook/${bookId}`,
-            {
-               method: 'PUT',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-               },
-               body: JSON.stringify(mydata),
-            }
-         )
-         if (!putData.ok) {
-            throw new Error('Что то пошло не так!')
-         }
-         if (putData.ok) {
-            dispatch(snackbarAction.snackbarSuccess('книга успешно сохранена!'))
-            dispatch(bookAction.statusSuccess())
-            navigate('/')
-         }
+         const result = await appFetch({
+            url: `/api/book/update/audioBook/${bookId}`,
+            method: 'PUT',
+            body: mydata,
+         })
+         dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(bookAction.statusSuccess())
+         navigate('/')
       } catch (error) {
          dispatch(bookAction.statusError(error.message))
-         dispatch(bookAction.statusError())
       }
    }
 }

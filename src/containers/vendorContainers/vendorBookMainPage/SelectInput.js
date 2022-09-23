@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { useSelector } from 'react-redux'
 import { MenuItem } from '@mui/material'
 import strel from '../../../assets/icons/strel.svg'
 import PopUp from '../../../Components/UI/popup'
@@ -8,24 +7,25 @@ import PopUp from '../../../Components/UI/popup'
 export default function SelectInput({
    genres,
    name,
-   defaultName,
    onClick,
-   type,
-   strelLog,
-   editeName,
+   from,
+   primary,
    ...props
 }) {
-   const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
-      name: defaultName || 'Все',
-      id: null,
-      key: type,
+      name: from.name,
+      id: from.id,
    })
    const open = Boolean(anChorEl)
+   const [one, setOne] = useState(true)
    useEffect(() => {
+      if (one) {
+         setOne(false)
+         return
+      }
       if (onClick) {
-         onClick(label.id, label.text, label.name)
+         onClick(label.name, label.id)
       }
    }, [label])
    const handleClickLabel = (e) => {
@@ -34,24 +34,12 @@ export default function SelectInput({
    const onCloseMenu = () => {
       setAnchorEl(null)
    }
-   // const a = false
-   useEffect(() => {
-      if (editeName) {
-         setLabel((prev) => {
-            return {
-               ...prev,
-               name: editeName,
-            }
-         })
-      }
-   }, [dataWithId])
-   const onSelectItem = (id, name, text) => {
+   const onSelectItem = (id, name) => {
       setLabel((prev) => {
          return {
             ...prev,
             name,
             id,
-            text,
          }
       })
       onCloseMenu()
@@ -60,14 +48,9 @@ export default function SelectInput({
    return (
       <SelectBook>
          {name && <SelectSpan>{name}:</SelectSpan>}
-         <SelectLabel
-            ful={defaultName}
-            primary={editeName}
-            {...props}
-            onClick={handleClickLabel}
-         >
+         <SelectLabel {...props} onClick={handleClickLabel}>
             <SpanStyle primary={label.id}>{label.name}</SpanStyle>
-            {strelLog && <ImgesCont src={strel} />}
+            {primary ? '' : <ImgesCont src={strel} />}
          </SelectLabel>
          <PopUp
             height={props.height}
@@ -80,9 +63,7 @@ export default function SelectInput({
                   return (
                      <PopUpItem
                         key={elem.id}
-                        onClick={() =>
-                           onSelectItem(elem.id, elem.name, elem.text)
-                        }
+                        onClick={() => onSelectItem(elem.id, elem.name)}
                      >
                         {elem.name}
                      </PopUpItem>
@@ -94,7 +75,6 @@ export default function SelectInput({
 }
 const PopUpItem = styled(MenuItem)`
    padding: 10px;
-   color: red;
 `
 const SelectLabel = styled('div')`
    font-family: 'Open Sans';
@@ -103,7 +83,6 @@ const SelectLabel = styled('div')`
    font-size: 16px;
    line-height: 120%;
    cursor: pointer;
-
    border: ${(props) => (props.border ? '1px solid #969696' : '')};
    font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '600')};
    padding: ${(props) => (props.padding ? props.padding : '')};
@@ -134,5 +113,7 @@ const ImgesCont = styled('img')`
    margin-left: 10px;
 `
 const SpanStyle = styled('span')`
+   height: 16px;
+   border: 1px solid rgba(0, 0, 0, 0);
    color: ${(props) => (props.primary ? 'black' : '')};
 `

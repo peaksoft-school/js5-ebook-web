@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,7 +7,6 @@ import FileUploadButton from '../../../Components/UI/uploadaudio/FileUploadButto
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
-import CheckBox from '../../../Components/UI/checkBox/CheckBox'
 import { addElectronicBoook } from '../../../store/createActions/addBookActions'
 import {
    ButtonDiv,
@@ -22,37 +21,43 @@ import { editeElectronicBook } from '../../../store/createActions/vendorMainPage
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
-import Spinner from '../../../Components/UI/Spinner'
+import BestsellerCheckBox from '../../../Components/UI/checkBox/BestsellerCheckbox'
+import { setGenres } from '../../../store/slices/globalSlices'
 
 const languageSelect = [
-   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
-   { name: 'Русский', text: 'RUSSIAN', id: 2 },
-   { name: 'Английский', text: 'ENGLISH', id: 3 },
+   { name: 'Кыргызский', id: 'KYRGYZ' },
+   { name: 'Русский', id: 'RUSSIAN' },
+   { name: 'Английский', id: 'ENGLISH' },
 ]
 
 const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const genre = useSelector((store) => store.globalValues.genres)
-   const { status } = useSelector((store) => store.addbook)
+   const { addBookStatus } = useSelector((store) => store.addbook)
    const dataWithId = useSelector(
       (store) => store.vendorMainPage.electronicBooks
    )
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const [isChecked, setIsChecked] = useState(false)
 
    const [withIdValues, setWithIdValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
       author: dataWithId ? dataWithId.author : '',
-      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
       description: dataWithId ? dataWithId.description : '',
       fragment: dataWithId ? dataWithId.fragment : '',
       pageSize: dataWithId ? dataWithId.pageSize : '',
       price: dataWithId ? dataWithId.price : '',
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
-      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
       discount: dataWithId ? dataWithId.discount : '',
-      genreId: dataWithId ? dataWithId.genre : '',
+      electronicBook: dataWithId ? dataWithId.electronicBook : '',
+      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
+      language: dataWithId ? dataWithId.language : '',
+      genreId:
+         dataWithId && genre
+            ? genre.find((el) => el.name === dataWithId.genre).id
+            : '',
    })
    const changePdfFileValue = (pdf) => {
       if (!pdf) {
@@ -61,18 +66,16 @@ const ElectronicBookForm = ({ images }) => {
       setPdfFile(pdf)
    }
 
-   const formatLanguage = () => {
-      let formation
-      if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
-         formation = 'Кыргызский'
-      }
-      if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
-         formation = 'Русский'
-      }
-      if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
-         formation = 'Английский'
-      }
-      return formation
+   const languageFunc = (name, id) => {
+      setWithIdValues((prev) => {
+         return { ...prev, language: id }
+      })
+   }
+
+   const genreFunction = (name, id) => {
+      setWithIdValues((prev) => {
+         return { ...prev, genreId: id }
+      })
    }
 
    const handleChangeInput = (e) => {
@@ -112,11 +115,45 @@ const ElectronicBookForm = ({ images }) => {
       return validateValues && images.mainImage && pdfValue
    }
 
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
+
    const clickSendFormValues = async () => {
       if (isFormValid()) {
-         dispatch(addElectronicBoook({ withIdValues, images, pdfValue }))
-         dispatch(bookAction.deleteImage())
+         dispatch(
+            addElectronicBoook({ withIdValues, images, isChecked, pdfValue })
+         )
+      }
+      if (!isFormValid()) {
+         dispatch(snackbarActions({ bron: 'exit' }))
+      }
+   }
 
+   const { bookId } = dataWithId !== null ? dataWithId : ''
+
+   const updateForms = () => {
+      dispatch(
+         editeElectronicBook({
+            withIdValues,
+            images,
+            bookId,
+            pdfValue,
+            navigate,
+            isChecked,
+         })
+      )
+   }
+   const setBestSeller = () => {
+      setIsChecked((prev) => !prev)
+   }
+
+   useEffect(() => {
+      if (dataWithId) {
+         setIsChecked(dataWithId.bestseller)
+         setPdfFile(dataWithId.electronicBook)
+      }
+      if (addBookStatus === 'success') {
          setWithIdValues({
             name: '',
             author: '',
@@ -130,30 +167,10 @@ const ElectronicBookForm = ({ images }) => {
             discount: '',
             quantityOfBook: '',
          })
+         dispatch(bookAction.deleteImage())
+         setIsChecked(false)
       }
-      if (!isFormValid()) {
-         dispatch(snackbarActions({ bron: 'exit' }))
-      }
-   }
-
-   const { bookId, language } = dataWithId !== null ? dataWithId : ''
-   const genreId = dataWithId !== null ? dataWithId : ''
-
-   const updateForms = () => {
-      if (!isFormValid()) {
-         dispatch(
-            editeElectronicBook({
-               withIdValues,
-               images,
-               bookId,
-               pdfValue,
-               language,
-               genreId,
-               navigate,
-            })
-         )
-      }
-   }
+   }, [dataWithId, addBookStatus])
 
    return (
       <>
@@ -163,7 +180,6 @@ const ElectronicBookForm = ({ images }) => {
             variant="error"
             width="400px"
          />
-         {status === 'pending' && <Spinner />}
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -191,18 +207,24 @@ const ElectronicBookForm = ({ images }) => {
                </LabelStyle>
                <SelectInput
                   border
-                  padding="12px 10px 12px 19px"
+                  padding="12px 10px 10px 19px"
                   width="100%"
                   hover
                   defaultName="Литература, роман, стихи..."
                   fontWeight
-                  color="#969696"
                   height="400px"
-                  onClick={(genreId) =>
-                     setWithIdValues({ ...withIdValues, genreId })
-                  }
+                  color="#969696"
+                  onClick={genreFunction}
                   genres={genre}
-                  editeName={dataWithId ? dataWithId.genre : ''}
+                  from={{
+                     name:
+                        genre && dataWithId
+                           ? genre.find((el) => el.id === withIdValues.genreId)
+                                .name
+                           : 'Выберите жанр',
+                     id: withIdValues ? withIdValues.genreId : null,
+                  }}
+                  primary
                />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
@@ -239,17 +261,24 @@ const ElectronicBookForm = ({ images }) => {
                      </LabelStyle>
                      <SelectInput
                         border
-                        padding="12px 10px 11px 19px"
+                        padding="12px 10px 12px 19px"
                         width="100%"
-                        hover
                         defaultName="язык"
                         fontWeight="400"
                         color="#969696"
-                        onClick={(language) =>
-                           setWithIdValues({ ...withIdValues, language })
-                        }
+                        hover
                         genres={languageSelect}
-                        editeName={dataWithId ? formatLanguage() : ''}
+                        // name="язык"
+                        onClick={languageFunc}
+                        from={{
+                           name: dataWithId
+                              ? languageSelect.find(
+                                   (el) => el.id === dataWithId.language
+                                ).name
+                              : 'Выберите язык',
+                           id: dataWithId ? dataWithId.language : null,
+                        }}
+                        primary
                      />
                      <LabelStyle htmlFor="obem">
                         Объем <strong>*</strong>
@@ -290,7 +319,12 @@ const ElectronicBookForm = ({ images }) => {
                         type="number"
                      />
                      <CheckBoxDiv>
-                        <CheckBox label="Бестселлер" />
+                        <BestsellerCheckBox
+                           label="Бестселлер"
+                           onChange={setBestSeller}
+                           checked={isChecked}
+                           id="bestseller"
+                        />
                      </CheckBoxDiv>
                      <LabelStyle htmlFor="discount">Скидка</LabelStyle>
                      <InputText

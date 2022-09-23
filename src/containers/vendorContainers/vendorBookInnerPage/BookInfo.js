@@ -23,9 +23,6 @@ const BookInfo = ({ book }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
-   const bookTypeContent =
-      book.bookType === 'AUDIO_BOOK' ? <AudioListener /> : ''
-
    const newBookIcon =
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
 
@@ -55,7 +52,11 @@ const BookInfo = ({ book }) => {
                <StyledAmountBlock>В корзине({book.basket})</StyledAmountBlock>
                <StyledAmountBlock>
                   <img src={likeIcon} alt="icon" />({book.likes})
-                  {bookTypeContent}
+                  <DivBlock>
+                     {book?.bookType === 'AUDIO_BOOK' && book.audioBook && (
+                        <AudioListener url={book.audioBook} />
+                     )}
+                  </DivBlock>
                </StyledAmountBlock>
                <StyledBookName>{book.bookName}</StyledBookName>
                <div>
@@ -187,6 +188,8 @@ const StyledTabBlock = styled.div`
       width: 385px;
    }
 `
+
+const DivBlock = styled('div')``
 const StyledInfoText = styled.p`
    font-family: 'Open Sans';
    font-style: normal;

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import PaperBookForm from './PaperBookForm'
 import ImagePicker from '../../../Components/UI/imagePicker/imagePicker'
 import RadioButton from '../../../Components/UI/RadioButton'
-import { setGenres } from '../../../store/slices/globalSlices'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
 import AudioBookForm from './AudioBookForm'
@@ -13,6 +12,7 @@ import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import bookAction from '../../../store/slices/addBookSlice'
 import Spinner from '../../../Components/UI/Spinner'
 import BreadCrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
+import { setGenres } from '../../../store/slices/globalSlices'
 
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
@@ -38,10 +38,6 @@ const AddBookPage = () => {
    useEffect(() => {
       dispatch(snackbarActions())
    }, [addBookMessage, imageSnack])
-
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
 
    useEffect(() => {
       const time = setTimeout(() => {
@@ -80,6 +76,10 @@ const AddBookPage = () => {
    const closeSnackbarFunc = () => {
       dispatch(bookAction.cleanStatusMessage())
    }
+
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
 
    return (
       <ContainerDiv>
