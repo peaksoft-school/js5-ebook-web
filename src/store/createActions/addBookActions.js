@@ -13,8 +13,7 @@ export const addPaperBook = (inputValues, images, bestseller) => {
       discount: inputValues.discount,
       language: inputValues.language,
       bestseller,
-      // fragment: inputValues.fragment,
-      fragment: 'shdc',
+      fragment: inputValues.fragment,
       pageSize: inputValues.pageSize,
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
@@ -54,12 +53,14 @@ export const addAudioBook = ({
    images,
    audioValues,
    durationTimer,
+   isChecked,
 }) => {
    const valuesWithFile = {
       ...inputValues,
       duration: durationTimer,
       fragment: audioValues.fragment,
       audioBook: audioValues.audioBook,
+      bestseller: isChecked,
    }
    return async (dispatch) => {
       dispatch(bookAction.statusPending())
@@ -110,7 +111,7 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
       yearOfIssue: withIdValues.yearOfIssue,
       discount: withIdValues.discount,
       bestseller: true,
-      language: 'KYRGYZ',
+      language: withIdValues.language,
       fragment: withIdValues.fragment,
       pageSize: withIdValues.pageSize,
       publishingHouse: withIdValues.publishingHouse,
@@ -144,11 +145,7 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
             body: valuesWithFile,
          })
          dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
-         if (result.ok) {
-            dispatch(
-               bookAction.statusSuccess('Ваш запрос был успешно отправлен!')
-            )
-         }
+         console.log(result.message)
       } catch (error) {
          dispatch(bookAction.statusError('Что то пошло не так!'))
       }

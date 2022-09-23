@@ -12,6 +12,7 @@ import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import bookAction from '../../../store/slices/addBookSlice'
 import Spinner from '../../../Components/UI/Spinner'
 import BreadCrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
+import { setGenres } from '../../../store/slices/globalSlices'
 
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
@@ -75,6 +76,10 @@ const AddBookPage = () => {
    const closeSnackbarFunc = () => {
       dispatch(bookAction.cleanStatusMessage())
    }
+
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
 
    return (
       <ContainerDiv>

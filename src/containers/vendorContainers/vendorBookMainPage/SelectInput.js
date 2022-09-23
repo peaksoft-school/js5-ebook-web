@@ -83,7 +83,6 @@ const SelectLabel = styled('div')`
    font-size: 16px;
    line-height: 120%;
    cursor: pointer;
-
    border: ${(props) => (props.border ? '1px solid #969696' : '')};
    font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '600')};
    padding: ${(props) => (props.padding ? props.padding : '')};

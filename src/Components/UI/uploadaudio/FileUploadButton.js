@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Vector from '../../../assets/upaudioicons/Vector.png'
 import VectorOk from '../../../assets/upaudioicons/VectorOk.png'
-// import GetSnackbar from '../snackbar/GetSnackbar'
 
 const FileUploadButton = ({
    onChange,
@@ -22,8 +21,7 @@ const FileUploadButton = ({
    const [pdfFile, setPdfFile] = useState([])
    const [audioFile, setAudioFile] = useState([])
    const [isValid, setIsValid] = useState(false)
-   // console.log(dataWithId)
-   // console.log(dataWithId)
+
    useEffect(() => {
       const valid = setTimeout(() => {
          setIsValid(false)
@@ -49,14 +47,16 @@ const FileUploadButton = ({
          setFileState('success')
       }
    }
+
    useEffect(() => {
+      if (deleteFile) {
+         setFileState('default')
+      }
       if (dataWithId) {
          setFileState('success')
       }
-   }, [dataWithId])
-   useEffect(() => {
-      setFileState('default')
-   }, [deleteFile])
+   }, [dataWithId, deleteFile])
+
    let fileButton
    if (fileState === 'default') {
       fileButton = (

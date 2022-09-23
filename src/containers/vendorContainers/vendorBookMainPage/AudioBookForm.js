@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,7 +6,7 @@ import FileUploadButton from '../../../Components/UI/uploadaudio/FileUploadButto
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
-import CheckBox from '../../../Components/UI/checkBox/CheckBox'
+import BestsellerCheckBox from '../../../Components/UI/checkBox/BestsellerCheckbox'
 import bookAction from '../../../store/slices/addBookSlice'
 import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
 import { addAudioBook } from '../../../store/createActions/addBookActions'
@@ -14,7 +14,7 @@ import { editeAudioBook } from '../../../store/createActions/vendorMainPagesActi
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
-import Spinner from '../../../Components/UI/Spinner'
+import { setGenres } from '../../../store/slices/globalSlices'
 
 const languageSelect = [
    { name: 'Кыргызский', id: 'KYRGYZ' },
@@ -26,13 +26,15 @@ const AudioBookForm = ({ images }) => {
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
-   const { status } = useSelector((store) => store.addbook)
+   const { addBookStatus } = useSelector((store) => store.addbook)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const [isChecked, setIsChecked] = useState(false)
    const [audioValues, setAudioValues] = useState({
       fragment: dataWithId ? dataWithId.audioBookFragment : '',
       audioBook: dataWithId ? dataWithId.audioBook : '',
    })
+
    const [duration, setDuration] = useState({
       duration: dataWithId ? dataWithId.duration[0] : '',
       minute: dataWithId ? dataWithId.duration[1] : '',
@@ -58,18 +60,9 @@ const AudioBookForm = ({ images }) => {
             : '',
    })
 
-   console.log(inputValues)
-   // const [genId, setGenId] = useState(null)
-   // const [findGenre, setFindGenre] = useState(null)
-   // const [lengText, setLengText] = useState('')
-
-   // useEffect(() => {
-   //    if (dataWithId) {
-   //       setFindGenre(() => {
-   //          return genre.find((el) => el.name === dataWithId.genre)
-   //       })
-   //    }
-   // }, [dataWithId])
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
 
    const languageFunc = (name, id) => {
       setInputValues((prev) => {
@@ -87,20 +80,6 @@ const AudioBookForm = ({ images }) => {
       const { name } = e.target
       setAudioValues({ ...audioValues, [name]: audio })
    }
-
-   // const formatLanguage = () => {
-   //    let formation
-   //    if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
-   //       formation = 'Кыргызский'
-   //    }
-   //    if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
-   //       formation = 'Русский'
-   //    }
-   //    if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
-   //       formation = 'Английский'
-   //    }
-   //    return formation
-   // }
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
@@ -150,34 +129,19 @@ const AudioBookForm = ({ images }) => {
    const clickSendFormValues = async () => {
       if (isFormValid()) {
          dispatch(
-            addAudioBook({ inputValues, images, audioValues, durationTimer })
+            addAudioBook({
+               inputValues,
+               images,
+               audioValues,
+               durationTimer,
+               isChecked,
+            })
          )
-         dispatch(bookAction.deleteImage())
-
-         setInputValues({
-            name: '',
-            author: '',
-            genreId: '',
-            description: '',
-            yearOfIssue: '',
-            duration: '',
-            minute: '',
-            second: '',
-            price: '',
-            discount: '',
-         })
-         setDuration({
-            duration: '',
-            minute: '',
-            second: '',
-         })
       } else {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   // const { bookId } = dataWithId !== null ? dataWithId : ''
-   // const genreBook = dataWithId !== null ? dataWithId : ''
-   // console.log(genreBook)
+
    const updateForms = () => {
       dispatch(
          editeAudioBook({
@@ -187,9 +151,43 @@ const AudioBookForm = ({ images }) => {
             audioValues,
             navigate,
             durationTimer,
+            isChecked,
          })
       )
    }
+
+   const setBestSeller = () => {
+      setIsChecked((prev) => !prev)
+   }
+
+   useEffect(() => {
+      if (dataWithId) {
+         setIsChecked(dataWithId.bestseller)
+      }
+      if (addBookStatus === 'success') {
+         setInputValues({
+            name: '',
+            genreId: '',
+            price: '',
+            author: '',
+            description: '',
+            language: '',
+            yearOfIssue: '',
+            discount: '',
+         })
+         setDuration({
+            duration: '',
+            minute: '',
+            second: '',
+         })
+         setAudioValues({
+            audioBook: '',
+            fragment: '',
+         })
+         dispatch(bookAction.deleteImage())
+         setIsChecked(false)
+      }
+   }, [dataWithId, addBookStatus])
 
    return (
       <>
@@ -199,7 +197,6 @@ const AudioBookForm = ({ images }) => {
             variant="error"
             width="400px"
          />
-         {status === 'pending' && <Spinner />}
          <InputWrapper>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -350,7 +347,12 @@ const AudioBookForm = ({ images }) => {
                   </TimerStan>
                </SelectDiv>
                <CheckBoxDiv>
-                  <CheckBox label="Бестселлер" />
+                  <BestsellerCheckBox
+                     label="Бестселлер"
+                     onChange={setBestSeller}
+                     checked={isChecked}
+                     id="bestseller"
+                  />
                </CheckBoxDiv>
                <SelectDiv>
                   <PriceDiv>

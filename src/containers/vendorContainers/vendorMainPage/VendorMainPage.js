@@ -28,7 +28,6 @@ import {
 import SelectInput from '../vendorBookMainPage/SelectInput'
 import NotFound from './NotFound'
 import { setGenres } from '../../../store/slices/globalSlices'
-// import Spinner from '../../../Components/UI/Spinner'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
@@ -71,7 +70,6 @@ const VendorMainPage = () => {
 
    return (
       <WrapperDiv>
-         {/* {snackbarStatus === 'pending' && <Spinner />} */}
          <HeaderMainPage />
          <HeaderText>
             <Span>Всего {totalElements} книг</Span>
@@ -84,6 +82,9 @@ const VendorMainPage = () => {
             </SelectBooksDiv>
          </HeaderText>
          <hr />
+         {vendorBooks.length === 0 && (
+            <DontBooks>You dont have books !</DontBooks>
+         )}
          {vendorBooks.length === 0 && snackbarStatus && (
             <NotFoundPage>
                <NotFound />
@@ -175,5 +176,10 @@ const Books = styled('div')`
 `
 const NotFoundPage = styled('div')`
    width: 800px;
+   /* height: 600px; */
    margin: auto;
+`
+const DontBooks = styled('h2')`
+   color: red;
+   text-align: center;
 `

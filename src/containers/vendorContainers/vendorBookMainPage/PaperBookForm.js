@@ -11,23 +11,22 @@ import bookAction from '../../../store/slices/addBookSlice'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import SelectInput from './SelectInput'
 import { setGenres } from '../../../store/slices/globalSlices'
-// import SelectInput from './SelectInput'
-import Spinner from '../../../Components/UI/Spinner'
 
-// const languageSelect = [
-//    { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
-//    { name: 'Русский', text: 'RUSSIAN', id: 2 },
-//    { name: 'Английский', text: 'ENGLISH', id: 3 },
-// ]
+const languageSelect = [
+   { name: 'Кыргызский', id: 'KYRGYZ' },
+   { name: 'Русский', id: 'RUSSIAN' },
+   { name: 'Английский', id: 'ENGLISH' },
+]
 
 const PaperBookForm = ({ images }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   // const genre = useSelector((store) => store.globalValues.genres)
+   const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
-   const { status } = useSelector((store) => store.addbook)
+   const { addBookStatus } = useSelector((store) => store.addbook)
    const [isChecked, setIsChecked] = useState(false)
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
@@ -37,28 +36,15 @@ const PaperBookForm = ({ images }) => {
       fragment: dataWithId ? dataWithId.fragment : '',
       pageSize: dataWithId ? dataWithId.pageSize : '',
       price: dataWithId ? dataWithId.price : '',
-      genreId: dataWithId ? dataWithId.genreId : '',
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
       quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
-      language: dataWithId ? dataWithId.language : '',
       discount: dataWithId ? dataWithId.discount : '',
-      genre: dataWithId ? dataWithId.genre : '',
+      language: dataWithId ? dataWithId.language : '',
+      genreId:
+         dataWithId && genre
+            ? genre.find((el) => el.name === dataWithId.genre).id
+            : '',
    })
-
-   // const formatLanguage = () => {
-   //    let formation
-   //    if (dataWithId ? dataWithId.language === 'KYRGYZ' : '') {
-   //       formation = 'Кыргызский'
-   //    }
-   //    if (dataWithId ? dataWithId.language === 'RUSSIAN' : '') {
-   //       formation = 'Русский'
-   //    }
-   //    if (dataWithId ? dataWithId.language === 'ENGLISH' : '') {
-   //       formation = 'Английский'
-   //    }
-   //    return formation
-   // }
-
    const handleChangeInput = (e) => {
       const date = new Date()
       const { name, value } = e.target
@@ -86,6 +72,23 @@ const PaperBookForm = ({ images }) => {
 
       setInputValues({ ...inputValues, [name]: value })
    }
+
+   const languageFunc = (name, id) => {
+      setInputValues((prev) => {
+         return { ...prev, language: id }
+      })
+   }
+
+   const genreFunction = (name, id) => {
+      setInputValues((prev) => {
+         return { ...prev, genreId: id }
+      })
+   }
+
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
+
    const isFormValid = () => {
       const validateValues =
          inputValues.name.length >= 1 &&
@@ -104,30 +107,20 @@ const PaperBookForm = ({ images }) => {
    const clickSendFormValues = async () => {
       if (isFormValid()) {
          dispatch(addPaperBook(inputValues, images, isChecked))
-         dispatch(bookAction.deleteImage())
-         setInputValues({
-            name: '',
-            author: '',
-            genreId: '',
-            publishingHouse: '',
-            description: '',
-            fragment: '',
-            pageSize: '',
-            price: '',
-            yearOfIssue: '',
-            discount: '',
-            quantityOfBook: '',
-         })
       } else {
          dispatch(snackbarActions({ bron: 'exit' }))
       }
    }
-   const { bookId, language } = dataWithId !== null ? dataWithId : ''
-   const genreId = dataWithId !== null ? dataWithId : ''
+
    const updateForms = async () => {
       dispatch(
          putVendorBook(
-            { inputValues, images, bookId, language, genreId },
+            {
+               inputValues,
+               bookId: dataWithId && dataWithId.bookId,
+               images,
+               isChecked,
+            },
             navigate
          )
       )
@@ -141,11 +134,25 @@ const PaperBookForm = ({ images }) => {
       if (dataWithId) {
          setIsChecked(dataWithId.bestseller)
       }
-   }, [dataWithId])
-
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
+      if (addBookStatus === 'success') {
+         setInputValues({
+            name: '',
+            author: '',
+            genreId: '',
+            publishingHouse: '',
+            description: '',
+            fragment: '',
+            pageSize: '',
+            price: '',
+            yearOfIssue: '',
+            language: 'Выберите жанр',
+            discount: '',
+            quantityOfBook: '',
+         })
+         dispatch(bookAction.deleteImage())
+         setIsChecked(false)
+      }
+   }, [dataWithId, addBookStatus])
 
    return (
       <>
@@ -155,7 +162,6 @@ const PaperBookForm = ({ images }) => {
             variant="error"
             width="400px"
          />
-         {status === 'pending' && <Spinner />}
          <InputWrapper onSubmit={clickSendFormValues}>
             <InputDiv>
                <LabelStyle htmlFor="name">
@@ -181,21 +187,28 @@ const PaperBookForm = ({ images }) => {
                <LabelStyle htmlFor="jenre">
                   Выберите жанр <strong>*</strong>
                </LabelStyle>
-               {/* <SelectInput
+
+               <SelectInput
                   border
-                  padding="12px 10px 12px 19px"
+                  padding="12px 10px 10px 19px"
                   width="100%"
                   hover
                   defaultName="Литература, роман, стихи..."
                   fontWeight
-                  color="#969696"
                   height="400px"
-                  onClick={(genreId) =>
-                     setInputValues({ ...inputValues, genreId })
-                  }
+                  color="#969696"
+                  onClick={genreFunction}
                   genres={genre}
-                  editeName={dataWithId ? dataWithId.genre : ''}
-               /> */}
+                  from={{
+                     name:
+                        genre && dataWithId
+                           ? genre.find((el) => el.id === inputValues.genreId)
+                                .name
+                           : 'Выберите жанр',
+                     id: inputValues ? inputValues.genreId : null,
+                  }}
+                  primary
+               />
                <LabelStyle htmlFor="publishingHouse">
                   Издательство <strong>*</strong>
                </LabelStyle>
@@ -230,7 +243,7 @@ const PaperBookForm = ({ images }) => {
                      <LabelStyle>
                         Язык <strong>*</strong>
                      </LabelStyle>
-                     {/* <SelectInput
+                     <SelectInput
                         border
                         padding="12px 10px 12px 19px"
                         width="100%"
@@ -238,13 +251,19 @@ const PaperBookForm = ({ images }) => {
                         fontWeight="400"
                         color="#969696"
                         hover
-                        nameText=""
-                        onClick={(_, notext, language) =>
-                           setInputValues({ ...inputValues, language })
-                        }
                         genres={languageSelect}
-                        editeName={dataWithId ? formatLanguage() : ''}
-                     /> */}
+                        // name="язык"
+                        onClick={languageFunc}
+                        from={{
+                           name: dataWithId
+                              ? languageSelect.find(
+                                   (el) => el.id === dataWithId.language
+                                ).name
+                              : 'Выберите язык',
+                           id: dataWithId ? dataWithId.language : null,
+                        }}
+                        primary
+                     />
                      <LabelStyle htmlFor="pageSize">
                         Объем <strong>*</strong>
                      </LabelStyle>
