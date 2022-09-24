@@ -122,6 +122,10 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
       publishingHouse: withIdValues.publishingHouse,
    }
 
+   // console.log();
+   // console.log();
+   // console.log();
+
    return async (dispatch) => {
       dispatch(bookAction.statusPending())
       try {
