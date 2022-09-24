@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { styled } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import bookAction from '../../../store/slices/addBookSlice'
 import FileUploadButton from '../../../Components/UI/uploadaudio/FileUploadButton'
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
@@ -22,7 +21,6 @@ import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
 import BestsellerCheckBox from '../../../Components/UI/checkBox/BestsellerCheckbox'
-import { setGenres } from '../../../store/slices/globalSlices'
 
 const languageSelect = [
    { name: 'Кыргызский', id: 'KYRGYZ' },
@@ -34,7 +32,7 @@ const ElectronicBookForm = ({ images }) => {
    const [pdfValue, setPdfFile] = useState()
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const genre = useSelector((store) => store.globalValues.genres)
-   const { addBookStatus } = useSelector((store) => store.addbook)
+   const { clearInputs } = useSelector((store) => store.vendorMainPage)
    const dataWithId = useSelector(
       (store) => store.vendorMainPage.electronicBooks
    )
@@ -115,10 +113,6 @@ const ElectronicBookForm = ({ images }) => {
       return validateValues && images.mainImage && pdfValue
    }
 
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
-
    const clickSendFormValues = async () => {
       if (isFormValid()) {
          dispatch(
@@ -130,14 +124,12 @@ const ElectronicBookForm = ({ images }) => {
       }
    }
 
-   const { bookId } = dataWithId !== null ? dataWithId : ''
-
    const updateForms = () => {
       dispatch(
          editeElectronicBook({
             withIdValues,
             images,
-            bookId,
+            bookId: dataWithId && dataWithId.bookId,
             pdfValue,
             navigate,
             isChecked,
@@ -153,7 +145,7 @@ const ElectronicBookForm = ({ images }) => {
          setIsChecked(dataWithId.bestseller)
          setPdfFile(dataWithId.electronicBook)
       }
-      if (addBookStatus === 'success') {
+      if (clearInputs) {
          setWithIdValues({
             name: '',
             author: '',
@@ -167,10 +159,9 @@ const ElectronicBookForm = ({ images }) => {
             discount: '',
             quantityOfBook: '',
          })
-         dispatch(bookAction.deleteImage())
          setIsChecked(false)
       }
-   }, [dataWithId, addBookStatus])
+   }, [dataWithId, clearInputs])
 
    return (
       <>
@@ -216,9 +207,10 @@ const ElectronicBookForm = ({ images }) => {
                   color="#969696"
                   onClick={genreFunction}
                   genres={genre}
+                  empty={clearInputs && 'Выберите жанр'}
                   from={{
                      name:
-                        genre && dataWithId
+                        genre && withIdValues.genreId
                            ? genre.find((el) => el.id === withIdValues.genreId)
                                 .name
                            : 'Выберите жанр',
@@ -270,6 +262,7 @@ const ElectronicBookForm = ({ images }) => {
                         genres={languageSelect}
                         // name="язык"
                         onClick={languageFunc}
+                        empty={clearInputs && 'Выберите язык'}
                         from={{
                            name: dataWithId
                               ? languageSelect.find(

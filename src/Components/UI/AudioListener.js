@@ -53,7 +53,9 @@ function AudioListener({ url }) {
          fixedMinute = `0${minuteTimer}`
       }
       const secondTimer = (durationTimer % 100).toFixed()
-      const newDurationTimer = `${fixedMinute}:${secondTimer}`
+      const newDurationTimer = `${fixedMinute}:${
+         secondTimer < 10 ? `0${secondTimer}` : secondTimer
+      }`
 
       setDuration(newDurationTimer)
    }
@@ -100,6 +102,9 @@ export const WaveformContianer = styled('div')`
    justify-content: space-between;
    align-items: center;
    color: #969696;
+   & span {
+      margin-top: -4.8px;
+   }
 `
 const WaverStyle = styled('div')`
    margin-top: 0px;
@@ -107,7 +112,7 @@ const WaverStyle = styled('div')`
 `
 const WaverDiv = styled('div')`
    align-items: center;
-   margin-top: -5.4vh;
+   margin-top: -4.6vh;
 `
 const PlayingDiv = styled('div')`
    border: none;

@@ -4,10 +4,9 @@ import { styled } from '@mui/material'
 import Button from '../../../Components/UI/Button/Button'
 import Promocode from '../vendorBookInnerPage/Promocode'
 import plusIcon from '../../../assets/icons/plus.svg'
-import vendorMainPageAction from '../../../store/slices/vendorMainPageSlice'
-import bookAction from '../../../store/slices/addBookSlice'
 import snackbarAction from '../../../store/slices/snackbarSlice'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
+import { emptyActions } from '../../../store/createActions/snackbarActions'
 
 export default function HeaderMainPage() {
    const navigate = useNavigate()
@@ -17,9 +16,8 @@ export default function HeaderMainPage() {
    )
 
    const addBookNavHandler = () => {
-      dispatch(vendorMainPageAction.clearSaveBook())
-      dispatch(bookAction.deleteImage())
       navigate('/main/addBook')
+      dispatch(emptyActions())
    }
    const deleteSnackbar = () => {
       dispatch(snackbarAction.notSnackbar())

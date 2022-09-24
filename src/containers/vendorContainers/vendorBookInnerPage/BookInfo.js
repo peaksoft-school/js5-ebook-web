@@ -51,17 +51,17 @@ const BookInfo = ({ book }) => {
             <div>
                <StyledAmountBlock>В корзине({book.basket})</StyledAmountBlock>
                <StyledAmountBlock>
-                  <img src={likeIcon} alt="icon" />({book.likes})
+                  <img src={likeIcon} alt="icon" /> ({book.likes})
+               </StyledAmountBlock>
+               <StyledBookName>{book.bookName}</StyledBookName>
+               <PriceAudio>
+                  <StyledPrice>{book.price} с</StyledPrice>
                   <DivBlock>
                      {book?.bookType === 'AUDIO_BOOK' && book.audioBook && (
                         <AudioListener url={book.audioBook} />
                      )}
                   </DivBlock>
-               </StyledAmountBlock>
-               <StyledBookName>{book.bookName}</StyledBookName>
-               <div>
-                  <StyledPrice>{book.price} с</StyledPrice>
-               </div>
+               </PriceAudio>
                <StyledInfo>
                   <div>
                      <StyledInfoTitle>Автор</StyledInfoTitle>
@@ -272,4 +272,10 @@ const ThirdImgwrap = styled('div')`
       height: 100%;
       object-fit: cover;
    }
+`
+const PriceAudio = styled('div')`
+   display: flex;
+   justify-content: space-between;
+   width: 560px;
+   align-items: center;
 `

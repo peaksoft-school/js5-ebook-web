@@ -61,9 +61,11 @@ const VendorMainPage = () => {
    const backHome = () => {
       setNext(next - moreProducts)
    }
+
    useEffect(() => {
       dispatch(setGenres())
    }, [])
+
    useEffect(() => {
       dispatch(getMainBooks(selectId, next, vendorId))
    }, [selectId, next, snackbarMessage])

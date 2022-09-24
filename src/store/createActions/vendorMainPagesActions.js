@@ -76,7 +76,7 @@ export const putVendorBook = (
       fragment: inputValues.fragment,
       bestseller: isChecked,
       pageSize: inputValues.pageSize,
-      publishingHouse: 'we',
+      publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
 
@@ -142,7 +142,6 @@ export const editeElectronicBook = ({
       electronicBook: pdfValue,
       pageSize: withIdValues.pageSize,
       publishingHouse: withIdValues.publishingHouse,
-      quantityOfBook: withIdValues.quantityOfBook,
    }
 
    return async (dispatch) => {
@@ -209,8 +208,7 @@ export const editeAudioBook = ({
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
       bestseller: isChecked,
-      fragment: 'erg',
-      // fragment: String(audioValues.fragment),
+      fragment: String(audioValues.fragment),
       duration: durationTimer,
       audioBook: audioValues.audioBook,
    }
@@ -229,6 +227,14 @@ export const editeAudioBook = ({
             const imgFiles = await appFileFetchService(images.thirdImage)
             mydata.thirdImage = imgFiles.link
          }
+         if (typeof audioValues.fragment === 'object') {
+            const imgFiles = await appFileFetchService(audioValues.fragment)
+            mydata.fragment = imgFiles.link
+         }
+         if (typeof audioValues.audioBook === 'object') {
+            const imgFiles = await appFileFetchService(audioValues.audioBook)
+            mydata.audioBook = imgFiles.link
+         }
          const result = await appFetch({
             url: `/api/book/update/audioBook/${bookId}`,
             method: 'PUT',
@@ -238,7 +244,7 @@ export const editeAudioBook = ({
          dispatch(bookAction.statusSuccess())
          navigate('/')
       } catch (error) {
-         dispatch(bookAction.statusError(error.message))
+         dispatch(bookAction.statusError(error))
       }
    }
 }
