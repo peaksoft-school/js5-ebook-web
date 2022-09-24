@@ -9,6 +9,7 @@ const initialState = {
    allBooks: null,
    bookType: null,
    status: null,
+   clearInputs: false,
 }
 export const vendorMainPageSlice = createSlice({
    name: 'vendorMainPage',
@@ -29,6 +30,10 @@ export const vendorMainPageSlice = createSlice({
          state.electronicBooks = ''
          state.allBooks = ''
          state.vendorBooks = ''
+         state.clearInputs = true
+      },
+      unClearBook(state) {
+         state.clearInputs = false
       },
 
       success(state) {

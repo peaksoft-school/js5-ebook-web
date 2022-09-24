@@ -17,7 +17,7 @@ import { setGenres } from '../../../store/slices/globalSlices'
 const AddBookPage = () => {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
    const { bookType } = useSelector((store) => store.vendorMainPage)
-   const { deleteImage, addBookMessage, addBookStatus } = useSelector(
+   const { addBookMessage, addBookStatus } = useSelector(
       (store) => store.addbook
    )
    const dispatch = useDispatch()
@@ -35,6 +35,11 @@ const AddBookPage = () => {
          setRadio(bookType)
       }
    }, [bookType])
+
+   useEffect(() => {
+      dispatch(setGenres())
+   }, [])
+
    useEffect(() => {
       dispatch(snackbarActions())
    }, [addBookMessage, imageSnack])
@@ -77,10 +82,6 @@ const AddBookPage = () => {
       dispatch(bookAction.cleanStatusMessage())
    }
 
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
-
    return (
       <ContainerDiv>
          {addBookStatus === 'pending' && <Spinner />}
@@ -111,7 +112,6 @@ const AddBookPage = () => {
                <ImagesPickerStyle>
                   <div>
                      <ImagePicker
-                        onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="mainImage"
                         putUrl={images.mainImage}
@@ -121,7 +121,6 @@ const AddBookPage = () => {
                   </div>
                   <div>
                      <ImagePicker
-                        onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="secondImage"
                         putUrl={images.secondImage}
@@ -131,7 +130,6 @@ const AddBookPage = () => {
                   </div>
                   <div>
                      <ImagePicker
-                        onDelete={deleteImage}
                         onChange={saveImageValue}
                         name="thirdImage"
                         putUrl={images.thirdImage}

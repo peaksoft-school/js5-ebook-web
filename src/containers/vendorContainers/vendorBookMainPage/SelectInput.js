@@ -10,6 +10,7 @@ export default function SelectInput({
    onClick,
    from,
    primary,
+   empty,
    ...props
 }) {
    const [anChorEl, setAnchorEl] = useState(null)
@@ -44,6 +45,18 @@ export default function SelectInput({
       })
       onCloseMenu()
    }
+   useEffect(() => {
+      if (empty) {
+         setLabel((prev) => {
+            return {
+               ...prev,
+               name: empty,
+               id: null,
+            }
+         })
+      }
+      onCloseMenu()
+   }, [empty])
 
    return (
       <SelectBook>

@@ -1,6 +1,7 @@
 import appFetch from '../../hooks/appFetch'
 import bookAction from '../slices/addBookSlice'
 import { appFileFetchService } from '../../api/fileService'
+import { emptyActions } from './snackbarActions'
 
 export const addPaperBook = (inputValues, images, bestseller) => {
    const valuesWithFile = {
@@ -42,7 +43,9 @@ export const addPaperBook = (inputValues, images, bestseller) => {
          })
          console.log(result)
          dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
+         dispatch(emptyActions())
       } catch (error) {
+         console.log(error)
          dispatch(bookAction.statusError('Что то пошло не так!'))
       }
    }
@@ -95,7 +98,9 @@ export const addAudioBook = ({
          })
          console.log(result)
          dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
+         dispatch(emptyActions())
       } catch (error) {
+         console.log(error)
          dispatch(bookAction.statusError('Что то пошло не так!'))
       }
    }
@@ -146,6 +151,7 @@ export const addElectronicBoook = ({ withIdValues, images, pdfValue }) => {
          })
          dispatch(bookAction.statusSuccess('Ваш запрос был успешно отправлен!'))
          console.log(result.message)
+         dispatch(emptyActions())
       } catch (error) {
          dispatch(bookAction.statusError('Что то пошло не так!'))
       }

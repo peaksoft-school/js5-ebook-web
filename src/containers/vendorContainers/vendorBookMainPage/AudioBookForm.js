@@ -7,14 +7,12 @@ import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
 import BestsellerCheckBox from '../../../Components/UI/checkBox/BestsellerCheckbox'
-import bookAction from '../../../store/slices/addBookSlice'
 import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
 import { addAudioBook } from '../../../store/createActions/addBookActions'
 import { editeAudioBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
-import { setGenres } from '../../../store/slices/globalSlices'
 
 const languageSelect = [
    { name: 'Кыргызский', id: 'KYRGYZ' },
@@ -26,7 +24,7 @@ const AudioBookForm = ({ images }) => {
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
-   const { addBookStatus } = useSelector((store) => store.addbook)
+   const { clearInputs } = useSelector((store) => store.vendorMainPage)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [isChecked, setIsChecked] = useState(false)
@@ -59,10 +57,6 @@ const AudioBookForm = ({ images }) => {
             ? genre.find((el) => el.name === dataWithId.genre).id
             : '',
    })
-
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
 
    const languageFunc = (name, id) => {
       setInputValues((prev) => {
@@ -123,7 +117,12 @@ const AudioBookForm = ({ images }) => {
          inputValues.yearOfIssue.length >= 1 &&
          inputValues.price.length >= 1
 
-      return isInputsAreValid && images.mainImage && audioValues.fragment
+      return (
+         isInputsAreValid &&
+         images.mainImage &&
+         audioValues.fragment &&
+         audioValues.audioBook
+      )
    }
 
    const clickSendFormValues = async () => {
@@ -159,12 +158,8 @@ const AudioBookForm = ({ images }) => {
    const setBestSeller = () => {
       setIsChecked((prev) => !prev)
    }
-
    useEffect(() => {
-      if (dataWithId) {
-         setIsChecked(dataWithId.bestseller)
-      }
-      if (addBookStatus === 'success') {
+      if (clearInputs) {
          setInputValues({
             name: '',
             genreId: '',
@@ -184,10 +179,9 @@ const AudioBookForm = ({ images }) => {
             audioBook: '',
             fragment: '',
          })
-         dispatch(bookAction.deleteImage())
          setIsChecked(false)
       }
-   }, [dataWithId, addBookStatus])
+   }, [clearInputs])
 
    return (
       <>
@@ -233,9 +227,10 @@ const AudioBookForm = ({ images }) => {
                   color="#969696"
                   onClick={genreFunction}
                   genres={genre}
+                  empty={clearInputs && 'Выберите жанр'}
                   from={{
                      name:
-                        genre && dataWithId
+                        genre && inputValues.genreId
                            ? genre.find((el) => el.id === inputValues.genreId)
                                 .name
                            : 'Выберите жанр',
@@ -267,8 +262,8 @@ const AudioBookForm = ({ images }) => {
                         color="#969696"
                         hover
                         genres={languageSelect}
-                        // name="язык"
                         onClick={languageFunc}
+                        empty={clearInputs && 'Выберите язык'}
                         from={{
                            name: dataWithId
                               ? languageSelect.find(

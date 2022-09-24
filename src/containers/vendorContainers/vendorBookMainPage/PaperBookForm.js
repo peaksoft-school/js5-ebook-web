@@ -7,12 +7,11 @@ import InputText from '../../../Components/UI/Inputs/InputText'
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import { addPaperBook } from '../../../store/createActions/addBookActions'
-import bookAction from '../../../store/slices/addBookSlice'
+// import bookAction from '../../../store/slices/addBookSlice'
 import { putVendorBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
-import { setGenres } from '../../../store/slices/globalSlices'
 
 const languageSelect = [
    { name: 'Кыргызский', id: 'KYRGYZ' },
@@ -26,8 +25,9 @@ const PaperBookForm = ({ images }) => {
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.paperBooks)
-   const { addBookStatus } = useSelector((store) => store.addbook)
+   const { clearInputs } = useSelector((store) => store.vendorMainPage)
    const [isChecked, setIsChecked] = useState(false)
+
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
       author: dataWithId ? dataWithId.author : '',
@@ -85,10 +85,6 @@ const PaperBookForm = ({ images }) => {
       })
    }
 
-   useEffect(() => {
-      dispatch(setGenres())
-   }, [])
-
    const isFormValid = () => {
       const validateValues =
          inputValues.name.length >= 1 &&
@@ -134,7 +130,7 @@ const PaperBookForm = ({ images }) => {
       if (dataWithId) {
          setIsChecked(dataWithId.bestseller)
       }
-      if (addBookStatus === 'success') {
+      if (clearInputs) {
          setInputValues({
             name: '',
             author: '',
@@ -145,14 +141,13 @@ const PaperBookForm = ({ images }) => {
             pageSize: '',
             price: '',
             yearOfIssue: '',
-            language: 'Выберите жанр',
+            language: '',
             discount: '',
             quantityOfBook: '',
          })
-         dispatch(bookAction.deleteImage())
          setIsChecked(false)
       }
-   }, [dataWithId, addBookStatus])
+   }, [dataWithId, clearInputs])
 
    return (
       <>
@@ -199,14 +194,23 @@ const PaperBookForm = ({ images }) => {
                   color="#969696"
                   onClick={genreFunction}
                   genres={genre}
+                  empty={clearInputs && 'Выберите жанр'}
                   from={{
                      name:
-                        genre && dataWithId
+                        inputValues.genreId && genre
                            ? genre.find((el) => el.id === inputValues.genreId)
                                 .name
                            : 'Выберите жанр',
-                     id: inputValues ? inputValues.genreId : null,
+                     id: inputValues.genreId,
                   }}
+                  // from={{
+                  //    name:
+                  //       genre && dataWithId
+                  //          ? genre.find((el) => el.id === inputValues.genreId)
+                  //               .name
+                  //          : 'Выберите жанр',
+                  //    id: inputValues ? inputValues.genreId : null,
+                  // }}
                   primary
                />
                <LabelStyle htmlFor="publishingHouse">
@@ -251,8 +255,8 @@ const PaperBookForm = ({ images }) => {
                         fontWeight="400"
                         color="#969696"
                         hover
+                        empty={clearInputs && 'Выберите язык'}
                         genres={languageSelect}
-                        // name="язык"
                         onClick={languageFunc}
                         from={{
                            name: dataWithId
