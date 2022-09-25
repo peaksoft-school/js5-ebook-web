@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router'
+// import { useSelector } from 'react-redux'
 import { useState } from 'react'
-import { MenuItem } from '@mui/material'
+import { Badge, MenuItem } from '@mui/material'
 import AppContainer, { Wrapper } from './AppContainer'
 import Header from './Header'
 import IconButton from './IconButton'
@@ -15,10 +16,14 @@ import SearchInputBlock from './SearchInputBlock'
 import PopUp from '../Components/UI/popup'
 import Modal from '../Components/UI/Modal'
 import ExitApp from '../Components/UI/ExitApp'
+import Notification from '../Components/UI/notification/Notification'
 
 const Vendor = () => {
+   // const { notifications } = useSelector((state) => state.notifications)
    const [anchorEl, setAnchorEl] = useState(null)
    const [isModal, setIsModal] = useState(false)
+   const [anchorElNotif, setAnchorElNotif] = useState(null)
+   const [isOpenNotif, setIsOpenNotif] = useState(false)
    const open = Boolean(anchorEl)
    const onClickExitBtn = () => {
       setIsModal(true)
@@ -33,6 +38,14 @@ const Vendor = () => {
    const onCloseProfileHandler = () => {
       setAnchorEl(null)
    }
+   const onClickNotifHandler = (e) => {
+      setAnchorElNotif(e.currentTarget)
+      setIsOpenNotif(true)
+   }
+   const onCloseNotifHandler = () => {
+      setIsOpenNotif(false)
+   }
+
    return (
       <Wrapper>
          <AppContainer
@@ -50,7 +63,19 @@ const Vendor = () => {
                         </CardItems>
                         <CardItems flexGrow={0} flexShrink={0}>
                            <IconButton icon={<MessageIcon />} />
-                           <IconButton icon={<NotificatonIcon />} />
+                           <IconButton
+                              icon={
+                                 <Badge color="error" variant="dot">
+                                    <NotificatonIcon />
+                                 </Badge>
+                              }
+                              onClick={onClickNotifHandler}
+                           />
+                           <Notification
+                              open={isOpenNotif}
+                              handleClose={onCloseNotifHandler}
+                              anchorEl={anchorElNotif}
+                           />
                            <IconButton
                               icon={<VendorIcon />}
                               backgroundColor="#DBDBDB"

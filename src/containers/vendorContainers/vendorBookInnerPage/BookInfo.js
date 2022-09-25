@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import styled from '@emotion/styled'
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Modal from '../../../Components/UI/Modal'
 import Button from '../../../Components/UI/Button/Button'
@@ -11,18 +11,27 @@ import AudioListener from '../../../Components/UI/AudioListener'
 import AboutBook from './AboutBook'
 import BookFragment from './BookFragment'
 import { TabInnerPage } from './TabInnerPage'
+import { deleteModal } from '../../../store/vendorBookInnerPageActions'
 import {
    getMainBooksDelete,
    getMainBooksWithId,
 } from '../../../store/createActions/vendorMainPagesActions'
 
 const BookInfo = ({ book }) => {
-   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
-   const handleOpenDeleteModal = () => setIsOpenDeleteModal(true)
-   const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
-   const dispatch = useDispatch()
    const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const { deleteBook } = useSelector((state) => state.vendorBookInnerPage)
 
+   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+   const handleOpenDeleteModal = () => {
+      setIsOpenDeleteModal(true)
+   }
+   useEffect(() => {
+      navigate('')
+      dispatch(deleteModal())
+   }, [!deleteBook])
+
+   const handleCloseDeleteModal = () => setIsOpenDeleteModal(false)
    const newBookIcon =
       book.new === true ? <StyledNewIcon src={newIcon} alt="icon" /> : ''
 

@@ -13,6 +13,7 @@ import { getAdminVendorsSlice } from './slices/getAdminVendorsSlice'
 import { vendorMainPageSlice } from './slices/vendorMainPageSlice'
 import { snackbarSlice } from './slices/snackbarSlice'
 import сatalogSlices from './slices/catalogSlice'
+import { notificationsSlise } from './slices/notificationSlice'
 import { getAdminUsersSlice } from './slices/getAdminUsersSlices'
 import userInnerPageSlices from './slices/userInnerPageSlices'
 import mainPageSlices from './slices/mainPageSlices'
@@ -34,6 +35,7 @@ const store = configureStore({
       vendorProfile: VendorProfileSlice.reducer,
       adminVendors: getAdminVendorsSlice.reducer,
       snackbar: snackbarSlice.reducer,
+      notifications: notificationsSlise.reducer,
       adminUsers: getAdminUsersSlice.reducer,
       userBook: userInnerPageSlices.reducer,
    },

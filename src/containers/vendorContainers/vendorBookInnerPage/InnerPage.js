@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 import BookInfo from './BookInfo'
-import { getVendorBookInnerPage } from '../../../store/vendorBookInnerPageActions'
+import {
+   deleteModal,
+   getVendorBookInnerPage,
+} from '../../../store/vendorBookInnerPageActions'
 import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
 import Spinner from '../../../Components/UI/Spinner'
 
@@ -23,6 +26,8 @@ export const InnerPage = () => {
    useEffect(() => {
       if (deleteBook) {
          booksCardNavHandler()
+         navigate('/')
+         dispatch(deleteModal())
       }
    }, [deleteBook])
 
@@ -32,7 +37,7 @@ export const InnerPage = () => {
    }
 
    const booksCardNavHandler = () => {
-      navigate('/mainPage')
+      navigate('/')
    }
 
    return (
