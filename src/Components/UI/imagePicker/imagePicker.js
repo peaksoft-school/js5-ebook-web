@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components'
 import Icon from '../../../assets/icons/Vector.svg'
 
-function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
+function ImagePicker({ onChange, id, putUrl, name }) {
    const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
+   const { clearInputs } = useSelector((store) => store.vendorMainPage)
 
    const [icon, setIcon] = useState()
    const [putIcon, setPutIcon] = useState()
@@ -41,12 +42,12 @@ function ImagePicker({ onChange, id, onDelete, putUrl, name }) {
       setImg(false)
    }
    useEffect(() => {
-      if (onDelete || !onDelete) {
+      if (clearInputs) {
          setIcon('')
          filesRef.current.value = ''
          setPutIcon('')
       }
-   }, [onDelete])
+   }, [clearInputs])
 
    return (
       <ImageContainer primary={icon || putIcon}>

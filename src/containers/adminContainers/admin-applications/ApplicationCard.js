@@ -1,19 +1,19 @@
 import { styled } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { ReactComponent as CheckMark } from '../../../assets/icons/MeatBalls/checkmark.svg'
 import { ReactComponent as Reject } from '../../../assets/icons/MeatBalls/reject.svg'
 import { RejectApplicationModal } from './RejectApplicationModal'
 import { acceptApplication } from '../../../store/slices/adminActions/applicationsActions'
-import { uiSlicesSlicesActions } from '../../../store/slices/uiSlices'
 import PopUpMeatBalls from '../../../Components/UI/MeatBalls/PopupMeatBalls'
+import Modal from '../../../Components/UI/Modal'
 
 const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
-   const isRejectModalOpen = useSelector((state) => state.uiSlice.rejectModal)
+   const [showModal, setShowModal] = useState(false)
 
    const menuMeatBall = [
       {
@@ -34,12 +34,14 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
       dispatch(acceptApplication(id))
    }
 
-   function rejectModal() {
-      dispatch(uiSlicesSlicesActions.showRejectModal())
+   function rejectModal(e) {
+      setShowModal(true)
+      e.stopPropagation()
    }
 
-   function onCloseRejectModal() {
-      dispatch(uiSlicesSlicesActions.hideRejectModal())
+   function onCloseRejectModal(e) {
+      e.stopPropagation()
+      setShowModal(false)
    }
 
    const navigateToDetailsPage = () => {
@@ -51,13 +53,19 @@ const ApplicationCard = ({ id, img, date, name, price, enabled }) => {
          <MeatBall onClick={(e) => e.stopPropagation()}>
             <PopUpMeatBalls options={menuMeatBall} />
          </MeatBall>
-
-         <RejectApplicationModal
-            id={id}
-            open={isRejectModalOpen}
-            onClose={() => onCloseRejectModal()}
-         />
-
+         <Modal
+            open={showModal}
+            onClose={(e) => onCloseRejectModal(e)}
+            variant="mini"
+            width="523px"
+            height="247px"
+            overflow="none"
+         >
+            <RejectApplicationModal
+               id={id}
+               onClose={(e) => onCloseRejectModal(e)}
+            />
+         </Modal>
          <Div>
             <Img>
                <Book src={img} alt="photo" />

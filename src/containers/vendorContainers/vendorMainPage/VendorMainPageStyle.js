@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 export const ImageBlock = styled('div')`
    width: 197px;
    height: 297px;
+   margin-bottom: 10px;
 `
 
 export const ContainerDiv = styled('div')`
@@ -17,6 +18,7 @@ export const ContainerDiv = styled('div')`
 `
 export const Img = styled('img')`
    cursor: pointer;
+   object-fit: cover;
    margin-bottom: 6px;
    background-color: aliceblue;
    width: 100%;
@@ -30,7 +32,7 @@ export const CopyLink = styled(Link)`
    text-decoration: none;
 `
 export const BookSHeader = styled('div')`
-   width: 144px;
+   width: 134px;
    display: flex;
    justify-content: space-between;
    padding: 19px 0px 16px 0px;
@@ -39,6 +41,10 @@ export const BookSHeader = styled('div')`
    margin-top: -10px;
    font-size: 14px;
    line-height: 16.8px;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   line-height: 130%;
 `
 export const BooksWrapper = styled('div')`
    padding: 10px 30px 10px 40px;
@@ -72,8 +78,11 @@ export const HeaderText = styled('div')`
 `
 export const Price = styled('span')`
    color: #ff4c00;
-   font-size: 16px;
+   font-family: 'Open Sans';
+   font-style: normal;
    font-weight: 600;
+   font-size: 16px;
+   line-height: 120%;
 `
 export const WrapperDiv = styled('div')`
    width: 1240px;
@@ -89,14 +98,23 @@ export const DateSpan = styled('span')`
    display: flex;
    justify-content: space-between;
    color: #8a8a8a;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 14px;
+   line-height: 130%;
 `
-export const NameBook = styled('span')`
+export const NameBook = styled('h3')`
+   margin-top: 10px;
    color: #222222;
    font-family: 'Open Sans';
    font-style: normal;
    font-weight: 600;
-   font-size: 18px;
+   font-size: 14px;
    line-height: 120%;
+   text-transform: uppercase;
+   padding-top: 10px;
+   text-transform: uppercase;
 `
 export const ImgFavorite = styled('span')`
    display: flex;
@@ -107,6 +125,11 @@ export const ImgFavorite = styled('span')`
 `
 export const Span = styled('span')`
    color: #969696;
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 130%;
 `
 export const SelectBooksDiv = styled('div')`
    display: flex;

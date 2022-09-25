@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Button from '../../Components/UI/Button/Button'
@@ -9,9 +9,9 @@ import BookFragment from './BookFragment'
 import Breadcrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
 import { TabInnerPage } from './TabInnerPage'
 import Message from '../../Components/UI/Message/Message'
-// import { getUserInnerPageBook } from '../../store/createActions/vendorMainPagesActions'
 import New from '../../assets/icons/UserInnerPage/New.png'
-import { getMainBooksWithId } from '../../store/createActions/vendorMainPagesActions'
+import { getBook } from '../../store/slices/userInnerPageSlices'
+import AudioListener from '../../Components/UI/AudioListener'
 
 const DataValues = [
    { text: 'Здравствуйте', id: '1' },
@@ -21,61 +21,93 @@ const DataValues = [
 ]
 
 export const UserInnerPage = () => {
-   const [text, setText] = useState('')
+   // const [text, setText] = useState('')
    const { bookId } = useParams()
-   const book = useSelector((state) => state.addbook.getUserInnerBook)
+   const { book } = useSelector((store) => store.userBook)
    const dispatch = useDispatch()
    useEffect(() => {
-      dispatch(getMainBooksWithId(bookId))
+      dispatch(getBook(bookId))
+      window.scrollTo(0, 0)
    }, [])
    const sendText = () => {
-      console.log(text)
+      // console.log(text)
    }
-   const saveValue = (e) => {
-      setText(e)
+   const saveValue = () => {
+      // setText(e
    }
 
    const pathTranslate = {
-      allbooks: 'Главная',
-      [bookId]: book.bookName,
+      main: 'Главная',
+      catalog: 'Каталог',
+      [bookId]: book?.bookName,
    }
 
    return (
       <>
-         <Breadcrumbs translate={pathTranslate} />
+         <BreadcrumbsBlock>
+            {book && <Breadcrumbs translate={pathTranslate} />}
+         </BreadcrumbsBlock>
          <StyledMain>
             <StyledContainer>
                <StyledBookImageCont>
-                  <StyledBookImage src={book.mainImage} />
+                  <ImageBlock>
+                     <Image src={book?.mainImage} />
+                  </ImageBlock>
                   <StyledBookImage2>
-                     {book.secondImage && (
-                        <img src={book.secondImage} alt="book" />
+                     {book?.secondImage && (
+                        <Image src={book?.secondImage} alt="book" />
                      )}
                   </StyledBookImage2>
                </StyledBookImageCont>
-               {book.new ? <ImageStyled src={New} alt="icons" /> : ''}
+               {book?.new ? <ImageStyled src={New} alt="icons" /> : ''}
                <div>
-                  <StyledBookName>{book.bookName}</StyledBookName>
-                  <div>
-                     <StyledPrice>{book.price}</StyledPrice>
-                  </div>
+                  <StyledBookName>{book?.bookName}</StyledBookName>
                   <StyledInfo>
                      <div>
+                        <StyledInfoTitle primary>
+                           <StyledPrice>{book?.price}</StyledPrice>
+                        </StyledInfoTitle>
                         <StyledInfoTitle>Автор</StyledInfoTitle>
                         <StyledInfoTitle>Жанр</StyledInfoTitle>
                         <StyledInfoTitle>Язык</StyledInfoTitle>
-                        <StyledInfoTitle>Издательство</StyledInfoTitle>
+                        {book?.bookType !== 'AUDIO_BOOK' && (
+                           <StyledInfoTitle>Издательство</StyledInfoTitle>
+                        )}
                         <StyledInfoTitle>Год выпуска</StyledInfoTitle>
-                        <StyledInfoTitle>Обьем</StyledInfoTitle>
+                        {book?.bookType === 'AUDIO_BOOK' && (
+                           <StyledInfoTitle>Длительность</StyledInfoTitle>
+                        )}
+                        {book?.bookType !== 'AUDIO_BOOK' && (
+                           <StyledInfoTitle>Обьем</StyledInfoTitle>
+                        )}
                      </div>
-                     <div>
-                        <StyledInfoText>{book.author}</StyledInfoText>
-                        <StyledInfoText>{book.genre}</StyledInfoText>
-                        <StyledInfoText>{book.language}</StyledInfoText>
-                        <StyledInfoText>{book.publishingHouse}</StyledInfoText>
-                        <StyledInfoText>{book.yearOfIssue}</StyledInfoText>
-                        <StyledInfoText>{book.duration}</StyledInfoText>
-                     </div>
+                     <DivBlockStyled>
+                        <StyledInfoText primary>
+                           <DivBlock>
+                              {book?.bookType === 'AUDIO_BOOK' &&
+                                 book.audioBook && (
+                                    <AudioListener url={book.audioBook} />
+                                 )}
+                           </DivBlock>
+                        </StyledInfoText>
+                        <StyledInfoText>{book?.author}</StyledInfoText>
+                        <StyledInfoText>{book?.genre}</StyledInfoText>
+                        <StyledInfoText>{book?.language}</StyledInfoText>
+                        {book?.bookType !== 'AUDIO_BOOK' && (
+                           <StyledInfoText>
+                              {book?.publishingHouse}
+                           </StyledInfoText>
+                        )}
+                        <StyledInfoText>{book?.yearOfIssue}</StyledInfoText>
+                        {book?.bookType === 'AUDIO_BOOK' ? (
+                           <StyledInfoText>
+                              {book?.duration[0]} ч. {book?.duration[1]} мин.{' '}
+                              {book?.duration[2]} сек.
+                           </StyledInfoText>
+                        ) : (
+                           <StyledInfoText>{book?.pageSize}</StyledInfoText>
+                        )}
+                     </DivBlockStyled>
                   </StyledInfo>
 
                   <StyledBtnCont>
@@ -99,22 +131,37 @@ export const UserInnerPage = () => {
                   </DivStyledMessage>
                </div>
             </StyledContainer>
-
             <StyledimageThirdImage>
                <TabInnerPage
                   about={<About book={book} />}
                   bookFragment={<BookFragment book={book} />}
                />
-               <div>
-                  {book.thirdImage && (
-                     <StyleThirdImage src={book.thirdImage} alt="book" />
+               <StyleThirdImage>
+                  {book?.thirdImage && (
+                     <Image src={book?.thirdImage} alt="book" />
                   )}
-               </div>
+               </StyleThirdImage>
             </StyledimageThirdImage>
          </StyledMain>
       </>
    )
 }
+
+const BreadcrumbsBlock = styled('div')`
+   padding-top: 20px;
+`
+
+const ImageBlock = styled('div')`
+   width: 357px;
+   height: 571px;
+   margin-right: 20px;
+   overflow: hidden;
+`
+const Image = styled('img')`
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+`
 
 const StyledContainer = styled.div`
    display: flex;
@@ -129,12 +176,12 @@ const StyledimageThirdImage = styled.div`
 `
 
 const StyledBookImage2 = styled.div`
+   overflow: hidden;
    display: flex;
    flex-direction: column;
    align-items: center;
-   & img {
-      width: 100%;
-   }
+   width: 201px;
+   height: 321px;
 `
 const StyledBookName = styled.h3`
    width: 504px;
@@ -153,6 +200,7 @@ const StyledInfoText = styled.p`
    font-size: 14px;
    line-height: 130%;
    color: #222222;
+   padding: ${(props) => (props.primary ? '10px 0' : '0')};
 `
 const StyledInfoTitle = styled.p`
    font-family: 'Open Sans';
@@ -161,18 +209,16 @@ const StyledInfoTitle = styled.p`
    font-size: 14px;
    line-height: 130%;
    color: #222222;
+   padding: ${(props) => (props.primary ? '0 0 10px 0' : '0')};
 `
-const StyledBookImage = styled.img`
-   width: 357px;
-   /* margin-bottom: 185px; */
-`
+
 const StyledMain = styled.div`
    padding-top: 72px;
 `
 const StyledInfo = styled.div`
    display: flex;
    justify-content: space-between;
-   width: 401px;
+   width: 545px;
    margin-bottom: 76px;
 `
 const StyledBtnCont = styled.div`
@@ -192,12 +238,11 @@ const StyledPrice = styled.p`
 `
 const StyledBookImageCont = styled.div`
    display: flex;
-   width: 531px;
 `
 const DivStyledMessage = styled.div`
    margin-top: 30px;
 `
-const StyleThirdImage = styled.img`
+const StyleThirdImage = styled.div`
    width: 443px;
    height: 574px;
    margin-bottom: 109px;
@@ -208,4 +253,10 @@ const ImageStyled = styled.img`
    border-radius: 20px;
    margin-top: 250px;
    margin-left: -42%;
+`
+const DivBlockStyled = styled('div')`
+   width: 300px;
+`
+const DivBlock = styled.div`
+   height: 25px;
 `

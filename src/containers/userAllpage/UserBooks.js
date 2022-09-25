@@ -17,9 +17,34 @@ import {
 } from '../../store/slices/catalogSlice'
 import GetSnackbar from '../../Components/UI/snackbar/GetSnackbar'
 import BreadCrumbs from '../../Components/UI/breadCrumbs/Breadcrumbs'
+import Spinner from '../../Components/UI/Spinner'
+// import { sortRequestApplic } from '../../utils/helpers/helpers'
 
 const arr = {
-   allbooks: `каталог`,
+   main: 'Главная',
+   catalog: `каталог`,
+}
+
+function getSortMethods(obj, methods) {
+   if (obj.languages) {
+      methods.onChangeLanguages(obj.languages)
+   }
+   if (obj.bookType) {
+      if (methods.typeBookMethod) {
+         methods.typeBookMethod(obj.bookType)
+      }
+   }
+   if (obj.sortBy.type) {
+      if (methods.sortByMethod) {
+         methods.sortByMethod(obj.sortBy.type, obj.sortBy.label)
+      }
+   }
+   if (obj.genres.id) {
+      const findEl = methods.genresMethods.find((el) => el.id === obj.genres.id)
+      if (findEl) {
+         findEl.genreMethod(obj.genres.id, false, obj.genres.label)
+      }
+   }
 }
 
 const UserBooks = () => {
@@ -34,12 +59,25 @@ const UserBooks = () => {
       page: '1',
       size: '12',
    })
-   const { books, totalBooks, totalPages, error } = useSelector(
-      (store) => store.books
-   )
+   const { books, totalBooks, totalPages, error, externalSetting, status } =
+      useSelector((store) => store.books)
    const [showSeeMore, setShowSeeMore] = useState(false)
    const [showGenres, setShowGenres] = useState([])
+   const [sortOne, setSortOne] = useState(true)
+   const [filterOne, setFilterOne] = useState(true)
+   const [sortMethods, setSortMethods] = useState({
+      genresMethods: [],
+      onChangeLanguages: '',
+      typeBookMethod: '',
+      sortByMethod: '',
+   })
    const dispatch = useDispatch()
+   // console.log(sortMethods)
+   // console.log(externalSetting)
+
+   useEffect(() => {
+      getSortMethods(externalSetting, sortMethods)
+   }, [externalSetting, sortMethods])
 
    useEffect(() => {
       let errorTime = setTimeout(() => {}, 1000)
@@ -76,10 +114,20 @@ const UserBooks = () => {
    }, [totalPages])
 
    useEffect(() => {
+      // setSearchParams(sortRequestApplic(requestObj))
+      if (sortOne) {
+         setSortOne(false)
+         return
+      }
       dispatch(updateBooks(requestObj))
    }, [requestObj.page, requestObj.sortBy])
 
    useEffect(() => {
+      // setSearchParams(sortRequestApplic(requestObj))
+      if (filterOne) {
+         setFilterOne(false)
+         return
+      }
       dispatch(getBooks(requestObj))
    }, [
       requestObj.genres,
@@ -155,9 +203,14 @@ const UserBooks = () => {
    const onCloseSnackbar = () => {
       dispatch(сatalogActions.cleanError())
    }
+   useEffect(() => {
+      window.scrollTo(0, 0)
+   }, [])
    return (
       <>
-         <BreadCrumbs translate={arr} />
+         <BreadCrumbsBlock>
+            <BreadCrumbs translate={arr} />
+         </BreadCrumbsBlock>
          <FilterBooks>
             <GetSnackbar
                open={error}
@@ -172,12 +225,21 @@ const UserBooks = () => {
                      <TotalBooks totalBooks={totalBooks} />
                   </HeaderItem>
                </HeaderBooks>
-               <Genres onChange={onChangeGenreHandler} />
+               <Genres
+                  onChange={onChangeGenreHandler}
+                  sortMethods={setSortMethods}
+               />
                <TypeBlock>
-                  <TypeBooks onChange={onChangeHandler} />
+                  <TypeBooks
+                     onChange={onChangeHandler}
+                     sortMethods={setSortMethods}
+                  />
                </TypeBlock>
                <PriceBooks onChange={onChangePriceHandler} />
-               <LanguageBooks onChange={onChangeHandler} />
+               <LanguageBooks
+                  onChange={onChangeHandler}
+                  sortMethods={setSortMethods}
+               />
             </SortBooks>
             <Books>
                <HeaderBooks>
@@ -188,12 +250,19 @@ const UserBooks = () => {
                      />
                   </HeaderItem>
                   <HeaderItem width="20%" right="Hello">
-                     <Sorting onChange={onChangeHandler} />
+                     <Sorting
+                        onChange={onChangeHandler}
+                        sortMethods={setSortMethods}
+                     />
                   </HeaderItem>
                </HeaderBooks>
-               {books.map((elem) => {
-                  return <BooksCard key={elem.id} book={elem} />
-               })}
+               {status === 'pending' ? (
+                  <Spinner variant="two" />
+               ) : (
+                  books.map((elem) => {
+                     return <BooksCard key={elem.id} book={elem} />
+                  })
+               )}
                {showSeeMore && (
                   <SeeMore onClick={onClickSeeMore}>Смотреть больше</SeeMore>
                )}
@@ -205,16 +274,18 @@ const UserBooks = () => {
 
 export default UserBooks
 
+const BreadCrumbsBlock = styled('div')`
+   padding-top: 20px;
+`
+
 const HeaderItem = styled('div')`
    width: ${(props) => props.width || '100%'};
    display: flex;
    flex-flow: row wrap;
    justify-content: ${(props) => (props.right ? 'flex-end' : 'flex-start')};
-   /* border: 1px solid red; */
 `
 
 const HeaderBooks = styled('div')`
-   /* border: 1px solid red; */
    padding: 20px 0px;
    width: 100%;
    display: flex;
@@ -223,29 +294,20 @@ const HeaderBooks = styled('div')`
 `
 
 const FilterBooks = styled('div')`
-   /* border: 1px solid red; */
    display: flex;
    justify-content: space-between;
    flex-direction: row;
    flex-wrap: nowrap;
    font-family: 'Open Sans';
-   /* padding-top: 50px; */
    padding-bottom: 50px;
-   /* border: 1px solid red; */
 `
 
 const SortBooks = styled('div')`
-   /* border: 1px solid red; */
    width: calc(1 / 5 * 100%);
-   /* padding-top: 18px; */
-   /* padding-right: 40px; */
-   /* margin-top: 18px; */
    margin-right: 30px;
 `
 
 const Books = styled('div')`
-   /* width: 910px; */
-   /* border: 1px solid red; */
    width: calc(4 / 5 * 100%);
    display: flex;
    justify-content: flex-start;

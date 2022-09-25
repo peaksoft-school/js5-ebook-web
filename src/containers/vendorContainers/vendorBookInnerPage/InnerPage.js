@@ -2,22 +2,20 @@ import styled from '@emotion/styled'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
-import Button from '../../../Components/UI/Button/Button'
-import plusIcon from '../../../assets/icons/plus.svg'
 import Breadcrumbs from '../../../Components/UI/breadCrumbs/Breadcrumbs'
 import BookInfo from './BookInfo'
-import Promocode from './Promocode'
 import {
    deleteModal,
-   deleteVendorBook,
    getVendorBookInnerPage,
 } from '../../../store/vendorBookInnerPageActions'
+import HeaderMainPage from '../vendorMainPage/HeaderMainPage'
+import Spinner from '../../../Components/UI/Spinner'
 
 export const InnerPage = () => {
    const { book, deleteBook } = useSelector(
       (state) => state.vendorBookInnerPage
    )
-   console.log(deleteBook)
+   const { addBookStatus } = useSelector((store) => store.addbook)
    const { bookId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -33,17 +31,9 @@ export const InnerPage = () => {
       }
    }, [deleteBook])
 
-   const deleteBookHandler = () => {
-      dispatch(deleteVendorBook(bookId))
-   }
-
    const pathTranslate = {
-      books: 'Главная',
+      main: 'Главная',
       [bookId]: book.bookName,
-   }
-
-   const addBookNavHandler = () => {
-      navigate('/addBook')
    }
 
    const booksCardNavHandler = () => {
@@ -52,26 +42,10 @@ export const InnerPage = () => {
 
    return (
       <>
-         <StyledBtnBlock>
-            <Promocode />
-            <Button
-               width="210px"
-               height="42px"
-               padding="10px 24px"
-               onClick={addBookNavHandler}
-            >
-               <img src={plusIcon} alt="icon" />
-               Добавить книгу
-            </Button>
-         </StyledBtnBlock>
+         {addBookStatus === 'pending' && <Spinner />}
+         <HeaderMainPage />
          <Breadcrumbs translate={pathTranslate} />
-         {book && (
-            <BookInfo
-               book={book}
-               onDelete={deleteBookHandler}
-               bookId={bookId}
-            />
-         )}
+         {book && <BookInfo book={book} bookId={bookId} />}
       </>
    )
 }
@@ -93,10 +67,4 @@ export const StyledNavLink = styled(NavLink)`
 export const StyledLink = styled(Link)`
    color: white;
    text-decoration: none;
-`
-const StyledBtnBlock = styled.div`
-   width: 100%;
-   display: flex;
-   justify-content: space-between;
-   margin-bottom: 43px;
 `

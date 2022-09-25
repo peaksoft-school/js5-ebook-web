@@ -7,7 +7,7 @@ import AudioPause from '../../assets/icons/AudioPause.svg'
 function AudioListener({ url }) {
    const [playMusic, setPlayMusic] = useState(false)
    const [waver, setWaver] = useState(null)
-   const [duration, setDuration] = useState('00:00')
+   const [duration, setDuration] = useState('0:00')
    const audioRef = useRef()
    const wavesurferElement = useRef()
 
@@ -46,14 +46,16 @@ function AudioListener({ url }) {
       setPlayMusic(true)
 
       const durationTimer = waver.getDuration()
-      const minuteTimer = +durationTimer / 50
+      const minuteTimer = parseInt(durationTimer / 50, 10)
 
       let fixedMinute
       if (minuteTimer < 10) {
-         fixedMinute = `0 ${minuteTimer}`
+         fixedMinute = `0${minuteTimer}`
       }
       const secondTimer = (durationTimer % 100).toFixed()
-      const newDurationTimer = `${fixedMinute} ${':'} ${secondTimer}`
+      const newDurationTimer = `${fixedMinute}:${
+         secondTimer < 10 ? `0${secondTimer}` : secondTimer
+      }`
 
       setDuration(newDurationTimer)
    }
@@ -67,18 +69,22 @@ function AudioListener({ url }) {
       <WaveformContianer>
          <PlayingDiv>
             {playMusic ? (
-               <ImgCopy
+               <ImgStyled
                   src={AudioPlay}
-                  alt={AudioPlay}
                   onClick={audioPauseHanle}
+                  alt="foto"
                />
             ) : (
-               <ImgCopy src={AudioPause} onClick={audioPlayHandle} />
+               <ImgStyled
+                  src={AudioPause}
+                  onClick={audioPlayHandle}
+                  alt="foto"
+               />
             )}
          </PlayingDiv>
          <WaverStyle>
             <WaverDiv ref={wavesurferElement} />
-            <AudioCopy src={url} ref={audioRef} />
+            <AudioStyled src={url} ref={audioRef} crossOrigin="anonymous" />
          </WaverStyle>
          <span>{duration}</span>
       </WaveformContianer>
@@ -86,15 +92,19 @@ function AudioListener({ url }) {
 }
 export default AudioListener
 
+const ImgStyled = styled('img')``
+const AudioStyled = styled('audio')``
+
 export const WaveformContianer = styled('div')`
-   margin: 20px auto;
-   padding: 10px;
-   width: 320px;
-   border: 1px solid grey;
+   width: 291px;
+   height: 32.37px;
    display: flex;
    justify-content: space-between;
    align-items: center;
    color: #969696;
+   & span {
+      margin-top: -4.8px;
+   }
 `
 const WaverStyle = styled('div')`
    margin-top: 0px;
@@ -102,12 +112,9 @@ const WaverStyle = styled('div')`
 `
 const WaverDiv = styled('div')`
    align-items: center;
-   margin-top: -5.4vh;
+   margin-top: -4.6vh;
 `
 const PlayingDiv = styled('div')`
    border: none;
    cursor: pointer;
 `
-
-const ImgCopy = styled('div')``
-const AudioCopy = styled('div')``

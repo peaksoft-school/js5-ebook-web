@@ -6,15 +6,20 @@ import SearchInput from '../../Components/UI/Inputs/SearchInput'
 import { ReactComponent as Icontriangle } from '../../assets/icons/catalog/iconSort.svg'
 import { updateSortGenres } from '../../store/slices/globalSlices'
 
-const Genres = ({ onChange }) => {
+const Genres = ({ onChange, sortMethods }) => {
    const { genres, sortGenres } = useSelector((store) => store.globalValues)
    const [choiseGenres, setChoiseGenres] = useState({
       labels: [],
       ids: [],
    })
+   const [one, setOne] = useState(true)
    const inputSearchRef = useRef()
    const dispatch = useDispatch()
    useEffect(() => {
+      if (one) {
+         setOne(false)
+         return
+      }
       onChange(choiseGenres)
    }, [choiseGenres])
    const onChangeCheckBox = (id, checked, label, setCheckedFunc) => {
@@ -66,12 +71,14 @@ const Genres = ({ onChange }) => {
                     />
                  ))
                : genres &&
-                 genres.map((genres) => (
+                 genres.map((genres, index) => (
                     <CheckBox
                        key={genres.id}
                        label={genres.name}
                        id={genres.id}
                        onChange={onChangeCheckBox}
+                       index={index}
+                       sortMethods={sortMethods}
                     />
                  ))}
          </FormStyles>

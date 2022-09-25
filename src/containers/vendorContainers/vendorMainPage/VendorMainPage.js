@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Snackbar, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import myHearticon from '../../../assets/icons/mainEdite/myHearticon.svg'
 import UpdateBooks from './UpdateBooks'
 import Button from '../../../Components/UI/Button/Button'
 import HeaderMainPage from './HeaderMainPage'
-import strel from '../../../assets/icons/strel.svg'
-import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
-import { snackbarActions } from '../../../store/createActions/snackbarActions'
 import { getMainBooks } from '../../../store/createActions/vendorMainPagesActions'
 import {
    BooksContainer,
@@ -20,82 +17,81 @@ import {
    HeaderText,
    ImageBlock,
    Img,
-   ImgesCont,
    ImgFavorite,
    MeatBallsDiv,
    NameBook,
    Price,
    SelectBooksDiv,
-   SelectCopy,
    Span,
    WrapperDiv,
 } from './VendorMainPageStyle'
 import SelectInput from '../vendorBookMainPage/SelectInput'
+import NotFound from './NotFound'
+import { setGenres } from '../../../store/slices/globalSlices'
 
 const VendorMainPage = () => {
    const { vendorBooks } = useSelector((state) => state.vendorMainPage)
    const { totalElements } = useSelector((state) => state.vendorMainPage)
-   const { status } = useSelector((state) => state.vendorMainPage)
    const dispatch = useDispatch()
-   const { bookError, bookSuccsess } = useSelector((store) => store.snackbar)
    const vendorId = useSelector((store) => store.auth.user.id)
-
-   const [getById, setGetById] = useState()
+   const { snackbarStatus, snackbarMessage } = useSelector(
+      (store) => store.snackbar
+   )
 
    const bookType = [
-      { name: 'Все', id: 1, text: 'ALL' },
-      { name: 'В избранном', id: 2, text: 'FAVORITES' },
-      { name: 'В корзине', id: 3, text: 'IN_THE_BASKET' },
-      { name: 'Проданы', id: 4, text: 'SOLD_OUT' },
-      { name: 'Со скидками', id: 5, text: 'WITH_DISCOUNTS' },
-      { name: 'В обработке', id: 6, text: 'IN_PROCESSING' },
-      { name: 'Отклоненные', id: 7, text: 'REJECTED' },
+      { name: 'Все', id: 'ALL' },
+      { name: 'В избранном', id: 'FAVORITES' },
+      { name: 'В корзине', id: 'IN_THE_BASKET' },
+      { name: 'Проданы', id: 'SOLD_OUT' },
+      { name: 'Со скидками', id: 'WITH_DISCOUNTS' },
+      { name: 'В обработке', id: 'IN_PROCESSING' },
+      { name: 'Отклоненные', id: 'REJECTED' },
    ]
 
-   const moreProducts = 8
+   const moreProducts = 12
    const [next, setNext] = useState(moreProducts)
    const handleMoreImage = () => {
       setNext(next + moreProducts)
    }
-   const [selectId, setSelectId] = useState()
-   const clickSelectBook = (data, _, typeData) => {
-      setSelectId(typeData)
+
+   const [selectId, setSelectId] = useState('ALL')
+   const clickSelectBook = (name, id) => {
+      setSelectId(id)
+   }
+   const backHome = () => {
+      setNext(next - moreProducts)
    }
 
    useEffect(() => {
-      dispatch(getMainBooks(selectId, next, vendorId))
-   }, [selectId, next, bookSuccsess])
+      dispatch(setGenres())
+   }, [])
 
    useEffect(() => {
-      dispatch(snackbarActions())
-   }, [bookError, bookSuccsess])
+      dispatch(getMainBooks(selectId, next, vendorId))
+   }, [selectId, next, snackbarMessage])
 
    return (
       <WrapperDiv>
-         {status && (
-            <Snackbar
-               width="460px"
-               message="this page is empty"
-               severity="error"
-               open={vendorBooks ? vendorBooks.length === 0 : ''}
-            />
-         )}
-         <GetSnackbar
-            open={bookError || bookSuccsess}
-            message={bookSuccsess ? 'Пользователь успешно удален!' : bookError}
-            variant={bookError ? 'error' : 'success'}
-         />
          <HeaderMainPage />
          <HeaderText>
             <Span>Всего {totalElements} книг</Span>
             <SelectBooksDiv>
-               <SelectInput genres={bookType} onClick={clickSelectBook} />
-               <SelectCopy>
-                  <ImgesCont src={strel} />
-               </SelectCopy>
+               <SelectInput
+                  genres={bookType}
+                  onClick={clickSelectBook}
+                  from={bookType[0]}
+               />
             </SelectBooksDiv>
          </HeaderText>
          <hr />
+         {vendorBooks.length === 0 && (
+            <DontBooks>You dont have books !</DontBooks>
+         )}
+         {vendorBooks.length === 0 && snackbarStatus && (
+            <NotFoundPage>
+               <NotFound />
+            </NotFoundPage>
+         )}
          <ContainerDiv>
             {vendorBooks
                ? vendorBooks.map((book) => (
@@ -114,7 +110,7 @@ const VendorMainPage = () => {
                                 </ImgFavorite>
                                 <span>В корзине ({book.basket})</span>
                              </BookSHeader>
-                             <CopyLink to={`/${book.id}`}>
+                             <CopyLink to={`/main/${book.id}`}>
                                 <ImageBlock>
                                    <Img src={book.mainImage} />
                                 </ImageBlock>
@@ -129,8 +125,8 @@ const VendorMainPage = () => {
                                 </div>
                              </CopyLink>
                           </BooksWrapper>
-                          <MeatBallsDiv onClick={() => setGetById(book.id)}>
-                             <UpdateBooks id={getById} />
+                          <MeatBallsDiv>
+                             <UpdateBooks id={book.id} />
                           </MeatBallsDiv>
                        </BooksContainer>
                     </Books>
@@ -149,6 +145,20 @@ const VendorMainPage = () => {
                Смотреть больше
             </Button>
          )}
+         {next > 12 && (
+            <Button
+               colorhover="white"
+               fullWidth
+               variant="universal"
+               border="1px solid grey"
+               color="white"
+               margintop="16px"
+               background="black"
+               onClick={backHome}
+            >
+               Свернуть
+            </Button>
+         )}
       </WrapperDiv>
    )
 }
@@ -165,4 +175,13 @@ const Books = styled('div')`
 
    background-color: ${(props) => (props.accepted ? '#EDEDED' : '')};
    border: ${(props) => (props.accepted ? 'none' : '')};
+`
+const NotFoundPage = styled('div')`
+   width: 800px;
+   /* height: 600px; */
+   margin: auto;
+`
+const DontBooks = styled('h2')`
+   color: red;
+   text-align: center;
 `

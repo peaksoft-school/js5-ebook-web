@@ -32,6 +32,18 @@ export const getAdminVendorsSlice = createSlice({
          state.vendorBooks.totalElements = action.payload.totalElements
          state.vendorBooks.totalPages = action.payload.totalPages
       },
+      getVendorBooks: (state, action) => {
+         state.vendorBooks.totalElements = action.payload.totalElements
+         state.vendorBooks.totalPages = action.payload.totalPages
+         action.payload.content.forEach((el) => {
+            const findEl = state.vendorBooks.books.find(
+               (prev) => prev.id === el.id
+            )
+            if (!findEl) {
+               state.vendorBooks.books.push(el)
+            }
+         })
+      },
       pending: (state) => {
          state.status = 'pending'
       },
@@ -92,7 +104,7 @@ export const getAdminVendorWithId = (vendorId) => {
    }
 }
 
-export const getAdminVendorBooks = (vendorId, filterBooks) => {
+export const setAdminVendorBooks = (vendorId, filterBooks) => {
    return async (dispatch) => {
       try {
          dispatch(adminVendorsAction.pending())
@@ -102,6 +114,24 @@ export const getAdminVendorBooks = (vendorId, filterBooks) => {
             )}`,
          })
          dispatch(adminVendorsAction.setVendorBooks(getData))
+         dispatch(adminVendorsAction.success())
+      } catch (error) {
+         dispatch(adminVendorsAction.rejected(error))
+      }
+   }
+}
+
+export const getAdminVendorBooks = (vendorId, filterBooks) => {
+   return async (dispatch) => {
+      try {
+         dispatch(adminVendorsAction.pending())
+         const getData = await appFetch({
+            url: `/api/vendors/${vendorId}/books${sortRequestApplic(
+               filterBooks
+            )}`,
+         })
+         dispatch(adminVendorsAction.getVendorBooks(getData))
+         dispatch(adminVendorsAction.success())
       } catch (error) {
          dispatch(adminVendorsAction.rejected(error))
       }

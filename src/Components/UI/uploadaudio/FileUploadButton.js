@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Vector from '../../../assets/upaudioicons/Vector.png'
 import VectorOk from '../../../assets/upaudioicons/VectorOk.png'
-// import GetSnackbar from '../snackbar/GetSnackbar'
 
 const FileUploadButton = ({
    onChange,
@@ -16,11 +15,13 @@ const FileUploadButton = ({
    name,
    ...props
 }) => {
-   const deleteFile = useSelector((store) => store.addbook.deleteImage)
+   const dataWithId = useSelector((store) => store.vendorMainPage.allBooks)
+   const { clearInputs } = useSelector((store) => store.vendorMainPage)
    const [fileState, setFileState] = useState('default')
    const [pdfFile, setPdfFile] = useState([])
    const [audioFile, setAudioFile] = useState([])
    const [isValid, setIsValid] = useState(false)
+
    useEffect(() => {
       const valid = setTimeout(() => {
          setIsValid(false)
@@ -28,7 +29,7 @@ const FileUploadButton = ({
       return () => clearInterval(valid)
    }, [isValid])
    const saveFilesHandler = (e) => {
-      if (e.target.files[0].size > 1000000) {
+      if (e.target.files[0].size > 2000000) {
          setIsValid(true)
          return
       }
@@ -46,9 +47,16 @@ const FileUploadButton = ({
          setFileState('success')
       }
    }
+
    useEffect(() => {
-      setFileState('default')
-   }, [deleteFile])
+      if (clearInputs) {
+         setFileState('default')
+      }
+      if (dataWithId) {
+         setFileState('success')
+      }
+   }, [dataWithId, clearInputs])
+
    let fileButton
    if (fileState === 'default') {
       fileButton = (
@@ -74,7 +82,6 @@ const FileUploadButton = ({
                   type="file"
                   onChange={saveFilesHandler}
                />
-               {/* {!isValid && <span>fjkjkd</span>} */}
             </DefaultContainer>
          </ContainerDiv>
       )
@@ -95,6 +102,13 @@ const FileUploadButton = ({
             <SuccessContainer {...props}>
                <ImgVectorOk src={VectorOk} />
                {children}
+               <input
+                  accept={accept}
+                  value={value}
+                  name={name}
+                  type="file"
+                  onChange={saveFilesHandler}
+               />
             </SuccessContainer>
          </ContainerDiv>
       )
@@ -153,6 +167,7 @@ const SuccessContainer = styled('label')((props) => ({
    fontWeight: '600',
    fontSize: '14px',
    marginTop: '10px',
+   cursor: 'pointer',
    '& input': {
       display: 'none',
    },

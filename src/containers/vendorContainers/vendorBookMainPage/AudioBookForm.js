@@ -6,15 +6,8 @@ import FileUploadButton from '../../../Components/UI/uploadaudio/FileUploadButto
 import Button from '../../../Components/UI/Button/Button'
 import Textarea from './Textarea'
 import InputText from '../../../Components/UI/Inputs/InputText'
-import CheckBox from '../../../Components/UI/checkBox/CheckBox'
-import bookAction from '../../../store/slices/addBookSlice'
-import {
-   ButtonDiv,
-   InputDiv,
-   InputWrapper,
-   LabelStyle,
-   ValidSpan,
-} from './PaperBookForm'
+import BestsellerCheckBox from '../../../Components/UI/checkBox/BestsellerCheckbox'
+import { ButtonDiv, InputDiv, InputWrapper, LabelStyle } from './PaperBookForm'
 import { addAudioBook } from '../../../store/createActions/addBookActions'
 import { editeAudioBook } from '../../../store/createActions/vendorMainPagesActions'
 import { snackbarActions } from '../../../store/createActions/snackbarActions'
@@ -22,40 +15,60 @@ import GetSnackbar from '../../../Components/UI/snackbar/GetSnackbar'
 import SelectInput from './SelectInput'
 
 const languageSelect = [
-   { name: 'Кыргызский', text: 'KYRGYZ', id: 1 },
-   { name: 'Русский', text: 'RUSSIAN', id: 2 },
-   { name: 'Английский', text: 'ENGLISH', id: 3 },
+   { name: 'Кыргызский', id: 'KYRGYZ' },
+   { name: 'Русский', id: 'RUSSIAN' },
+   { name: 'Английский', id: 'ENGLISH' },
 ]
 
 const AudioBookForm = ({ images }) => {
-   const [navigation, setNavigation] = useState(false)
    const genre = useSelector((store) => store.globalValues.genres)
    const { stateSnackbar } = useSelector((store) => store.snackbar)
-   const { bookSuccsess } = useSelector((store) => store.snackbar)
    const dataWithId = useSelector((store) => store.vendorMainPage.audioBooks)
+   const { clearInputs } = useSelector((store) => store.vendorMainPage)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const [isChecked, setIsChecked] = useState(false)
    const [audioValues, setAudioValues] = useState({
-      fragment: dataWithId ? dataWithId.fragment : '',
+      fragment: dataWithId ? dataWithId.audioBookFragment : '',
       audioBook: dataWithId ? dataWithId.audioBook : '',
    })
+
    const [duration, setDuration] = useState({
-      duration: '',
-      minute: '',
-      second: '',
+      duration: dataWithId ? dataWithId.duration[0] : '',
+      minute: dataWithId ? dataWithId.duration[1] : '',
+      second: dataWithId ? dataWithId.duration[2] : '',
    })
-   const durationTimer = `${duration.duration}:${duration.minute}:${duration.second}`
+   const durationTimer = `${
+      duration.duration < 10 ? `${0}${duration.duration}` : duration.duration
+   }:${duration.minute < 10 ? `${0}${duration.minute}` : duration.minute}:${
+      duration.second < 10 ? `${0}${duration.second}` : duration.second
+   }`
 
    const [inputValues, setInputValues] = useState({
       name: dataWithId ? dataWithId.bookName : '',
       author: dataWithId ? dataWithId.author : '',
-      publishingHouse: dataWithId ? dataWithId.publishingHouse : '',
       description: dataWithId ? dataWithId.description : '',
       price: dataWithId ? dataWithId.price : '',
       yearOfIssue: dataWithId ? dataWithId.yearOfIssue : '',
-      quantityOfBook: dataWithId ? dataWithId.quantityOfBook : '',
       discount: dataWithId ? dataWithId.discount : '',
+      language: dataWithId ? dataWithId.language : '',
+      genreId:
+         dataWithId && genre
+            ? genre.find((el) => el.name === dataWithId.genre).id
+            : '',
    })
+
+   const languageFunc = (name, id) => {
+      setInputValues((prev) => {
+         return { ...prev, language: id }
+      })
+   }
+
+   const genreFunction = (name, id) => {
+      setInputValues((prev) => {
+         return { ...prev, genreId: id }
+      })
+   }
 
    const changeAudioValue = (audio, e) => {
       const { name } = e.target
@@ -64,6 +77,32 @@ const AudioBookForm = ({ images }) => {
 
    const handleChangeInput = (e) => {
       const { name, value } = e.target
+      const date = new Date()
+      if (name === 'discount' || name === 'yearOfIssue' || name === 'price') {
+         if (value < 0) {
+            return
+         }
+      }
+      if (name === 'duration') {
+         if (value < 0 || value > 23) {
+            return
+         }
+      }
+      if (name === 'minute' || name === 'second') {
+         if (value < 0 || value > 60) {
+            return
+         }
+      }
+      if (name === 'yearOfIssue') {
+         if (value > date.getFullYear()) {
+            return
+         }
+      }
+      if (name === 'discount') {
+         if (value > 100) {
+            return
+         }
+      }
       setInputValues({ ...inputValues, [name]: value })
       setDuration({ ...duration, [name]: value })
    }
@@ -78,30 +117,57 @@ const AudioBookForm = ({ images }) => {
          inputValues.yearOfIssue.length >= 1 &&
          inputValues.price.length >= 1
 
-      return isInputsAreValid && images.mainImage
+      return (
+         isInputsAreValid &&
+         images.mainImage &&
+         audioValues.fragment &&
+         audioValues.audioBook
+      )
    }
-   const validLength = () => {
-      const validNumbers =
-         inputValues.yearOfIssue.length > 4 ||
-         inputValues.yearOfIssue < 0 ||
-         inputValues.yearOfIssue > 2022
-      return validNumbers
-   }
+
    const clickSendFormValues = async () => {
       if (isFormValid()) {
-         dispatch(addAudioBook(inputValues, images, audioValues, durationTimer))
-         dispatch(bookAction.deleteImage())
+         dispatch(
+            addAudioBook({
+               inputValues,
+               images,
+               audioValues,
+               durationTimer,
+               isChecked,
+            })
+         )
+      } else {
+         dispatch(snackbarActions({ bron: 'exit' }))
+      }
+   }
 
+   const updateForms = () => {
+      dispatch(
+         editeAudioBook({
+            inputValues,
+            images,
+            bookId: dataWithId && dataWithId.bookId,
+            audioValues,
+            navigate,
+            durationTimer,
+            isChecked,
+         })
+      )
+   }
+
+   const setBestSeller = () => {
+      setIsChecked((prev) => !prev)
+   }
+   useEffect(() => {
+      if (clearInputs) {
          setInputValues({
             name: '',
-            author: '',
             genreId: '',
-            description: '',
-            yearOfIssue: '',
-            duration: '',
-            minute: '',
-            second: '',
             price: '',
+            author: '',
+            description: '',
+            language: '',
+            yearOfIssue: '',
             discount: '',
          })
          setDuration({
@@ -109,24 +175,13 @@ const AudioBookForm = ({ images }) => {
             minute: '',
             second: '',
          })
-      } else {
-         dispatch(snackbarActions({ bron: 'exit' }))
+         setAudioValues({
+            audioBook: '',
+            fragment: '',
+         })
+         setIsChecked(false)
       }
-   }
-   const { bookId } = dataWithId !== null ? dataWithId : ''
-   const updateForms = () => {
-      dispatch(editeAudioBook(inputValues, images, bookId, audioValues))
-      setNavigation(true)
-   }
-   useEffect(() => {
-      let navigateToMainPage
-      if (bookSuccsess && navigation) {
-         navigateToMainPage = setTimeout(() => {
-            navigate('/')
-         }, 3000)
-      }
-      return () => clearTimeout(navigateToMainPage)
-   }, [bookSuccsess])
+   }, [clearInputs])
 
    return (
       <>
@@ -134,6 +189,7 @@ const AudioBookForm = ({ images }) => {
             open={stateSnackbar}
             message="Пожалуйста, заполните все поля"
             variant="error"
+            width="400px"
          />
          <InputWrapper>
             <InputDiv>
@@ -169,10 +225,18 @@ const AudioBookForm = ({ images }) => {
                   fontWeight
                   height="400px"
                   color="#969696"
-                  onClick={(genreId) =>
-                     setInputValues({ ...inputValues, genreId })
-                  }
+                  onClick={genreFunction}
                   genres={genre}
+                  empty={clearInputs && 'Выберите жанр'}
+                  from={{
+                     name:
+                        genre && inputValues.genreId
+                           ? genre.find((el) => el.id === inputValues.genreId)
+                                .name
+                           : 'Выберите жанр',
+                     id: inputValues ? inputValues.genreId : null,
+                  }}
+                  primary
                />
                <Textarea
                   title="О книге"
@@ -197,10 +261,18 @@ const AudioBookForm = ({ images }) => {
                         fontWeight="400"
                         color="#969696"
                         hover
-                        onClick={(_, data, language) =>
-                           setInputValues({ ...inputValues, language })
-                        }
                         genres={languageSelect}
+                        onClick={languageFunc}
+                        empty={clearInputs && 'Выберите язык'}
+                        from={{
+                           name: dataWithId
+                              ? languageSelect.find(
+                                   (el) => el.id === dataWithId.language
+                                ).name
+                              : 'Выберите язык',
+                           id: dataWithId ? dataWithId.language : null,
+                        }}
+                        primary
                      />
                   </PriceDiv>
                   <PriceDiv>
@@ -216,47 +288,66 @@ const AudioBookForm = ({ images }) => {
                         value={inputValues.yearOfIssue}
                         type="number"
                      />
-                     {validLength() && <ValidSpan>must be 4 number</ValidSpan>}
                   </PriceDiv>
                </SelectDiv>
                <LabelStyleTime htmlFor="duration">
                   <LabelStyle>Длительность</LabelStyle>
                </LabelStyleTime>
                <SelectDiv>
-                  <InnerSelectDIv>
-                     <InputText
-                        id="duration"
-                        name="duration"
-                        onChange={handleChangeInput}
-                        textAlign="end"
-                        placeholder="ч"
-                        value={duration.duration}
-                        type="number"
-                     />
-                  </InnerSelectDIv>
-                  <TimeInputs>
-                     <InputText
-                        onChange={handleChangeInput}
-                        textAlign="end"
-                        placeholder="мин"
-                        name="minute"
-                        value={duration.minute}
-                        type="number"
-                     />
-                  </TimeInputs>
-                  <TimeInputs>
-                     <InputText
-                        onChange={handleChangeInput}
-                        textAlign="end"
-                        name="second"
-                        placeholder="сек"
-                        value={duration.second}
-                        type="number"
-                     />
-                  </TimeInputs>
+                  <TimerStan>
+                     <InnerSelectDIv>
+                        <InputText
+                           id="duration"
+                           name="duration"
+                           onChange={handleChangeInput}
+                           textAlign="end"
+                           placeholder="ч"
+                           value={duration.duration}
+                           type="number"
+                        />
+                     </InnerSelectDIv>
+                     {duration.duration > 30 && (
+                        <ValidateStyle>menwe 30</ValidateStyle>
+                     )}
+                  </TimerStan>
+                  <TimerStan>
+                     <TimeInputs>
+                        <InputText
+                           onChange={handleChangeInput}
+                           textAlign="end"
+                           placeholder="мин"
+                           name="minute"
+                           value={duration.minute}
+                           type="number"
+                        />
+                     </TimeInputs>
+                     {duration.minute > 60 && (
+                        <ValidateStyle>menwe 60</ValidateStyle>
+                     )}
+                  </TimerStan>
+                  <TimerStan>
+                     <TimeInputs>
+                        <InputText
+                           onChange={handleChangeInput}
+                           textAlign="end"
+                           name="second"
+                           placeholder="сек"
+                           value={duration.second}
+                           type="number"
+                        />
+                     </TimeInputs>
+                     {duration.second > 60 && (
+                        <ValidateStyle>menwe 60</ValidateStyle>
+                     )}
+                  </TimerStan>
                </SelectDiv>
                <CheckBoxDiv>
-                  <CheckBox label="Бестселлер" />
+                  <BestsellerCheckBox
+                     label="Бестселлер"
+                     onChange={setBestSeller}
+                     checked={isChecked}
+                     id="bestseller"
+                  />
                </CheckBoxDiv>
                <SelectDiv>
                   <PriceDiv>
@@ -293,7 +384,7 @@ const AudioBookForm = ({ images }) => {
                      </LabelStyle>
                      <FileUploadButton
                         onChange={changeAudioValue}
-                        title="Загрузите фрагмент аудиозаписи"
+                        title="Загрузите"
                         name="fragment"
                         accept="audio/mpeg"
                      >
@@ -317,24 +408,24 @@ const AudioBookForm = ({ images }) => {
             </SelectWrapper>
          </InputWrapper>
          <ButtonDiv>
-            {!dataWithId ? (
-               <Button width="137px" onClick={clickSendFormValues}>
-                  Отправить
+            <PutDiv>
+               <Button
+                  width="137px"
+                  background="#2f4f4f"
+                  onClick={() => navigate('/')}
+               >
+                  Назад
                </Button>
-            ) : (
-               <PutDiv>
-                  <Button
-                     width="137px"
-                     background="#2f4f4f"
-                     onClick={() => navigate('/')}
-                  >
-                     Назад
+               {!dataWithId ? (
+                  <Button width="137px" onClick={clickSendFormValues}>
+                     Отправить
                   </Button>
+               ) : (
                   <Button width="137px" onClick={updateForms}>
                      Сохранить
                   </Button>
-               </PutDiv>
-            )}
+               )}
+            </PutDiv>
          </ButtonDiv>
       </>
    )
@@ -350,17 +441,18 @@ const SelectDiv = styled('div')`
    justify-content: space-between;
    align-items: center;
    outline: none;
+   /* border: 1px solid red; */
 `
 
 const InnerSelectDIv = styled('div')`
-   width: 30%;
+   width: 100%;
 `
 const LabelStyleTime = styled('div')`
    display: block;
    margin: 26px 0px 10px 0px;
 `
 const TimeInputs = styled('div')`
-   width: 30%;
+   width: 100%;
    height: 100%;
    display: flex;
    align-items: flex-end;
@@ -390,4 +482,14 @@ export const PutDiv = styled('div')`
    display: flex;
    justify-content: space-between;
    width: 300px;
+`
+const ValidateStyle = styled('span')`
+   font-size: 12px;
+   position: relative;
+   top: 0px;
+   width: 30%;
+   color: red;
+`
+const TimerStan = styled('div')`
+   width: 30%;
 `

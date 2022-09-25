@@ -7,10 +7,9 @@ const initialState = {
    audioBooks: null,
    electronicBooks: null,
    allBooks: null,
-   isValid: true,
    bookType: null,
    status: null,
-   boolean: null,
+   clearInputs: false,
 }
 export const vendorMainPageSlice = createSlice({
    name: 'vendorMainPage',
@@ -30,24 +29,34 @@ export const vendorMainPageSlice = createSlice({
          state.audioBooks = ''
          state.electronicBooks = ''
          state.allBooks = ''
+         state.vendorBooks = ''
+         state.clearInputs = true
+      },
+      unClearBook(state) {
+         state.clearInputs = false
       },
 
-      updateValid(state) {
-         state.isValid = !state.isValid
-      },
-
-      // status VendormainPage
       success(state) {
          state.status = 'success'
-         state.boolean = true
       },
-      errorResult(state, action) {
+      errorResult(state) {
          state.status = 'rejected'
-         state.boolean = action.payload
+      },
+      pending(state) {
+         state.status = 'pending'
       },
 
-      // type books withId
-      findBookWithId(state, action) {
+      bookType(state, action) {
+         if (action.payload.bookType === 'PAPER_BOOK') {
+            state.bookType = 'Бумажная'
+         }
+         if (action.payload.bookType === 'ELECTRONIC_BOOK') {
+            state.bookType = 'Электронная книга'
+         }
+         if (action.payload.bookType === 'AUDIO_BOOK') {
+            state.bookType = 'Аудиокнига'
+         }
+
          const typeBook = action.payload.bookType
          if (typeBook === 'PAPER_BOOK') {
             state.paperBooks = action.payload
@@ -65,18 +74,6 @@ export const vendorMainPageSlice = createSlice({
             state.electronicBooks = ''
          }
          state.allBooks = action.payload
-      },
-
-      bookType(state, action) {
-         if (action.payload.bookType === 'PAPER_BOOK') {
-            state.bookType = 'Бумажная'
-         }
-         if (action.payload.bookType === 'ELECTRONIC_BOOK') {
-            state.bookType = 'Электронная книга'
-         }
-         if (action.payload.bookType === 'AUDIO_BOOK') {
-            state.bookType = 'Аудиокнига'
-         }
       },
    },
 })

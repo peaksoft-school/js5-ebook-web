@@ -1,26 +1,32 @@
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { MenuItem } from '@mui/material'
+import strel from '../../../assets/icons/strel.svg'
 import PopUp from '../../../Components/UI/popup'
 
 export default function SelectInput({
    genres,
    name,
-   defaultName,
    onClick,
-   type,
+   from,
+   primary,
+   empty,
    ...props
 }) {
    const [anChorEl, setAnchorEl] = useState(null)
    const [label, setLabel] = useState({
-      name: defaultName || 'все',
-      id: null,
-      key: type,
+      name: from.name,
+      id: from.id,
    })
    const open = Boolean(anChorEl)
+   const [one, setOne] = useState(true)
    useEffect(() => {
+      if (one) {
+         setOne(false)
+         return
+      }
       if (onClick) {
-         onClick(label.id, label.key, label.text, label.name)
+         onClick(label.name, label.id)
       }
    }, [label])
    const handleClickLabel = (e) => {
@@ -29,22 +35,35 @@ export default function SelectInput({
    const onCloseMenu = () => {
       setAnchorEl(null)
    }
-   const onSelectItem = (id, name, text) => {
+   const onSelectItem = (id, name) => {
       setLabel((prev) => {
          return {
             ...prev,
             name,
             id,
-            text,
          }
       })
       onCloseMenu()
    }
+   useEffect(() => {
+      if (empty) {
+         setLabel((prev) => {
+            return {
+               ...prev,
+               name: empty,
+               id: null,
+            }
+         })
+      }
+      onCloseMenu()
+   }, [empty])
+
    return (
       <SelectBook>
          {name && <SelectSpan>{name}:</SelectSpan>}
          <SelectLabel {...props} onClick={handleClickLabel}>
-            {label.name}{' '}
+            <SpanStyle primary={label.id}>{label.name}</SpanStyle>
+            {primary ? '' : <ImgesCont src={strel} />}
          </SelectLabel>
          <PopUp
             height={props.height}
@@ -57,9 +76,7 @@ export default function SelectInput({
                   return (
                      <PopUpItem
                         key={elem.id}
-                        onClick={() =>
-                           onSelectItem(elem.id, elem.name, elem.text)
-                        }
+                        onClick={() => onSelectItem(elem.id, elem.name)}
                      >
                         {elem.name}
                      </PopUpItem>
@@ -79,11 +96,11 @@ const SelectLabel = styled('div')`
    font-size: 16px;
    line-height: 120%;
    cursor: pointer;
-
    border: ${(props) => (props.border ? '1px solid #969696' : '')};
    font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '600')};
    padding: ${(props) => (props.padding ? props.padding : '')};
    color: ${(props) => (props.color ? props.color : '')};
+   color: ${(props) => (props.primary ? 'black' : '')};
    width: ${(props) => (props.width ? props.width : '')};
    &:hover {
       border: ${(props) => (props.hover ? '1px solid red' : '')};
@@ -104,4 +121,12 @@ const SelectBook = styled('div')`
    justify-content: flex-start;
    /* max-width: 180px; */
    flex-grow: 2;
+`
+const ImgesCont = styled('img')`
+   margin-left: 10px;
+`
+const SpanStyle = styled('span')`
+   height: 16px;
+   border: 1px solid rgba(0, 0, 0, 0);
+   color: ${(props) => (props.primary ? 'black' : '')};
 `

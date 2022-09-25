@@ -1,5 +1,6 @@
 import { appFileFetchService } from '../../api/fileService'
 import appFetch from '../../hooks/appFetch'
+import bookAction from '../slices/addBookSlice'
 import snackbarAction from '../slices/snackbarSlice'
 import vendorMainPageAction from '../slices/vendorMainPageSlice'
 
@@ -20,15 +21,14 @@ export const getMainBooks = (slectedText, next, vendorId) => {
 }
 
 // GET with id for UPDATE
-export const getMainBooksWithId = (id) => {
+export const getMainBooksWithId = (id, navigate) => {
    return async (dispatch) => {
       try {
          const getData = await appFetch({
             url: `/api/books/${id}`,
          })
-         dispatch(vendorMainPageAction.findBookWithId(getData))
          dispatch(vendorMainPageAction.bookType(getData))
-         dispatch(vendorMainPageAction.success())
+         navigate('/main/addbook')
       } catch (error) {
          dispatch(vendorMainPageAction.errorResult(error))
       }
@@ -36,17 +36,21 @@ export const getMainBooksWithId = (id) => {
 }
 
 // DELETE
-export const getMainBooksDelete = (id) => {
+export const getMainBooksDelete = (id, navigate) => {
    return async (dispatch) => {
+      dispatch(snackbarAction.snackbarPending())
       try {
-         const getData = await appFetch({
+         const result = await appFetch({
             url: `/api/book/delete/${id}`,
             method: 'DELETE',
          })
-         dispatch(vendorMainPageAction.errorResult(getData))
+         if (navigate) {
+            navigate('/')
+         }
+         dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(getMainBooksWithId())
       } catch (error) {
-         dispatch(snackbarAction.snackbarSuccess())
-         dispatch(snackbarAction.snackbarFalse())
+         dispatch(snackbarAction.snackbarFalse('Что то пошло не так!'))
       }
    }
 }
@@ -54,159 +58,166 @@ export const getMainBooksDelete = (id) => {
 // EDITE
 
 export const putVendorBook = (
-   inputValues,
-   images,
-   bookType,
-   bookId,
-   pdfValue
+   { inputValues, images, bookId, isChecked },
+   navigate
 ) => {
    const mydata = {
       mainImage: images.mainImage,
       secondImage: images.secondImage,
       thirdImage: images.thirdImage,
       name: inputValues.name,
-      genreId: 7,
+      genreId: inputValues.genreId,
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
-      language: 'RUSSIAN',
+      language: inputValues.language,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
       fragment: inputValues.fragment,
-      bestseller: true,
-      electronicBook: 'string',
+      bestseller: isChecked,
       pageSize: inputValues.pageSize,
       publishingHouse: inputValues.publishingHouse,
       quantityOfBook: inputValues.quantityOfBook,
    }
+
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
-         let urlBookType = `/api/book/update/paperBook/${bookId}`
-         if (bookType === 'ELECTRONIC_BOOK') {
-            urlBookType = `/api/book/update/electronicBook/${bookId}`
-         }
-         if (bookType === 'AUDIO_BOOK') {
-            urlBookType = `/api/book/update/audioBook/${bookId}`
-         }
          if (typeof images.mainImage === 'object') {
             const imgFiles = await appFileFetchService(images.mainImage)
             mydata.mainImage = imgFiles.link
-         } else {
+         } else if (typeof images.mainImage === 'string') {
             mydata.mainImage = images.mainImage
          }
+
          if (typeof images.secondImage === 'object') {
             const imgFiles = await appFileFetchService(images.secondImage)
             mydata.secondImage = imgFiles.link
+         } else if (typeof images.secondImage === 'string') {
+            mydata.secondImage = images.secondImage
          }
+
          if (typeof images.thirdImage === 'object') {
             const imgFiles = await appFileFetchService(images.thirdImage)
             mydata.thirdImage = imgFiles.link
+         } else if (typeof images.thirdImage === 'string') {
+            mydata.thirdImage = images.thirdImage
          }
-         if (typeof pdfValue === 'object') {
-            const pdf = await appFileFetchService(pdfValue)
-            mydata.electronicBook = pdf.link
-         }
-         const putData = await appFetch({
+         const result = await appFetch({
+            url: `/api/book/update/paperBook/${bookId}`,
             method: 'PUT',
-            url: urlBookType,
             body: mydata,
          })
-         if (putData.ok) {
-            dispatch(snackbarAction.snackbarSuccess())
-         }
+         dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(bookAction.statusSuccess())
+         navigate('/')
       } catch (error) {
-         if (error === 'Что то пошло не так!') {
-            dispatch(snackbarAction.snackbarFalse(error))
-         } else {
-            dispatch(snackbarAction.snackbarSuccess())
-         }
+         dispatch(bookAction.statusError(error))
       }
    }
 }
 
-export const editeElectronicBook = (inputValues, images, bookId, pdfValue) => {
+export const editeElectronicBook = ({
+   withIdValues,
+   images,
+   bookId,
+   pdfValue,
+   navigate,
+   isChecked,
+}) => {
    const mydata = {
-      mainImage: images.mainImage,
-      secondImage: images.secondImage,
-      thirdImage: images.thirdImage,
-      name: inputValues.name,
-      genreId: 9,
-      price: inputValues.price,
-      author: inputValues.author,
-      description: inputValues.description,
-      language: 'RUSSIAN',
-      yearOfIssue: inputValues.yearOfIssue,
-      discount: inputValues.discount,
-      fragment: inputValues.fragment,
-      bestseller: true,
-      electronicBook: 'string',
-      pageSize: inputValues.pageSize,
-      publishingHouse: inputValues.publishingHouse,
-      quantityOfBook: inputValues.quantityOfBook,
+      mainImage: withIdValues.mainImage,
+      secondImage: withIdValues.secondImage,
+      thirdImage: withIdValues.thirdImage,
+      name: withIdValues.name,
+      genreId: withIdValues.genreId,
+      price: withIdValues.price,
+      author: withIdValues.author,
+      description: withIdValues.description,
+      language: withIdValues.language,
+      yearOfIssue: withIdValues.yearOfIssue,
+      discount: withIdValues.discount,
+      fragment: withIdValues.fragment,
+      bestseller: isChecked,
+      electronicBook: pdfValue,
+      pageSize: withIdValues.pageSize,
+      publishingHouse: withIdValues.publishingHouse,
    }
+
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (typeof images.mainImage === 'object') {
             const imgFiles = await appFileFetchService(images.mainImage)
             mydata.mainImage = imgFiles.link
-         } else {
+         } else if (typeof images.mainImage === 'string') {
             mydata.mainImage = images.mainImage
          }
+
          if (typeof images.secondImage === 'object') {
             const imgFiles = await appFileFetchService(images.secondImage)
             mydata.secondImage = imgFiles.link
+         } else if (typeof images.secondImage === 'string') {
+            mydata.secondImage = images.secondImage
          }
+
          if (typeof images.thirdImage === 'object') {
             const imgFiles = await appFileFetchService(images.thirdImage)
             mydata.thirdImage = imgFiles.link
+         } else if (typeof images.thirdImage === 'string') {
+            mydata.thirdImage = images.thirdImage
          }
+
          if (typeof pdfValue === 'object') {
             const pdf = await appFileFetchService(pdfValue)
             mydata.electronicBook = pdf.link
          }
-         const putData = await appFetch({
-            method: 'PUT',
+         const result = await appFetch({
             url: `/api/book/update/electronicBook/${bookId}`,
+            method: 'PUT',
             body: mydata,
          })
-         if (putData.ok) {
-            dispatch(snackbarAction.snackbarSuccess())
-         }
+         dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(bookAction.statusSuccess())
+         navigate('/')
       } catch (error) {
-         if (error === 'Что то пошло не так!') {
-            dispatch(snackbarAction.snackbarFalse(error))
-         } else {
-            dispatch(snackbarAction.snackbarSuccess())
-         }
+         dispatch(bookAction.statusError(error))
       }
    }
 }
 
-export const editeAudioBook = (inputValues, images, bookId) => {
+export const editeAudioBook = ({
+   inputValues,
+   images,
+   bookId,
+   audioValues,
+   navigate,
+   durationTimer,
+   isChecked,
+}) => {
    const mydata = {
       mainImage: images.mainImage,
       secondImage: images.secondImage,
       thirdImage: images.thirdImage,
       name: inputValues.name,
-      genreId: 13,
+      genreId: inputValues.genreId,
       price: inputValues.price,
       author: inputValues.author,
       description: inputValues.description,
-      language: 'KYRGYZ',
+      language: inputValues.language,
       yearOfIssue: inputValues.yearOfIssue,
       discount: inputValues.discount,
-      bestseller: true,
-      fragment: 'string',
-      duration: '02:30:45',
-      audioBook: 'string',
+      bestseller: isChecked,
+      fragment: String(audioValues.fragment),
+      duration: durationTimer,
+      audioBook: audioValues.audioBook,
    }
    return async (dispatch) => {
+      dispatch(bookAction.statusPending())
       try {
          if (typeof images.mainImage === 'object') {
             const imgFiles = await appFileFetchService(images.mainImage)
             mydata.mainImage = imgFiles.link
-         } else {
-            mydata.mainImage = images.mainImage
          }
          if (typeof images.secondImage === 'object') {
             const imgFiles = await appFileFetchService(images.secondImage)
@@ -216,25 +227,24 @@ export const editeAudioBook = (inputValues, images, bookId) => {
             const imgFiles = await appFileFetchService(images.thirdImage)
             mydata.thirdImage = imgFiles.link
          }
-         // if (typeof audioValues === 'object') {
-         //    const pdf = await appFileFetchService(audioValues)
-         //    mydata.audioBook = pdf.link
-         //    console.log(pdf)
-         // }
-         const putData = await appFetch({
-            method: 'PUT',
+         if (typeof audioValues.fragment === 'object') {
+            const imgFiles = await appFileFetchService(audioValues.fragment)
+            mydata.fragment = imgFiles.link
+         }
+         if (typeof audioValues.audioBook === 'object') {
+            const imgFiles = await appFileFetchService(audioValues.audioBook)
+            mydata.audioBook = imgFiles.link
+         }
+         const result = await appFetch({
             url: `/api/book/update/audioBook/${bookId}`,
+            method: 'PUT',
             body: mydata,
          })
-         if (putData.ok) {
-            dispatch(snackbarAction.snackbarSuccess())
-         }
+         dispatch(snackbarAction.snackbarSuccess(result.message))
+         dispatch(bookAction.statusSuccess())
+         navigate('/')
       } catch (error) {
-         if (error === 'Что то пошло не так!') {
-            dispatch(snackbarAction.snackbarFalse(error))
-         } else {
-            dispatch(snackbarAction.snackbarSuccess())
-         }
+         dispatch(bookAction.statusError(error))
       }
    }
 }
