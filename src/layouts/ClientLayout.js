@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Outlet, useNavigate } from 'react-router'
 // import { useSelector } from 'react-redux'
 import Header from './Header'
 import AppContainer, { Wrapper } from './AppContainer'
@@ -14,6 +14,11 @@ import CardItems from './CardItems'
 import SearchInputBlock from './SearchInputBlock'
 
 function ClientLayout() {
+   const navigate = useNavigate()
+
+   const favoriteBooksHandler = () => {
+      navigate('main/favorite')
+   }
    return (
       <Wrapper>
          <AppContainer
@@ -31,7 +36,9 @@ function ClientLayout() {
                         </CardItems>
                         <CardItems flexGrow={0} flexShrink={0}>
                            <IconButton icon={<Message />} />
-                           <IconButton icon={<Heart />} />
+                           <IconButton
+                              icon={<Heart onClick={favoriteBooksHandler} />}
+                           />
                            <IconButton text="Корзина" />
                         </CardItems>
                      </>
