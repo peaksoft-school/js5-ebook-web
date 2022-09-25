@@ -22,11 +22,10 @@ const PopUpMeatBalls = ({ options }) => {
          </ImageBlock>
          <PopUp open={openPopup} onClose={closeHandler} anchorEl={position}>
             <WrapperMeatballs>
-               {options.map((i, index) => {
+               {options.map((i) => {
                   return (
                      <MenuItem
-                        // eslint-disable-next-line react/no-array-index-key
-                        key={index}
+                        key={i.id}
                         onClick={(e) => {
                            e.stopPropagation()
                            closeHandler()
