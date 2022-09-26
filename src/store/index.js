@@ -17,6 +17,7 @@ import { notificationsSlise } from './slices/notificationSlice'
 import { getAdminUsersSlice } from './slices/getAdminUsersSlices'
 import userInnerPageSlices from './slices/userInnerPageSlices'
 import mainPageSlices from './slices/mainPageSlices'
+import favoritBooksSlices from './slices/wishListSlices'
 
 const store = configureStore({
    reducer: {
@@ -38,6 +39,7 @@ const store = configureStore({
       notifications: notificationsSlise.reducer,
       adminUsers: getAdminUsersSlice.reducer,
       userBook: userInnerPageSlices.reducer,
+      favoriteBooks: favoritBooksSlices.reducer,
    },
 })
 
